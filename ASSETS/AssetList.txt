@@ -1,0 +1,36 @@
+Elg okse - Mesh og Animasjoner
+Elg ku - Mesh og Animasjoner
+Elg kalv - Mesh og Animasjoner
+
+Ulv - Mesh og Animasjoner
+Jeger - Mesh og Animasjoner
+Biler - Mesh
+Autovern - Mesh
+
+Landskap - Mesh
+
+Trer - Mesher
+	- Gran
+	- Furu
+	- Bjørk
+
+Planter - Mesher
+	- Mose
+	- Blåbær lyng
+	- Sopp
+	
+Elv - Mesh og Material
+
+Vei - Mesh
+
+By / Sentrum / Samling av hus - Mesh 
+
+Ikoner for sektorer - PNG
+Ikoner for hendelser - PNG
+
+UI - Animere UI elementer
+
+Lyd - SFX og musikk
+
+Higlight rundt territoriet - SFX
+
