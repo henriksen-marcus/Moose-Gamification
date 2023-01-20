@@ -3,7 +3,7 @@
 	<header>
 		<smile version="1.0" namespace="std, isee"/>
 		<name>Learning_loop</name>
-		<uuid>67f6bd2d-9e1d-44a4-96b9-0e0313938d87</uuid>
+		<uuid>071fd070-651d-4c22-b53d-d4dc9d03cf3e</uuid>
 		<vendor>isee systems, inc.</vendor>
 		<product version="1.7.1" isee:build_number="1574" isee:saved_by_v1="true" lang="en">Stella Architect</product>
 	</header>
@@ -21,28 +21,82 @@
 	<model_units/>
 	<model>
 		<variables>
-			<aux name="Simulation design quality">
+			<aux name="Helge simulation data">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="User's understanding of simulation">
+			<aux name="Simulation accuracy">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Learning by interacting with simulation">
+			<aux name="Interface design quality">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="User's knowledge of Swedish moose situation">
+			<aux name="Ease of interaction">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Feedback clarity">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Engagement">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="User interacting with the interface">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="User understanding of interface">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Unlock more of the interface">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="New and unknown features">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Experimenting">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Learning">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Information about moose">
 				<isee:delay_aux/>
 			</aux>
 			<isee:dependencies>
-				<var name="User's_understanding_of_simulation">
-					<in>Simulation_design_quality</in>
-					<in>Learning_by_interacting_with_simulation</in>
+				<var name="Simulation_accuracy">
+					<in>Helge_simulation_data</in>
 				</var>
-				<var name="Learning_by_interacting_with_simulation">
-					<in>User&apos;s_understanding_of_simulation</in>
+				<var name="Ease_of_interaction">
+					<in>Interface_design_quality</in>
 				</var>
-				<var name="User's_knowledge_of_Swedish_moose_situation">
-					<in>Learning_by_interacting_with_simulation</in>
+				<var name="Feedback_clarity">
+					<in>Interface_design_quality</in>
+				</var>
+				<var name="Engagement">
+					<in>Ease_of_interaction</in>
+					<in>Feedback_clarity</in>
+				</var>
+				<var name="User_interacting_with_the_interface">
+					<in>Engagement</in>
+					<in>User_understanding_of_interface</in>
+				</var>
+				<var name="User_understanding_of_interface">
+					<in>User_interacting_with_the_interface</in>
+					<in>New_and_unknown_features</in>
+				</var>
+				<var name="Unlock_more_of_the_interface">
+					<in>Experimenting</in>
+				</var>
+				<var name="New_and_unknown_features">
+					<in>Unlock_more_of_the_interface</in>
+				</var>
+				<var name="Experimenting">
+					<in>User_understanding_of_interface</in>
+				</var>
+				<var name="Learning">
+					<in>Experimenting</in>
+					<in>Information_about_moose</in>
+				</var>
+				<var name="Information_about_moose">
+					<in>Simulation_accuracy</in>
 				</var>
 			</isee:dependencies>
 		</variables>
@@ -86,7 +140,7 @@
 				<isee:spatial_map color="black" background="white" font_size="12pt"/>
 				<isee:animation_object color="black" background="white" font_size="12pt"/>
 			</style>
-			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:scroll_y="150.625" zoom="160" isee:popup_graphs_are_comparative="true" type="stock_flow">
+			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:page_cols="2" zoom="120" isee:popup_graphs_are_comparative="true" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -122,27 +176,81 @@
 					</graph>
 					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 				</style>
-				<aux x="129.5" y="596.125" width="106.25" height="12" name="Simulation design quality"/>
-				<aux x="221.125" y="386.375" width="90.25" height="26" name="User's understanding of simulation"/>
-				<connector uid="1" polarity="+" isee:polarity_placement="outside" angle="79.4482">
-					<from>Simulation_design_quality</from>
-					<to>User&apos;s_understanding_of_simulation</to>
+				<aux x="1168.84" y="427.667" width="92.25" height="12" name="Helge simulation data"/>
+				<aux x="1171.34" y="357.167" width="87.25" height="12" name="Simulation accuracy"/>
+				<connector uid="1" polarity="+" isee:polarity_placement="outside" angle="87.293">
+					<from>Helge_simulation_data</from>
+					<to>Simulation_accuracy</to>
 				</connector>
-				<aux x="346.625" y="425.75" width="97.25" height="26" name="Learning by interacting with simulation"/>
-				<connector uid="2" polarity="+" isee:polarity_placement="outside" angle="319.086">
-					<from>User&apos;s_understanding_of_simulation</from>
-					<to>Learning_by_interacting_with_simulation</to>
+				<aux x="694.333" y="177.667" width="101.25" height="12" name="Interface design quality"/>
+				<aux x="588.708" y="265.042" width="81.25" height="12" name="Ease of interaction"/>
+				<connector uid="2" polarity="+" isee:polarity_placement="inside" angle="215.754">
+					<from>Interface_design_quality</from>
+					<to>Ease_of_interaction</to>
 				</connector>
-				<aux x="507.375" y="386.375" width="105.25" height="26" name="User's knowledge of Swedish moose situation"/>
-				<connector uid="3" polarity="+" isee:polarity_placement="outside" delay_mark="true" angle="347.381">
-					<from>Learning_by_interacting_with_simulation</from>
-					<to>User&apos;s_knowledge_of_Swedish_moose_situation</to>
+				<aux x="829.458" y="265.042" width="72.25" height="12" name="Feedback clarity"/>
+				<connector uid="3" polarity="+" isee:polarity_placement="outside" angle="325.84">
+					<from>Interface_design_quality</from>
+					<to>Feedback_clarity</to>
 				</connector>
-				<connector uid="4" polarity="+" isee:polarity_placement="outside" angle="113.929">
-					<from>Learning_by_interacting_with_simulation</from>
-					<to>User&apos;s_understanding_of_simulation</to>
+				<aux x="717.833" y="338.417" width="54.25" height="12" name="Engagement"/>
+				<connector uid="4" polarity="+" isee:polarity_placement="outside" angle="335.508">
+					<from>Ease_of_interaction</from>
+					<to>Engagement</to>
 				</connector>
-				<isee:loop_indicator text="R1" orientation="counter_clockwise" uid="5" x="320.125" y="395.75" width="30" height="30"/>
+				<connector uid="5" polarity="+" isee:polarity_placement="inside" angle="214.216">
+					<from>Feedback_clarity</from>
+					<to>Engagement</to>
+				</connector>
+				<aux x="707.833" y="375.667" width="74.25" height="26" name="User interacting with the interface"/>
+				<connector uid="6" polarity="+" isee:polarity_placement="outside" angle="275.29">
+					<from>Engagement</from>
+					<to>User_interacting_with_the_interface</to>
+				</connector>
+				<aux x="836.5" y="504.042" width="135.25" height="12" name="User understanding of interface"/>
+				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="353.098">
+					<from>User_interacting_with_the_interface</from>
+					<to>User_understanding_of_interface</to>
+				</connector>
+				<aux x="1000.63" y="597.292" width="123.25" height="12" name="Unlock more of the interface"/>
+				<connector uid="8" polarity="+" isee:polarity_placement="outside" angle="260.838">
+					<from>Unlock_more_of_the_interface</from>
+					<to>New_and_unknown_features</to>
+				</connector>
+				<aux x="967.125" y="692.167" width="115.25" height="12" name="New and unknown features"/>
+				<connector uid="9" polarity="-" isee:polarity_placement="outside" angle="165.567">
+					<from>New_and_unknown_features</from>
+					<to>User_understanding_of_interface</to>
+				</connector>
+				<aux x="1031.63" y="504.042" width="61.25" height="12" name="Experimenting"/>
+				<aux x="1043.63" y="439.292" width="37.25" height="12" name="Learning"/>
+				<connector uid="10" polarity="+" isee:polarity_placement="outside" delay_mark="true" angle="90">
+					<from>Experimenting</from>
+					<to>Learning</to>
+				</connector>
+				<connector uid="11" polarity="+" isee:polarity_placement="outside" angle="270">
+					<from>Experimenting</from>
+					<to>Unlock_more_of_the_interface</to>
+				</connector>
+				<connector uid="12" polarity="+" isee:polarity_placement="outside" angle="0">
+					<from>User_understanding_of_interface</from>
+					<to>Experimenting</to>
+				</connector>
+				<isee:loop_indicator text="B1" orientation="counter_clockwise" uid="13" x="955" y="560.917" width="30" height="30"/>
+				<aux x="1006.96" y="357.167" width="107.25" height="12" name="Information about moose"/>
+				<connector uid="14" polarity="+" isee:polarity_placement="outside" angle="180">
+					<from>Simulation_accuracy</from>
+					<to>Information_about_moose</to>
+				</connector>
+				<connector uid="15" polarity="+" isee:polarity_placement="outside" angle="271.163">
+					<from>Information_about_moose</from>
+					<to>Learning</to>
+				</connector>
+				<connector uid="16" polarity="+" isee:polarity_placement="outside" angle="177.89">
+					<from>User_understanding_of_interface</from>
+					<to>User_interacting_with_the_interface</to>
+				</connector>
+				<isee:loop_indicator text="R1" orientation="counter_clockwise" uid="17" x="795.583" y="430.292" width="30" height="30"/>
 			</view>
 		</views>
 	</model>
