@@ -2,8 +2,8 @@
 <xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
 	<header>
 		<smile version="1.0" namespace="std, isee"/>
-		<name>Gamification2</name>
-		<uuid>29a56dfa-165c-46b1-8d8f-8dd1b26cc45f</uuid>
+		<name>Gamification</name>
+		<uuid>071fd070-651d-4c22-b53d-d4dc9d03cf3e</uuid>
 		<vendor>isee systems, inc.</vendor>
 		<product version="1.7.1" isee:build_number="1574" isee:saved_by_v1="true" lang="en">Stella Architect</product>
 	</header>
@@ -21,13 +21,105 @@
 	<model_units/>
 	<model>
 		<variables>
-			<aux name="Lesbart?">
+			<aux name="Attention">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Spør Anders/Harald">
+			<aux name="Confidence">
 				<isee:delay_aux/>
 			</aux>
-			<isee:dependencies/>
+			<aux name="Satisfaction">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Relevance">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Intrinsic motivation">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Completing tasks">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Inquiry">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Pathos">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Goal orientation">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Maintaining smooth difficulty curve">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Flow">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Positive feedback">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Extrinsic motivation">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="In-game achievements(badges)">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Post-game report">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Points">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Moose knowledge">
+				<isee:delay_aux/>
+			</aux>
+			<isee:dependencies>
+				<var name="Attention">
+					<in>Inquiry</in>
+				</var>
+				<var name="Confidence">
+					<in>Flow</in>
+				</var>
+				<var name="Satisfaction">
+					<in>Positive_feedback</in>
+				</var>
+				<var name="Relevance">
+					<in>Goal_orientation</in>
+				</var>
+				<var name="Intrinsic_motivation">
+					<in>Attention</in>
+					<in>Relevance</in>
+					<in>Confidence</in>
+					<in>Satisfaction</in>
+					<in>Extrinsic_motivation</in>
+				</var>
+				<var name="Completing_tasks">
+					<in>Intrinsic_motivation</in>
+					<in>Extrinsic_motivation</in>
+				</var>
+				<var name="Goal_orientation">
+					<in>Pathos</in>
+				</var>
+				<var name="Flow">
+					<in>Maintaining_smooth_difficulty_curve</in>
+				</var>
+				<var name="Positive_feedback">
+					<in>&quot;Post-game_report&quot;</in>
+				</var>
+				<var name="Extrinsic_motivation">
+					<in>Points</in>
+					<in>&quot;In-game_achievements(badges)&quot;</in>
+				</var>
+				<var name='"In-game_achievements(badges)"'>
+					<in>Completing_tasks</in>
+				</var>
+				<var name="Points">
+					<in>&quot;Post-game_report&quot;</in>
+					<in>Completing_tasks</in>
+				</var>
+				<var name="Moose_knowledge">
+					<in>Completing_tasks</in>
+				</var>
+			</isee:dependencies>
 		</variables>
 		<views>
 			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
@@ -69,7 +161,7 @@
 				<isee:spatial_map color="black" background="white" font_size="12pt"/>
 				<isee:animation_object color="black" background="white" font_size="12pt"/>
 			</style>
-			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:page_cols="2" isee:page_rows="2" isee:scroll_x="380.556" isee:scroll_y="200" zoom="180" isee:popup_graphs_are_comparative="true" type="stock_flow">
+			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:page_cols="2" isee:scroll_x="572.5" isee:scroll_y="112.5" zoom="160" isee:popup_graphs_are_comparative="true" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -105,8 +197,111 @@
 					</graph>
 					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 				</style>
-				<aux x="898.986" y="427.889" width="38.25" height="12" name="Lesbart?"/>
-				<aux x="718.375" y="490.667" width="83.25" height="12" name="Spør Anders/Harald"/>
+				<aux x="914.125" y="447.75" width="39.25" height="12" name="Attention"/>
+				<aux x="1128.63" y="502.75" width="50.25" height="12" name="Confidence"/>
+				<aux x="1149.5" y="447.75" width="52.25" height="12" name="Satisfaction"/>
+				<aux x="963.5" y="502.75" width="47.25" height="12" name="Relevance"/>
+				<aux x="1013.25" y="378.375" width="82.25" height="12" name="Intrinsic motivation"/>
+				<aux x="1016.75" y="266.375" width="75.25" height="12" name="Completing tasks"/>
+				<connector uid="1" polarity="+" isee:polarity_placement="outside" angle="90">
+					<from>Intrinsic_motivation</from>
+					<to>Completing_tasks</to>
+				</connector>
+				<connector uid="2" polarity="+" isee:polarity_placement="outside" angle="60.2551">
+					<from>Attention</from>
+					<to>Intrinsic_motivation</to>
+				</connector>
+				<connector uid="3" polarity="+" isee:polarity_placement="inside" angle="51.3402">
+					<from>Relevance</from>
+					<to>Intrinsic_motivation</to>
+				</connector>
+				<connector uid="4" polarity="+" isee:polarity_placement="inside" angle="148.349">
+					<from>Confidence</from>
+					<to>Intrinsic_motivation</to>
+				</connector>
+				<connector uid="5" polarity="+" isee:polarity_placement="outside" angle="113.962">
+					<from>Satisfaction</from>
+					<to>Intrinsic_motivation</to>
+				</connector>
+				<aux x="836.563" y="509" width="31.25" height="12" name="Inquiry"/>
+				<text_box vertical_text_align="center" font_size="9pt" uid="6" x="787.313" y="528.688" width="129.75" height="29.875">How can we control the Swedish moose population?</text_box>
+				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="48.8937">
+					<from>Inquiry</from>
+					<to>Attention</to>
+				</connector>
+				<aux x="994.625" y="602.125" width="31.25" height="12" name="Pathos"/>
+				<aux x="962" y="549.625" width="67.25" height="12" name="Goal orientation"/>
+				<text_box vertical_text_align="center" font_size="9pt" uid="8" x="938.375" y="619.75" width="143.75" height="29.875">Moose getting roadkilled or hunted unnecessarily invokes sadness</text_box>
+				<connector uid="9" polarity="+" isee:polarity_placement="outside" angle="105.566">
+					<from>Pathos</from>
+					<to>Goal_orientation</to>
+				</connector>
+				<connector uid="10" polarity="+" isee:polarity_placement="outside" angle="106.091">
+					<from>Goal_orientation</from>
+					<to>Relevance</to>
+				</connector>
+				<aux x="1182.63" y="584.5" width="82.25" height="26" name="Maintaining smooth difficulty curve"/>
+				<aux x="1168.75" y="537.625" width="21.25" height="12" name="Flow"/>
+				<connector uid="11" polarity="+" isee:polarity_placement="outside" angle="104.744">
+					<from>Maintaining_smooth_difficulty_curve</from>
+					<to>Flow</to>
+				</connector>
+				<connector uid="12" polarity="+" isee:polarity_placement="outside" angle="120.892">
+					<from>Flow</from>
+					<to>Confidence</to>
+				</connector>
+				<aux x="1227.75" y="465.563" width="78.25" height="12" name="Positive feedback"/>
+				<text_box vertical_text_align="center" font_size="9pt" uid="13" x="1314.38" y="456.626" width="161.875" height="29.875">Post-game report, happy icons for groups that thought you did a good job</text_box>
+				<connector uid="14" polarity="+" isee:polarity_placement="outside" angle="126.027">
+					<from>Positive_feedback</from>
+					<to>Satisfaction</to>
+				</connector>
+				<text_box vertical_text_align="center" font_size="9pt" uid="15" x="1190" y="614.125" width="82.5" height="29.875">Gradual unlocking
+of game elements</text_box>
+				<aux x="1250.5" y="266.375" width="85.25" height="12" name="Extrinsic motivation"/>
+				<aux x="1164.13" y="227.75" width="134.25" height="12" name="In-game achievements(badges)"/>
+				<aux x="1322.25" y="414" width="74.25" height="12" name="Post-game report"/>
+				<connector uid="16" polarity="+" isee:polarity_placement="outside" angle="196.39">
+					<from>&quot;Post-game_report&quot;</from>
+					<to>Positive_feedback</to>
+				</connector>
+				<aux x="1370.88" y="332.75" width="28.25" height="12" name="Points"/>
+				<connector uid="17" polarity="+" isee:polarity_placement="outside" angle="47.4366">
+					<from>&quot;Post-game_report&quot;</from>
+					<to>Points</to>
+				</connector>
+				<connector uid="18" polarity="+" isee:polarity_placement="outside" angle="172.569">
+					<from>Points</from>
+					<to>Extrinsic_motivation</to>
+				</connector>
+				<connector uid="19" polarity="+" isee:polarity_placement="outside" angle="328.026">
+					<from>&quot;In-game_achievements(badges)&quot;</from>
+					<to>Extrinsic_motivation</to>
+				</connector>
+				<connector uid="20" polarity="+" isee:polarity_placement="outside" angle="178.542">
+					<from>Extrinsic_motivation</from>
+					<to>Completing_tasks</to>
+				</connector>
+				<connector uid="21" polarity="-" isee:polarity_placement="inside" angle="206.653">
+					<from>Extrinsic_motivation</from>
+					<to>Intrinsic_motivation</to>
+				</connector>
+				<aux x="916.125" y="227.75" width="75.25" height="12" name="Moose knowledge"/>
+				<connector uid="22" polarity="+" isee:polarity_placement="outside" angle="185.256">
+					<from>Completing_tasks</from>
+					<to>Moose_knowledge</to>
+				</connector>
+				<connector uid="23" polarity="+" isee:polarity_placement="outside" angle="78.5412">
+					<from>Completing_tasks</from>
+					<to>Points</to>
+				</connector>
+				<connector uid="24" polarity="+" isee:polarity_placement="outside" angle="49.7201">
+					<from>Completing_tasks</from>
+					<to>&quot;In-game_achievements(badges)&quot;</to>
+				</connector>
+				<isee:loop_indicator text="R1" orientation="counter_clockwise" uid="25" x="1231.88" y="176.25" width="30" height="30"/>
+				<isee:loop_indicator text="R2" orientation="counter_clockwise" uid="26" x="1119.5" y="231.875" width="30" height="30"/>
+				<isee:loop_indicator text="B1" orientation="counter_clockwise" uid="27" x="1095.5" y="295.625" width="30" height="30"/>
 			</view>
 		</views>
 	</model>
