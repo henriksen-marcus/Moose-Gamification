@@ -1,0 +1,609 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee"/>
+		<name>Gamification-Game</name>
+		<uuid>6beca783-a7f8-4c6d-8cf0-59463d6a6949</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="1.7.1" isee:build_number="1574" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:simulation_delay="0.0409836" method="Euler" time_units="Months" isee:instantaneous_flows="false">
+		<start>0</start>
+		<stop>121</stop>
+		<dt reciprocal="true">30</dt>
+	</sim_specs>
+	<isee:prefs show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="model" interface_scale_ui="true" interface_max_page_width="10000" interface_max_page_height="10000" interface_min_page_width="0" interface_min_page_height="0" saved_runs="5" keep="false" rifp="true"/>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<default_format/>
+	<model_units/>
+	<model>
+		<variables>
+			<stock name="Elg i resten av Sverige">
+				<eqn>28000</eqn>
+				<outflow>Færre_Elg_Resten_av_Sverige</outflow>
+			</stock>
+			<stock name="Elg på kartet">
+				<eqn>45</eqn>
+				<inflow>Flere_Elg</inflow>
+				<outflow>Færre_Elg</outflow>
+				<non_negative/>
+			</stock>
+			<aux name="Elg Kuer">
+				<eqn>Elg_på_kartet * 3/8</eqn>
+			</aux>
+			<flow name="Flere Elg">
+				<eqn>Elg_migrerer_fra_utverden+Elg_fødes</eqn>
+				<non_negative/>
+			</flow>
+			<aux name="Elg fødes">
+				<eqn>PULSE(Elg_Kuer, 9, 12)</eqn>
+			</aux>
+			<aux name="Elg Kalver">
+				<eqn>Elg_på_kartet * 3/8</eqn>
+			</aux>
+			<aux name="Elg migrerer fra utverden">
+				<eqn>PULSE(1, 0, 1)</eqn>
+			</aux>
+			<flow name="Færre Elg\nResten av Sverige">
+				<eqn>Elg_migrerer_fra_utverden</eqn>
+				<non_negative/>
+			</flow>
+			<aux name="Elg Okser">
+				<eqn>Elg_på_kartet*1/4</eqn>
+			</aux>
+			<flow name="Færre Elg">
+				<eqn>Elg_Skytes + Elg_blir_påkjørt+Rovdyr_spiser_Elg</eqn>
+				<non_negative/>
+			</flow>
+			<aux name="Jegere">
+				<eqn>ROUND (Elg_på_kartet / 5)</eqn>
+			</aux>
+			<aux name="Parrings Sesong?">
+				<eqn>IF(TIME MOD(12) = 9)
+THEN 2
+ELSE 1</eqn>
+			</aux>
+			<aux name="Elg blir påkjørt">
+				<eqn>IF(
+RANDOM(0, 
+Elg_på_kartet * &quot;Parrings_Sesong?&quot; + Antall_Lyd_Alarmer_langs_veien + 
+(Antall_Viltkryssninger * 5)
+- 25) &gt;
+Elg_på_kartet -30 + Antall_Lyd_Alarmer_langs_veien+ 
+(Antall_Viltkryssninger * 5))
+THEN
+PULSE (1, 0, 1)
+
+ELSE
+0</eqn>
+			</aux>
+			<stock name="Påkjørsler">
+				<eqn>0</eqn>
+				<inflow>Flere_påkjørsler</inflow>
+			</stock>
+			<flow name="Flere påkjørsler">
+				<eqn>Elg_blir_påkjørt</eqn>
+				<non_negative/>
+			</flow>
+			<stock name="Elg Skutt">
+				<eqn>0</eqn>
+				<inflow>Flere_elg_skutt</inflow>
+			</stock>
+			<flow name="Flere elg skutt">
+				<eqn>Elg_Skytes</eqn>
+				<non_negative/>
+			</flow>
+			<aux name="Elg Skytes">
+				<eqn>PULSE(ROUND(Jegere/2), 10, 12) + PULSE(ROUND(Jegere/2), 11, 12) + PULSE(ROUND(Jegere/2), 12, 12)</eqn>
+			</aux>
+			<aux name="Rovdyr i området">
+				<eqn>5</eqn>
+			</aux>
+			<aux name="Rovdyr spiser Elg">
+				<eqn>IF (Elg_på_kartet &gt; 5)
+THEN 
+PULSE(ROUND(Rovdyr_i_området / 4), 0, 1)
+ELSE 0</eqn>
+			</aux>
+			<stock name="Elg Spist av rovdyr">
+				<eqn>0</eqn>
+				<inflow>Flere_Elg_spist</inflow>
+			</stock>
+			<flow name="Flere Elg spist">
+				<eqn>Rovdyr_spiser_Elg</eqn>
+				<non_negative/>
+			</flow>
+			<stock name="Planter i området">
+				<eqn>12500000</eqn>
+				<inflow>Flere_planter</inflow>
+				<outflow>Planter_Spist</outflow>
+				<non_negative/>
+			</stock>
+			<aux name="Planter spist i måneden">
+				<eqn>PULSE(Elg_på_kartet * 50 * 30, 0, 1)</eqn>
+			</aux>
+			<flow name="Planter Spist">
+				<eqn>Planter_spist_i_måneden</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flere planter">
+				<eqn>Planter_Vokser</eqn>
+				<non_negative/>
+			</flow>
+			<aux name="Planter Growthrate">
+				<eqn>0.005</eqn>
+			</aux>
+			<aux name="Planter Vokser">
+				<eqn>Planter_i_området*Planter_Growthrate</eqn>
+			</aux>
+			<aux name="Antall Lyd Alarmer langs veien">
+				<eqn>10</eqn>
+			</aux>
+			<aux name="Antall Viltkryssninger">
+				<eqn>4</eqn>
+			</aux>
+			<aux name="Karakter fra Elgen">
+				<eqn>IF (Elg_på_kartet &gt; 65) 
+THEN 6
+ELSE IF (Elg_på_kartet &gt; 55)
+THEN 5
+ELSE IF (Elg_på_kartet &gt; 45)
+THEN 4
+ELSE IF (Elg_på_kartet &gt; 30)
+THEN 3
+ELSE IF (Elg_på_kartet &gt; 20)
+THEN 2
+ELSE 1</eqn>
+			</aux>
+			<aux name="Karakter fra Skogen">
+				<eqn>IF (Planter_i_området &gt; 13500000) 
+THEN 6
+ELSE IF (Planter_i_området &gt; 13000000)
+THEN 5
+ELSE IF (Planter_i_området &gt; 12000000)
+THEN 4
+ELSE IF (Planter_i_området &gt; 10000000)
+THEN 3
+ELSE IF (Planter_i_området &gt; 7500000)
+THEN 2
+ELSE 1</eqn>
+			</aux>
+			<aux name="Karakter fra Trafikken">
+				<eqn>IF (TIME/(Påkjørsler+1) &gt; 10) 
+THEN 6
+ELSE IF (TIME/(Påkjørsler+1)  &gt; 8 )
+THEN 5
+ELSE IF (TIME/(Påkjørsler+1)  &gt; 4 )
+THEN 4
+ELSE IF (TIME/(Påkjørsler+1)  &gt; 2 )
+THEN 3
+ELSE IF (TIME/(Påkjørsler+1)  &gt; 1)
+THEN 2
+ELSE 1</eqn>
+			</aux>
+			<isee:dependencies>
+				<var name="Elg_Kuer">
+					<in>Elg_på_kartet</in>
+				</var>
+				<var name="Flere_Elg">
+					<in>Elg_migrerer_fra_utverden</in>
+					<in>Elg_fødes</in>
+				</var>
+				<var name="Elg_fødes">
+					<in>Elg_Kuer</in>
+				</var>
+				<var name="Elg_Kalver">
+					<in>Elg_på_kartet</in>
+				</var>
+				<var name="Færre_Elg_Resten_av_Sverige">
+					<in>Elg_migrerer_fra_utverden</in>
+				</var>
+				<var name="Elg_Okser">
+					<in>Elg_på_kartet</in>
+				</var>
+				<var name="Færre_Elg">
+					<in>Elg_blir_påkjørt</in>
+					<in>Elg_Skytes</in>
+					<in>Rovdyr_spiser_Elg</in>
+				</var>
+				<var name="Jegere">
+					<in>Elg_på_kartet</in>
+				</var>
+				<var name="Elg_blir_påkjørt">
+					<in>&quot;Parrings_Sesong?&quot;</in>
+					<in>Elg_på_kartet</in>
+					<in>Antall_Lyd_Alarmer_langs_veien</in>
+					<in>Antall_Viltkryssninger</in>
+				</var>
+				<var name="Flere_påkjørsler">
+					<in>Elg_blir_påkjørt</in>
+				</var>
+				<var name="Flere_elg_skutt">
+					<in>Elg_Skytes</in>
+				</var>
+				<var name="Elg_Skytes">
+					<in>Jegere</in>
+				</var>
+				<var name="Rovdyr_spiser_Elg">
+					<in>Rovdyr_i_området</in>
+					<in>Elg_på_kartet</in>
+				</var>
+				<var name="Flere_Elg_spist">
+					<in>Rovdyr_spiser_Elg</in>
+				</var>
+				<var name="Planter_spist_i_måneden">
+					<in>Elg_på_kartet</in>
+				</var>
+				<var name="Planter_Spist">
+					<in>Planter_spist_i_måneden</in>
+				</var>
+				<var name="Flere_planter">
+					<in>Planter_Vokser</in>
+				</var>
+				<var name="Planter_Vokser">
+					<in>Planter_i_området</in>
+					<in>Planter_Growthrate</in>
+				</var>
+				<var name="Karakter_fra_Elgen">
+					<in>Elg_på_kartet</in>
+				</var>
+				<var name="Karakter_fra_Skogen">
+					<in>Planter_i_området</in>
+				</var>
+				<var name="Karakter_fra_Trafikken">
+					<in>Påkjørsler</in>
+				</var>
+			</isee:dependencies>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+				<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_background_color="#FFFECF"/>
+				<slider color="black" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:always_show_hover_tip="false" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+			</style>
+			<view isee:show_pages="false" page_width="1123" page_height="793" isee:page_cols="2" isee:page_rows="2" isee:scroll_y="57.5" zoom="80" isee:popup_graphs_are_comparative="true" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom"/>
+					<module color="white" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="55" height="45"/>
+					</module>
+					<aux color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="9pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+					<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<stock x="339.5" y="239.333" name="Elg i resten av Sverige"/>
+				<stock x="686.167" y="242.667" width="45" height="35" name="Elg på kartet"/>
+				<aux x="708.667" y="347.667" name="Elg Kuer"/>
+				<connector uid="1" angle="270">
+					<from>Elg_på_kartet</from>
+					<to>Elg_Kuer</to>
+				</connector>
+				<flow x="612" y="258.5" name="Flere Elg">
+					<pts>
+						<pt x="537.833" y="258.5"/>
+						<pt x="686.167" y="258.5"/>
+					</pts>
+				</flow>
+				<aux x="612" y="347.667" name="Elg fødes"/>
+				<connector uid="2" angle="180">
+					<from>Elg_Kuer</from>
+					<to>Elg_fødes</to>
+				</connector>
+				<aux x="766.167" y="347.667" name="Elg Kalver"/>
+				<connector uid="3" angle="303.311">
+					<from>Elg_på_kartet</from>
+					<to>Elg_Kalver</to>
+				</connector>
+				<aux x="612" y="168.5" name="Elg migrerer fra utverden"/>
+				<flow label_side="bottom" x="414.167" y="236" name="Færre Elg\nResten av Sverige">
+					<pts>
+						<pt x="362" y="236"/>
+						<pt x="490.333" y="236"/>
+					</pts>
+				</flow>
+				<connector uid="4" angle="270">
+					<from>Elg_migrerer_fra_utverden</from>
+					<to>Flere_Elg</to>
+				</connector>
+				<connector uid="5" angle="162.553">
+					<from>Elg_migrerer_fra_utverden</from>
+					<to>Færre_Elg_Resten_av_Sverige</to>
+				</connector>
+				<aux x="824.5" y="347.667" name="Elg Okser"/>
+				<connector uid="6" angle="322.933">
+					<from>Elg_på_kartet</from>
+					<to>Elg_Okser</to>
+				</connector>
+				<connector uid="7" angle="90">
+					<from>Elg_fødes</from>
+					<to>Flere_Elg</to>
+				</connector>
+				<stacked_container uid="8" x="13.1667" y="653.5" width="570.667" height="250">
+					<graph x="13.1667" y="653.5" width="570.667" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Elg_Kuer"/>
+						</plot>
+						<plot color="red" pen_width="1" index="1" show_y_axis="true">
+							<entity name="Elg_Kalver"/>
+						</plot>
+						<plot color="fuchsia" pen_width="1" index="2" show_y_axis="true">
+							<entity name="Elg_Okser"/>
+						</plot>
+						<plot color="#008F44" pen_width="1" index="3" show_y_axis="true">
+							<entity name="Elg_på_kartet"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<flow x="823.75" y="260.167" name="Færre Elg">
+					<pts>
+						<pt x="731.167" y="260.167"/>
+						<pt x="940.333" y="260.167"/>
+					</pts>
+				</flow>
+				<aux x="896.417" y="122.833" width="17.1667" height="17.1667" name="Jegere"/>
+				<aux x="1136.58" y="374.75" name="Parrings Sesong?"/>
+				<aux x="1128" y="298.667" width="17.1667" height="17.1667" name="Elg blir påkjørt"/>
+				<connector uid="9" angle="90">
+					<from>&quot;Parrings_Sesong?&quot;</from>
+					<to>Elg_blir_påkjørt</to>
+				</connector>
+				<connector uid="10" isee:type="info" angle="188.553">
+					<from>Elg_blir_påkjørt</from>
+					<to>Færre_Elg</to>
+				</connector>
+				<stacked_container uid="11" x="595.333" y="653.5" width="350" height="250">
+					<graph x="595.333" y="653.5" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Påkjørsler"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<stock x="1253.83" y="230.167" name="Påkjørsler"/>
+				<flow x="1165.83" y="230.167" name="Flere påkjørsler">
+					<pts>
+						<pt x="1100.33" y="230.167"/>
+						<pt x="1231.33" y="230.167"/>
+					</pts>
+				</flow>
+				<connector uid="12" isee:type="info" angle="69.2203">
+					<from>Elg_blir_påkjørt</from>
+					<to>Flere_påkjørsler</to>
+				</connector>
+				<stock x="1048.67" y="112.667" width="45" height="35" name="Elg Skutt"/>
+				<flow x="1011.17" y="130.167" name="Flere elg skutt">
+					<pts>
+						<pt x="973.667" y="130.167"/>
+						<pt x="1048.67" y="130.167"/>
+					</pts>
+				</flow>
+				<aux x="905.417" y="193.167" name="Elg Skytes"/>
+				<connector uid="13" angle="219.366">
+					<from>Elg_Skytes</from>
+					<to>Færre_Elg</to>
+				</connector>
+				<connector uid="14" angle="270.387">
+					<from>Jegere</from>
+					<to>Elg_Skytes</to>
+				</connector>
+				<connector uid="15" angle="30.7841">
+					<from>Elg_Skytes</from>
+					<to>Flere_elg_skutt</to>
+				</connector>
+				<stacked_container uid="16" x="1126.83" y="778.5">
+					<graph x="951.833" y="653.5" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Elg_Skutt"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="690.667" y="88.5" name="Rovdyr i området"/>
+				<aux x="772.833" y="149" name="Rovdyr spiser Elg"/>
+				<stock x="885.333" y="68.5" name="Elg Spist av rovdyr"/>
+				<flow x="808.833" y="63.6667" width="18" height="18" name="Flere Elg spist">
+					<pts>
+						<pt x="772.833" y="72.6667"/>
+						<pt x="862.833" y="72.6667"/>
+					</pts>
+				</flow>
+				<connector uid="17" angle="323.635">
+					<from>Rovdyr_i_området</from>
+					<to>Rovdyr_spiser_Elg</to>
+				</connector>
+				<connector uid="18" angle="59.4798">
+					<from>Rovdyr_spiser_Elg</from>
+					<to>Flere_Elg_spist</to>
+				</connector>
+				<connector uid="19" angle="294.609">
+					<from>Rovdyr_spiser_Elg</from>
+					<to>Færre_Elg</to>
+				</connector>
+				<stacked_container uid="20" x="1489.5" y="778.5">
+					<graph x="1314.5" y="653.5" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Elg_Spist_av_rovdyr"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<connector uid="21" angle="74.1975">
+					<from>Elg_på_kartet</from>
+					<to>Rovdyr_spiser_Elg</to>
+				</connector>
+				<connector uid="22" isee:type="info" angle="33.2558">
+					<from>Elg_på_kartet</from>
+					<to>Jegere</to>
+				</connector>
+				<stacked_container uid="23" x="1489.5" y="1037">
+					<graph x="1314.5" y="912" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Jegere"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<stock x="543" y="492" name="Planter i området"/>
+				<aux x="635.25" y="415" name="Planter spist i måneden"/>
+				<connector uid="24" isee:type="info" angle="231.66">
+					<from>Elg_på_kartet</from>
+					<to>Planter_spist_i_måneden</to>
+				</connector>
+				<flow x="638.75" y="487" name="Planter Spist">
+					<pts>
+						<pt x="565.5" y="487"/>
+						<pt x="736" y="487"/>
+					</pts>
+				</flow>
+				<flow x="449.25" y="492" name="Flere planter">
+					<pts>
+						<pt x="378" y="492"/>
+						<pt x="520.5" y="492"/>
+					</pts>
+				</flow>
+				<connector uid="25" angle="272.783">
+					<from>Planter_spist_i_måneden</from>
+					<to>Planter_Spist</to>
+				</connector>
+				<aux x="439.25" y="348.75" width="17" height="17" name="Planter Growthrate"/>
+				<aux x="447.75" y="412" name="Planter Vokser"/>
+				<connector uid="26" angle="129.144">
+					<from>Planter_i_området</from>
+					<to>Planter_Vokser</to>
+				</connector>
+				<connector uid="27" angle="275.343">
+					<from>Planter_Growthrate</from>
+					<to>Planter_Vokser</to>
+				</connector>
+				<connector uid="28" angle="271.074">
+					<from>Planter_Vokser</from>
+					<to>Flere_planter</to>
+				</connector>
+				<stacked_container uid="29" x="1130.5" y="1037">
+					<graph x="955.5" y="912" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" isee:keep_zero_visible="true" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Planter_i_området"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<connector uid="30" isee:type="info" angle="337.879">
+					<from>Elg_på_kartet</from>
+					<to>Elg_blir_påkjørt</to>
+				</connector>
+				<aux x="1253.83" y="286.667" name="Antall Lyd Alarmer langs veien"/>
+				<aux x="1253.83" y="362.583" name="Antall Viltkryssninger"/>
+				<connector uid="31" angle="189.957">
+					<from>Antall_Lyd_Alarmer_langs_veien</from>
+					<to>Elg_blir_påkjørt</to>
+				</connector>
+				<connector uid="32" angle="157.855">
+					<from>Antall_Viltkryssninger</from>
+					<to>Elg_blir_påkjørt</to>
+				</connector>
+				<aux x="1056" y="483" name="Karakter fra Elgen"/>
+				<aux x="1056" y="529.5" name="Karakter fra Skogen"/>
+				<aux x="1056" y="589" name="Karakter fra Trafikken"/>
+				<alias color="blue" background="white" font_style="italic" uid="33" x="882.5" y="450.5" width="45" height="35">
+					<of>Elg_på_kartet</of>
+				</alias>
+				<connector uid="34" angle="8.1301">
+					<from>
+						<alias uid="33"/>
+					</from>
+					<to>Karakter_fra_Elgen</to>
+				</connector>
+				<stacked_container uid="35" x="770.333" y="1037">
+					<graph x="595.333" y="912" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Karakter_fra_Elgen"/>
+						</plot>
+						<plot color="red" pen_width="1" index="1" show_y_axis="true">
+							<entity name="Karakter_fra_Skogen"/>
+						</plot>
+						<plot color="fuchsia" pen_width="1" index="2" show_y_axis="true">
+							<entity name="Karakter_fra_Trafikken"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<alias color="blue" background="white" font_style="italic" uid="36" x="1186.33" y="485.5" width="45" height="35">
+					<of>Planter_i_området</of>
+				</alias>
+				<connector uid="37" angle="173.884">
+					<from>
+						<alias uid="36"/>
+					</from>
+					<to>Karakter_fra_Skogen</to>
+				</connector>
+				<alias color="blue" background="white" font_style="italic" uid="38" x="874.5" y="553.5" width="45" height="35">
+					<of>Påkjørsler</of>
+				</alias>
+				<connector uid="39" angle="9.24611">
+					<from>
+						<alias uid="38"/>
+					</from>
+					<to>Karakter_fra_Trafikken</to>
+				</connector>
+			</view>
+		</views>
+	</model>
+</xmile>
+

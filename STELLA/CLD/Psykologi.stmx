@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee"/>
+		<name>Psykologi</name>
+		<uuid>57e06f32-7170-47ed-84d7-8c0021b0bd49</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="1.7.1" isee:build_number="1574" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:simulation_delay="0.1" method="Euler" time_units="Months" isee:instantaneous_flows="false">
+		<start>1</start>
+		<stop>13</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<isee:prefs show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="cld" interface_scale_ui="true" interface_max_page_width="10000" interface_max_page_height="10000" interface_min_page_width="0" interface_min_page_height="0" saved_runs="5" keep="false" rifp="true"/>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<default_format/>
+	<model_units/>
+	<model>
+		<variables>
+			<aux name="Utføre en handling i Simulasjonen">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Konstruktive Tilbakemeling">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Results">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Læring">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Mestrings Følelse">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Negativ Tilbakemelding">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Positiv Tilbakemelding">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Følelse av prestasjon">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Indre Motivasjon">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Ytre Motivasjon">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Poeng">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Belønning">
+				<isee:delay_aux/>
+			</aux>
+			<isee:dependencies>
+				<var name="Utføre_en_handling_i_Simulasjonen">
+					<in>Indre_Motivasjon</in>
+					<in>Ytre_Motivasjon</in>
+				</var>
+				<var name="Konstruktive_Tilbakemeling">
+					<in>Utføre_en_handling_i_Simulasjonen</in>
+				</var>
+				<var name="Results">
+					<in>Utføre_en_handling_i_Simulasjonen</in>
+				</var>
+				<var name="Læring">
+					<in>Konstruktive_Tilbakemeling</in>
+				</var>
+				<var name="Mestrings_Følelse">
+					<in>Positiv_Tilbakemelding</in>
+					<in>Læring</in>
+				</var>
+				<var name="Negativ_Tilbakemelding">
+					<in>Utføre_en_handling_i_Simulasjonen</in>
+				</var>
+				<var name="Positiv_Tilbakemelding">
+					<in>Utføre_en_handling_i_Simulasjonen</in>
+				</var>
+				<var name="Følelse_av_prestasjon">
+					<in>Negativ_Tilbakemelding</in>
+					<in>Positiv_Tilbakemelding</in>
+				</var>
+				<var name="Indre_Motivasjon">
+					<in>Følelse_av_prestasjon</in>
+					<in>Mestrings_Følelse</in>
+					<in>Results</in>
+				</var>
+				<var name="Ytre_Motivasjon">
+					<in>Belønning</in>
+				</var>
+				<var name="Poeng">
+					<in>Utføre_en_handling_i_Simulasjonen</in>
+					<in>Belønning</in>
+				</var>
+				<var name="Belønning">
+					<in>Poeng</in>
+				</var>
+			</isee:dependencies>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+				<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_background_color="#FFFECF"/>
+				<slider color="black" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:always_show_hover_tip="false" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+			</style>
+			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" zoom="120" isee:popup_graphs_are_comparative="true" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="white" background="black" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="white" background="black" font_color="blue" font_size="9pt" label_side="bottom"/>
+					<module color="white" background="black" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="55" height="45"/>
+					</module>
+					<aux color="white" background="black" font_color="blue" font_size="9pt" label_side="bottom">
+						<shape type="name_only"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="9pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+					<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<aux x="343.708" y="282.833" width="79.25" height="26" name="Utføre en handling i Simulasjonen"/>
+				<aux x="529.542" y="247.333" width="114.25" height="12" name="Konstruktive Tilbakemeling"/>
+				<aux x="625.125" y="206.5" width="34.25" height="12" name="Results"/>
+				<aux x="643.458" y="308.167" width="30.25" height="12" name="Læring"/>
+				<aux x="641.542" y="355.667" width="75.25" height="12" name="Mestrings Følelse"/>
+				<aux x="410.042" y="398.167" width="99.25" height="12" name="Negativ Tilbakemelding"/>
+				<aux x="533.208" y="394.833" width="95.25" height="12" name="Positiv Tilbakemelding"/>
+				<aux x="461.375" y="455.667" width="92.25" height="12" name="Følelse av prestasjon"/>
+				<aux x="797.708" y="355.667" width="71.25" height="12" name="Indre Motivasjon"/>
+				<connector uid="1" polarity="+" isee:polarity_placement="outside" angle="39.8056">
+					<from>Utføre_en_handling_i_Simulasjonen</from>
+					<to>Konstruktive_Tilbakemeling</to>
+				</connector>
+				<connector uid="2" polarity="+" isee:polarity_placement="outside" angle="356.186">
+					<from>Utføre_en_handling_i_Simulasjonen</from>
+					<to>Positiv_Tilbakemelding</to>
+				</connector>
+				<connector uid="3" polarity="+" isee:polarity_placement="outside" angle="319.086">
+					<from>Utføre_en_handling_i_Simulasjonen</from>
+					<to>Negativ_Tilbakemelding</to>
+				</connector>
+				<connector uid="4" polarity="-" isee:polarity_placement="outside" angle="309.719">
+					<from>Negativ_Tilbakemelding</from>
+					<to>Følelse_av_prestasjon</to>
+				</connector>
+				<connector uid="5" polarity="+" isee:polarity_placement="outside" angle="219.677">
+					<from>Positiv_Tilbakemelding</from>
+					<to>Følelse_av_prestasjon</to>
+				</connector>
+				<connector uid="6" polarity="+" isee:polarity_placement="outside" angle="352.593">
+					<from>Følelse_av_prestasjon</from>
+					<to>Indre_Motivasjon</to>
+				</connector>
+				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="319.773">
+					<from>Konstruktive_Tilbakemeling</from>
+					<to>Læring</to>
+				</connector>
+				<connector uid="8" polarity="+" isee:polarity_placement="outside" angle="21.7176">
+					<from>Positiv_Tilbakemelding</from>
+					<to>Mestrings_Følelse</to>
+				</connector>
+				<connector uid="9" polarity="+" isee:polarity_placement="outside" angle="309.979">
+					<from>Læring</from>
+					<to>Mestrings_Følelse</to>
+				</connector>
+				<connector uid="10" polarity="+" isee:polarity_placement="outside" angle="21.5571">
+					<from>Mestrings_Følelse</from>
+					<to>Indre_Motivasjon</to>
+				</connector>
+				<connector uid="11" polarity="+" isee:polarity_placement="outside" angle="90">
+					<from>Indre_Motivasjon</from>
+					<to>Utføre_en_handling_i_Simulasjonen</to>
+				</connector>
+				<connector uid="12" polarity="+" isee:polarity_placement="outside" angle="42.2073">
+					<from>Utføre_en_handling_i_Simulasjonen</from>
+					<to>Results</to>
+				</connector>
+				<connector uid="13" polarity="+" isee:polarity_placement="outside" angle="337.186">
+					<from>Results</from>
+					<to>Indre_Motivasjon</to>
+				</connector>
+				<aux x="295.042" y="179.833" width="68.25" height="12" name="Ytre Motivasjon"/>
+				<aux x="240.875" y="284.833" width="28.25" height="12" name="Poeng"/>
+				<aux x="195.542" y="194.5" width="42.25" height="12" name="Belønning"/>
+				<connector uid="14" polarity="+" isee:polarity_placement="outside" angle="164.438">
+					<from>Utføre_en_handling_i_Simulasjonen</from>
+					<to>Poeng</to>
+				</connector>
+				<connector uid="15" polarity="-" isee:polarity_placement="outside" angle="138.447">
+					<from>Poeng</from>
+					<to>Belønning</to>
+				</connector>
+				<connector uid="16" angle="321.198">
+					<from>Belønning</from>
+					<to>Poeng</to>
+				</connector>
+				<isee:loop_indicator text="B1" orientation="counter_clockwise" uid="17" x="220" y="230.833" width="30" height="30">
+					<isee:entities>
+						<item uid="15"/>
+						<item uid="16"/>
+					</isee:entities>
+				</isee:loop_indicator>
+				<connector uid="18" polarity="+" isee:polarity_placement="outside" angle="30.9638">
+					<from>Belønning</from>
+					<to>Ytre_Motivasjon</to>
+				</connector>
+				<connector uid="19" polarity="+" isee:polarity_placement="outside" angle="310.972">
+					<from>Ytre_Motivasjon</from>
+					<to>Utføre_en_handling_i_Simulasjonen</to>
+				</connector>
+				<isee:loop_indicator text="R1" orientation="counter_clockwise" uid="20" x="284.167" y="212.5" width="30" height="30">
+					<isee:entities>
+						<item uid="14"/>
+						<item uid="15"/>
+						<item uid="18"/>
+						<item uid="19"/>
+					</isee:entities>
+				</isee:loop_indicator>
+				<isee:loop_indicator text="R2" orientation="counter_clockwise" uid="21" x="577.5" y="320.167" width="30" height="30">
+					<isee:entities>
+						<item uid="2"/>
+						<item uid="5"/>
+						<item uid="6"/>
+						<item uid="11"/>
+						<item uid="8"/>
+						<item uid="10"/>
+					</isee:entities>
+				</isee:loop_indicator>
+				<isee:loop_indicator text="B2" orientation="counter_clockwise" uid="22" x="499.542" y="364.833" width="30" height="30">
+					<isee:entities>
+						<item uid="3"/>
+						<item uid="4"/>
+						<item uid="6"/>
+						<item uid="11"/>
+					</isee:entities>
+				</isee:loop_indicator>
+				<isee:loop_indicator text="R3" orientation="counter_clockwise" uid="23" x="664.167" y="245.833" width="30" height="30">
+					<isee:entities>
+						<item uid="1"/>
+						<item uid="7"/>
+						<item uid="9"/>
+						<item uid="10"/>
+						<item uid="11"/>
+					</isee:entities>
+				</isee:loop_indicator>
+				<isee:loop_indicator text="R4" orientation="counter_clockwise" uid="24" x="673.708" y="170.833" width="30" height="30">
+					<isee:entities>
+						<item uid="11"/>
+						<item uid="12"/>
+						<item uid="13"/>
+					</isee:entities>
+				</isee:loop_indicator>
+			</view>
+		</views>
+	</model>
+</xmile>
+
