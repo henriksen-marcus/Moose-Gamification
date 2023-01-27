@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour
 
 
     public float dragSpeed = 2;
-    private Vector3 dragOrigin;
+    private Vector3 dragOrigin = Vector3.zero;
 
 
     // Update is called once per frame
