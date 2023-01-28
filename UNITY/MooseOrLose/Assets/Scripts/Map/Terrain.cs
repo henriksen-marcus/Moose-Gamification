@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,19 @@ public class Terrain : MonoBehaviour
         this.hasWater = hasWater;
         // this.texture = texture;
     }
-    
+
+    [SerializeField] private Color _highlightColor;
+    [SerializeField] private Material _highlightMaterial;
     [SerializeField] private int movementCost;
     [SerializeField] private bool hasWater;
     // [SerializeField] private Texture texture;
+    [SerializeField] private GameObject _highlight;
+    [SerializeField] private GameObject _menu;
+    
+    public void Init()
+    {
+        _highlightMaterial.color = _highlightColor;
+    }
     
     public int getMovementCost()
     {
@@ -28,14 +38,17 @@ public class Terrain : MonoBehaviour
     //     return texture;
     // }
     // Start is called before the first frame update
-    void Start()
+    private void OnMouseEnter()
     {
-        
+        _highlight.SetActive(true);
     }
-
-    // Update is called once per frame
-    void Update()
+    private void OnMouseExit()
     {
-        
+        _highlight.SetActive(false);
+        _menu.SetActive(false);
+    }
+    private void OnMouseDown()
+    {
+        _menu.SetActive(!_menu.activeSelf);
     }
 }
