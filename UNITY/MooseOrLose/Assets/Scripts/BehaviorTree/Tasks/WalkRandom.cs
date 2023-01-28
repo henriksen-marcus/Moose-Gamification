@@ -32,12 +32,12 @@ public class WalkRandom : Node
                 if (timer > 3f)
                 {
                     timer = 0f;
-                    Debug.Log("Im a kid, trying to reach mommy");
                     mAgent.SetDestination(mScript.mother.position);
                     return NodeState.RUNNING;
                 }
             }
         }
+
 
         if (timer > 5f)
         {

@@ -123,6 +123,53 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: de835da021eeaff459c002826315bdc3, type: 2}
+--- !u!1 &371757676
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 371757678}
+  - component: {fileID: 371757677}
+  m_Layer: 0
+  m_Name: TimeManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &371757677
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371757676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 620a2ef4a8a97fb48b5a552d99ef4b46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  month: 0
+  day: 0
+  year: 0
+--- !u!4 &371757678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 371757676}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 89.114944, y: 4.094643, z: -147.5179}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1063678819
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -361,28 +408,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1933861119}
-  - component: {fileID: 1933861118}
+  - component: {fileID: 1933861120}
   m_Layer: 0
-  m_Name: TempManager
+  m_Name: ElgManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1933861118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1933861117}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec38332049aa928429f6093b8736811c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mElg: {fileID: 7319174537759530065, guid: e44503c30bcf37d48a46d95ea96442b8, type: 3}
-  start_population: 50
 --- !u!4 &1933861119
 Transform:
   m_ObjectHideFlags: 0
@@ -398,3 +431,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1933861120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1933861117}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f61ce8e3e180284ab4e24169bc480fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ElgPrefab: {fileID: 7319174537759530065, guid: e44503c30bcf37d48a46d95ea96442b8, type: 3}
+  elg_population: 0
+  start_population: 50

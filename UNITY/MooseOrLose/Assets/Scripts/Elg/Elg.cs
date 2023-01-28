@@ -13,6 +13,8 @@ public class Elg : MonoBehaviour
         Female
     }
 
+    public GameObject ElgPrefab;
+
     [Header("Statistics")]
     public int age_days;
     public int age_months;
@@ -27,9 +29,14 @@ public class Elg : MonoBehaviour
     public int natural_size;
     public int natural_mature_age;
 
+    bool hasBirthed;
+
 
     void Awake()
     {
+
+        hasBirthed = false;
+
         age_years = Random.Range(2, 12) + Random.Range(0, 12);
         age_months = Random.Range(0, 12);
         age_days = Random.Range(0, 30);
@@ -48,7 +55,16 @@ public class Elg : MonoBehaviour
         natural_mature_age = Random.Range(5,9);
         CalculateNewSize();
 
-        InvokeRepeating("NextDay", 0, 3);
+       
+
+
+    }
+
+
+
+    private void Start()
+    {
+        InvokeRepeating("NextDay", 0, TimeManager.instance.playSpeed);
     }
 
     public void NextDay()
@@ -73,10 +89,19 @@ public class Elg : MonoBehaviour
             return;
         }
         CalculateNewSize();
+
+        if (gender == Gender.Female)
+        {
+            if (TimeManager.instance.MatingSeason())
+            {
+                BirthChild();
+            }
+        }
     }
 
     public void NextYear()
     {
+        hasBirthed = false;
         age_years++;
         CalculateNewSize();
         NaturalDeath();
@@ -96,6 +121,7 @@ public class Elg : MonoBehaviour
 
     void Die()
     {
+        ElgManager.instance.DecreasePopulation();
         Destroy(gameObject);
     }
 
@@ -144,7 +170,30 @@ public class Elg : MonoBehaviour
         CalculateNewSize();
     }
 
+    void BirthChild()
+    {
 
+        if (!hasBirthed)
+        {
+            GameObject go = Instantiate(ElgPrefab, transform.position, Quaternion.identity);
+            ElgManager.instance.IncreasePopulation();
+            go.GetComponent<Elg>().NewBorn();
+            go.GetComponent<Elg>().SetMother(transform);
+
+            bool twins = Random.Range(0, 6) == 5;
+
+            if (twins)
+            {
+                GameObject go2 = Instantiate(ElgPrefab, transform.position, Quaternion.identity);
+                ElgManager.instance.IncreasePopulation();
+                go2.GetComponent<Elg>().NewBorn();
+                go2.GetComponent<Elg>().SetMother(transform);
+
+            }
+
+            hasBirthed = true;
+        }
+    }
 
     
 }

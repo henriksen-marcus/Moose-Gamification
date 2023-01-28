@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3376597261074670399}
   - component: {fileID: 6623369436096687547}
   - component: {fileID: 3751069026185657850}
-  - component: {fileID: 5088727193930159442}
+  - component: {fileID: 2715953872621864891}
   m_Layer: 0
   m_Name: Elg
   m_TagString: Untagged
@@ -69,7 +69,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &5088727193930159442
+--- !u!114 &2715953872621864891
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,14 +78,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 7319174537759530065}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b05310b554237cc4f849336b7dd01db0, type: 3}
+  m_Script: {fileID: 11500000, guid: e548fc78e8f2f984e8c79f7bd58e3e30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ElgPrefab: {fileID: 7319174537759530065}
   age_days: 0
   age_months: 0
   age_years: 0
   weight: 0
   gender: 0
+  mother: {fileID: 0}
+  hasMother: 0
   natural_size: 0
   natural_mature_age: 0
 --- !u!1001 &7862439361181503274
