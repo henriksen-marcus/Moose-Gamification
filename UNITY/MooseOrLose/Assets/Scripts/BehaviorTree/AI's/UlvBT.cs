@@ -17,7 +17,7 @@ public class UlvBT : BehaviorTrees.BehaviorTree
                 new UlvEatElg(GetComponent<Ulv>())
             }),
             // List of Nodes
-            new WalkRandom(GetComponent<NavMeshAgent>(), transform)
+            new WalkRandom(GetComponent<NavMeshAgent>(), transform, 40)
 
         });
 

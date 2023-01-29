@@ -12,12 +12,14 @@ public class WalkRandom : Node
     Transform mTransform;
 
     float timer;
+    float walkDistance;
 
 
-    public WalkRandom(NavMeshAgent agent, Transform transform)
+    public WalkRandom(NavMeshAgent agent, Transform transform, float _walkDistance)
     {
         mAgent = agent;
         mTransform = transform;
+        walkDistance = _walkDistance;
     }
 
     public override NodeState Evaluate()
@@ -28,7 +30,7 @@ public class WalkRandom : Node
         if (timer > 5f)
         {
             timer = 0f;
-            mAgent.SetDestination(mTransform.position + new Vector3(Random.Range(-20, 20), 0, Random.Range(-20, 20)));
+            mAgent.SetDestination(mTransform.position + new Vector3(Random.Range(-walkDistance, walkDistance), 0, Random.Range(-walkDistance, walkDistance)));
             return NodeState.RUNNING;
         }
 

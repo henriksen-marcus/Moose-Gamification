@@ -8,34 +8,30 @@ public class ElgCheckForUlv : Node
 {
     Transform mTransform;
 
-    float timer = 0;
     public ElgCheckForUlv(Transform transform)
     {
         mTransform = transform;
     }
     public override NodeState Evaluate()
     {
-        timer += Time.deltaTime;
-
-        if (timer > 1)
+        Collider[] colliders = Physics.OverlapSphere(mTransform.position, 20);
+        bool found = false;
+        foreach (Collider collider in colliders)
         {
-            timer = 0;
-            Collider[] colliders = Physics.OverlapSphere(mTransform.position, 20);
-            bool found = false;
-            foreach (Collider collider in colliders)
+            if (collider.tag == "Ulv")
             {
-                if (collider.tag == "Ulv")
-                {
-                    found = true;
-                    parent.SetData("Danger", collider.gameObject.transform);
-                    return NodeState.SUCCESS;
-                }
-            }
-            if (!found)
-            {
-                parent.ClearData("Danger");
+                found = true;
+                Debug.Log("Found Ulv");
+                parent.SetData("Danger", collider.gameObject.transform);
+                return NodeState.SUCCESS;
             }
         }
+
+        if (!found)
+        {
+            parent.ClearData("Danger");
+        }
+        
         if (parent.GetData("Danger") != null)
         {
             return NodeState.SUCCESS;

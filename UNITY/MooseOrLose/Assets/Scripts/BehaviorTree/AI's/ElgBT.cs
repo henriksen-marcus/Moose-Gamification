@@ -17,7 +17,7 @@ public class ElgBT : BehaviorTrees.BehaviorTree
                     new ElgRunAway(GetComponent<NavMeshAgent>(), transform)
                 }),
                 new FollowMother(GetComponent<NavMeshAgent>(), transform, GetComponent<Elg>()),
-                new WalkRandom(GetComponent<NavMeshAgent>(), transform)
+                new WalkRandom(GetComponent<NavMeshAgent>(), transform, 15)
             })
 
         });
