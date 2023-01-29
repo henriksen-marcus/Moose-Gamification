@@ -9,24 +9,28 @@ public class WalkRandom : Node
 {
 
     NavMeshAgent mAgent;
-    float timer;
     Transform mTransform;
 
-    public WalkRandom(NavMeshAgent agent, Transform transform)
+    float timer;
+    float walkDistance;
+
+
+    public WalkRandom(NavMeshAgent agent, Transform transform, float _walkDistance)
     {
         mAgent = agent;
         mTransform = transform;
-        timer = 0f;
+        walkDistance = _walkDistance;
     }
 
     public override NodeState Evaluate()
     {
         timer += Time.deltaTime;
 
+
         if (timer > 5f)
         {
             timer = 0f;
-            mAgent.SetDestination(mTransform.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)));
+            mAgent.SetDestination(mTransform.position + new Vector3(Random.Range(-walkDistance, walkDistance), 0, Random.Range(-walkDistance, walkDistance)));
             return NodeState.RUNNING;
         }
 
