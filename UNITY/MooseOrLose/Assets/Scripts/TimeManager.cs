@@ -9,7 +9,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] int month;
     [SerializeField] int day;
     [SerializeField] int year;
-    public int playSpeed = 1;
+    public int playSpeed = 15;
 
     // Start is called before the first frame update
     void Awake()

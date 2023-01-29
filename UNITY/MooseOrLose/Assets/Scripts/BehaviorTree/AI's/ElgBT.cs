@@ -10,7 +10,12 @@ public class ElgBT : BehaviorTrees.BehaviorTree
         Node root = new Selector(new List<Node>
         {
             // List of Nodes
-            new WalkRandom(GetComponent<NavMeshAgent>(), transform, GetComponent<Elg>())
+            new Selector(new List<Node>
+            {
+                new FollowMother(GetComponent<NavMeshAgent>(), transform, GetComponent<Elg>()),
+                new WalkRandom(GetComponent<NavMeshAgent>(), transform)
+            })
+
         });
 
         return root;
