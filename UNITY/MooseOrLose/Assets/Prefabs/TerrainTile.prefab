@@ -98,6 +98,37 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &3090918062274451030
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6034899532841181484}
+  m_Layer: 0
+  m_Name: SpawnPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6034899532841181484
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3090918062274451030}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5476292922664664433}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5070424564706264055
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +354,6 @@ GameObject:
   - component: {fileID: 5749860716433716582}
   - component: {fileID: 4469489931465903151}
   - component: {fileID: 2284322481019234212}
-  - component: {fileID: 8352275205183528698}
   m_Layer: 0
   m_Name: TerrainTile
   m_TagString: Untagged
@@ -339,12 +369,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7508031109835222217}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.166988, y: 7.0045137, z: -9.05995}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2322311442070760317}
   - {fileID: 4920718263389331728}
+  - {fileID: 6034899532841181484}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -424,25 +455,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0c9e372eee50124889403aa9a080793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _highlightColor: {r: 1, g: 1, b: 1, a: 0.25490198}
-  _highlightMaterial: {fileID: 2100000, guid: 06f4f635fc428fe419e630b145c40910, type: 2}
+  moosePrefab: {fileID: 6623369436096687547, guid: 26d65b321882d8d4990a6ab9dba7c91e, type: 3}
+  highlightColor: {r: 1, g: 1, b: 1, a: 0.23529412}
+  highlightMaterial: {fileID: 2100000, guid: 06f4f635fc428fe419e630b145c40910, type: 2}
   movementCost: 0
   hasWater: 0
-  _highlight: {fileID: 1192534472330478534}
-  _menu: {fileID: 7870472285780507136}
---- !u!65 &8352275205183528698
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7508031109835222217}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 10, y: -10, z: 10}
-  m_Center: {x: 0, y: -5.1, z: 0}
+  highlight: {fileID: 1192534472330478534}
+  menu: {fileID: 7870472285780507136}
+  mooseSpawnPoint: {fileID: 6034899532841181484}
 --- !u!1 &7870472285780507136
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,8 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.SocialPlatforms;
+using UnityEngine.UIElements;
 
-public class Terrain : MonoBehaviour
+public class Terrain : MonoBehaviour, IDropHandler
 {
     public Terrain(int movementCost, bool isWater, Texture texture)
     {
@@ -11,20 +14,28 @@ public class Terrain : MonoBehaviour
         this.hasWater = hasWater;
         // this.texture = texture;
     }
-
-    [SerializeField] private Color _highlightColor;
-    [SerializeField] private Material _highlightMaterial;
+    
+    [SerializeField] private ElgBT moosePrefab;
+    [SerializeField] private Color highlightColor;
+    [SerializeField] private Material highlightMaterial;
     [SerializeField] private int movementCost;
     [SerializeField] private bool hasWater;
     // [SerializeField] private Texture texture;
-    [SerializeField] private GameObject _highlight;
-    [SerializeField] private GameObject _menu;
-    
+    [SerializeField] private GameObject highlight;
+    [SerializeField] private GameObject menu;
+    // [SerializeField] private BoxCollider _collider;
+    [SerializeField] private Transform mooseSpawnPoint;
+
     public void Init()
     {
-        _highlightMaterial.color = _highlightColor;
+        highlightMaterial.color = highlightColor;
     }
-    
+
+    // private void Update()
+    // {
+    //     throw new NotImplementedException();
+    // }
+
     public int getMovementCost()
     {
         return movementCost;
@@ -37,18 +48,26 @@ public class Terrain : MonoBehaviour
     // {
     //     return texture;
     // }
-    // Start is called before the first frame update
+
     private void OnMouseEnter()
     {
-        _highlight.SetActive(true);
+        if (MapUI.GridOn)
+           highlight.SetActive(true);
     }
     private void OnMouseExit()
     {
-        _highlight.SetActive(false);
-        _menu.SetActive(false);
+        highlight.SetActive(false);
+        menu.SetActive(false);
     }
     private void OnMouseDown()
     {
-        _menu.SetActive(!_menu.activeSelf);
+        if (MapUI.GridOn)
+            menu.SetActive(!menu.activeSelf);
+    }
+
+    public void OnDrop(PointerEventData eventData)
+    {
+        Debug.Log("On Dropped");
+        Instantiate(moosePrefab, mooseSpawnPoint.position, Quaternion.identity);
     }
 }
