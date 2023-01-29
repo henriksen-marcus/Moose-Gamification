@@ -6,19 +6,23 @@ public class TimeManager : MonoBehaviour
 {
     static public TimeManager instance;
 
-    int month;
-    int day;
-    int year;
+    [SerializeField] int month;
+    [SerializeField] int day;
+    [SerializeField] int year;
+    public int playSpeed = 15;
 
     // Start is called before the first frame update
     void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
         day = 0;
         month = 0;
         year = 0;
-        InvokeRepeating("NextDay", 0, 3);
+        InvokeRepeating("NextDay", 0, playSpeed);
     }
-
     public int GetYear() {  return year; }
     public int GetMonth() {  return month; }
     public int GetDay() { return day; }
