@@ -19,7 +19,7 @@ public class ElgRunAway : Node
         {
             return NodeState.FAILURE;
         }
-        Debug.Log("RunningAway");
+
         Transform Danger = (Transform)parent.GetData("Danger");
         Vector3 direction = mTransform.position - Danger.position;
         direction.Normalize();
