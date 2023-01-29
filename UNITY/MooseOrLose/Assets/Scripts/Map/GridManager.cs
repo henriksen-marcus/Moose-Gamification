@@ -12,10 +12,15 @@ public class GridManager : MonoBehaviour
     [SerializeField] private Terrain hillTerrain;
     [SerializeField] private Terrain riverTerrain;
     
-    [SerializeField] private Transform _mapMesh;
-    [SerializeField] private Transform _cam;
+    // [SerializeField] private Transform _mapMesh;
+    // [SerializeField] private Transform _cam;
 
     private Dictionary<Vector2, Terrain> _terrainTiles;
+
+    // private void Awake()
+    // {
+    //     
+    // }
 
     private void Start()
     {

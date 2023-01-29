@@ -26,9 +26,19 @@ public class Terrain : MonoBehaviour, IDropHandler
     // [SerializeField] private BoxCollider _collider;
     [SerializeField] private Transform mooseSpawnPoint;
 
+    private Ray _ray;
+    private RaycastHit _hit;
+
     public void Init()
     {
         highlightMaterial.color = highlightColor;
+        _ray = new Ray(mooseSpawnPoint.position, -mooseSpawnPoint.up);
+        if (Physics.Raycast(_ray, out _hit))
+        {
+            var pos = mooseSpawnPoint.position;
+            pos = new Vector3(pos.x, pos.y -= _hit.distance - 1, pos.z);
+            mooseSpawnPoint.position = pos;
+        }
     }
 
     // private void Update()
