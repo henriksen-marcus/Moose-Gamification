@@ -16,9 +16,8 @@ public class UlvEatElg : Node
         Transform transform = (Transform)parent.GetData("Target");
 
         // Delete Elg
-        Object.Destroy(transform.gameObject);
+        transform.GetComponent<Elg>().Die();
         parent.ClearData("Target");
-        ElgManager.instance.DecreasePopulation();
 
 
         // Fill Hunger

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Elg : MonoBehaviour
 {
-
     public enum Gender
     {
         Male,
@@ -27,12 +26,14 @@ public class Elg : MonoBehaviour
     public int natural_mature_age;
 
     bool hasBirthed;
+    bool hasGrown;
 
 
     void Awake()
     {
 
         hasBirthed = false;
+        hasGrown = true;
 
         age_years = Random.Range(2, 12) + Random.Range(0, 12);
         age_months = Random.Range(0, 12);
@@ -40,10 +41,12 @@ public class Elg : MonoBehaviour
         if (Random.Range(0, 2) == 0)
         {
             gender = Gender.Male;
+            ElgManager.instance.MaleBorn();
         }
         else
         {
             gender = Gender.Female;
+            ElgManager.instance.FemaleBorn();
         }
 
         // Genes
@@ -99,6 +102,11 @@ public class Elg : MonoBehaviour
     {
         hasBirthed = false;
         age_years++;
+        if (age_years > 1 && !hasGrown)
+        {
+            hasGrown = true;
+            ElgManager.instance.ChildrenGrowUp();
+        }
         CalculateNewSize();
         NaturalDeath();
     }
@@ -115,9 +123,22 @@ public class Elg : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
         ElgManager.instance.DecreasePopulation();
+        if (gender == Gender.Male)
+        {
+            ElgManager.instance.MaleDie();
+        }
+        else
+        {
+            ElgManager.instance.FemaleDie();
+        }
+
+        if (age_years < 2)
+        {
+            ElgManager.instance.ChildrenDie();
+        }
         Destroy(gameObject);
     }
 
@@ -154,6 +175,7 @@ public class Elg : MonoBehaviour
         age_years = 0;
         age_months = 0;
         age_days = 0;
+        hasGrown = false;
         if (Random.Range(0, 2) == 0)
         {
             gender = Gender.Male;
@@ -162,6 +184,8 @@ public class Elg : MonoBehaviour
         {
             gender = Gender.Female;
         }
+        ElgManager.instance.ChildrenBorn();
+
         CalculateNewSize();
     }
 
