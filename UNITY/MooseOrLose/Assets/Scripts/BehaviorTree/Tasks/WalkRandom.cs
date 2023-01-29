@@ -28,7 +28,7 @@ public class WalkRandom : Node
         if (timer > 5f)
         {
             timer = 0f;
-            mAgent.SetDestination(mTransform.position + new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10)));
+            mAgent.SetDestination(mTransform.position + new Vector3(Random.Range(-20, 20), 0, Random.Range(-20, 20)));
             return NodeState.RUNNING;
         }
 

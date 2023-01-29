@@ -12,6 +12,10 @@ public class ElgBT : BehaviorTrees.BehaviorTree
             // List of Nodes
             new Selector(new List<Node>
             {
+                new Sequence(new List<Node>{ 
+                    new ElgCheckForUlv(transform),
+                    new ElgRunAway(GetComponent<NavMeshAgent>(), transform)
+                }),
                 new FollowMother(GetComponent<NavMeshAgent>(), transform, GetComponent<Elg>()),
                 new WalkRandom(GetComponent<NavMeshAgent>(), transform)
             })
