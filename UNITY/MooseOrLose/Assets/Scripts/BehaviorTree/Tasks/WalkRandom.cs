@@ -26,7 +26,6 @@ public class WalkRandom : Node
     {
         timer += Time.deltaTime;
 
-
         if (timer > 5f)
         {
             timer = 0f;

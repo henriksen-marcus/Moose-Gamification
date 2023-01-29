@@ -22,11 +22,7 @@ public class TimeManager : MonoBehaviour
         month = 0;
         year = 0;
         InvokeRepeating("NextDay", 0, playSpeed);
-
-
     }
-
-
     public int GetYear() {  return year; }
     public int GetMonth() {  return month; }
     public int GetDay() { return day; }

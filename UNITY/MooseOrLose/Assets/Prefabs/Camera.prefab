@@ -93,6 +93,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7208544216119456429}
+
   - component: {fileID: 8333350768701135812}
   m_Layer: 0
   m_Name: Camera
