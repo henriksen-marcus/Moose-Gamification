@@ -21,7 +21,7 @@ public class ElgCheckForUlv : Node
             if (collider.tag == "Ulv")
             {
                 found = true;
-                Debug.Log("Found Ulv");
+
                 parent.SetData("Danger", collider.gameObject.transform);
                 return NodeState.SUCCESS;
             }
