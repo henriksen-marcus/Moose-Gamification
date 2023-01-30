@@ -27,12 +27,14 @@ public class WalkRandom : Node
     public override NodeState Evaluate()
     {
         timer += Time.deltaTime;
-        float speed = walkSpeed * ((float)TimeManager.instance.startPlaySpeed / (float)TimeManager.instance.playSpeed);
+        float speed = walkSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = speed;
         if (timer > 5f)
         {
             timer = 0f;
-            mAgent.SetDestination(mTransform.position + new Vector3(Random.Range(-walkDistance, walkDistance), 0, Random.Range(-walkDistance, walkDistance)));
+            NavMeshHit hit;
+            NavMesh.SamplePosition(mTransform.position + new Vector3(Random.Range(-walkDistance, walkDistance), 0, Random.Range(-walkDistance, walkDistance)), out hit, 200, 1);
+            mAgent.SetDestination(hit.position);
             return NodeState.RUNNING;
         }
 

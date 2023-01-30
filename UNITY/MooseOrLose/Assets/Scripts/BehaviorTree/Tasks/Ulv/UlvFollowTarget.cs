@@ -19,14 +19,18 @@ public class UlvFollowTarget : Node
         {
             return NodeState.FAILURE;
         }
-        float speed = runSpeed * ((float)TimeManager.instance.startPlaySpeed / (float)TimeManager.instance.playSpeed);
+        float speed = runSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = speed;
+        if ((Transform)parent.GetData("Target") == null)
+        {
+            parent.ClearData("Target");
+            return NodeState.FAILURE;
+        }
         Transform transform = (Transform)parent.GetData("Target");
         mAgent.SetDestination(transform.position);
         
         if (Vector3.Distance(transform.position, mAgent.transform.position) < 3)
         {
-            Debug.Log("Eat");
             return NodeState.SUCCESS;
         }
 

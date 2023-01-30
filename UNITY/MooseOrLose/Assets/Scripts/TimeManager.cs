@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using System;
 
 public class TimeManager : MonoBehaviour
 {
@@ -10,9 +11,9 @@ public class TimeManager : MonoBehaviour
     [SerializeField] int month;
     [SerializeField] int day;
     [SerializeField] int year;
-    public int playSpeed = 15;
+    public float playSpeed = 15;
     [HideInInspector]
-    public int startPlaySpeed;
+    public float startPlaySpeed;
 
 
     [SerializeField] public TextMeshProUGUI dayUI;
@@ -81,7 +82,7 @@ public class TimeManager : MonoBehaviour
                 default:
                     break;
             }
-            dayUI.SetText(day.ToString());
+            dayUI.SetText((day+1).ToString());
         }
     }
     public int GetYear() {  return year; }
@@ -89,22 +90,35 @@ public class TimeManager : MonoBehaviour
     public int GetDay() { return day; }
     public bool MatingSeason() { return month == 7 || month == 8; }
 
+    public bool HuntingSeason() { return month == 9 || month == 10 || month == 11; }
+
     // Update is called once per frame
     IEnumerator NextDay()
     {
         day++;
-        if (day > 30)
+        if (day > 29)
         {
             month++;
             day = 0;
         }
         if (month > 11)
         {
+            NewYear();
             year++;
             month = 0;
         }
 
         yield return new WaitForSeconds(playSpeed);
         StartCoroutine(NextDay());
+    }
+
+
+    public event Action OnNewYear;
+    public void NewYear()
+    {
+        if (OnNewYear != null)
+        {
+            OnNewYear();
+        }
     }
 }

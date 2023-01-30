@@ -66,6 +66,7 @@ public class Elg : MonoBehaviour
     {
         GetComponent<NavMeshAgent>().speed = 4 * (1/TimeManager.instance.playSpeed);
         StartCoroutine(NextDay());
+        TimeManager.instance.OnNewYear += NewYearTM;
     }
 
     public IEnumerator NextDay()
@@ -104,7 +105,6 @@ public class Elg : MonoBehaviour
 
     public void NextYear()
     {
-        hasBirthed = false;
         age_years++;
         if (age_years > 1 && !hasGrown)
         {
@@ -219,6 +219,11 @@ public class Elg : MonoBehaviour
             }
 
         }
+    }
+
+    void NewYearTM()
+    {
+        hasBirthed = false;
     }
 
     
