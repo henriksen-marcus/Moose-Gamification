@@ -17,14 +17,11 @@ public class JegerWalk : Node
     }
     public override NodeState Evaluate()
     {
-        Debug.Log("trying to walk");
+
         timer += Time.deltaTime;
         
-
-
         if (GetData("Destination") != null)
         {
-
             if (Vector3.Distance(mAgent.transform.position, (Vector3)GetData("Destination")) > 10)
             {
                 mAgent.SetDestination((Vector3)GetData("Destination"));

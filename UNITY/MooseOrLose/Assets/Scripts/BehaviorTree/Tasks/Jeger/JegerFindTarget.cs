@@ -15,8 +15,7 @@ public class JegerFindTarget : Node
     public override NodeState Evaluate()
     {
         if (parent.GetData("Target") != null)
-        {
-
+        { 
             return NodeState.SUCCESS;
         }
 
@@ -28,9 +27,9 @@ public class JegerFindTarget : Node
             if (collider.tag == "Elg")
             {
                 // Code Choosing of Elg Here
-
                 if (parent.GetData("Target") == null)
                     parent.SetData("Target", collider.gameObject.transform);
+
                 return NodeState.SUCCESS;
             }
         }

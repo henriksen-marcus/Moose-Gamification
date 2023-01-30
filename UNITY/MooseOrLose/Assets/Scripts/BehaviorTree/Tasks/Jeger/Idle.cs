@@ -11,7 +11,6 @@ public class Idle : Node
     }
     public override NodeState Evaluate()
     {
-        Debug.Log("Idle");
         return NodeState.SUCCESS;
     }
 }
