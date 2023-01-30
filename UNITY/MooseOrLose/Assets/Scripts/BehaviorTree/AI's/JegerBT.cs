@@ -15,13 +15,13 @@ public class JegerBT : BehaviorTrees.BehaviorTree
         {
             // List of Nodes
             new Sequence(new List<Node> {
-                new CheckForHuntingSeason(),
+                new CheckForHuntingSeason(GetComponent<NavMeshAgent>()),
                 new JegerFindTarget(range, transform),
                 new JegerWalkToTarget(GetComponent<NavMeshAgent>()),
                 new JegerShoot(transform, shotSpeed, GetComponent<NavMeshAgent>())
             }),
             new Sequence(new List<Node> {
-                new CheckForHuntingSeason(),
+                new CheckForHuntingSeason(GetComponent<NavMeshAgent>()),
                 new JegerWalk(GetComponent<NavMeshAgent>())
             }),
             new Sequence(new List<Node> {

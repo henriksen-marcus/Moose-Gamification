@@ -24,7 +24,7 @@ public class JegerWalkToTarget : Node
         {
             if ((bool)parent.GetData("Shooting"))
             {
-                Debug.Log("shooting = true");
+                
                 return NodeState.SUCCESS;
             }
         }
