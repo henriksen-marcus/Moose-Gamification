@@ -28,7 +28,7 @@ public class TimeManager : MonoBehaviour
             instance = this;
         }
         day = 0;
-        month = 0;
+        month = 5;
         year = 0;
         StartCoroutine(NextDay());
 

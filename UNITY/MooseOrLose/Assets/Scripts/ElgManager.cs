@@ -47,16 +47,7 @@ public class ElgManager : MonoBehaviour
             NavMeshHit hit;
             NavMesh.SamplePosition(new Vector3(Random.Range(-200,200), 10, Random.Range(-200,200)), out hit, 200, 1);
 
-            GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity);
-
-            if (go.GetComponent<Elg>().gender == Elg.Gender.Female)
-            {
-                GameObject go2 = Instantiate(ElgPrefab, hit.position, Quaternion.identity);
-                go2.GetComponent<Elg>().NewBorn();
-                go2.GetComponent<Elg>().SetMother(go.transform);
-                loop--;
-            }
-            
+            Instantiate(ElgPrefab, hit.position, Quaternion.identity);
         }
     }
 
