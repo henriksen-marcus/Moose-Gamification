@@ -180,14 +180,7 @@ public class Elg : MonoBehaviour
         age_months = 0;
         age_days = 0;
         hasGrown = false;
-        if (Random.Range(0, 2) == 0)
-        {
-            gender = Gender.Male;
-        }
-        else
-        {
-            gender = Gender.Female;
-        }
+
         ElgManager.instance.ChildrenBorn();
 
         CalculateNewSize();
