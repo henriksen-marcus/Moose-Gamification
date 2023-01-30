@@ -47,7 +47,8 @@ MonoBehaviour:
   month: 3
   day: 0
   year: 0
-  playSpeed: 1
+  playSpeed: 2
+  startPlaySpeed: 0
   dayUI: {fileID: 0}
   monthUI: {fileID: 0}
   yearUI: {fileID: 0}

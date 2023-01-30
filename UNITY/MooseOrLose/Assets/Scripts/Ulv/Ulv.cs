@@ -10,14 +10,16 @@ public class Ulv : MonoBehaviour
     void Start()
     {
         hunger = 100;
-
-        InvokeRepeating("NaturalHungerDrain", 0, (float)TimeManager.instance.playSpeed / 10f);
+        GetComponent<UnityEngine.AI.NavMeshAgent>().speed = 5 * (1 / TimeManager.instance.playSpeed);
+        StartCoroutine(NaturalHungerDrain());
     }
 
     // Update is called once per frame
-    void NaturalHungerDrain()
+    IEnumerator NaturalHungerDrain()
     {
-        hunger -= 3;
+        hunger -= 2;
         hunger = Mathf.Clamp(hunger, 0, 100);
+        yield return new WaitForSeconds((float)TimeManager.instance.playSpeed / 10f);
+        StartCoroutine(NaturalHungerDrain());
     }
 }

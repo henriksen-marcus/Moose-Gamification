@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Elg : MonoBehaviour
 {
@@ -63,19 +64,22 @@ public class Elg : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("NextDay", 0, TimeManager.instance.playSpeed);
+        GetComponent<NavMeshAgent>().speed = 4 * (1/TimeManager.instance.playSpeed);
+        StartCoroutine(NextDay());
     }
 
-    public void NextDay()
+    public IEnumerator NextDay()
     {
+        
         age_days++;
         if (age_days > 30)
         {
             age_days = 0;
             NextMonth();
-            return;
         }
         CalculateNewSize();
+        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
+        StartCoroutine(NextDay());
     }
 
     public void NextMonth()

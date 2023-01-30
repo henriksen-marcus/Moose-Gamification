@@ -11,6 +11,8 @@ public class TimeManager : MonoBehaviour
     [SerializeField] int day;
     [SerializeField] int year;
     public int playSpeed = 15;
+    [HideInInspector]
+    public int startPlaySpeed;
 
 
     [SerializeField] public TextMeshProUGUI dayUI;
@@ -27,9 +29,9 @@ public class TimeManager : MonoBehaviour
         day = 0;
         month = 0;
         year = 0;
-        InvokeRepeating("NextDay", 0, playSpeed);
+        StartCoroutine(NextDay());
 
-
+        startPlaySpeed = playSpeed;
     }
 
     private void Update()
@@ -88,7 +90,7 @@ public class TimeManager : MonoBehaviour
     public bool MatingSeason() { return month == 7 || month == 8; }
 
     // Update is called once per frame
-    void NextDay()
+    IEnumerator NextDay()
     {
         day++;
         if (day > 30)
@@ -102,5 +104,7 @@ public class TimeManager : MonoBehaviour
             month = 0;
         }
 
+        yield return new WaitForSeconds(playSpeed);
+        StartCoroutine(NextDay());
     }
 }

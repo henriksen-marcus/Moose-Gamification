@@ -7,9 +7,11 @@ using UnityEngine.AI;
 public class UlvFollowTarget : Node
 {
     NavMeshAgent mAgent;
+    float runSpeed;
     public UlvFollowTarget(NavMeshAgent agent)
     {
         mAgent = agent;
+        runSpeed = mAgent.speed * (5f / 3f);
     }
     public override NodeState Evaluate()
     {
@@ -17,7 +19,8 @@ public class UlvFollowTarget : Node
         {
             return NodeState.FAILURE;
         }
-
+        float speed = runSpeed * ((float)TimeManager.instance.startPlaySpeed / (float)TimeManager.instance.playSpeed);
+        mAgent.speed = speed;
         Transform transform = (Transform)parent.GetData("Target");
         mAgent.SetDestination(transform.position);
         
