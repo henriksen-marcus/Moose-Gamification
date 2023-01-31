@@ -21,7 +21,10 @@ public class UlvEatElg : Node
 
 
         // Fill Hunger
-        mScript.hunger = 100;
+        for (int i = 0; i < mScript.pack.Count; i++)
+        {
+            mScript.pack[i].GetComponent<Ulv>().hunger = 100;
+        }
         return NodeState.SUCCESS;
     }
 }

@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+public enum Gender
+{
+    Male,
+    Female
+}
+
+
 public class Elg : MonoBehaviour
 {
-    public enum Gender
-    {
-        Male,
-        Female
-    }
 
     public GameObject ElgPrefab;
 
@@ -64,7 +66,6 @@ public class Elg : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<NavMeshAgent>().speed = 4 * (1/TimeManager.instance.playSpeed);
         StartCoroutine(NextDay());
         TimeManager.instance.OnNewYear += NewYearTM;
     }
