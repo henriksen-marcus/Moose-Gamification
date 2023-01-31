@@ -14,6 +14,9 @@ public class MainManager : MonoBehaviour
     public GameObject mapParent;
     public List<GameObject> maplist = new List<GameObject>();
 
+    [Header("Trees")]
+    public GameObject treesParent;
+
 
     //--------------------
 
