@@ -455,13 +455,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0c9e372eee50124889403aa9a080793, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moosePrefab: {fileID: 6623369436096687547, guid: e44503c30bcf37d48a46d95ea96442b8, type: 3}
   highlightColor: {r: 1, g: 1, b: 1, a: 0.23529412}
   highlightMaterial: {fileID: 2100000, guid: 06f4f635fc428fe419e630b145c40910, type: 2}
   movementCost: 0
   hasWater: 0
   highlight: {fileID: 1192534472330478534}
   menu: {fileID: 7870472285780507136}
-  spawnPoint: {fileID: 6034899532841181484}
+  mooseSpawnPoint: {fileID: 6034899532841181484}
 --- !u!1 &7870472285780507136
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,7 +15,7 @@ public class Terrain : MonoBehaviour, IDropHandler
         // this.texture = texture;
     }
     
-    // [SerializeField] private ElgBT moosePrefab;
+    [SerializeField] private ElgBT moosePrefab;
     [SerializeField] private Color highlightColor;
     [SerializeField] private Material highlightMaterial;
     [SerializeField] private int movementCost;
@@ -24,9 +24,7 @@ public class Terrain : MonoBehaviour, IDropHandler
     [SerializeField] private GameObject highlight;
     [SerializeField] private GameObject menu;
     // [SerializeField] private BoxCollider _collider;
-    [SerializeField] private Transform spawnPoint;
-    
-    private Transform _mooseParent;
+    [SerializeField] private Transform mooseSpawnPoint;
 
     private Ray _ray;
     private RaycastHit _hit;
@@ -34,15 +32,13 @@ public class Terrain : MonoBehaviour, IDropHandler
     public void Init()
     {
         highlightMaterial.color = highlightColor;
-        _ray = new Ray(spawnPoint.position, -spawnPoint.up);
+        _ray = new Ray(mooseSpawnPoint.position, -mooseSpawnPoint.up);
         if (Physics.Raycast(_ray, out _hit))
         {
-            Debug.Log("Test");
-            var pos = spawnPoint.position;
+            var pos = mooseSpawnPoint.position;
             pos = new Vector3(pos.x, pos.y -= _hit.distance - 1, pos.z);
-            spawnPoint.position = pos;
+            mooseSpawnPoint.position = pos;
         }
-        _mooseParent = ElgManager.instance.transform;
     }
 
     // private void Update()
@@ -65,7 +61,7 @@ public class Terrain : MonoBehaviour, IDropHandler
 
     private void OnMouseEnter()
     {
-        if (InfoUI.GridOn)
+        if (MapUI.GridOn)
            highlight.SetActive(true);
     }
     private void OnMouseExit()
@@ -75,22 +71,13 @@ public class Terrain : MonoBehaviour, IDropHandler
     }
     private void OnMouseDown()
     {
-        if (InfoUI.GridOn)
+        if (MapUI.GridOn)
             menu.SetActive(!menu.activeSelf);
     }
 
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log("On Dropped");
-        if (eventData.pointerDrag.TryGetComponent(out DragDrop drop))
-        {
-            Instantiate(drop.prefab, spawnPoint.position, Quaternion.identity, _mooseParent);
-            Debug.Log("Dropped " + drop.prefab.name + " into world");
-            ElgManager.instance.AddToList(drop.prefab);
-        }
-        else
-        {
-            Debug.Log("Could not retrieve DragDrop instance");
-        }
+        Instantiate(moosePrefab, mooseSpawnPoint.position, Quaternion.identity);
     }
 }
