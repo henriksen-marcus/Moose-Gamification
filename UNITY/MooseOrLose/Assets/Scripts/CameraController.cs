@@ -32,7 +32,9 @@ public class CameraController : MonoBehaviour
 
         Vector3 scroll = transform.position;
         scroll.y -= (Input.mouseScrollDelta.y * 2);
-        Mathf.Clamp(scroll.y, 0, 60);
+        if (!(scroll.y < 0) && !(scroll.y > 100))
+            scroll.z += (Input.mouseScrollDelta.y * 2);
+        scroll.y = Mathf.Clamp(scroll.y, 0, 100);
         transform.position = scroll;
 
     }
