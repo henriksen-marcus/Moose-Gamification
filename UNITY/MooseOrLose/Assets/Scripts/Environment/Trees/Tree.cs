@@ -18,6 +18,7 @@ public class Tree : MonoBehaviour
 
     float healthCounter;
 
+    float foodAmount;
 
     //--------------------
 
