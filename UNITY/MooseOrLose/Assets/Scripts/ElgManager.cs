@@ -47,7 +47,7 @@ public class ElgManager : MonoBehaviour
             NavMeshHit hit;
             NavMesh.SamplePosition(new Vector3(Random.Range(-200,200), 10, Random.Range(-200,200)), out hit, 200, 1);
 
-            Instantiate(ElgPrefab, hit.position, Quaternion.identity);
+            Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
         }
     }
 
