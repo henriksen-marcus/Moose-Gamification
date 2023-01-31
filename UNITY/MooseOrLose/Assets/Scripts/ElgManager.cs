@@ -73,6 +73,24 @@ public class ElgManager : MonoBehaviour
             childrenUI.SetText(elg_children.ToString());
     }
 
+    public void IncreasePopulation()
+    {
+        PopulationChanged();
+        elg_population++;
+    }
+
+    public void IncreasePopulation(int num)
+    {
+        PopulationChanged();
+        elg_population += num;
+    }
+
+    public void DecreasePopulation()
+    {
+        PopulationChanged();
+        elg_population--;
+    }
+
     public void MaleBorn()
     {
         elg_males++;
@@ -112,15 +130,13 @@ public class ElgManager : MonoBehaviour
     public void AddToList(GameObject go)
     {
         PopulationChanged();
-        elg_population++;
         elg_list.Add(go);
     }
 
     public void RemoveFromList(GameObject go)
     {
         PopulationChanged();
-        elg_population--;
-        elg_list.Remove(go);
+        elg_list.Add(go);
     }
 
 

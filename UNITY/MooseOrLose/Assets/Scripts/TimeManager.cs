@@ -27,6 +27,10 @@ public class TimeManager : MonoBehaviour
         {
             instance = this;
         }
+        if (instance == null)
+        {
+            instance = this;
+        }
         day = 0;
         month = 5;
         year = 0;
