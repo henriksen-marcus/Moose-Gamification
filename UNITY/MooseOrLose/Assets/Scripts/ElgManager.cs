@@ -120,7 +120,7 @@ public class ElgManager : MonoBehaviour
     {
         PopulationChanged();
         elg_population--;
-        elg_list.Add(go);
+        elg_list.Remove(go);
     }
 
 
