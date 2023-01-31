@@ -47,9 +47,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 67770392119510317}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ec84782a648eaa47ad7cc86efe87d85, type: 3}
+  m_Script: {fileID: 11500000, guid: 39f8920d048379344939662e47d61e46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mooseCount: {fileID: 7978376614510052679}
+  hunterCount: {fileID: 739082845148658778}
+  wolfCount: {fileID: 6452898618019900742}
 --- !u!1 &67770392131315107
 GameObject:
   m_ObjectHideFlags: 0

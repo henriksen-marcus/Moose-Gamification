@@ -86,6 +86,7 @@ public class Terrain : MonoBehaviour, IDropHandler
         {
             Instantiate(drop.prefab, spawnPoint.position, Quaternion.identity, _mooseParent);
             Debug.Log("Dropped " + drop.prefab.name + " into world");
+            ElgManager.instance.AddToList(drop.prefab);
         }
         else
         {
