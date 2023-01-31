@@ -25,7 +25,8 @@ public class Terrain : MonoBehaviour, IDropHandler
     [SerializeField] private GameObject menu;
     // [SerializeField] private BoxCollider _collider;
     [SerializeField] private Transform mooseSpawnPoint;
-    [SerializeField] private GameObject mooseParent;
+    
+    private Transform _mooseParent;
 
     private Ray _ray;
     private RaycastHit _hit;
@@ -40,7 +41,7 @@ public class Terrain : MonoBehaviour, IDropHandler
             pos = new Vector3(pos.x, pos.y -= _hit.distance - 1, pos.z);
             mooseSpawnPoint.position = pos;
         }
-        // mooseParent = 
+        _mooseParent = ElgManager.instance.transform;
     }
 
     // private void Update()
@@ -80,7 +81,7 @@ public class Terrain : MonoBehaviour, IDropHandler
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log("On Dropped");
-        Instantiate(moosePrefab, mooseSpawnPoint.position, Quaternion.identity, mooseParent.transform);
+        Instantiate(moosePrefab, mooseSpawnPoint.position, Quaternion.identity, _mooseParent);
     }
     
 }
