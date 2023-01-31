@@ -28,6 +28,10 @@ public class ElgManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI femalesUI;
     [SerializeField] public TextMeshProUGUI childrenUI;
 
+
+    [Header("List of Spawned GameObjects")]
+    [SerializeField] List<GameObject> elg_list = new List<GameObject>(); 
+
     private void Awake()
     {
         if (instance == null)
@@ -47,7 +51,8 @@ public class ElgManager : MonoBehaviour
             NavMeshHit hit;
             NavMesh.SamplePosition(new Vector3(Random.Range(-200,200), 10, Random.Range(-200,200)), out hit, 200, 1);
 
-            Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
+            GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
+            elg_list.Add(go);
         }
     }
 
@@ -114,5 +119,16 @@ public class ElgManager : MonoBehaviour
     public void ChildrenBorn()
     {
         elg_children++;
+    }
+
+
+    public void AddToList(GameObject go)
+    {
+        elg_list.Add(go);
+    }
+
+    public void RemoveFromList(GameObject go)
+    {
+        elg_list.Add(go);
     }
 }
