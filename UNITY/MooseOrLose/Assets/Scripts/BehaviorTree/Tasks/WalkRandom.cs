@@ -13,6 +13,7 @@ public class WalkRandom : Node
 
     float timer;
     float walkDistance;
+    float walkSpeed;
 
 
     public WalkRandom(NavMeshAgent agent, Transform transform, float _walkDistance)
@@ -20,16 +21,20 @@ public class WalkRandom : Node
         mAgent = agent;
         mTransform = transform;
         walkDistance = _walkDistance;
+        walkSpeed = mAgent.speed;
     }
 
     public override NodeState Evaluate()
     {
         timer += Time.deltaTime;
-
+        float speed = walkSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.speed = speed;
         if (timer > 5f)
         {
             timer = 0f;
-            mAgent.SetDestination(mTransform.position + new Vector3(Random.Range(-walkDistance, walkDistance), 0, Random.Range(-walkDistance, walkDistance)));
+            NavMeshHit hit;
+            NavMesh.SamplePosition(mTransform.position + new Vector3(Random.Range(-walkDistance, walkDistance), 0, Random.Range(-walkDistance, walkDistance)), out hit, 200, 1);
+            mAgent.SetDestination(hit.position);
             return NodeState.RUNNING;
         }
 

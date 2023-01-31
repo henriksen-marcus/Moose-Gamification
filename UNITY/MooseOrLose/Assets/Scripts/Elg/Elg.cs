@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Elg : MonoBehaviour
 {
-
     public enum Gender
     {
         Male,
@@ -17,7 +17,7 @@ public class Elg : MonoBehaviour
     public int age_days;
     public int age_months;
     public int age_years;
-    public int weight;
+    public float weight;
 
     public Gender gender;
     public Transform mother;
@@ -27,12 +27,14 @@ public class Elg : MonoBehaviour
     public int natural_mature_age;
 
     bool hasBirthed;
+    bool hasGrown;
 
 
     void Awake()
     {
 
         hasBirthed = false;
+        hasGrown = true;
 
         age_years = Random.Range(2, 12) + Random.Range(0, 12);
         age_months = Random.Range(0, 12);
@@ -40,10 +42,12 @@ public class Elg : MonoBehaviour
         if (Random.Range(0, 2) == 0)
         {
             gender = Gender.Male;
+            ElgManager.instance.MaleBorn();
         }
         else
         {
             gender = Gender.Female;
+            ElgManager.instance.FemaleBorn();
         }
 
         // Genes
@@ -60,19 +64,23 @@ public class Elg : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("NextDay", 0, TimeManager.instance.playSpeed);
+        GetComponent<NavMeshAgent>().speed = 4 * (1/TimeManager.instance.playSpeed);
+        StartCoroutine(NextDay());
+        TimeManager.instance.OnNewYear += NewYearTM;
     }
 
-    public void NextDay()
+    public IEnumerator NextDay()
     {
+        
         age_days++;
         if (age_days > 30)
         {
             age_days = 0;
             NextMonth();
-            return;
         }
         CalculateNewSize();
+        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
+        StartCoroutine(NextDay());
     }
 
     public void NextMonth()
@@ -97,8 +105,12 @@ public class Elg : MonoBehaviour
 
     public void NextYear()
     {
-        hasBirthed = false;
         age_years++;
+        if (age_years > 1 && !hasGrown)
+        {
+            hasGrown = true;
+            ElgManager.instance.ChildrenGrowUp();
+        }
         CalculateNewSize();
         NaturalDeath();
     }
@@ -115,31 +127,34 @@ public class Elg : MonoBehaviour
         }
     }
 
-    void Die()
+    public void Die()
     {
         ElgManager.instance.DecreasePopulation();
+        if (gender == Gender.Male)
+        {
+            ElgManager.instance.MaleDie();
+        }
+        else
+        {
+            ElgManager.instance.FemaleDie();
+        }
+
+        if (age_years < 2)
+        {
+            ElgManager.instance.ChildrenDie();
+        }
+        ElgManager.instance.RemoveFromList(gameObject);
         Destroy(gameObject);
     }
 
 
     void CalculateNewSize()
     {
-        // Dont grow if you reached mature age
-        if (age_years > natural_mature_age)
-        {
-            weight = (10 + (natural_size / 2)) * 10 + (10 + (natural_size / 2)) * (natural_mature_age / 2) * 3;
-        }
-        // First Year grow faster
-        else if (age_years < 1)
-        {
-            weight = (10 + (natural_size / 2)) + (10 + (natural_size / 2)) * (age_years + (age_months / 12)) * 10;
-        }
-        // Slower growth after first year
-        else if (age_years > 0)
-        {
-            weight = (10 + (natural_size / 2)) * 10 + (10 + (natural_size / 2)) * (age_years + ((age_months / 12)) / 2) * 3;
-        }
+        float age = (float)age_years + (float)age_months / 12f;
 
+
+        weight = (0.14f * age * age * age) - (7.16f * age * age) + (109f * age) + 14.18f;
+        weight = weight * ((natural_size / 40f) + 0.8f);
         transform.localScale = new Vector3(0.3f + (weight / 600f), 0.3f + (weight / 600f), 0.3f + (weight / 600f)) ;
         
     }
@@ -154,14 +169,10 @@ public class Elg : MonoBehaviour
         age_years = 0;
         age_months = 0;
         age_days = 0;
-        if (Random.Range(0, 2) == 0)
-        {
-            gender = Gender.Male;
-        }
-        else
-        {
-            gender = Gender.Female;
-        }
+        hasGrown = false;
+
+        ElgManager.instance.ChildrenBorn();
+
         CalculateNewSize();
     }
 
@@ -175,7 +186,7 @@ public class Elg : MonoBehaviour
                 ElgManager.instance.IncreasePopulation();
                 go.GetComponent<Elg>().NewBorn();
                 go.GetComponent<Elg>().SetMother(transform);
-
+                ElgManager.instance.AddToList(go);
                 bool twins = Random.Range(0, 6) == 5;
 
                 if (twins)
@@ -184,13 +195,18 @@ public class Elg : MonoBehaviour
                     ElgManager.instance.IncreasePopulation();
                     go2.GetComponent<Elg>().NewBorn();
                     go2.GetComponent<Elg>().SetMother(transform);
-
+                    ElgManager.instance.AddToList(go2);
                 }
 
                 hasBirthed = true;
             }
 
         }
+    }
+
+    void NewYearTM()
+    {
+        hasBirthed = false;
     }
 
     
