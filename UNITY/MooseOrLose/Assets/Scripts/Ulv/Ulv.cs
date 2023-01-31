@@ -27,13 +27,15 @@ public class Ulv : MonoBehaviour
     bool hasGrown;
 
     public bool isLeader;
-
+    [HideInInspector]
+    public bool hasTarget;
 
     void Awake()
     {
         isLeader = false;
         hasBirthed = false;
         hasGrown = true;
+        hasTarget = false;
 
         age_years = Random.Range(2, 12) + Random.Range(0, 12);
         age_months = Random.Range(0, 12);
@@ -137,6 +139,23 @@ public class Ulv : MonoBehaviour
 
     public void Die()
     {
+        if (isLeader)
+        {
+            if (pack.Count > 1)
+            {
+                int newLeader = 0;
+                for (int i = 0; i < pack.Count; i++)
+                {
+                    if (!pack[i].GetComponent<Ulv>().isLeader)
+                    {
+                        newLeader = i;
+                    }
+                }
+                pack[newLeader].GetComponent<Ulv>().isLeader = true;
+            }
+        }
+
+
         if (gender == Gender.Male)
         {
             UlvManager.instance.MaleDie();
