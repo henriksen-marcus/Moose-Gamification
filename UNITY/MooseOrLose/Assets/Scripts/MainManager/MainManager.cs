@@ -11,11 +11,8 @@ public class MainManager : MonoBehaviour
 
     [Header("Map")]
     public GameObject map;
-    [SerializeField] GameObject mapParent;
+    public GameObject mapParent;
     public List<GameObject> maplist = new List<GameObject>();
-
-    [Header("Trees")]
-    public GameObject treesParent;
 
 
     //--------------------
@@ -23,7 +20,10 @@ public class MainManager : MonoBehaviour
 
     private void Awake()
     {
-        //Spawn the Map
+        //Spawn "Map Folder" to Hirearchy
+        Instantiate(mapParent, Vector3.zero, Quaternion.identity);
+
+        //Spawn the "Map" into "Map Folder"
         for (int i = 0; i < 1; i++)
         {
             maplist.Add(Instantiate(map, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0)) as GameObject);

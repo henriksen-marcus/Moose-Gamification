@@ -20,6 +20,10 @@ public class TreeManager : MonoBehaviour
     [Header("Amount of Trees to Spawn")]
     [SerializeField] int treeSpawnCount = 20000;
 
+    [Header("Trees")]
+    public GameObject treesFolderParent;
+    public GameObject treesParent;
+
     float mapSize_x;
     float mapSize_z;
     Vector3 spawnPosition;
@@ -31,6 +35,13 @@ public class TreeManager : MonoBehaviour
     private void Awake()
     {
         mainManager = FindObjectOfType<MainManager>();
+
+        //Spawn "Map Folder" to "MainManager Folder" in Hirearchy
+        Instantiate(treesFolderParent, Vector3.zero, Quaternion.identity);
+
+
+        //Spawn "Trees Folder" to "MainManager Folder"->"Map Folder" in Hirearchy
+        Instantiate(treesParent, Vector3.zero, Quaternion.identity).transform.parent = treesFolderParent.transform; ;
 
         CalculateMapSize();
         SpawnTreesOnMap();
@@ -60,7 +71,7 @@ public class TreeManager : MonoBehaviour
 
             //Spawn a tree at the random position and place the GameObject in a parent-folder in the hierarchy
             treeSpawnerList.Add(Instantiate(treePrefab, spawnPosition, Quaternion.identity) as GameObject);
-            treeSpawnerList[i].transform.parent = mainManager.treesParent.transform;
+            treeSpawnerList[i].transform.parent = treesParent.transform;
         }
     }
 

@@ -50,3 +50,5 @@ MonoBehaviour:
   PineSpawn: {x: -0.1, y: 0.1}
   SpruceSpawn: {x: 0.1, y: 2.1474836e+9}
   treeSpawnCount: 8000
+  treesFolderParent: {fileID: 6043335930387297013, guid: e78ca3e03db2c994b80096eb08c1f073, type: 3}
+  treesParent: {fileID: 3373085145944750043, guid: d0a9d3e5888e2f240b916774e51ee874, type: 3}
