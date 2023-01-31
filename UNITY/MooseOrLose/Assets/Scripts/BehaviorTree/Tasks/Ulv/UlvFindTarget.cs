@@ -15,6 +15,11 @@ public class UlvFindTarget : Node
     }
     public override NodeState Evaluate()
     {
+        if (!mTransform.GetComponent<Ulv>().isLeader)
+        {
+            return NodeState.FAILURE;
+        }
+
         if (parent.GetData("Target") != null)
         {
             return NodeState.SUCCESS;
