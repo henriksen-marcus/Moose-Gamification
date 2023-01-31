@@ -13,8 +13,11 @@ GameObject:
   - component: {fileID: 3751069026185657850}
   - component: {fileID: 749921616626334152}
   - component: {fileID: 6799963532788571414}
+  - component: {fileID: 749921616626334152}
+  - component: {fileID: 6799963532788571414}
   m_Layer: 0
   m_Name: Elg
+  m_TagString: Elg
   m_TagString: Elg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,6 +32,7 @@ Transform:
   m_GameObject: {fileID: 7319174537759530065}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -120.35384, y: -6.417366, z: 21.108189}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children:
