@@ -36,10 +36,11 @@ public class GridManager : MonoBehaviour
             for (int z = 0; z < _widthZ; z++)
             {
                 var position = transform.position;
-                var spawnedTerrain = Instantiate(_terrainPrefab, new Vector3(x * 10 + position.x, 5, z * 10 + position.z), Quaternion.identity, tileParent.transform);
+                var spawnedTerrain = Instantiate(_terrainPrefab, new Vector3(x * 10 + position.x, 15, z * 10 + position.z), Quaternion.identity, tileParent.transform);
                 spawnedTerrain.name = $"Terrain {x} {z}";
                 spawnedTerrain.Init();
                 _terrainTiles[new Vector2(x, z)] = spawnedTerrain;
+                Debug.Log("Spawned tile");
             }
         }
         
