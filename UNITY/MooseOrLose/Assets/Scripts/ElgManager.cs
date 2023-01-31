@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using TMPro;
+using System;
 
 
 public class ElgManager : MonoBehaviour
@@ -49,11 +50,12 @@ public class ElgManager : MonoBehaviour
         for (int i = 0; i < loop; i++)
         {
             NavMeshHit hit;
-            NavMesh.SamplePosition(new Vector3(Random.Range(-200,200), 10, Random.Range(-200,200)), out hit, 200, 1);
+            NavMesh.SamplePosition(new Vector3(UnityEngine.Random.Range(-200,200), 10, UnityEngine.Random.Range(-200,200)), out hit, 200, 1);
 
             GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
             elg_list.Add(go);
         }
+        PopulationChanged();
     }
 
     private void Update()
@@ -73,16 +75,19 @@ public class ElgManager : MonoBehaviour
 
     public void IncreasePopulation()
     {
+        PopulationChanged();
         elg_population++;
     }
 
     public void IncreasePopulation(int num)
     {
+        PopulationChanged();
         elg_population += num;
     }
 
     public void DecreasePopulation()
     {
+        PopulationChanged();
         elg_population--;
     }
 
@@ -124,11 +129,23 @@ public class ElgManager : MonoBehaviour
 
     public void AddToList(GameObject go)
     {
+        PopulationChanged();
         elg_list.Add(go);
     }
 
     public void RemoveFromList(GameObject go)
     {
+        PopulationChanged();
         elg_list.Add(go);
+    }
+
+
+    public event Action OnPopulationChanged;
+    public void PopulationChanged()
+    {
+        if (OnPopulationChanged != null)
+        {
+            OnPopulationChanged();
+        }
     }
 }
