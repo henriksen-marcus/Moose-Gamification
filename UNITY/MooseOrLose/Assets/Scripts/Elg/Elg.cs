@@ -129,7 +129,6 @@ public class Elg : MonoBehaviour
 
     public void Die()
     {
-        ElgManager.instance.DecreasePopulation();
         if (gender == Gender.Male)
         {
             ElgManager.instance.MaleDie();
@@ -183,7 +182,7 @@ public class Elg : MonoBehaviour
             if (!hasBirthed)
             {
                 GameObject go = Instantiate(ElgPrefab, transform.position, Quaternion.identity);
-                ElgManager.instance.IncreasePopulation();
+
                 go.GetComponent<Elg>().NewBorn();
                 go.GetComponent<Elg>().SetMother(transform);
                 ElgManager.instance.AddToList(go);
@@ -192,7 +191,7 @@ public class Elg : MonoBehaviour
                 if (twins)
                 {
                     GameObject go2 = Instantiate(ElgPrefab, transform.position, Quaternion.identity);
-                    ElgManager.instance.IncreasePopulation();
+
                     go2.GetComponent<Elg>().NewBorn();
                     go2.GetComponent<Elg>().SetMother(transform);
                     ElgManager.instance.AddToList(go2);
