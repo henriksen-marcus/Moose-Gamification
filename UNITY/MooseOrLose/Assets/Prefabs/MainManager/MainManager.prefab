@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1220831141287986701
+--- !u!1 &3599919310494812383
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,22 +8,22 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1220831141287986691}
-  - component: {fileID: 1220831141287986690}
+  - component: {fileID: 3599919310494812381}
+  - component: {fileID: 3599919310494812382}
   m_Layer: 0
-  m_Name: TreeManager
+  m_Name: MainManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1220831141287986691
+--- !u!4 &3599919310494812381
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220831141287986701}
+  m_GameObject: {fileID: 3599919310494812383}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -32,21 +32,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1220831141287986690
+--- !u!114 &3599919310494812382
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220831141287986701}
+  m_GameObject: {fileID: 3599919310494812383}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5303010084d18a4191ee72b785a8a6d, type: 3}
+  m_Script: {fileID: 11500000, guid: d97427d16f955c94f8dd7a4c0d4d7965, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treePrefab: {fileID: 901130458678886016, guid: 57a16d0d7f7594c46babcb8952b089e8, type: 3}
-  treeSpawnerList: []
-  BirchSpawn: {x: -2.1474836e+9, y: -0.1}
-  PineSpawn: {x: -0.1, y: 0.1}
-  SpruceSpawn: {x: 0.1, y: 2.1474836e+9}
-  treeSpawnCount: 7000
+  managerParent: {fileID: 3599919310494812383}
+  colorManager: {fileID: 416558802386191616, guid: 83d88b4356cc2ce41a0515e6b9555e19, type: 3}
+  treeManager: {fileID: 1220831141287986701, guid: ae40c19c27eaa114ead6658d29292758, type: 3}
+  map: {fileID: 4625710756614913341, guid: 338f2c8f31301ac438f3e1d29be68927, type: 3}
+  mapParent: {fileID: 0}
+  maplist: []
+  treesParent: {fileID: 0}
