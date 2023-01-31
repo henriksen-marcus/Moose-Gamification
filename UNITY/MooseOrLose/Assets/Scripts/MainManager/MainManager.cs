@@ -7,15 +7,15 @@ public class MainManager : MonoBehaviour
     [Header("Managers")]
     [SerializeField] GameObject managerParent;
     [SerializeField] GameObject colorManager;
-    [SerializeField] GameObject treeManager;
+    [SerializeField] GameObject forestManager;
 
     [Header("Map")]
     public GameObject map;
     public GameObject mapParent;
     public List<GameObject> maplist = new List<GameObject>();
 
-    [Header("Trees")]
-    public GameObject treesParent;
+    [Header("Forests")]
+    public GameObject forestParent;
 
 
     //--------------------
@@ -35,6 +35,6 @@ public class MainManager : MonoBehaviour
 
         //Spawn all Managers into the "Manager folder"
         (Instantiate(colorManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
-        (Instantiate(treeManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
+        (Instantiate(forestManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
     }
 }

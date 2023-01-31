@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1220831141287986691}
   - component: {fileID: 1220831141287986690}
   m_Layer: 0
-  m_Name: TreeManager
+  m_Name: ForestManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5303010084d18a4191ee72b785a8a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treePrefab: {fileID: 901130458678886016, guid: 57a16d0d7f7594c46babcb8952b089e8, type: 3}
-  treeSpawnerList: []
-  BirchSpawn: {x: -2.1474836e+9, y: -0.1}
-  PineSpawn: {x: -0.1, y: 0.1}
-  SpruceSpawn: {x: 0.1, y: 2.1474836e+9}
-  treeSpawnCount: 7000
+  forestPrefab: {fileID: 901130458678886016, guid: 57a16d0d7f7594c46babcb8952b089e8, type: 3}
+  forestSpawnerList: []
+  BirchForestSpawn: {x: -2.1474836e+9, y: -0.1}
+  PineForestSpawn: {x: -0.1, y: 0.1}
+  SpruceForestSpawn: {x: 0.1, y: 2.1474836e+9}
+  forestSpawnCount: 1000

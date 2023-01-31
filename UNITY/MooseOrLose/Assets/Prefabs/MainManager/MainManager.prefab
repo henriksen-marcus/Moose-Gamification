@@ -46,8 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   managerParent: {fileID: 3599919310494812383}
   colorManager: {fileID: 416558802386191616, guid: 83d88b4356cc2ce41a0515e6b9555e19, type: 3}
-  treeManager: {fileID: 1220831141287986701, guid: ae40c19c27eaa114ead6658d29292758, type: 3}
+  forestManager: {fileID: 1220831141287986701, guid: ae40c19c27eaa114ead6658d29292758, type: 3}
   map: {fileID: 4625710756614913341, guid: 338f2c8f31301ac438f3e1d29be68927, type: 3}
   mapParent: {fileID: 0}
   maplist: []
-  treesParent: {fileID: 0}
+  forestParent: {fileID: 0}
