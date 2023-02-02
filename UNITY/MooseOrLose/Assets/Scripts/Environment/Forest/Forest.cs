@@ -30,6 +30,10 @@ public class Forest : MonoBehaviour
         {
             return treeAge;
         }
+        public void AddTreeAge(float a)
+        {
+            treeAge += a;
+        }
 
         public void SetTreeHeight(float a)
         {
@@ -69,8 +73,6 @@ public class Forest : MonoBehaviour
 
     public Trees[] treeList;
 
-    //public List<Trees> treeList = new List<Trees>();
-
     [Header("Tree States")]
     public string forestState_Type;
     public string forestState_Health;
@@ -98,6 +100,13 @@ public class Forest : MonoBehaviour
 
         SetForestType();
         SetForestColor();
+
+        SetTreeHealth();
+    }
+    private void Update()
+    {
+        UpdateTreeAging();
+        CheckTreeState_Age();
     }
 
 
@@ -120,15 +129,15 @@ public class Forest : MonoBehaviour
             int a = Random.Range(0, 3);
             if (a == 0)
             {
-                treeList[i].SetTreeState_Health(ForestState_Health.treeState_Healthy.ToString());
+                treeList[i].SetTreeState_Health(TreeState_Health.treeState_Healthy.ToString());
             }
             else if (a == 1)
             {
-                treeList[i].SetTreeState_Health(ForestState_Health.treeState_Damaged.ToString());
+                treeList[i].SetTreeState_Health(TreeState_Health.treeState_Damaged.ToString());
             }
             else if (a == 2)
             {
-                treeList[i].SetTreeState_Health(ForestState_Health.treeState_Broken.ToString());
+                treeList[i].SetTreeState_Health(TreeState_Health.treeState_Broken.ToString());
             }
         }
     }
@@ -151,51 +160,6 @@ public class Forest : MonoBehaviour
         }
     }
 
-    void UpdateTreeAging()
-    {
-        for (int i = 0; i < treeList.Length; i++)
-        {
-            treeList[i].SetTreeAge(Random.Range(0f, 120f)); //Insert parameter for TIME here
-
-            if (treeList[i].GetTreeAge() <= 20)
-            {
-                gameObject.transform.localScale = new Vector3(0.075f, 0.08f, 0.075f);
-
-                treeList[i].SetTreeState_Age(ForestState_Age.treeState_Child.ToString());
-            }
-            else if (treeList[i].GetTreeAge() <= 80)
-            {
-                gameObject.transform.localScale = new Vector3(0.15f, 0.08f, 0.15f);
-
-                treeList[i].SetTreeState_Age(ForestState_Age.treeState_Adult.ToString());
-            }
-            else if (treeList[i].GetTreeAge() <= 120)
-            {
-                gameObject.transform.localScale = new Vector3(0.2f, 0.08f, 0.2f);
-
-                treeList[i].SetTreeState_Age(ForestState_Age.treeState_Old.ToString());
-            }
-            else if (treeList[i].GetTreeAge() <= 150)
-            {
-                gameObject.transform.localScale = new Vector3(0.2f, 0.08f, 0.2f);
-                //gameObject.transform.localRotation = Quaternion.Euler(-90, 0, 0);
-
-                treeList[i].SetTreeState_Age(ForestState_Health.treeState_Dead.ToString());
-            }
-            else
-            {
-                //Remove tree from map
-                for (int j = 0; j < treeManager.forestSpawnerList.Count; j++)
-                {
-                    if (treeManager.forestSpawnerList[j].GetComponent<Tree>().gameObject == gameObject)
-                    {
-                        treeManager.forestSpawnerList.RemoveAt(j);
-                        Destroy(gameObject);
-                    }
-                }
-            }
-        }
-    }
     void SetTreeHealth()
     {
         for (int i = 0; i < treeList.Length; i++)
@@ -204,29 +168,63 @@ public class Forest : MonoBehaviour
 
             if (a == 0)
             {
-                treeList[i].SetTreeState_Health(ForestState_Health.treeState_Healthy.ToString());
+                treeList[i].SetTreeState_Health(TreeState_Health.treeState_Healthy.ToString());
             }
             else if (a == 1)
             {
-                treeList[i].SetTreeState_Health(ForestState_Health.treeState_Damaged.ToString());
+                treeList[i].SetTreeState_Health(TreeState_Health.treeState_Damaged.ToString());
             }
             else if (a == 2)
             {
-                treeList[i].SetTreeState_Health(ForestState_Health.treeState_Broken.ToString());
+                treeList[i].SetTreeState_Health(TreeState_Health.treeState_Broken.ToString());
             }
             else if (a == 3)
             {
-                treeList[i].SetTreeState_Health(ForestState_Health.treeState_Chopped.ToString());
+                treeList[i].SetTreeState_Health(TreeState_Health.treeState_Chopped.ToString());
             }
             else
             {
-                treeList[i].SetTreeState_Health(ForestState_Health.treeState_Healthy.ToString());
+                treeList[i].SetTreeState_Health(TreeState_Health.treeState_Healthy.ToString());
             }
         }
     }
     void SetTreeSeason()
     {
         forestState_Season = ForestState_Season.treeState_Spring.ToString();
+    }
+
+    void UpdateTreeAging()
+    {
+        for (int i = 0; i < treeList.Length; i++)
+        {
+            treeList[i].AddTreeAge(Time.deltaTime / 1); //Insert parameter for TIME here
+        }
+    }
+    void CheckTreeState_Age()
+    {
+        for (int i = 0; i < treeList.Length; i++)
+        {
+            if (treeList[i].GetTreeAge() <= 20)
+            {
+                treeList[i].SetTreeState_Age(TreeState_Age.treeState_Child.ToString());
+            }
+            else if(treeList[i].GetTreeAge() <= 80)
+            {
+                treeList[i].SetTreeState_Age(TreeState_Age.treeState_Adult.ToString());
+            }
+            else if (treeList[i].GetTreeAge() <= 120)
+            {
+                treeList[i].SetTreeState_Age(TreeState_Age.treeState_Old.ToString());
+            }
+            else if (treeList[i].GetTreeAge() <= 150)
+            {
+                treeList[i].SetTreeState_Age(TreeState_Health.treeState_Dead.ToString());
+            }
+            else
+            {
+                treeList[i].SetTreeAge(0);
+            }
+        }
     }
 
     void SetForestHealth()
@@ -237,15 +235,15 @@ public class Forest : MonoBehaviour
         #region 
         for (int i = 0; i < treeList.Length; i++)
         {
-            if (treeList[i].GetTreeState_Health() == ForestState_Health.treeState_Healthy.ToString())
+            if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Healthy.ToString())
             {
                 forestHealth_Counter += 3;
             }
-            else if (treeList[i].GetTreeState_Health() == ForestState_Health.treeState_Damaged.ToString())
+            else if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Damaged.ToString())
             {
                 forestHealth_Counter += 2;
             }
-            else if (treeList[i].GetTreeState_Health() == ForestState_Health.treeState_Broken.ToString())
+            else if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Broken.ToString())
             {
                 forestHealth_Counter += 1;
             }
@@ -264,19 +262,19 @@ public class Forest : MonoBehaviour
         {
             if (forestHealth >= 2)
             {
-                forestState_Health = ForestState_Health.treeState_Healthy.ToString();
+                forestState_Health = TreeState_Health.treeState_Healthy.ToString();
             }
             else if (forestHealth >= 1)
             {
-                forestState_Health = ForestState_Health.treeState_Damaged.ToString();
+                forestState_Health = TreeState_Health.treeState_Damaged.ToString();
             }
             else if (forestHealth >= 0)
             {
-                forestState_Health = ForestState_Health.treeState_Broken.ToString();
+                forestState_Health = TreeState_Health.treeState_Broken.ToString();
             }
             else
             {
-                forestState_Health = ForestState_Health.treeState_Dead.ToString();
+                forestState_Health = TreeState_Health.treeState_Dead.ToString();
             }
         }
         #endregion
@@ -304,71 +302,71 @@ public class Forest : MonoBehaviour
     {
         if (forestState_Type == ForestState_Type.treeState_Birch.ToString())
         {
-            if (forestState_Type == ForestState_Health.treeState_Healthy.ToString())
+            if (forestState_Health == TreeState_Health.treeState_Healthy.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.birch_Healthy;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birch_Healthy;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Damaged.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Damaged.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.birch_Damaged;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birch_Damaged;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Broken.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Broken.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.birch_Broken;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birch_Broken;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Dead.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Dead.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.birch_Dead;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birch_Dead;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Chopped.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Chopped.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.birch_Chopped;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birch_Chopped;
             }
         }
         else if (forestState_Type == ForestState_Type.treeState_Pine.ToString())
         {
-            if (forestState_Type == ForestState_Health.treeState_Healthy.ToString())
+            if (forestState_Health == TreeState_Health.treeState_Healthy.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.pine_Healthy;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pine_Healthy;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Damaged.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Damaged.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.pine_Damaged;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pine_Damaged;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Broken.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Broken.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.pine_Broken;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pine_Broken;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Dead.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Dead.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.pine_Dead;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pine_Dead;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Chopped.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Chopped.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.pine_Chopped;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pine_Chopped;
             }
         }
         else if (forestState_Type == ForestState_Type.treeState_Spruce.ToString())
         {
-            if (forestState_Type == ForestState_Health.treeState_Healthy.ToString())
+            if (forestState_Health == TreeState_Health.treeState_Healthy.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.spruce_Healthy;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruce_Healthy;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Damaged.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Damaged.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.spruce_Damaged;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruce_Damaged;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Broken.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Broken.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.spruce_Broken;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruce_Broken;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Dead.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Dead.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.spruce_Dead;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruce_Dead;
             }
-            else if (forestState_Type == ForestState_Health.treeState_Chopped.ToString())
+            else if (forestState_Health == TreeState_Health.treeState_Chopped.ToString())
             {
-                gameObject.GetComponent<MeshRenderer>().material.color = colorManager.spruce_Chopped;
+                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruce_Chopped;
             }
         }
     }

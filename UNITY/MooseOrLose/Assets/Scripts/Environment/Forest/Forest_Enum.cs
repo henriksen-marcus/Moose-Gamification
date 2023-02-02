@@ -11,7 +11,7 @@ public enum ForestState_Type
     treeState_Spruce
 }
 
-public enum ForestState_Age
+public enum TreeState_Age
 {
     none,
 
@@ -20,7 +20,7 @@ public enum ForestState_Age
     treeState_Old
 }
 
-public enum ForestState_Health
+public enum TreeState_Health
 {
     none,
 
