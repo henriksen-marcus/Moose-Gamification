@@ -13,7 +13,7 @@ public class InventoryUI : UI, IPointerEnterHandler
 
     private void Awake()
     {
-        _list = new List<HorizontalLayoutGroup>(GetComponentsInChildren<HorizontalLayoutGroup>());
+        _list = new(GetComponentsInChildren<HorizontalLayoutGroup>());
     }
 
     private void Start()
