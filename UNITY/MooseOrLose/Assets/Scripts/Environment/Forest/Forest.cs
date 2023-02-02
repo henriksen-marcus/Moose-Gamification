@@ -62,6 +62,26 @@ public class Forest : MonoBehaviour
             return treeState_Health;
         }
         #endregion
+
+        public void EatFromTree()
+        {
+            if (GetTreeState_Health() == TreeState_Health.treeState_Healthy.ToString())
+            {
+                SetTreeState_Health(TreeState_Health.treeState_Damaged.ToString());
+            }
+            else if (GetTreeState_Health() == TreeState_Health.treeState_Damaged.ToString())
+            {
+                SetTreeState_Health(TreeState_Health.treeState_Broken.ToString());
+            }
+            else if (GetTreeState_Health() == TreeState_Health.treeState_Broken.ToString())
+            {
+                SetTreeState_Health(TreeState_Health.treeState_Chopped.ToString());
+            }
+            else
+            {
+                print("There are no more food to get from this tree");
+            }
+        }
     };
 
     Trees trees;
@@ -386,12 +406,58 @@ public class Forest : MonoBehaviour
     //--------------------
 
 
-    //Add functions to interract with a Moose
+    #region Functions for a Moose to call
+    public int GetForestTreeAmount()
+    {
+        return treeList.Length;
+    }
 
-    //- Is there a tree in the forest?
-    //- Find threes of different qualities
-    //- Find the best three to eat
-    //- Interract with three
+    public Trees GetATree(int a)
+    {
+        return treeList[a];
+    }
+
+    public Trees GetOptimalTreeToEat()
+    {
+        //Search for Healthy trees
+        for (int i = 0; i < treeList.Length; i++)
+        {
+            if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Healthy.ToString())
+            {
+                return treeList[i];
+            }
+        }
+
+        //Search for Damaged trees
+        for (int i = 0; i < treeList.Length; i++)
+        {
+            if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Damaged.ToString())
+            {
+                return treeList[i];
+            }
+        }
+
+        //Search for Broken trees
+        for (int i = 0; i < treeList.Length; i++)
+        {
+            if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Broken.ToString())
+            {
+                return treeList[i];
+            }
+        }
+
+        print("Found no edible trees in this Forest");
+
+        return null;
+    }
+
+
+    void test()
+    {
+        GetOptimalTreeToEat().EatFromTree();
+    }
+    
+    #endregion
 
 
     //--------------------
