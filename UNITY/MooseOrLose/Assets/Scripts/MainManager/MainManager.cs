@@ -29,7 +29,7 @@ public class MainManager : MonoBehaviour
         //Spawn the "Map" into "Map Folder"
         for (int i = 0; i < 1; i++)
         {
-            maplist.Add(Instantiate(map, new Vector3(0, 0, 0), Quaternion.Euler(-90, 0, 0)) as GameObject);
+            maplist.Add(Instantiate(map, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0)) as GameObject);
             maplist[i].transform.parent = mapParent.transform;
         }
 

@@ -105,8 +105,8 @@ public class Forest : MonoBehaviour
     }
     private void Update()
     {
-        UpdateTreeAging();
-        CheckTreeState_Age();
+        //UpdateTreeAging();
+        //CheckTreeState_Age();
     }
 
 

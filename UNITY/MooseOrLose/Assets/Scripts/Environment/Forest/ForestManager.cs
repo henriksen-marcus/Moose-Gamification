@@ -43,8 +43,8 @@ public class ForestManager : MonoBehaviour
 
     void CalculateMapSize()
     {
-        mapSize_x = mainManager.maplist[0].GetComponent<MeshCollider>().bounds.size.x;
-        mapSize_z = mainManager.maplist[0].GetComponent<MeshCollider>().bounds.size.z;
+        mapSize_x = mainManager.maplist[0].transform.GetChild(0).GetComponent<MeshCollider>().bounds.size.x;
+        mapSize_z = mainManager.maplist[0].transform.GetChild(0).GetComponent<MeshCollider>().bounds.size.z;
     }
 
     void SpawnForestsOnMap()

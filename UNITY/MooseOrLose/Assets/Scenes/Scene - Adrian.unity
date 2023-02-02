@@ -122,7 +122,7 @@ NavMeshSettings:
     preserveTilesOutsideBounds: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: 86d2f9d9bca1f804a939c0e7bbc15f63, type: 2}
 --- !u!1 &536933115
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,6 +451,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3599919310494812382, guid: 1ab4eade23f96b245833d7034664fdf3, type: 3}
+      propertyPath: map
+      value: 
+      objectReference: {fileID: 4601558451322357717, guid: cd7a300ac59aef3499646528762f2cd4, type: 3}
     - target: {fileID: 3599919310494812382, guid: 1ab4eade23f96b245833d7034664fdf3, type: 3}
       propertyPath: mapParent
       value: 
