@@ -103,6 +103,10 @@ public class Forest : MonoBehaviour
 
         SetTreeHealth();
     }
+    private void Start()
+    {
+        SubscribeToEvents();
+    }
     private void Update()
     {
         //UpdateTreeAging();
@@ -369,6 +373,33 @@ public class Forest : MonoBehaviour
                 gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruce_Chopped;
             }
         }
+    }
+
+    void UpdateDayCounter()
+    {
+        for (int i = 0; i < treeList.Length; i++)
+        {
+            treeList[i].AddTreeAge(1);
+        }
+    }
+
+    //--------------------
+
+
+    //Add functions to interract with a Moose
+
+    //- Is there a tree in the forest?
+    //- Find threes of different qualities
+    //- Find the best three to eat
+    //- Interract with three
+
+
+    //--------------------
+
+
+    void SubscribeToEvents()
+    {
+        TimeManager.instance.OnNewDay += UpdateDayCounter;
     }
 }
 
