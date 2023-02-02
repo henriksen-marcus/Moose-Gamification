@@ -16,13 +16,15 @@ public class UlvEatElg : Node
         Transform transform = (Transform)parent.GetData("Target");
 
         // Delete Elg
-        Object.Destroy(transform.gameObject);
+        transform.GetComponent<Elg>().Die();
         parent.ClearData("Target");
-        ElgManager.instance.DecreasePopulation();
 
 
         // Fill Hunger
-        mScript.hunger = 100;
+        for (int i = 0; i < mScript.pack.Count; i++)
+        {
+            mScript.pack[i].GetComponent<Ulv>().hunger = 100;
+        }
         return NodeState.SUCCESS;
     }
 }
