@@ -16,6 +16,7 @@ public class TimeManager : MonoBehaviour
     public float startPlaySpeed;
 
 
+
     [SerializeField] public TextMeshProUGUI dayUI;
     [SerializeField] public TextMeshProUGUI monthUI;
     [SerializeField] public TextMeshProUGUI yearUI;
@@ -37,7 +38,7 @@ public class TimeManager : MonoBehaviour
         year = 0;
         StartCoroutine(NextDay());
 
-        startPlaySpeed = playSpeed;
+        startPlaySpeed = 4;
     }
 
     private void Update()
