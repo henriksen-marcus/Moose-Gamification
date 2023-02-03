@@ -95,7 +95,10 @@ public class TimeManager : MonoBehaviour
     // Update is called once per frame
     IEnumerator NextDay()
     {
+        NewDay();
+
         day++;
+        
         if (day > 29)
         {
             month++;
@@ -110,6 +113,15 @@ public class TimeManager : MonoBehaviour
 
         yield return new WaitForSeconds(playSpeed);
         StartCoroutine(NextDay());
+    }
+
+    public event Action OnNewDay;
+    public void NewDay()
+    {
+        if (OnNewDay != null)
+        {
+            OnNewDay();
+        }
     }
 
 

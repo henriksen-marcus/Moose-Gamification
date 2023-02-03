@@ -46,7 +46,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forestPrefab: {fileID: 901130458678886016, guid: 57a16d0d7f7594c46babcb8952b089e8, type: 3}
   forestSpawnerList: []
-  BirchForestSpawn: {x: -2.1474836e+9, y: -0.1}
-  PineForestSpawn: {x: -0.1, y: 0.1}
-  SpruceForestSpawn: {x: 0.1, y: 2.1474836e+9}
-  forestSpawnCount: 1000
+  BirchForestSpawn: {x: -2.1474836e+9, y: -5}
+  PineForestSpawn: {x: -5, y: 5}
+  SpruceForestSpawn: {x: 5, y: 2.1474836e+9}
+  forestSpawnCount: 1200
+  respawnAmount: 15
+  collisionRangeStart: 7
