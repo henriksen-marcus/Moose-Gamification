@@ -12,6 +12,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] int day;
     [SerializeField] int year;
     public float playSpeed = 15;
+    public float defaultPlaySpeed = 3;
     [HideInInspector]
     public float startPlaySpeed;
 
@@ -38,7 +39,7 @@ public class TimeManager : MonoBehaviour
         year = 0;
         StartCoroutine(NextDay());
 
-        startPlaySpeed = 4;
+        startPlaySpeed = defaultPlaySpeed;
     }
 
     private void Update()
@@ -101,6 +102,7 @@ public class TimeManager : MonoBehaviour
     // Update is called once per frame
     IEnumerator NextDay()
     {
+        yield return new WaitForSeconds(playSpeed);
         NewDay();
 
         day++;
@@ -117,7 +119,7 @@ public class TimeManager : MonoBehaviour
             month = 0;
         }
 
-        yield return new WaitForSeconds(playSpeed);
+        
         StartCoroutine(NextDay());
     }
 
