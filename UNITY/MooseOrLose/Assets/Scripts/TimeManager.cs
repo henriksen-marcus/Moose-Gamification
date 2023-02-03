@@ -23,6 +23,11 @@ public class TimeManager : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        GameObject Canvas = GameObject.Find("UI_Canvas");
+        dayUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Day").GetComponent<TextMeshProUGUI>();
+        monthUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Month").GetComponent<TextMeshProUGUI>();
+        yearUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Year").GetComponent<TextMeshProUGUI>();
+
         if (instance == null)
         {
             instance = this;
