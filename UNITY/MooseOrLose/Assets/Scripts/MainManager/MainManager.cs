@@ -9,11 +9,6 @@ public class MainManager : MonoBehaviour
     [SerializeField] GameObject colorManager;
     [SerializeField] GameObject forestManager;
 
-    [SerializeField] GameObject timeManager;
-    [SerializeField] GameObject mooseManager;
-    [SerializeField] GameObject wolfManager;
-    [SerializeField] GameObject hunterManager;
-
     [Header("Map")]
     public GameObject map;
     public GameObject mapParent;
@@ -41,10 +36,5 @@ public class MainManager : MonoBehaviour
         //Spawn all Managers into the "Manager folder"
         (Instantiate(colorManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
         (Instantiate(forestManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
-
-        (Instantiate(timeManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
-        (Instantiate(mooseManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
-        (Instantiate(wolfManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
-        (Instantiate(hunterManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
     }
 }
