@@ -49,15 +49,10 @@ public class ForestManager : MonoBehaviour
 
     void SpawnForestsOnMap()
     {
-        //Spawn Forest
-
-        //IF Forest collides with another Forest, change its position until it get an area to itself
-
         for (int i = 0; i < forestSpawnCount; i++)
         {
             //Make a random spawn position for this tree (y value i set way above the mesh by purpose)
             spawnPosition = new Vector3((float)Random.Range(-mapSize_x / 2, mapSize_x / 2), 50, (float)Random.Range(-mapSize_z / 2, mapSize_z / 2));
-
 
             //Spawn a tree at the random position and place the GameObject in a parent-folder in the hierarchy
             forestSpawnerList.Add(Instantiate(forestPrefab, spawnPosition, Quaternion.identity) as GameObject);

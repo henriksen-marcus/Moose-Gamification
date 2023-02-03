@@ -62,26 +62,6 @@ public class Forest : MonoBehaviour
             return treeState_Health;
         }
         #endregion
-
-        public void EatFromTree()
-        {
-            if (GetTreeState_Health() == TreeState_Health.treeState_Healthy.ToString())
-            {
-                SetTreeState_Health(TreeState_Health.treeState_Damaged.ToString());
-            }
-            else if (GetTreeState_Health() == TreeState_Health.treeState_Damaged.ToString())
-            {
-                SetTreeState_Health(TreeState_Health.treeState_Broken.ToString());
-            }
-            else if (GetTreeState_Health() == TreeState_Health.treeState_Broken.ToString())
-            {
-                SetTreeState_Health(TreeState_Health.treeState_Chopped.ToString());
-            }
-            else
-            {
-                print("There are no more food to get from this tree");
-            }
-        }
     };
 
     Trees trees;
@@ -122,10 +102,6 @@ public class Forest : MonoBehaviour
         SetForestColor();
 
         SetTreeHealth();
-    }
-    private void Start()
-    {
-        SubscribeToEvents();
     }
     private void Update()
     {
@@ -393,79 +369,6 @@ public class Forest : MonoBehaviour
                 gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruce_Chopped;
             }
         }
-    }
-
-    void UpdateDayCounter()
-    {
-        for (int i = 0; i < treeList.Length; i++)
-        {
-            treeList[i].AddTreeAge(1);
-        }
-    }
-
-    //--------------------
-
-
-    #region Functions for a Moose to call
-    public int GetForestTreeAmount()
-    {
-        return treeList.Length;
-    }
-
-    public Trees GetATree(int a)
-    {
-        return treeList[a];
-    }
-
-    public Trees GetOptimalTreeToEat()
-    {
-        //Search for Healthy trees
-        for (int i = 0; i < treeList.Length; i++)
-        {
-            if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Healthy.ToString())
-            {
-                return treeList[i];
-            }
-        }
-
-        //Search for Damaged trees
-        for (int i = 0; i < treeList.Length; i++)
-        {
-            if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Damaged.ToString())
-            {
-                return treeList[i];
-            }
-        }
-
-        //Search for Broken trees
-        for (int i = 0; i < treeList.Length; i++)
-        {
-            if (treeList[i].GetTreeState_Health() == TreeState_Health.treeState_Broken.ToString())
-            {
-                return treeList[i];
-            }
-        }
-
-        print("Found no edible trees in this Forest");
-
-        return null;
-    }
-
-
-    void test()
-    {
-        GetOptimalTreeToEat().EatFromTree();
-    }
-    
-    #endregion
-
-
-    //--------------------
-
-
-    void SubscribeToEvents()
-    {
-        TimeManager.instance.OnNewDay += UpdateDayCounter;
     }
 }
 
