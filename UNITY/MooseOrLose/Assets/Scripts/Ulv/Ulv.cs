@@ -71,15 +71,15 @@ public class Ulv : MonoBehaviour
     // Update is called once per frame
     IEnumerator NaturalHungerDrain()
     {
-        hunger -= 30;
-        hunger = Mathf.Clamp(hunger, 0, 100);
         yield return new WaitForSeconds(TimeManager.instance.playSpeed);
+        hunger -= 25;
+        hunger = Mathf.Clamp(hunger, 0, 100);
         StartCoroutine(NaturalHungerDrain());
     }
 
     public IEnumerator NextDay()
     {
-
+        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
         age_days++;
         if (age_days > 30)
         {
@@ -87,7 +87,7 @@ public class Ulv : MonoBehaviour
             NextMonth();
         }
         CalculateNewSize();
-        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
+        
         StartCoroutine(NextDay());
     }
     public void NextMonth()

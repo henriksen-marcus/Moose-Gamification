@@ -75,7 +75,7 @@ public class Elg : MonoBehaviour
 
     public IEnumerator NextDay()
     {
-        
+        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
         age_days++;
         if (age_days > 30)
         {
@@ -84,7 +84,7 @@ public class Elg : MonoBehaviour
         }
         NaturalHungerDrain();
         CalculateNewSize();
-        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
+        
         StartCoroutine(NextDay());
     }
 
