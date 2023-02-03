@@ -48,7 +48,7 @@ MonoBehaviour:
   ulv_males: 0
   ulv_females: 0
   ulv_children: 0
-  minNumberOfPacks: 0
+  minNumberOfPacks: 1
   maxNumberOfPacks: 1
   minPackSize: 2
   maxPackSize: 4
