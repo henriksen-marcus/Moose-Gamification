@@ -48,4 +48,8 @@ MonoBehaviour:
   ulv_males: 0
   ulv_females: 0
   ulv_children: 0
+  minNumberOfPacks: 0
+  maxNumberOfPacks: 1
+  minPackSize: 2
+  maxPackSize: 4
   Ulv: {fileID: 2397819239492441603, guid: b98e7af9f6cfd804eb1288997fc8e3b2, type: 3}

@@ -15,6 +15,11 @@ public class UlvEatElg : Node
     {
         Transform transform = (Transform)parent.GetData("Target");
 
+        if (transform == null)
+        {
+            parent.ClearData("Target");
+            return NodeState.FAILURE;
+        }
         // Delete Elg
         transform.GetComponent<Elg>().Die();
         parent.ClearData("Target");

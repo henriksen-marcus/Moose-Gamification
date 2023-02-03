@@ -14,7 +14,11 @@ public class UlvManager : MonoBehaviour
     public int ulv_females;
     public int ulv_children;
 
-
+    [Header("Spawning")]
+    public int minNumberOfPacks = 0;
+    public int maxNumberOfPacks = 2;
+    public int minPackSize = 2;
+    public int maxPackSize = 4;
     [Header("List of Spawned GameObjects")]
     [SerializeField] List<List<GameObject>> ulv_list = new List<List<GameObject>>();
 
@@ -30,11 +34,11 @@ public class UlvManager : MonoBehaviour
             instance = this;
         }
 
-        int numberOfPacks = UnityEngine.Random.Range(1, 3);
+        int numberOfPacks = UnityEngine.Random.Range(minNumberOfPacks, maxNumberOfPacks + 1);
         for (int i = 0; i < numberOfPacks; i++)
         {
             // Spawn
-            int wolvedInPack = UnityEngine.Random.Range(2, 4);
+            int wolvedInPack = UnityEngine.Random.Range(minPackSize, maxPackSize + 1);
             List<GameObject> pack = new List<GameObject>();
             NavMeshHit hit;
             NavMesh.SamplePosition(new Vector3(UnityEngine.Random.Range(-200, 200), 10, UnityEngine.Random.Range(-200, 200)), out hit, 200, 1);
