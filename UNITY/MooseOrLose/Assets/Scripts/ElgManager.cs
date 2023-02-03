@@ -44,6 +44,12 @@ public class ElgManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject Canvas = GameObject.Find("UI_Canvas");
+        populationUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Population").GetComponent<TextMeshProUGUI>();
+        malesUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Male").GetComponent<TextMeshProUGUI>();
+        femalesUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Female").GetComponent<TextMeshProUGUI>();
+        childrenUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Children").GetComponent<TextMeshProUGUI>();
+
         elg_children = 0;
         elg_population = start_population;
         float loop = start_population;
