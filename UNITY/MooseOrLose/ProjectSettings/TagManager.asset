@@ -7,8 +7,6 @@ TagManager:
   - Elg
   - Ulv
   - Jeger
-  - Map
-  - Forest
   layers:
   - Default
   - TransparentFX
