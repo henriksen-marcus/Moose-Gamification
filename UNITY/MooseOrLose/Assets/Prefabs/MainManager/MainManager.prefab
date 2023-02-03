@@ -47,6 +47,10 @@ MonoBehaviour:
   managerParent: {fileID: 3599919310494812383}
   colorManager: {fileID: 416558802386191616, guid: 83d88b4356cc2ce41a0515e6b9555e19, type: 3}
   forestManager: {fileID: 1220831141287986701, guid: ae40c19c27eaa114ead6658d29292758, type: 3}
+  timeManager: {fileID: 8959583645006435329, guid: dbfaabd0ee2bf8548b7f4129d27601ab, type: 3}
+  mooseManager: {fileID: 2499986977817424779, guid: 6e3bdb4f4058c334796e751d8cbd17b5, type: 3}
+  wolfManager: {fileID: 209080958219635482, guid: bed84ad1a2219ac4da686c8799359de5, type: 3}
+  hunterManager: {fileID: 0}
   map: {fileID: 4625710756614913341, guid: 338f2c8f31301ac438f3e1d29be68927, type: 3}
   mapParent: {fileID: 0}
   maplist: []
