@@ -40,7 +40,7 @@ public class WalkRandom : Node
         {
             mAgent.GetComponent<Elg>().AIstate = ElgState.Walking;
         }
-        if (timer > 5f)
+        if (timer > timeToWait)
         {
             timer = 0f;
             NavMeshHit hit;
