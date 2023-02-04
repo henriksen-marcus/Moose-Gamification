@@ -9,11 +9,13 @@ public class ElgGoToForest : Node
     NavMeshAgent mAgent;
     Elg mScript;
     float mSpeed;
+    float acceleration;
     public ElgGoToForest(NavMeshAgent agent)
     {
         mAgent = agent;
         mSpeed = agent.speed;
         mScript = agent.GetComponent<Elg>();
+        acceleration = agent.acceleration;
     }
     public override NodeState Evaluate()
     {
@@ -21,8 +23,9 @@ public class ElgGoToForest : Node
         {
             return NodeState.FAILURE;
         }
-        float speed = mSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
+        float speed = mSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = speed;
+        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
         if ((Forest)parent.GetData("Forest") == null)
         {
             parent.ClearData("Forest");

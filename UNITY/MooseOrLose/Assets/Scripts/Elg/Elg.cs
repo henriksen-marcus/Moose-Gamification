@@ -20,26 +20,40 @@ public enum ElgState
 public class Elg : MonoBehaviour
 {
 
-    public GameObject ElgPrefab;
+    
 
     [Header("Statistics")]
     public int age_days;
     public int age_months;
     public int age_years;
     public float weight;
+    public int antler_tag_number;
 
     public float hunger;
     public ElgState AIstate;
 
 
+
+
     [Header("Genes")]
     public int natural_size;
+    public int natural_antler_size;
 
     public Gender gender;
     public Transform mother;
     bool hasBirthed;
     bool hasGrown;
 
+    [Header("Set In Inspector")]
+    public GameObject ElgPrefab;
+    public GameObject smallAntler;
+    public GameObject bigAntler;
+
+
+    private GameObject Antlers;
+    private bool antlersSpawned = false;
+    private bool bigAntlersSpawned = false;
+    private bool antlersFelled = false;
 
     void Awake()
     {
@@ -47,7 +61,7 @@ public class Elg : MonoBehaviour
         hasBirthed = false;
         hasGrown = true;
         hunger = 100;
-
+        Antlers = transform.Find("Antlers").gameObject;
         age_years = Random.Range(2, 20);
         age_months = Random.Range(0, 12);
         age_days = Random.Range(0, 30);
@@ -58,12 +72,14 @@ public class Elg : MonoBehaviour
         }
         else
         {
+            Antlers.SetActive(false);
             gender = Gender.Female;
             ElgManager.instance.FemaleBorn();
         }
 
         // Genes
-        natural_size = Random.Range(0, 16);
+        natural_size = Random.Range(0, 17);
+        natural_antler_size = Random.Range(0, 17);
         CalculateNewSize();
 
        
@@ -77,6 +93,9 @@ public class Elg : MonoBehaviour
     {
         StartCoroutine(NextDay());
         TimeManager.instance.OnNewYear += NewYearTM;
+        TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
+        TimeManager.instance.OnSpringBegin += GrowAntlers;
+
     }
 
     public IEnumerator NextDay()
@@ -171,7 +190,9 @@ public class Elg : MonoBehaviour
         }
 
         transform.localScale = new Vector3(0.3f + (weight / 600f), 0.3f + (weight / 600f), 0.3f + (weight / 600f)) ;
-        
+    
+
+        CalculateAntlerTags();
     }
 
     public void SetMother(Transform _mother)
@@ -224,31 +245,38 @@ public class Elg : MonoBehaviour
 
     int GetNumberOfChildren()
     {
-        int num = Random.Range(0, 11);
+        int num = Random.Range(0, 101);
+        float male_population_age = ElgManager.instance.GetMalePopulationAge();
+
+        float noChildren = GetChanceOfNoChildren(male_population_age);
+        // low rate
         if (age_years < 6)
         {
-            if (num < 3)
+            if (num < noChildren)
             {
                 return 0;
             }
-            if (num > 8)
+            if (num > 87)
             {
                 return 2;
             }
 
         }
-        if (age_years > 6 && age_years < 16)
+        // high rate
+        if (age_years >= 6 && age_years < 16)
         {
-            if (num < 1)
+            if (num < noChildren - 10)
             {
                 return 0;
             }
-            if (num > 8)
+            if (num > 85)
             {
                 return 2;
             }
 
         }
+
+        // No children
         if (age_years > 15)
         {
             return 0;
@@ -307,5 +335,95 @@ public class Elg : MonoBehaviour
         hunger = Mathf.Clamp(hunger, 0, 100);
     }
 
+    public float GetAge()
+    {
+        float age = age_years;
+        age += ((float)age_months / 12f);
+        return age;
+    }
 
+
+    float GetChanceOfNoChildren(float male_population_age)
+    {
+        return 29.69f * Mathf.Exp(-0.007f * male_population_age);
+    }
+
+    void CalculateAntlerTags()
+    {
+        int gene = natural_antler_size / 4;
+        if (gender == Gender.Female)
+        {
+            antler_tag_number = 0;
+            return;
+        }
+        if (GetAge() < 1)
+        {
+            antler_tag_number = 0;
+            return;
+        }
+        if (GetAge() < 2)
+        {
+            antler_tag_number = gene;
+            return;
+        }
+        if (GetAge() < 6)
+        {
+            antler_tag_number = (int)f(GetAge()) + gene;
+            return;
+        }
+        if (GetAge() >= 6)
+        {
+            antler_tag_number = (int)g(GetAge()) + gene;
+            return;
+        }
+
+        
+    }
+
+    void GrowAntlers()
+    {
+        if (age_years < 4 && age_years > 1 && !antlersSpawned)
+        {
+            antlersSpawned = true;
+            bigAntlersSpawned = false;
+            foreach (Transform child in Antlers.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            Antlers = Instantiate(smallAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+        }
+        else if (!bigAntlersSpawned)
+        {
+            bigAntlersSpawned = true;
+            antlersSpawned = false;
+            foreach (Transform child in Antlers.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            Antlers = Instantiate(bigAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+        }
+    }
+
+    void ShedAntlers()
+    {
+        foreach (Transform child in Antlers.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
+    // used to calculate antler size 2-6 years
+    float f(float x)
+    {
+        return (-1.33f * x * x * x) + (16 * x * x) - (53 * x) + 59;
+    }
+    // used to calculate antler size 6-25 years
+    float g(float x)
+    {
+        return (-0.006f * x * x * x) + (0.3f * x * x) - (4.9f * x) + 45;
+    }
+
+    public int NumberOfAntlerTags()
+    {
+        return antler_tag_number;
+    }
 }

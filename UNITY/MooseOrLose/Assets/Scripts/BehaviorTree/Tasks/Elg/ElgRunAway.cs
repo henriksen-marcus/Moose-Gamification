@@ -10,12 +10,14 @@ public class ElgRunAway : Node
     Elg mScript;
     Transform mTransform;
     float runSpeed;
+    float acceleration;
     public ElgRunAway(NavMeshAgent agent, Transform transform)
     {
         mAgent = agent;
         mScript = agent.GetComponent<Elg>();
         mTransform = transform;
         runSpeed = mAgent.speed * (4f / 3f);
+        acceleration = mAgent.acceleration;
     }
     public override NodeState Evaluate()
     {
@@ -25,6 +27,7 @@ public class ElgRunAway : Node
         }
         float speed = runSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = speed;
+        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
         Transform Danger = (Transform)parent.GetData("Danger");
         Vector3 direction = mTransform.position - Danger.position;
         direction.Normalize();
