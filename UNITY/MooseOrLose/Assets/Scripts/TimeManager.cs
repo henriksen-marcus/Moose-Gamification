@@ -24,7 +24,6 @@ public class TimeManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI yearUI;
 
     private bool springbegun = false;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -94,6 +93,7 @@ public class TimeManager : MonoBehaviour
             }
             dayUI.SetText((day+1).ToString());
         }
+
     }
     public int GetYear() {  return year; }
     public int GetMonth() {  return month; }

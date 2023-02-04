@@ -95,7 +95,7 @@ public class Elg : MonoBehaviour
         TimeManager.instance.OnNewYear += NewYearTM;
         TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
         TimeManager.instance.OnSpringBegin += GrowAntlers;
-
+        GrowAntlers();
     }
 
     public IEnumerator NextDay()
@@ -390,17 +390,18 @@ public class Elg : MonoBehaviour
             {
                 Destroy(child.gameObject);
             }
-            Antlers = Instantiate(smallAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+            Instantiate(smallAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
         }
-        else if (!bigAntlersSpawned)
+        else if (!bigAntlersSpawned && age_years >= 4)
         {
             bigAntlersSpawned = true;
             antlersSpawned = false;
             foreach (Transform child in Antlers.transform)
             {
-                Destroy(child.gameObject);
+                if (child != null)
+                    Destroy(child.gameObject);
             }
-            Antlers = Instantiate(bigAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+            Instantiate(bigAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
         }
     }
 

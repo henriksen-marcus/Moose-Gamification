@@ -42,9 +42,13 @@
 			<aux name="Mat uten næring">
 				<isee:delay_aux/>
 			</aux>
+			<aux name="Elg Stammens Gjennomsnitts alder på okser">
+				<isee:delay_aux/>
+			</aux>
 			<isee:dependencies>
 				<var name="Fødsels_Rate">
 					<in>Melk_Produksjon</in>
+					<in>Elg_Stammens_Gjennomsnitts_alder_på_okser</in>
 				</var>
 				<var name="Melk_Produksjon">
 					<in>Mat_Tilgjengelig</in>
@@ -172,6 +176,11 @@
 				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="271.245">
 					<from>Mat_med_næring</from>
 					<to>Melk_Kvalitet</to>
+				</connector>
+				<aux x="186.304" y="324.857" width="126.25" height="26" name="Elg Stammens Gjennomsnitts alder på okser"/>
+				<connector uid="8" polarity="+" isee:polarity_placement="outside" angle="90">
+					<from>Elg_Stammens_Gjennomsnitts_alder_på_okser</from>
+					<to>Fødsels_Rate</to>
 				</connector>
 			</view>
 		</views>

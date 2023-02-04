@@ -193,7 +193,7 @@
 				<isee:spatial_map color="black" background="white" font_size="12pt"/>
 				<isee:animation_object color="black" background="white" font_size="12pt"/>
 			</style>
-			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:page_cols="2" isee:page_rows="2" isee:scroll_x="111" isee:scroll_y="60" isee:popup_graphs_are_comparative="true" type="stock_flow">
+			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:page_cols="2" isee:page_rows="2" isee:scroll_x="280.833" isee:scroll_y="50" zoom="120" isee:popup_graphs_are_comparative="true" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="white" background="black" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -369,7 +369,8 @@
 				</connector>
 				<text_box uid="29" x="758.482" y="137" width="260" height="25">Regler har egen CLD</text_box>
 				<text_box uid="30" x="1420.48" y="647.607" width="260" height="25">Skogen har egen CLD</text_box>
-				<text_box uid="31" x="681.679" y="647.607" width="164" height="25">Elgen har egen CLD</text_box>
+				<isee:loop_indicator text="R1" orientation="counter_clockwise" uid="31" x="856.804" y="456.905" width="30" height="30"/>
+				<isee:loop_indicator text="B1" orientation="clockwise" uid="32" x="1080.83" y="319.167" width="30" height="30"/>
 			</view>
 		</views>
 	</model>
