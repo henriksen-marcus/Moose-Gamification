@@ -17,7 +17,6 @@ public class JegerWalkToTarget : Node
     {
         if (parent.GetData("Target") == null)
         {
-
             return NodeState.FAILURE;
         }
         if (parent.GetData("Shooting") != null)

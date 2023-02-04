@@ -48,7 +48,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e0180b18e714f34089695f4d4d16595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ulvPrefab: {fileID: 0}
   hunger: 0
+  age_days: 0
+  age_months: 0
+  age_years: 0
+  weight: 0
+  gender: 0
+  leader: {fileID: 0}
+  pack: []
+  natural_size: 0
+  natural_mature_age: 0
+  isLeader: 0
+  hasTarget: 0
 --- !u!65 &3925801184222388161
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -74,7 +86,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6eed90a452ef1e24b840a9101ccc44e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 50
+  range: 35
 --- !u!195 &3007808000768743409
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -86,7 +98,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 5
-  m_Acceleration: 8
+  m_Acceleration: 40
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0

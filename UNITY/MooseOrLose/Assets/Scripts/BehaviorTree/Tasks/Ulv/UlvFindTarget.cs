@@ -28,6 +28,7 @@ public class UlvFindTarget : Node
 
         Collider[] colliders = Physics.OverlapSphere(mTransform.position, mTargetRange);
         float smallest = float.MaxValue;
+       
 
         foreach (Collider collider in colliders)
         {
@@ -38,9 +39,13 @@ public class UlvFindTarget : Node
                 { 
                     smallest = weight;
                     parent.SetData("Target", collider.gameObject.transform);
-                    return NodeState.SUCCESS;
+
                 }
             }
+        }
+        if (parent.GetData("Target") != null)
+        {
+            return NodeState.SUCCESS;
         }
 
         return NodeState.FAILURE;
