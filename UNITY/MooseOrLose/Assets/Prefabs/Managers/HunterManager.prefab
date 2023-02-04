@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jeger: {fileID: 3922603868127242476, guid: 608d9377273f7cc419522d46630e8723, type: 3}
-  jeger_startpopulation: 3
+  jeger_startpopulation: 1
   spawn_location: {x: -110, y: -10, z: 20}
   jeger_population: 0
   jeger_list: []

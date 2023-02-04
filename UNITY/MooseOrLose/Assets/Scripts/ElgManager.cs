@@ -18,6 +18,7 @@ public class ElgManager : MonoBehaviour
     public int elg_males;
     public int elg_females;
     public int elg_children;
+    public int carrying_capacity = 1500;
 
     public float male_population_age;
 
@@ -167,5 +168,10 @@ public class ElgManager : MonoBehaviour
     public void SetMalePopulationAge()
     {
         male_population_age = MalePopulationAge();
+    }
+
+    public float GetPopulationGrowthRate()
+    {
+        return (1 - ((elg_population / carrying_capacity) * (elg_population / carrying_capacity))) * 100;
     }
 }
