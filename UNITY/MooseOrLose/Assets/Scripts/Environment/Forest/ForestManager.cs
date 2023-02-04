@@ -18,7 +18,7 @@ public class ForestManager : MonoBehaviour
     public Vector2 SpruceForestSpawn = new Vector2(0.1f, int.MaxValue);
 
     [Header("Amount of Trees to Spawn")]
-    [SerializeField] int forestSpawnCount = 1;
+    [SerializeField] int forestSpawnCount = 700;
 
     [Header("Spawning")]
     [SerializeField] int respawnAmount = 10;

@@ -128,28 +128,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treesAmountInForest: 0
-  minTreesInForest: 200
-  maxTreesInForest: 1000
-  treeList:
-  - treeAge: 0
-    treeState_Age: 
-    treeState_Health: 
-    treeHeight: 0
-    treeDiameter: 0
-    treeVolum: 0
-    stemHeight: 0
-    budSize: 0
-    barkDamage: 0
-    budDamage: 0
-    branchDamage: 0
-    foodAttached: 0
-    growthRate_Height: 0
-    growthRate_Diameter: 0
-    darknessTolerance: 0
-    soilWaterDrinkability: 0
+  minTreesInForest: 1750
+  maxTreesInForest: 3500
   forestState_Type: 
   forestState_Health: 
   forestState_Season: 
   forest_Height: 0
   forest_Density: 0
-  forestHealth: 0
+  forestCounterCheck: 0
+  treeList: []

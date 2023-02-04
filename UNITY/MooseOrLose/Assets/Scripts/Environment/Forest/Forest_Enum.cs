@@ -17,7 +17,8 @@ public enum TreeState_Age
 
     treeState_Child,
     treeState_Adult,
-    treeState_Old
+    treeState_Old,
+    treeState_Dead
 }
 
 public enum TreeState_Health
