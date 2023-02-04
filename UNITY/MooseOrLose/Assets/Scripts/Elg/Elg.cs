@@ -245,7 +245,7 @@ public class Elg : MonoBehaviour
 
     int GetNumberOfChildren()
     {
-        int num = Random.Range(0, 101);
+        int num = Random.Range(0, (int)ElgManager.instance.GetPopulationGrowthRate());
         float male_population_age = ElgManager.instance.GetMalePopulationAge();
 
         float noChildren = GetChanceOfNoChildren(male_population_age);
@@ -256,7 +256,7 @@ public class Elg : MonoBehaviour
             {
                 return 0;
             }
-            if (num > 87)
+            if (num > 85)
             {
                 return 2;
             }
@@ -269,7 +269,7 @@ public class Elg : MonoBehaviour
             {
                 return 0;
             }
-            if (num > 85)
+            if (num > 80)
             {
                 return 2;
             }
