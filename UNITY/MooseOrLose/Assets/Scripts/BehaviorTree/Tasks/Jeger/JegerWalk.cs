@@ -9,11 +9,13 @@ public class JegerWalk : Node
     NavMeshAgent mAgent;
     float walkSpeed;
     float timer;
+    float acceleration;
     public JegerWalk(NavMeshAgent agent)
     {
         mAgent = agent;
         walkSpeed = agent.speed;
         timer = 11f;
+        acceleration = agent.acceleration;
     }
     public override NodeState Evaluate()
     {
@@ -37,7 +39,7 @@ public class JegerWalk : Node
         
         float speed = walkSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = speed;
-
+        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
         NavMeshHit hit;
         NavMesh.SamplePosition(new Vector3(Random.Range(-200, 200), 10, Random.Range(-200, 200)), out hit, 200, 1);
         mAgent.SetDestination(hit.position);

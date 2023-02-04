@@ -122,6 +122,7 @@ public class TimeManager : MonoBehaviour
                 springbegun = true;
                 SpringBegin();
             }
+            ElgManager.instance.SetMalePopulationAge();
             month++;
             day = 0;
         }

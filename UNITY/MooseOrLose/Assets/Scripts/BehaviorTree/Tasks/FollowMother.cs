@@ -12,12 +12,17 @@ public class FollowMother : Node
     Transform mTransform;
     Elg mScript;
 
+    float speed;
+    float acceleration;
+
     public FollowMother(NavMeshAgent agent, Transform transform, Elg script)
     {
         mAgent = agent;
         mTransform = transform;
         mScript = script;
         timer = 0;
+        speed = mAgent.speed;
+        acceleration = mAgent.acceleration;
     }
     public override NodeState Evaluate()
     {
@@ -30,6 +35,8 @@ public class FollowMother : Node
                 if (timer > 3f)
                 {
                     timer = 0f;
+                    mAgent.speed = speed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+                    mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
                     mAgent.SetDestination(mScript.mother.position);
                     return NodeState.RUNNING;
                 }

@@ -19,6 +19,8 @@ public class ElgManager : MonoBehaviour
     public int elg_females;
     public int elg_children;
 
+    public float male_population_age;
+
     [Header("Spawning Preferences")]
     [SerializeField] int start_population;
 
@@ -62,6 +64,7 @@ public class ElgManager : MonoBehaviour
             elg_list.Add(go);
         }
         PopulationChanged();
+        male_population_age = MalePopulationAge();
     }
 
     private void Update()
@@ -137,5 +140,32 @@ public class ElgManager : MonoBehaviour
         {
             OnPopulationChanged();
         }
+    }
+
+
+    float MalePopulationAge()
+    {
+        float age = 0;
+        foreach(GameObject go in elg_list)
+        {
+            if (go.GetComponent<Elg>().gender == Gender.Male)
+            {
+                age += go.GetComponent<Elg>().GetAge();
+            }
+        }
+        age /= (float)elg_males;
+        return age;
+
+    }
+
+
+    public float GetMalePopulationAge()
+    {
+        return male_population_age;
+    }
+
+    public void SetMalePopulationAge()
+    {
+        male_population_age = MalePopulationAge();
     }
 }
