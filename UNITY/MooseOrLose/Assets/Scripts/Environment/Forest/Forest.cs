@@ -8,6 +8,7 @@ public class Forest : MonoBehaviour
     MainManager mainManager;
     ForestManager forestManager;
     ColorManager colorManager;
+    TimeManager timeManager;
 
     [SerializeField] int treesAmountInForest;
     [SerializeField] int minTreesInForest = 1750;
@@ -21,8 +22,6 @@ public class Forest : MonoBehaviour
     public float forest_Height;
     public float forest_Density;
 
-    [SerializeField] float forestCounterCheck;
-
     public Trees[] treeList;
 
 
@@ -34,23 +33,23 @@ public class Forest : MonoBehaviour
         mainManager = FindObjectOfType<MainManager>();
         forestManager = FindObjectOfType<ForestManager>();
         colorManager = FindObjectOfType<ColorManager>();
-        //trees = FindObjectOfType<Trees>();
 
         treesAmountInForest = Random.Range(minTreesInForest, maxTreesInForest);
 
         RaycastPosition();
+    }
+    private void Start()
+    {
+        timeManager = FindObjectOfType<TimeManager>();
+
+        SubscribeToEvents();
 
         SetForestType();
         MakeTreesInForestList();
 
-        SetTreeHealth();
+        SetForestSeason();
         SetForestHealth();
-
         SetForestColor();
-    }
-    private void Start()
-    {
-        SubscribeToEvents();
     }
 
 
@@ -67,9 +66,10 @@ public class Forest : MonoBehaviour
 
             //Tree age and height
             treeList[i].treeState_Type = forestState_Type;
+
+            treeList[i].SetStats();
         }
     }
-
     public void RaycastPosition()
     {
         RaycastHit hit;
@@ -93,67 +93,30 @@ public class Forest : MonoBehaviour
         }
     }
 
-    void SetTreeHealth()
-    {
-        for (int i = 0; i < treeList.Length; i++)
-        {
-            int a = Random.Range(0, 80);
 
-            if (a >= 30)
-            {
-                treeList[i].treeState_Health = TreeState_Health.treeState_Healthy;
-            }
-            else if (a >= 50)
-            {
-                treeList[i].treeState_Health = TreeState_Health.treeState_Damaged;
-            }
-            else if (a >= 65)
-            {
-                treeList[i].treeState_Health = TreeState_Health.treeState_Broken;
-            }
-            else if (a >= 75)
-            {
-                treeList[i].treeState_Health = TreeState_Health.treeState_Chopped;
-            }
-            else
-            {
-                treeList[i].treeState_Health = TreeState_Health.treeState_Healthy;
-            }
+    //--------------------
+
+
+    void SetForestType()
+    {
+        if (gameObject.transform.position.y >= forestManager.BirchForestSpawn.x && gameObject.transform.position.y <= forestManager.BirchForestSpawn.y)
+        {
+            forestState_Type = ForestState_Type.treeState_Birch;
+        }
+        else if (gameObject.transform.position.y >= forestManager.PineForestSpawn.x && gameObject.transform.position.y <= forestManager.PineForestSpawn.y)
+        {
+            forestState_Type = ForestState_Type.treeState_Pine;
+        }
+        else if (gameObject.transform.position.y >= forestManager.SpruceForestSpawn.x && gameObject.transform.position.y <= forestManager.SpruceForestSpawn.y)
+        {
+            forestState_Type = ForestState_Type.treeState_Spruce;
+        }
+        else
+        {
+            forestState_Type = ForestState_Type.none;
         }
     }
-    void SetTreeSeason()
-    {
-        forestState_Season = ForestState_Season.treeState_Spring;
-    }
-
-    void CheckTreeState_Age()
-    {
-        for (int i = 0; i < treeList.Length; i++)
-        {
-            if (treeList[i].treeAge <= 20)
-            {
-                treeList[i].treeState_Age = TreeState_Age.treeState_Child;
-            }
-            else if(treeList[i].treeAge <= 80)
-            {
-                treeList[i].treeState_Age = TreeState_Age.treeState_Adult;
-            }
-            else if (treeList[i].treeAge <= 120)
-            {
-                treeList[i].treeState_Age = TreeState_Age.treeState_Old;
-            }
-            else if (treeList[i].treeAge <= 150)
-            {
-                treeList[i].treeState_Age = TreeState_Age.treeState_Dead;
-            }
-            else
-            {
-                treeList[i].treeAge = 0;
-            }
-        }
-    }
-
-    public void SetForestHealth()
+    void SetForestHealth()
     {
         int forestHealth_Counter = 0;
 
@@ -185,26 +148,26 @@ public class Forest : MonoBehaviour
         }
         #endregion
     }
-    public void SetForestType()
+    void SetForestSeason()
     {
-        if (gameObject.transform.position.y >= forestManager.BirchForestSpawn.x && gameObject.transform.position.y <= forestManager.BirchForestSpawn.y)
+        if (timeManager.IsSpring())
         {
-            forestState_Type = ForestState_Type.treeState_Birch;
+            forestState_Season = ForestState_Season.treeState_Spring;
         }
-        else if (gameObject.transform.position.y >= forestManager.PineForestSpawn.x && gameObject.transform.position.y <= forestManager.PineForestSpawn.y)
+        else if (timeManager.IsSummer())
         {
-            forestState_Type = ForestState_Type.treeState_Pine;
+            forestState_Season = ForestState_Season.treeState_Summer;
         }
-        else if (gameObject.transform.position.y >= forestManager.SpruceForestSpawn.x && gameObject.transform.position.y <= forestManager.SpruceForestSpawn.y)
+        else if (timeManager.IsAutumn())
         {
-            forestState_Type = ForestState_Type.treeState_Spruce;
+            forestState_Season = ForestState_Season.treeState_Fall;
         }
-        else
+        else if (timeManager.IsWinter())
         {
-            forestState_Type = ForestState_Type.none;
+            forestState_Season = ForestState_Season.treeState_Winter;
         }
     }
-    public void SetForestColor()
+    void SetForestColor()
     {
         if (forestState_Type == ForestState_Type.treeState_Birch)
         {
@@ -334,57 +297,30 @@ public class Forest : MonoBehaviour
     void SubscribeToEvents()
     {
         TimeManager.instance.OnNewDay += UpdateTreeStats;
-        TimeManager.instance.OnNewDay += SetForestColor;
+        TimeManager.instance.OnNewDay += UpdateForestStats;
+    }
+    void UpdateForestStats()
+    {
+        SetForestSeason();
+
+        SetForestHealth();
+
+        SetForestColor();
     }
     void UpdateTreeStats()
     {
-        float heightCounter = 0;
-        int forestHealth_Counter = 0;
-
         for (int i = 0; i < treeList.Length; i++)
         {
-            treeList[i].treeAge += 1;
+            treeList[i].UpdateStats();
 
-            heightCounter += treeList[i].treeHeight;
+            forestManager.totalTreesAmount += treeList.Length;
 
-            //forestHealth_Counter += (int)System.Enum.GetValues(typeof(TreeState_Health)).GetValue(treeList[i].GetTreeState_Health());
-
-            treeList[i].treeHeight += treeList[i].growthRate_Height;
-            treeList[i].treeHeight += treeList[i].growthRate_Diameter;
+            if (treeList[i].isDead)
+            {
+                treeList[i].isDead = false;
+                forestManager.treesDiedOfAge++;
+            }
         }
-
-        //Forest Height
-        forest_Height = heightCounter / treeList.Length;
-
-        //Forest Density
-        forest_Density = (float)treeList.Length / 1000f;
-
-        //Calculate Forest Health State
-        #region 
-        //forestCounterCheck = forestHealth_Counter;
-        //forestHealth_Counter /= treeList.Length;
-
-        //if (forestHealth_Counter <= 1)
-        //{
-        //    forestState_Health = TreeState_Health.treeState_Healthy.ToString();
-        //}
-        //else if (forestHealth_Counter <= 2)
-        //{
-        //    forestState_Health = TreeState_Health.treeState_Damaged.ToString();
-        //}
-        //else if (forestHealth_Counter <= 3)
-        //{
-        //    forestState_Health = TreeState_Health.treeState_Broken.ToString();
-        //}
-        //else if (forestHealth_Counter <= 4)
-        //{
-        //    forestState_Health = TreeState_Health.treeState_Dead.ToString();
-        //}
-        //else
-        //{
-        //    forestState_Health = TreeState_Health.treeState_Chopped.ToString();
-        //}
-        #endregion
     }
 }
 

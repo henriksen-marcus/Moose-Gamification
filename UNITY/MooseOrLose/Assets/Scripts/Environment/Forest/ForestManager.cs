@@ -28,6 +28,10 @@ public class ForestManager : MonoBehaviour
     float mapSize_z;
     Vector3 spawnPosition;
 
+    [Header("Info")]
+    public int totalTreesAmount;
+    public int treesDiedOfAge;
+
 
 
     //--------------------
@@ -40,6 +44,10 @@ public class ForestManager : MonoBehaviour
         CalculateMapSize();
         SpawnForestsOnMap();
 
+    }
+    private void Start()
+    {
+        SubscribeToEvents();
     }
 
 
@@ -114,9 +122,9 @@ public class ForestManager : MonoBehaviour
                         {
                             //Reset stats from Forest's Awake
                             forestSpawnerList[i].GetComponent<Forest>().RaycastPosition();
-                            forestSpawnerList[i].GetComponent<Forest>().SetForestHealth();
-                            forestSpawnerList[i].GetComponent<Forest>().SetForestType();
-                            forestSpawnerList[i].GetComponent<Forest>().SetForestColor();
+                            //forestSpawnerList[i].GetComponent<Forest>().SetForestHealth();
+                            //forestSpawnerList[i].GetComponent<Forest>().SetForestType();
+                            //forestSpawnerList[i].GetComponent<Forest>().SetForestColor();
 
                             isAlone = true;
                         }
@@ -146,6 +154,26 @@ public class ForestManager : MonoBehaviour
             {
                 forestSpawnCount--;
             }
+        }
+    }
+
+
+    //--------------------
+
+
+    void SubscribeToEvents()
+    {
+        TimeManager.instance.OnNewDay += TreeCount;
+    }
+    void TreeCount()
+    {
+        print("Rin TreeCount");
+
+        totalTreesAmount = 0;
+
+        for (int i = 0; i < forestSpawnerList.Count; i++)
+        {
+            totalTreesAmount += forestSpawnerList[i].GetComponent<Forest>().treeList.Length;
         }
     }
 }

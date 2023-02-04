@@ -124,16 +124,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 901130458678886016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07c9d543e141d5d468e09bc184757e8f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f112ac84f8b4ba47a1ba0d9eb946726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   treesAmountInForest: 0
   minTreesInForest: 1750
   maxTreesInForest: 3500
-  forestState_Type: 
-  forestState_Health: 
-  forestState_Season: 
+  forestState_Type: 0
+  forestState_Health: 0
+  forestState_Season: 0
   forest_Height: 0
   forest_Density: 0
-  forestCounterCheck: 0
   treeList: []

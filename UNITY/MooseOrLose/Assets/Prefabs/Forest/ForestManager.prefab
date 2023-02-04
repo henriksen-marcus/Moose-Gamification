@@ -41,14 +41,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 1220831141287986701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5303010084d18a4191ee72b785a8a6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cec9d5dd12cfcf4683ddaca244f3a5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forestPrefab: {fileID: 901130458678886016, guid: 57a16d0d7f7594c46babcb8952b089e8, type: 3}
+  forestPrefab: {fileID: 901130458678886016, guid: e22e5997af67abb419377eb229e7e603, type: 3}
   forestSpawnerList: []
   BirchForestSpawn: {x: -2.1474836e+9, y: -5}
   PineForestSpawn: {x: -5, y: 5}
   SpruceForestSpawn: {x: 5, y: 2.1474836e+9}
-  forestSpawnCount: 1
+  forestSpawnCount: 10
   respawnAmount: 15
   collisionRangeStart: 7
+  totalTreesAmount: 0
+  treesDiedOfAge: 0
