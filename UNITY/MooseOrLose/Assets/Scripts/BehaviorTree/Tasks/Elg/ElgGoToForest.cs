@@ -7,11 +7,13 @@ using UnityEngine.AI;
 public class ElgGoToForest : Node
 {
     NavMeshAgent mAgent;
+    Elg mScript;
     float mSpeed;
     public ElgGoToForest(NavMeshAgent agent)
     {
         mAgent = agent;
         mSpeed = agent.speed;
+        mScript = agent.GetComponent<Elg>();
     }
     public override NodeState Evaluate()
     {
@@ -34,6 +36,7 @@ public class ElgGoToForest : Node
             return NodeState.SUCCESS;
         }
 
+        mScript.AIstate = ElgState.Eating;
         return NodeState.RUNNING;
     }
 }
