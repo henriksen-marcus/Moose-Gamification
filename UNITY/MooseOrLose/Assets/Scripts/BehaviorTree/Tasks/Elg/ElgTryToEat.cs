@@ -20,6 +20,7 @@ public class ElgTryToEat : Node
         }
         float hunger = 70 - mScript.hunger;
         float n = 4;
+        mScript.AIstate = ElgState.Eating;
         // n is how much the moose eat from each tree (in kg)
         for (float i = 0; i < hunger; i += n)
         {

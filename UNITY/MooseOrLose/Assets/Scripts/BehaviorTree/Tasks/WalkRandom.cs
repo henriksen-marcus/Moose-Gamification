@@ -29,6 +29,10 @@ public class WalkRandom : Node
         timer += Time.deltaTime;
         float speed = walkSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = speed;
+        if (mAgent.GetComponent<Elg>() != null)
+        {
+            mAgent.GetComponent<Elg>().AIstate = ElgState.Walking;
+        }
         if (timer > 5f)
         {
             timer = 0f;

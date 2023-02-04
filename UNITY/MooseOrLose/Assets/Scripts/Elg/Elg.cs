@@ -9,6 +9,13 @@ public enum Gender
     Female
 }
 
+public enum ElgState
+{
+    Walking,
+    Eating,
+    Running
+}
+
 
 public class Elg : MonoBehaviour
 {
@@ -22,26 +29,27 @@ public class Elg : MonoBehaviour
     public float weight;
 
     public float hunger;
+    public ElgState AIstate;
 
-    public Gender gender;
-    public Transform mother;
 
     [Header("Genes")]
     public int natural_size;
     public int natural_mature_age;
 
+    public Gender gender;
+    public Transform mother;
     bool hasBirthed;
     bool hasGrown;
 
 
     void Awake()
     {
-
+        AIstate = ElgState.Walking;
         hasBirthed = false;
         hasGrown = true;
         hunger = 100;
 
-        age_years = Random.Range(2, 12) + Random.Range(0, 12);
+        age_years = Random.Range(2, 20);
         age_months = Random.Range(0, 12);
         age_days = Random.Range(0, 30);
         if (Random.Range(0, 2) == 0)

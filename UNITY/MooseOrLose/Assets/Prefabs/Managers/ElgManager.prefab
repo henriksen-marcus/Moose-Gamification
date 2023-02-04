@@ -48,7 +48,7 @@ MonoBehaviour:
   elg_males: 0
   elg_females: 0
   elg_children: 0
-  start_population: 150
+  start_population: 500
   ElgPrefab: {fileID: 7319174537759530065, guid: e44503c30bcf37d48a46d95ea96442b8, type: 3}
   populationUI: {fileID: 0}
   malesUI: {fileID: 0}
