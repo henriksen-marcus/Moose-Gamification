@@ -18,9 +18,12 @@ public class TimeManager : MonoBehaviour
 
 
 
+
     [SerializeField] public TextMeshProUGUI dayUI;
     [SerializeField] public TextMeshProUGUI monthUI;
     [SerializeField] public TextMeshProUGUI yearUI;
+
+    private bool springbegun = false;
 
     // Start is called before the first frame update
     void Awake()
@@ -99,6 +102,11 @@ public class TimeManager : MonoBehaviour
 
     public bool HuntingSeason() { return month == 9 || month == 10 || month == 11; }
 
+    public bool IsSummer() { return month == 5 || month == 6 || month == 7; }
+    public bool IsWinter() { return month == 11 || month == 0 || month == 1; }
+    public bool IsSpring() { return month == 2 || month == 3 || month == 4; }
+    public bool IsAutumn() { return month == 8 || month == 9 || month == 10; }
+
     // Update is called once per frame
     IEnumerator NextDay()
     {
@@ -109,11 +117,17 @@ public class TimeManager : MonoBehaviour
         
         if (day > 29)
         {
+            if (month > 1 && !springbegun)
+            {
+                springbegun = true;
+                SpringBegin();
+            }
             month++;
             day = 0;
         }
         if (month > 11)
         {
+            springbegun = false;
             NewYear();
             year++;
             month = 0;
@@ -139,6 +153,15 @@ public class TimeManager : MonoBehaviour
         if (OnNewYear != null)
         {
             OnNewYear();
+        }
+    }
+
+    public event Action OnSpringBegin;
+    public void SpringBegin()
+    {
+        if (OnSpringBegin != null)
+        {
+            OnSpringBegin();
         }
     }
 }

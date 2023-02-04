@@ -34,7 +34,6 @@ public class Elg : MonoBehaviour
 
     [Header("Genes")]
     public int natural_size;
-    public int natural_mature_age;
 
     public Gender gender;
     public Transform mother;
@@ -65,7 +64,6 @@ public class Elg : MonoBehaviour
 
         // Genes
         natural_size = Random.Range(0, 16);
-        natural_mature_age = Random.Range(5,9);
         CalculateNewSize();
 
        
