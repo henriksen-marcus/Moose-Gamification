@@ -31,6 +31,11 @@ public class ForestManager : MonoBehaviour
     [Header("Info")]
     public int totalTreesAmount;
     public int treesDiedOfAge;
+    public int treesBirth;
+
+    public Vector2 densityBirch;
+    public Vector2 densitySpruce;
+    public Vector2 densityPine;
 
 
 
@@ -167,13 +172,82 @@ public class ForestManager : MonoBehaviour
     }
     void TreeCount()
     {
-        print("Rin TreeCount");
-
         totalTreesAmount = 0;
 
         for (int i = 0; i < forestSpawnerList.Count; i++)
         {
-            totalTreesAmount += forestSpawnerList[i].GetComponent<Forest>().treeList.Length;
+            totalTreesAmount += forestSpawnerList[i].GetComponent<Forest>().treeList.Count;
         }
+
+        #region Get Density
+        //List<float> tempList_Birch = new List<float>();
+        //List<float> tempList_Spruce = new List<float>();
+        //List<float> tempList_Pine = new List<float>();
+
+        //for (int i = 0; i < forestSpawnerList.Count; i++)
+        //{
+        //    if (forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Birch)
+        //    {
+        //        tempList_Birch.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
+        //    }
+        //    else if(forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Spruce)
+        //    {
+        //        tempList_Spruce.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
+        //    }
+        //    else if (forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Pine)
+        //    {
+        //        tempList_Pine.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
+        //    }
+        //}
+
+        //densityBirch.x = tempList_Birch[0];
+        //densityBirch.y = tempList_Birch[0];
+
+        //for (int i = 0; i < tempList_Birch.Count; i++)
+        //{
+        //    if (densityBirch.x > tempList_Birch[i])
+        //    {
+        //        densityBirch.x = tempList_Birch[i];
+        //    }
+
+        //    if (densityBirch.y < tempList_Birch[i])
+        //    {
+        //        densityBirch.y = tempList_Birch[i];
+        //    }
+        //}
+
+        //densitySpruce.x = tempList_Spruce[0];
+        //densitySpruce.y = tempList_Spruce[0];
+
+        //for (int i = 0; i < tempList_Spruce.Count; i++)
+        //{
+        //    if (densitySpruce.x > tempList_Spruce[i])
+        //    {
+        //        densitySpruce.x = tempList_Spruce[i];
+        //    }
+
+        //    if (densitySpruce.y < tempList_Spruce[i])
+        //    {
+        //        densitySpruce.y = tempList_Spruce[i];
+        //    }
+        //}
+
+        //densityPine.x = tempList_Pine[0];
+        //densityPine.y = tempList_Pine[0];
+
+        //for (int i = 0; i < tempList_Pine.Count; i++)
+        //{
+        //    if (densityPine.x > tempList_Pine[i])
+        //    {
+        //        densityPine.x = tempList_Pine[i];
+        //    }
+
+        //    if (densityPine.y < tempList_Pine[i])
+        //    {
+        //        densityPine.y = tempList_Pine[i];
+        //    }
+        //}
+
+        #endregion
     }
 }

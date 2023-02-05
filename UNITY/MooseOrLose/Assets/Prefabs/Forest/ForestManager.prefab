@@ -49,8 +49,9 @@ MonoBehaviour:
   BirchForestSpawn: {x: -2.1474836e+9, y: -5}
   PineForestSpawn: {x: -5, y: 5}
   SpruceForestSpawn: {x: 5, y: 2.1474836e+9}
-  forestSpawnCount: 10
+  forestSpawnCount: 700
   respawnAmount: 15
   collisionRangeStart: 7
   totalTreesAmount: 0
   treesDiedOfAge: 0
+  treesBirth: 0
