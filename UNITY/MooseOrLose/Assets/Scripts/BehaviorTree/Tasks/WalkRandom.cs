@@ -32,7 +32,7 @@ public class WalkRandom : Node
     {
         timer += Time.deltaTime;
         float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
-        timeToWait = 5f * ratio;
+        timeToWait = TimeManager.instance.playSpeed / 2;
         float speed = walkSpeed * ratio;
         mAgent.speed = speed;
         mAgent.acceleration = acceleration * ratio;

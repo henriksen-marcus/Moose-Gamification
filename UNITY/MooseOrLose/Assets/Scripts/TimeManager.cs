@@ -117,13 +117,13 @@ public class TimeManager : MonoBehaviour
         
         if (day > 29)
         {
+            ElgManager.instance.SetMalePopulationAge();
+            month++;
             if (month > 1 && !springbegun)
             {
                 springbegun = true;
                 SpringBegin();
             }
-            ElgManager.instance.SetMalePopulationAge();
-            month++;
             day = 0;
         }
         if (month > 11)
