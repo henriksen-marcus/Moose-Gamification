@@ -382,35 +382,44 @@ public class Elg : MonoBehaviour
 
     void GrowAntlers()
     {
-        if (age_years < 4 && age_years > 1 && !antlersSpawned)
+        if (Antlers != null)
         {
-            antlersSpawned = true;
-            bigAntlersSpawned = false;
-            foreach (Transform child in Antlers.transform)
+            if (age_years < 4 && age_years > 1 && !antlersSpawned)
             {
-                Destroy(child.gameObject);
-            }
-            Instantiate(smallAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
-        }
-        else if (!bigAntlersSpawned && age_years >= 4)
-        {
-            bigAntlersSpawned = true;
-            antlersSpawned = false;
-            foreach (Transform child in Antlers.transform)
-            {
-                if (child != null)
+                antlersSpawned = true;
+                bigAntlersSpawned = false;
+                foreach (Transform child in Antlers.transform)
+                {
                     Destroy(child.gameObject);
+                }
+                Instantiate(smallAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
             }
-            Instantiate(bigAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+            else if (!bigAntlersSpawned && age_years >= 4)
+            {
+                bigAntlersSpawned = true;
+                antlersSpawned = false;
+                foreach (Transform child in Antlers.transform)
+                {
+                    if (child != null)
+                        Destroy(child.gameObject);
+                }
+                Instantiate(bigAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+            }
         }
     }
 
     void ShedAntlers()
     {
-        foreach (Transform child in Antlers.transform)
+        if (Antlers != null)
         {
-            Destroy(child.gameObject);
+            foreach (Transform child in Antlers.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            antlersSpawned = false;
+            bigAntlersSpawned = false;
         }
+
     }
     // used to calculate antler size 2-6 years
     float f(float x)
