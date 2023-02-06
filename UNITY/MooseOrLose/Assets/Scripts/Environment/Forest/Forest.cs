@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using System.Linq;
-using System;
 
 public class Forest : MonoBehaviour
 {
@@ -13,8 +11,8 @@ public class Forest : MonoBehaviour
     TimeManager timeManager;
 
     [SerializeField] int treesAmountInForest;
-    [SerializeField] int minTreesInForest = 1750;
-    [SerializeField] int maxTreesInForest = 3500;
+    [SerializeField] static int minTreesInForest = 1750;
+    [SerializeField] static int maxTreesInForest = 3500;
 
     [Header("Tree States")]
     public ForestState_Type forestState_Type;
@@ -27,6 +25,7 @@ public class Forest : MonoBehaviour
 
     Trees[] treeArray;
     public List<Trees> treeList;
+
 
 
     //--------------------
@@ -74,14 +73,15 @@ public class Forest : MonoBehaviour
 
         for (int i = 0; i < treesAmountInForest; i++)
         {
-            treeArray[i] = new Trees();
-
-            //Tree age and height
-            treeArray[i].treeState_Type = forestState_Type;
-
+            treeArray[i] = new Trees
+            {
+                //Tree age and height
+                treeState_Type = forestState_Type
+            };
             treeArray[i].SetStats();
         }
     }
+
     public void RaycastPosition()
     {
         RaycastHit hit;
@@ -147,6 +147,8 @@ public class Forest : MonoBehaviour
 
         forestHealth_Counter /= treeList.Count;
 
+
+
         //Calculate Forest Health State
         #region
         if (forestHealth_Counter >= 2)
@@ -169,163 +171,154 @@ public class Forest : MonoBehaviour
     }
     void SetForestSeason()
     {
-        if (timeManager.IsSpring())
+        switch (timeManager.GetSeason())
         {
-            forestState_Season = ForestState_Season.forestSeason_Spring;
-        }
-        else if (timeManager.IsSummer())
-        {
-            forestState_Season = ForestState_Season.forestSeason_Summer;
-        }
-        else if (timeManager.IsAutumn())
-        {
-            forestState_Season = ForestState_Season.forestSeason_Fall;
-        }
-        else if (timeManager.IsWinter())
-        {
-            forestState_Season = ForestState_Season.forestSeason_Winter;
+            case TimeManager.Season.Summer:
+                forestState_Season = ForestState_Season.forestSeason_Summer;
+                break;
+            case TimeManager.Season.Winter:
+                forestState_Season = ForestState_Season.forestSeason_Winter;
+                break;
+            case TimeManager.Season.Spring:
+                forestState_Season = ForestState_Season.forestSeason_Spring;
+                break;
+            case TimeManager.Season.Fall:
+                forestState_Season = ForestState_Season.forestSeason_Fall;
+                break;
         }
     }
+
+
     void SetForestColor()
     {
-        if (forestState_Type == ForestState_Type.forestType_Birch)
+        switch (forestState_Type)
         {
-            if (forest_Density < 30)
-            {
-                forestState_Density = ForestState_Density.forestVolum_1;
-            }
-            else if (forest_Density < 40)
-            {
-                forestState_Density = ForestState_Density.forestVolum_2;
-            }
-            else if (forest_Density < 50)
-            {
-                forestState_Density = ForestState_Density.forestVolum_3;
-            }
-            else if (forest_Density < 60)
-            {
-                forestState_Density = ForestState_Density.forestVolum_4;
-            }
-            else
-            {
-                forestState_Density = ForestState_Density.forestVolum_5;
-            }
-        }
-        else if (forestState_Type == ForestState_Type.forestType_Spruce)
-        {
-            if (forest_Density < 400)
-            {
-                forestState_Density = ForestState_Density.forestVolum_1;
-            }
-            else if (forest_Density < 600)
-            {
-                forestState_Density = ForestState_Density.forestVolum_2;
-            }
-            else if (forest_Density < 800)
-            {
-                forestState_Density = ForestState_Density.forestVolum_3;
-            }
-            else if (forest_Density < 1000)
-            {
-                forestState_Density = ForestState_Density.forestVolum_4;
-            }
-            else
-            {
-                forestState_Density = ForestState_Density.forestVolum_5;
-            }
-        }
-        else if (forestState_Type == ForestState_Type.forestType_Pine)
-        {
-            if (forest_Density < 140)
-            {
-                forestState_Density = ForestState_Density.forestVolum_1;
-            }
-            else if (forest_Density < 200)
-            {
-                forestState_Density = ForestState_Density.forestVolum_2;
-            }
-            else if (forest_Density < 250)
-            {
-                forestState_Density = ForestState_Density.forestVolum_3;
-            }
-            else if (forest_Density < 300)
-            {
-                forestState_Density = ForestState_Density.forestVolum_4;
-            }
-            else
-            {
-                forestState_Density = ForestState_Density.forestVolum_5;
-            }
+            case ForestState_Type.forestType_Birch:
+                switch (forest_Density)
+                {
+                    case < 30:
+                        forestState_Density = ForestState_Density.forestVolum_1;
+                        break;
+                    case < 40:
+                        forestState_Density = ForestState_Density.forestVolum_2;
+                        break;
+                    case < 50:
+                        forestState_Density = ForestState_Density.forestVolum_3;
+                        break;
+                    case < 60:
+                        forestState_Density = ForestState_Density.forestVolum_4;
+                        break;
+                    default:
+                        forestState_Density = ForestState_Density.forestVolum_5;
+                        break;
+                }
+                break;
+
+            case ForestState_Type.forestType_Spruce:
+                switch (forest_Density)
+                {
+                    case < 400:
+                        forestState_Density = ForestState_Density.forestVolum_1;
+                        break;
+                    case < 600:
+                        forestState_Density = ForestState_Density.forestVolum_2;
+                        break;
+                    case < 800:
+                        forestState_Density = ForestState_Density.forestVolum_3;
+                        break;
+                    case < 1000:
+                        forestState_Density = ForestState_Density.forestVolum_4;
+                        break;
+                    default:
+                        forestState_Density = ForestState_Density.forestVolum_5;
+                        break;
+                }
+                break;
+
+            case ForestState_Type.forestType_Pine:
+                switch (forest_Density)
+                {
+                    case < 140:
+                        forestState_Density = ForestState_Density.forestVolum_1;
+                        break;
+                    case < 200:
+                        forestState_Density = ForestState_Density.forestVolum_2;
+                        break;
+                    case < 250:
+                        forestState_Density = ForestState_Density.forestVolum_3;
+                        break;
+                    case < 300:
+                        forestState_Density = ForestState_Density.forestVolum_4;
+                        break;
+                    default:
+                        forestState_Density = ForestState_Density.forestVolum_5;
+                        break;
+                }
+                break;
         }
 
-        if (forestState_Type == ForestState_Type.forestType_Birch)
+        switch (forestState_Type)
         {
-            if (forestState_Density == ForestState_Density.forestVolum_1)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_1;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_2)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_2;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_3)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_3;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_4)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_4;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_5)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_5;
-            }
-        }
-        else if (forestState_Type == ForestState_Type.forestType_Pine)
-        {
-            if (forestState_Density == ForestState_Density.forestVolum_1)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_1;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_2)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_2;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_3)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_3;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_4)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_4;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_5)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_5;
-            }
-        }
-        else if (forestState_Type == ForestState_Type.forestType_Spruce)
-        {
-            if (forestState_Density == ForestState_Density.forestVolum_1)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_1;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_2)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_2;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_3)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_3;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_4)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_4;
-            }
-            else if (forestState_Density == ForestState_Density.forestVolum_5)
-            {
-                gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_5;
-            }
+            case ForestState_Type.forestType_Birch:
+                switch (forestState_Density)
+                {
+                    case ForestState_Density.forestVolum_1:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_1;
+                        break;
+                    case ForestState_Density.forestVolum_2:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_2;
+                        break;
+                    case ForestState_Density.forestVolum_3:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_3;
+                        break;
+                    case ForestState_Density.forestVolum_4:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_4;
+                        break;
+                    case ForestState_Density.forestVolum_5:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_5;
+                        break;
+                }
+                break;
+            case ForestState_Type.forestType_Pine:
+                switch (forestState_Density)
+                {
+                    case ForestState_Density.forestVolum_1:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_1;
+                        break;
+                    case ForestState_Density.forestVolum_2:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_2;
+                        break;
+                    case ForestState_Density.forestVolum_3:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_3;
+                        break;
+                    case ForestState_Density.forestVolum_4:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_4;
+                        break;
+                    case ForestState_Density.forestVolum_5:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_5;
+                        break;
+                }
+                break;
+            case ForestState_Type.forestType_Spruce:
+                switch (forestState_Density)
+                {
+                    case ForestState_Density.forestVolum_1:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_1;
+                        break;
+                    case ForestState_Density.forestVolum_2:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_2;
+                        break;
+                    case ForestState_Density.forestVolum_3:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_3;
+                        break;
+                    case ForestState_Density.forestVolum_4:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_4;
+                        break;
+                    case ForestState_Density.forestVolum_5:
+                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_5;
+                        break;
+                }
+                break;
         }
     }
 
@@ -373,7 +366,7 @@ public class Forest : MonoBehaviour
             }
         }
 
-        print("Found no edible trees in this Forest");
+        //print("Found no edible trees in this Forest");
 
         return null;
     }

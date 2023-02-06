@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
+using System.Linq;
 
 public class ForestManager : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class ForestManager : MonoBehaviour
     public Vector2 densitySpruce;
     public Vector2 densityPine;
 
+    private float timer = 0f;
+
 
 
     //--------------------
@@ -45,6 +48,7 @@ public class ForestManager : MonoBehaviour
     private void Awake()
     {
         mainManager = FindObjectOfType<MainManager>();
+        forestSpawnerList = new List<GameObject>(forestSpawnCount);
 
         CalculateMapSize();
         SpawnForestsOnMap();
@@ -67,6 +71,9 @@ public class ForestManager : MonoBehaviour
 
     void SpawnForestsOnMap()
     {
+        timer = Time.realtimeSinceStartup;
+
+
         //Spawn Forest
         for (int i = 0; i < forestSpawnCount;)
         {
@@ -93,7 +100,7 @@ public class ForestManager : MonoBehaviour
                     forestSpawnerList[i].transform.position.z >= (forestSpawnerList[j - 1].transform.position.z - collisionRange)))
                 {
                     //If there is another Forest in this position, move this forest to a new location
-                    print(forestSpawnerList[i].name + " (" + forestSpawnerList[i].transform.position + ") overlaps with " + forestSpawnerList[j - 1].name + " (" + forestSpawnerList[j - 1].transform.position + ") ");
+                    //print(forestSpawnerList[i].name + " (" + forestSpawnerList[i].transform.position + ") overlaps with " + forestSpawnerList[j - 1].name + " (" + forestSpawnerList[j - 1].transform.position + ") ");
 
                     bool isAlone = false;
 
@@ -103,7 +110,7 @@ public class ForestManager : MonoBehaviour
 
                         forestSpawnerList[i].transform.position = new Vector3((float)Random.Range(-mapSize_x / 2, mapSize_x / 2), 50, (float)Random.Range(-mapSize_z / 2, mapSize_z / 2));
 
-                        print(forestSpawnerList[i].name + " changed Position to: " + forestSpawnerList[i].transform.position);
+                        //print(forestSpawnerList[i].name + " changed Position to: " + forestSpawnerList[i].transform.position);
 
                         for (int k = 1; k < forestSpawnerList.Count; k++)
                         {
@@ -114,7 +121,7 @@ public class ForestManager : MonoBehaviour
                             (forestSpawnerList[i].transform.position.z <= (forestSpawnerList[k - 1].transform.position.z + collisionRange) &&
                             forestSpawnerList[i].transform.position.z >= (forestSpawnerList[k - 1].transform.position.z - collisionRange)))
                             {
-                                print(forestSpawnerList[i].name + " retries position transforming");
+                                //print(forestSpawnerList[i].name + " retries position transforming");
 
                                 positionRetryCounter++;
 
@@ -146,7 +153,6 @@ public class ForestManager : MonoBehaviour
                             }
                         }
                     }
-
                     break;
                 }
             }
@@ -160,6 +166,9 @@ public class ForestManager : MonoBehaviour
                 forestSpawnCount--;
             }
         }
+
+        timer = Time.realtimeSinceStartup - timer;
+        print("Elapsed: " + timer);
     }
 
 
