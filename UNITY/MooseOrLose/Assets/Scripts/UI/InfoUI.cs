@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class InfoUI : MonoBehaviour
+public class InfoUI : UI
 {
     public static bool GridOn = true;
     [SerializeField] private TextMeshProUGUI mooseCount;
