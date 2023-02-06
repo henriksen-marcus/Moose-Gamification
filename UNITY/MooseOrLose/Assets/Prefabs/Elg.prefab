@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3339289011956881826
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1283675825903460230}
+  m_Layer: 0
+  m_Name: Antlers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1283675825903460230
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3339289011956881826}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.822, z: 1.082}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3376597261074670399}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7319174537759530065
 GameObject:
   m_ObjectHideFlags: 0
@@ -28,11 +59,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7319174537759530065}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -120.35384, y: -6.417366, z: 21.108189}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7680404882657421505}
+  - {fileID: 1283675825903460230}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59,7 +91,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 5
-  m_Acceleration: 8
+  m_Acceleration: 30
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
@@ -82,15 +114,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a439641ba14ca1f468bd77f85eac7a16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ElgPrefab: {fileID: 7319174537759530065}
   age_days: 0
   age_months: 0
   age_years: 0
   weight: 0
+  hunger: 0
+  AIstate: 0
+  natural_size: 0
   gender: 0
   mother: {fileID: 0}
-  natural_size: 0
-  natural_mature_age: 0
+  ElgPrefab: {fileID: 7319174537759530065}
+  smallAntler: {fileID: 5344464025957976426, guid: e38d0778e8ce60542ac951973284605d, type: 3}
+  bigAntler: {fileID: 6277322592998919508, guid: 1afb51c570c229443a06bf272d694217, type: 3}
 --- !u!65 &6799963532788571414
 BoxCollider:
   m_ObjectHideFlags: 0

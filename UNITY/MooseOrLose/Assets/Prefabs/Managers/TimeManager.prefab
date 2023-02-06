@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 620a2ef4a8a97fb48b5a552d99ef4b46, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  month: 3
+  month: 0
   day: 0
   year: 0
-  playSpeed: 2
+  playSpeed: 3
+  defaultPlaySpeed: 3
   startPlaySpeed: 0
   dayUI: {fileID: 0}
   monthUI: {fileID: 0}

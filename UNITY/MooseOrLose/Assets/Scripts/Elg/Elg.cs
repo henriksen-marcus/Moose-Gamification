@@ -9,36 +9,60 @@ public enum Gender
     Female
 }
 
+public enum ElgState
+{
+    Walking,
+    Eating,
+    Running
+}
+
 
 public class Elg : MonoBehaviour
 {
 
-    public GameObject ElgPrefab;
+    
 
     [Header("Statistics")]
     public int age_days;
     public int age_months;
     public int age_years;
     public float weight;
+    public int antler_tag_number;
 
-    public Gender gender;
-    public Transform mother;
+    public float hunger;
+    public ElgState AIstate;
+
+
+
 
     [Header("Genes")]
     public int natural_size;
-    public int natural_mature_age;
+    public int natural_antler_size;
 
+    public Gender gender;
+    public Transform mother;
     bool hasBirthed;
     bool hasGrown;
 
+    [Header("Set In Inspector")]
+    public GameObject ElgPrefab;
+    public GameObject smallAntler;
+    public GameObject bigAntler;
+
+
+    private GameObject Antlers;
+    private bool antlersSpawned = false;
+    private bool bigAntlersSpawned = false;
+    private bool antlersFelled = false;
 
     void Awake()
     {
-
+        AIstate = ElgState.Walking;
         hasBirthed = false;
         hasGrown = true;
-
-        age_years = Random.Range(2, 12) + Random.Range(0, 12);
+        hunger = 100;
+        Antlers = transform.Find("Antlers").gameObject;
+        age_years = Random.Range(2, 20);
         age_months = Random.Range(0, 12);
         age_days = Random.Range(0, 30);
         if (Random.Range(0, 2) == 0)
@@ -48,13 +72,14 @@ public class Elg : MonoBehaviour
         }
         else
         {
+            Antlers.SetActive(false);
             gender = Gender.Female;
             ElgManager.instance.FemaleBorn();
         }
 
         // Genes
-        natural_size = Random.Range(0, 16);
-        natural_mature_age = Random.Range(5,9);
+        natural_size = Random.Range(0, 17);
+        natural_antler_size = Random.Range(0, 17);
         CalculateNewSize();
 
        
@@ -68,19 +93,23 @@ public class Elg : MonoBehaviour
     {
         StartCoroutine(NextDay());
         TimeManager.instance.OnNewYear += NewYearTM;
+        TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
+        TimeManager.instance.OnSpringBegin += GrowAntlers;
+        GrowAntlers();
     }
 
     public IEnumerator NextDay()
     {
-        
+        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
         age_days++;
         if (age_days > 30)
         {
             age_days = 0;
             NextMonth();
         }
+        NaturalHungerDrain();
         CalculateNewSize();
-        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
+        
         StartCoroutine(NextDay());
     }
 
@@ -107,7 +136,7 @@ public class Elg : MonoBehaviour
     public void NextYear()
     {
         age_years++;
-        if (age_years > 1 && !hasGrown)
+        if (!hasGrown)
         {
             hasGrown = true;
             ElgManager.instance.ChildrenGrowUp();
@@ -155,8 +184,15 @@ public class Elg : MonoBehaviour
 
         weight = (0.14f * age * age * age) - (7.16f * age * age) + (109f * age) + 14.18f;
         weight = weight * ((natural_size / 40f) + 0.8f);
+        if (gender == Gender.Female)
+        {
+            weight *= 0.85f;
+        }
+
         transform.localScale = new Vector3(0.3f + (weight / 600f), 0.3f + (weight / 600f), 0.3f + (weight / 600f)) ;
-        
+    
+
+        CalculateAntlerTags();
     }
 
     public void SetMother(Transform _mother)
@@ -182,20 +218,17 @@ public class Elg : MonoBehaviour
         {
             if (!hasBirthed)
             {
-                GameObject go = Instantiate(ElgPrefab, transform.position, Quaternion.identity);
+                int numberOfChildren = GetNumberOfChildren();
 
-                go.GetComponent<Elg>().NewBorn();
-                go.GetComponent<Elg>().SetMother(transform);
-                ElgManager.instance.AddToList(go);
-                bool twins = Random.Range(0, 6) == 5;
 
-                if (twins)
+                for (int i = 0; i < numberOfChildren; i++)
                 {
-                    GameObject go2 = Instantiate(ElgPrefab, transform.position, Quaternion.identity);
 
-                    go2.GetComponent<Elg>().NewBorn();
-                    go2.GetComponent<Elg>().SetMother(transform);
-                    ElgManager.instance.AddToList(go2);
+                    GameObject go = Instantiate(ElgPrefab, transform.position, Quaternion.identity, ElgManager.instance.transform);
+
+                    go.GetComponent<Elg>().NewBorn();
+                    go.GetComponent<Elg>().SetMother(transform);
+                    ElgManager.instance.AddToList(go);
                 }
 
                 hasBirthed = true;
@@ -209,5 +242,198 @@ public class Elg : MonoBehaviour
         hasBirthed = false;
     }
 
-    
+
+    int GetNumberOfChildren()
+    {
+        int num = Random.Range(0, (int)ElgManager.instance.GetPopulationGrowthRate());
+        float male_population_age = ElgManager.instance.GetMalePopulationAge();
+
+        float noChildren = GetChanceOfNoChildren(male_population_age);
+        // low rate
+        if (age_years < 6)
+        {
+            if (num < noChildren)
+            {
+                return 0;
+            }
+            if (num > 85)
+            {
+                return 2;
+            }
+
+        }
+        // high rate
+        if (age_years >= 6 && age_years < 16)
+        {
+            if (num < noChildren - 10)
+            {
+                return 0;
+            }
+            if (num > 80)
+            {
+                return 2;
+            }
+
+        }
+
+        // No children
+        if (age_years > 15)
+        {
+            return 0;
+        }
+
+        return 1;
+    }
+
+    void NaturalHungerDrain()
+    {
+
+        switch (TimeManager.instance.GetMonth())
+        {
+            case 0:
+                hunger -= Random.Range(8, 17);
+                break;
+            case 1:
+                hunger -= Random.Range(8, 17);
+                break;
+            case 2:
+                hunger -= Random.Range(10, 26);
+                break;
+            case 3:
+                hunger -= Random.Range(10, 26);
+                break;
+            case 4:
+                hunger -= Random.Range(25, 51);
+                break;
+            case 5:
+                hunger -= Random.Range(25, 51);
+                break;
+            case 6:
+                hunger -= Random.Range(25, 51);
+                break;
+            case 7:
+                hunger -= Random.Range(25, 51);
+                break;
+            case 8:
+                hunger -= Random.Range(10, 26);
+                break;
+            case 9:
+                hunger -= Random.Range(10, 26);
+                break;
+            case 10:
+                hunger -= Random.Range(8, 17);
+                break;
+            case 11:
+                hunger -= Random.Range(8, 17);
+                break;
+            default:
+                hunger -= Random.Range(8,17);
+                break;
+
+        }
+
+        hunger = Mathf.Clamp(hunger, 0, 100);
+    }
+
+    public float GetAge()
+    {
+        float age = age_years;
+        age += ((float)age_months / 12f);
+        return age;
+    }
+
+
+    float GetChanceOfNoChildren(float male_population_age)
+    {
+        return 29.69f * Mathf.Exp(-0.007f * male_population_age);
+    }
+
+    void CalculateAntlerTags()
+    {
+        int gene = natural_antler_size / 4;
+        if (gender == Gender.Female)
+        {
+            antler_tag_number = 0;
+            return;
+        }
+        if (GetAge() < 1)
+        {
+            antler_tag_number = 0;
+            return;
+        }
+        if (GetAge() < 2)
+        {
+            antler_tag_number = gene;
+            return;
+        }
+        if (GetAge() < 6)
+        {
+            antler_tag_number = (int)f(GetAge()) + gene;
+            return;
+        }
+        if (GetAge() >= 6)
+        {
+            antler_tag_number = (int)g(GetAge()) + gene;
+            return;
+        }
+
+        
+    }
+
+    void GrowAntlers()
+    {
+        if (Antlers != null)
+        {
+            if (age_years < 4 && age_years > 1 && !antlersSpawned)
+            {
+                antlersSpawned = true;
+                bigAntlersSpawned = false;
+                foreach (Transform child in Antlers.transform)
+                {
+                    Destroy(child.gameObject);
+                }
+                Instantiate(smallAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+            }
+            else if (!bigAntlersSpawned && age_years >= 4)
+            {
+                bigAntlersSpawned = true;
+                antlersSpawned = false;
+                foreach (Transform child in Antlers.transform)
+                {
+                    if (child != null)
+                        Destroy(child.gameObject);
+                }
+                Instantiate(bigAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+            }
+        }
+    }
+
+    void ShedAntlers()
+    {
+        if (Antlers != null)
+        {
+            foreach (Transform child in Antlers.transform)
+            {
+                Destroy(child.gameObject);
+            }
+            antlersSpawned = false;
+            bigAntlersSpawned = false;
+        }
+
+    }
+    // used to calculate antler size 2-6 years
+    float f(float x)
+    {
+        return (-1.33f * x * x * x) + (16 * x * x) - (53 * x) + 59;
+    }
+    // used to calculate antler size 6-25 years
+    float g(float x)
+    {
+        return (-0.006f * x * x * x) + (0.3f * x * x) - (4.9f * x) + 45;
+    }
+
+    public int NumberOfAntlerTags()
+    {
+        return antler_tag_number;
+    }
 }

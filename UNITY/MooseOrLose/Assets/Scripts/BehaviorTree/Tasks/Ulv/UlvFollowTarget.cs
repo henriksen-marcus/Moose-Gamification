@@ -9,11 +9,13 @@ public class UlvFollowTarget : Node
     NavMeshAgent mAgent;
     Ulv mScript;
     float runSpeed;
+    float acceleration;
     public UlvFollowTarget(NavMeshAgent agent)
     {
         mAgent = agent;
         runSpeed = mAgent.speed * (5f / 3f);
         mScript = agent.GetComponent<Ulv>();
+        acceleration = mAgent.acceleration;
     }
     public override NodeState Evaluate()
     {
@@ -23,8 +25,9 @@ public class UlvFollowTarget : Node
             return NodeState.FAILURE;
         }
         mScript.hasTarget = true;
-        float speed = runSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
+        float speed = runSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = speed;
+        mAgent.acceleration = acceleration* (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
         if ((Transform)parent.GetData("Target") == null)
         {
             parent.ClearData("Target");

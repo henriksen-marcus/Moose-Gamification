@@ -12,17 +12,26 @@ public class TimeManager : MonoBehaviour
     [SerializeField] int day;
     [SerializeField] int year;
     public float playSpeed = 15;
+    public float defaultPlaySpeed = 3;
     [HideInInspector]
     public float startPlaySpeed;
+
+
 
 
     [SerializeField] public TextMeshProUGUI dayUI;
     [SerializeField] public TextMeshProUGUI monthUI;
     [SerializeField] public TextMeshProUGUI yearUI;
 
+    private bool springbegun = false;
     // Start is called before the first frame update
     void Awake()
     {
+        GameObject Canvas = GameObject.Find("UI_Canvas");
+        dayUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Day").GetComponent<TextMeshProUGUI>();
+        monthUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Month").GetComponent<TextMeshProUGUI>();
+        yearUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Year").GetComponent<TextMeshProUGUI>();
+
         if (instance == null)
         {
             instance = this;
@@ -32,7 +41,7 @@ public class TimeManager : MonoBehaviour
         year = 0;
         StartCoroutine(NextDay());
 
-        startPlaySpeed = playSpeed;
+        startPlaySpeed = defaultPlaySpeed;
     }
 
     private void Update()
@@ -84,6 +93,7 @@ public class TimeManager : MonoBehaviour
             }
             dayUI.SetText((day+1).ToString());
         }
+
     }
     public int GetYear() {  return year; }
     public int GetMonth() {  return month; }
@@ -92,24 +102,49 @@ public class TimeManager : MonoBehaviour
 
     public bool HuntingSeason() { return month == 9 || month == 10 || month == 11; }
 
+    public bool IsSummer() { return month == 5 || month == 6 || month == 7; }
+    public bool IsWinter() { return month == 11 || month == 0 || month == 1; }
+    public bool IsSpring() { return month == 2 || month == 3 || month == 4; }
+    public bool IsAutumn() { return month == 8 || month == 9 || month == 10; }
+
     // Update is called once per frame
     IEnumerator NextDay()
     {
+        yield return new WaitForSeconds(playSpeed);
+        NewDay();
+
         day++;
+        
         if (day > 29)
         {
+            ElgManager.instance.SetMalePopulationAge();
             month++;
+            if (month > 1 && !springbegun)
+            {
+                springbegun = true;
+                SpringBegin();
+            }
             day = 0;
         }
         if (month > 11)
         {
+            springbegun = false;
             NewYear();
             year++;
             month = 0;
         }
 
-        yield return new WaitForSeconds(playSpeed);
+        
         StartCoroutine(NextDay());
+    }
+
+    public event Action OnNewDay;
+    public void NewDay()
+    {
+        if (OnNewDay != null)
+        {
+            OnNewDay();
+        }
     }
 
 
@@ -119,6 +154,15 @@ public class TimeManager : MonoBehaviour
         if (OnNewYear != null)
         {
             OnNewYear();
+        }
+    }
+
+    public event Action OnSpringBegin;
+    public void SpringBegin()
+    {
+        if (OnSpringBegin != null)
+        {
+            OnSpringBegin();
         }
     }
 }

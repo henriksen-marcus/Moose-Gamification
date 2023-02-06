@@ -27,6 +27,13 @@ public class JegerShoot : Node
             {
                 shootTimer = 0f;
                 Transform target = (Transform)parent.GetData("Target");
+                if (target == null)
+                {
+                    parent.ClearData("Target");
+                    parent.SetData("Shooting", false);
+                    mAgent.isStopped = false;
+                    return NodeState.FAILURE;
+                }
                 parent.ClearData("Target");
                 parent.SetData("Shooting", false);
                 mAgent.isStopped = false;

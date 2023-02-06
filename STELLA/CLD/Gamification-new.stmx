@@ -30,10 +30,7 @@
 			<aux name="Karakter fra Skogen">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Tid uten elg">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Jegere">
+			<aux name="JaktSesong">
 				<isee:delay_aux/>
 			</aux>
 			<aux name="Jeger skyter Elg">
@@ -45,7 +42,7 @@
 			<aux name="Rovdyr / Ulv">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Ulv dreper Elg">
+			<aux name="Rovdyr / Ulv dreper Elg">
 				<isee:delay_aux/>
 			</aux>
 			<aux name="Elg går i veien">
@@ -75,22 +72,13 @@
 			<aux name="Elg Spiser">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Elg Stress Nivå">
-				<isee:delay_aux/>
-			</aux>
 			<aux name="Elg Parringstid">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Elg migrerer til nytt området">
+			<aux name="Planter og Trær i området">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Planter i området">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Planter vokser">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Elg møter jeger">
+			<aux name="Planter og Trær vokser">
 				<isee:delay_aux/>
 			</aux>
 			<aux name="Elg blir gravid">
@@ -102,61 +90,36 @@
 			<aux name="Mat mengde nødvendig">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Elg Tørste">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Tid uten drikke">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Elg går til elv og drikker">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Sjangse for å møte en annen Elg">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Kamp om territoriet med annen elg">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Vind">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Elg møter rovdyr">
-				<isee:delay_aux/>
-			</aux>
-			<aux name="Elg Dør">
+			<aux name="Regler for jegere">
 				<isee:delay_aux/>
 			</aux>
 			<isee:dependencies>
 				<var name="Elg_Populasjon">
 					<in>Jeger_skyter_Elg</in>
-					<in>Ulv_dreper_Elg</in>
+					<in>&quot;Rovdyr_/_Ulv_dreper_Elg&quot;</in>
 					<in>Elg_blir_påkjørt</in>
 					<in>Elg_får_kalver</in>
-					<in>Elg_Dør</in>
 				</var>
 				<var name="Skade_på_skogen">
-					<in>Elg_Populasjon</in>
-					<in>Tid_uten_elg</in>
+					<in>Planter_og_Trær_i_området</in>
 				</var>
 				<var name="Karakter_fra_Skogen">
 					<in>Skade_på_skogen</in>
 				</var>
 				<var name="Jeger_skyter_Elg">
-					<in>Jegere</in>
+					<in>JaktSesong</in>
+					<in>Regler_for_jegere</in>
 				</var>
 				<var name="Karakter_fra_Elgen">
 					<in>Elg_Populasjon</in>
 				</var>
-				<var name="Ulv_dreper_Elg">
+				<var name='"Rovdyr_/_Ulv_dreper_Elg"'>
 					<in>&quot;Rovdyr_/_Ulv&quot;</in>
 				</var>
 				<var name="Elg_går_i_veien">
 					<in>Elg_Populasjon</in>
 					<in>Vilt_kryssning</in>
-					<in>Elg_Spiser</in>
-					<in>Elg_går_til_elv_og_drikker</in>
 					<in>Lyd_Bokser</in>
-					<in>Elg_Stress_Nivå</in>
 				</var>
 				<var name="Elg_blir_påkjørt">
 					<in>Elg_går_i_veien</in>
@@ -171,27 +134,12 @@
 					<in>Mat_mengde_nødvendig</in>
 				</var>
 				<var name="Elg_Spiser">
-					<in>Planter_i_området</in>
+					<in>Planter_og_Trær_i_området</in>
+					<in>Elg_Populasjon</in>
 				</var>
-				<var name="Elg_Stress_Nivå">
-					<in>Elg_Hunger</in>
+				<var name="Planter_og_Trær_i_området">
 					<in>Elg_Spiser</in>
-					<in>Elg_møter_jeger</in>
-					<in>Elg_Tørste</in>
-					<in>Elg_møter_rovdyr</in>
-					<in>Elg_Parringstid</in>
-				</var>
-				<var name="Elg_migrerer_til_nytt_området">
-					<in>Planter_i_området</in>
-					<in>Kamp_om_territoriet_med_annen_elg</in>
-					<in>Vind</in>
-				</var>
-				<var name="Planter_i_området">
-					<in>Elg_Spiser</in>
-					<in>Planter_vokser</in>
-				</var>
-				<var name="Elg_møter_jeger">
-					<in>Jegere</in>
+					<in>Planter_og_Trær_vokser</in>
 				</var>
 				<var name="Elg_blir_gravid">
 					<in>Elg_Parringstid</in>
@@ -202,25 +150,6 @@
 				</var>
 				<var name="Mat_mengde_nødvendig">
 					<in>Elg_får_kalver</in>
-				</var>
-				<var name="Elg_Tørste">
-					<in>Tid_uten_drikke</in>
-					<in>Elg_går_til_elv_og_drikker</in>
-				</var>
-				<var name="Elg_går_til_elv_og_drikker">
-					<in>Elg_Tørste</in>
-				</var>
-				<var name="Sjangse_for_å_møte_en_annen_Elg">
-					<in>Elg_migrerer_til_nytt_området</in>
-				</var>
-				<var name="Kamp_om_territoriet_med_annen_elg">
-					<in>Sjangse_for_å_møte_en_annen_Elg</in>
-				</var>
-				<var name="Elg_møter_rovdyr">
-					<in>&quot;Rovdyr_/_Ulv&quot;</in>
-				</var>
-				<var name="Elg_Dør">
-					<in>Elg_Tørste</in>
 				</var>
 			</isee:dependencies>
 		</variables>
@@ -264,7 +193,7 @@
 				<isee:spatial_map color="black" background="white" font_size="12pt"/>
 				<isee:animation_object color="black" background="white" font_size="12pt"/>
 			</style>
-			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:page_cols="2" isee:page_rows="2" isee:scroll_x="111" isee:scroll_y="60" isee:popup_graphs_are_comparative="true" type="stock_flow">
+			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:page_cols="2" isee:page_rows="2" isee:scroll_x="280.833" isee:scroll_y="50" zoom="120" isee:popup_graphs_are_comparative="true" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="white" background="black" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -300,247 +229,148 @@
 					</graph>
 					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 				</style>
-				<aux x="918.054" y="340.524" width="63.25" height="12" name="Elg Populasjon"/>
-				<aux x="912.554" y="217.107" width="74.25" height="12" name="Skade på skogen"/>
-				<connector uid="1" polarity="+" isee:polarity_placement="outside" angle="90">
-					<from>Elg_Populasjon</from>
-					<to>Skade_på_skogen</to>
-				</connector>
-				<aux x="906.554" y="167.72" width="86.25" height="12" name="Karakter fra Skogen"/>
-				<connector uid="2" polarity="-" isee:polarity_placement="outside" angle="90">
+				<aux x="891.054" y="395.738" width="63.25" height="12" name="Elg Populasjon"/>
+				<aux x="1319.55" y="654.107" width="74.25" height="12" name="Skade på skogen"/>
+				<aux x="1313.55" y="604.72" width="86.25" height="12" name="Karakter fra Skogen"/>
+				<connector uid="1" polarity="-" isee:polarity_placement="outside" angle="90">
 					<from>Skade_på_skogen</from>
 					<to>Karakter_fra_Skogen</to>
 				</connector>
-				<aux x="803.375" y="217.107" width="50.25" height="12" name="Tid uten elg"/>
-				<connector uid="3" polarity="-" isee:polarity_placement="outside" angle="0">
-					<from>Tid_uten_elg</from>
-					<to>Skade_på_skogen</to>
-				</connector>
-				<aux x="704.208" y="340.524" width="30.25" height="12" name="Jegere"/>
-				<aux x="788.554" y="340.524" width="71.25" height="12" name="Jeger skyter Elg"/>
-				<connector uid="4" polarity="+" isee:polarity_placement="outside" angle="0">
-					<from>Jegere</from>
+				<aux x="673.708" y="254.72" width="51.25" height="12" name="JaktSesong"/>
+				<aux x="785.554" y="254.72" width="71.25" height="12" name="Jeger skyter Elg"/>
+				<connector uid="2" polarity="+" isee:polarity_placement="outside" angle="0">
+					<from>JaktSesong</from>
 					<to>Jeger_skyter_Elg</to>
 				</connector>
-				<connector uid="5" polarity="-" isee:polarity_placement="inside" angle="0">
+				<connector uid="3" polarity="-" isee:polarity_placement="inside" angle="305.745">
 					<from>Jeger_skyter_Elg</from>
 					<to>Elg_Populasjon</to>
 				</connector>
-				<aux x="1006.95" y="167.72" width="78.25" height="12" name="Karakter fra Elgen"/>
-				<connector uid="6" polarity="+" isee:polarity_placement="outside" angle="60.8449">
+				<aux x="883.554" y="254.72" width="78.25" height="12" name="Karakter fra Elgen"/>
+				<connector uid="4" polarity="+" isee:polarity_placement="outside" angle="90">
 					<from>Elg_Populasjon</from>
 					<to>Karakter_fra_Elgen</to>
 				</connector>
-				<aux x="740.273" y="500.524" width="58.25" height="12" name="Rovdyr / Ulv"/>
-				<aux x="826.732" y="425.429" width="62.25" height="12" name="Ulv dreper Elg"/>
-				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="40.3289">
+				<aux x="524.273" y="340.738" width="58.25" height="12" name="Rovdyr / Ulv"/>
+				<aux x="655.232" y="340.738" width="103.25" height="12" name="Rovdyr / Ulv dreper Elg"/>
+				<connector uid="5" polarity="+" isee:polarity_placement="outside" angle="0">
 					<from>&quot;Rovdyr_/_Ulv&quot;</from>
-					<to>Ulv_dreper_Elg</to>
+					<to>&quot;Rovdyr_/_Ulv_dreper_Elg&quot;</to>
 				</connector>
-				<connector uid="8" polarity="-" isee:polarity_placement="inside" angle="42.7586">
-					<from>Ulv_dreper_Elg</from>
+				<connector uid="6" polarity="-" isee:polarity_placement="inside" angle="345.703">
+					<from>&quot;Rovdyr_/_Ulv_dreper_Elg&quot;</from>
 					<to>Elg_Populasjon</to>
 				</connector>
-				<aux x="1180.35" y="538.524" width="62.25" height="12" name="Elg går i veien"/>
-				<connector uid="9" polarity="+" isee:polarity_placement="outside" angle="322.899">
+				<aux x="1152.91" y="395.738" width="62.25" height="12" name="Elg går i veien"/>
+				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="0">
 					<from>Elg_Populasjon</from>
 					<to>Elg_går_i_veien</to>
 				</connector>
-				<aux x="1026.02" y="340.524" width="61.25" height="12" name="Elg blir påkjørt"/>
-				<connector uid="10" polarity="+" isee:polarity_placement="outside" angle="128.025">
+				<aux x="1153.41" y="285.524" width="61.25" height="12" name="Elg blir påkjørt"/>
+				<connector uid="8" polarity="+" isee:polarity_placement="outside" angle="90">
 					<from>Elg_går_i_veien</from>
 					<to>Elg_blir_påkjørt</to>
 				</connector>
-				<aux x="1108.1" y="167.72" width="94.25" height="12" name="Karakter fra Trafikken"/>
-				<connector uid="11" polarity="-" isee:polarity_placement="outside" angle="60.2955">
+				<aux x="1136.91" y="203.72" width="94.25" height="12" name="Karakter fra Trafikken"/>
+				<connector uid="9" polarity="-" isee:polarity_placement="outside" angle="90">
 					<from>Elg_blir_påkjørt</from>
 					<to>Karakter_fra_Trafikken</to>
 				</connector>
-				<aux x="1120.87" y="340.524" width="89.25" height="12" name="Lavere Farts Grense"/>
-				<connector uid="12" polarity="-" isee:polarity_placement="outside" angle="180">
+				<aux x="1293.66" y="280.524" width="89.25" height="12" name="Lavere Farts Grense"/>
+				<connector uid="10" polarity="-" isee:polarity_placement="outside" angle="181.857">
 					<from>Lavere_Farts_Grense</from>
 					<to>Elg_blir_påkjørt</to>
 				</connector>
-				<aux x="1305.46" y="579.572" width="50.25" height="12" name="Lyd Bokser"/>
-				<aux x="1273.66" y="517.738" width="59.25" height="12" name="Vilt kryssning"/>
-				<connector uid="13" polarity="-" isee:polarity_placement="outside" angle="192.758">
+				<aux x="1313.16" y="426.572" width="50.25" height="12" name="Lyd Bokser"/>
+				<aux x="1308.66" y="340.738" width="59.25" height="12" name="Vilt kryssning"/>
+				<connector uid="11" polarity="-" isee:polarity_placement="outside" angle="199.624">
 					<from>Vilt_kryssning</from>
 					<to>Elg_går_i_veien</to>
 				</connector>
-				<aux x="598.131" y="822.024" width="48.25" height="12" name="Elg Hunger"/>
-				<aux x="458.047" y="822.024" width="54.25" height="12" name="Tid uten mat"/>
-				<connector uid="14" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="0">
+				<aux x="898.554" y="625.024" width="48.25" height="12" name="Elg Hunger"/>
+				<aux x="895.554" y="699.524" width="54.25" height="12" name="Tid uten mat"/>
+				<connector uid="12" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="90">
 					<from>Tid_uten_mat</from>
 					<to>Elg_Hunger</to>
 				</connector>
-				<aux x="1184.36" y="814.024" width="44.25" height="12" name="Elg Spiser"/>
-				<connector uid="15" color="#550000" font_color="#550000" polarity="-" isee:polarity_placement="inside" angle="180.785">
+				<aux x="1169.36" y="625.024" width="44.25" height="12" name="Elg Spiser"/>
+				<connector uid="13" color="#550000" font_color="#550000" polarity="-" isee:polarity_placement="inside" angle="180">
 					<from>Elg_Spiser</from>
 					<to>Elg_Hunger</to>
 				</connector>
-				<aux x="591.631" y="628.857" width="68.25" height="12" name="Elg Stress Nivå"/>
-				<connector uid="16" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="88.962">
-					<from>Elg_Hunger</from>
-					<to>Elg_Stress_Nivå</to>
-				</connector>
-				<aux x="944.703" y="636" width="62.25" height="12" name="Elg Parringstid"/>
-				<connector uid="17" color="#550000" font_color="#550000" polarity="-" isee:polarity_placement="outside" angle="162.315">
+				<aux x="891.554" y="589" width="62.25" height="12" name="Elg Parringstid"/>
+				<aux x="1155.3" y="721.69" width="108.25" height="12" name="Planter og Trær i området"/>
+				<connector uid="14" color="#550000" font_color="#550000" polarity="-" isee:polarity_placement="outside" angle="201.987">
 					<from>Elg_Spiser</from>
-					<to>Elg_Stress_Nivå</to>
+					<to>Planter_og_Trær_i_området</to>
 				</connector>
-				<aux x="1440.84" y="907.607" width="119.25" height="12" name="Elg migrerer til nytt området"/>
-				<aux x="1187.8" y="910.69" width="73.25" height="12" name="Planter i området"/>
-				<connector uid="18" color="#550000" font_color="#550000" polarity="-" isee:polarity_placement="outside" angle="201.987">
-					<from>Elg_Spiser</from>
-					<to>Planter_i_området</to>
+				<aux x="1160.3" y="785.524" width="98.25" height="12" name="Planter og Trær vokser"/>
+				<connector uid="15" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="90">
+					<from>Planter_og_Trær_vokser</from>
+					<to>Planter_og_Trær_i_området</to>
 				</connector>
-				<aux x="1192.8" y="973.524" width="63.25" height="12" name="Planter vokser"/>
-				<connector uid="19" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="90">
-					<from>Planter_vokser</from>
-					<to>Planter_i_området</to>
-				</connector>
-				<connector uid="20" color="#550000" font_color="#550000" polarity="-" isee:polarity_placement="outside" angle="0.639819">
-					<from>Planter_i_området</from>
-					<to>Elg_migrerer_til_nytt_området</to>
-				</connector>
-				<aux x="589.631" y="340.524" width="65.25" height="12" name="Elg møter jeger"/>
-				<connector uid="21" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="inside" angle="270.695">
-					<from>Elg_møter_jeger</from>
-					<to>Elg_Stress_Nivå</to>
-				</connector>
-				<aux x="1068.39" y="636" width="59.25" height="12" name="Elg blir gravid"/>
-				<connector uid="22" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="0">
+				<aux x="893.054" y="529" width="59.25" height="12" name="Elg blir gravid"/>
+				<connector uid="16" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="90">
 					<from>Elg_Parringstid</from>
 					<to>Elg_blir_gravid</to>
 				</connector>
-				<aux x="920.054" y="502.738" width="59.25" height="12" name="Elg får kalver"/>
-				<connector uid="23" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="138.064">
+				<aux x="782.054" y="532.738" width="59.25" height="12" name="Elg får kalver"/>
+				<connector uid="17" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="181.929">
 					<from>Elg_blir_gravid</from>
 					<to>Elg_får_kalver</to>
 				</connector>
-				<aux x="659.881" y="746.333" width="99.25" height="12" name="Mat mengde nødvendig"/>
-				<connector uid="24" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="inside" isee:type="info" angle="220.942">
+				<aux x="762.054" y="584.333" width="99.25" height="12" name="Mat mengde nødvendig"/>
+				<connector uid="18" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="inside" isee:type="info" angle="310.721">
 					<from>Mat_mengde_nødvendig</from>
 					<to>Elg_Hunger</to>
 				</connector>
-				<aux x="647.94" y="106.191" width="44.25" height="12" name="Elg Tørste"/>
-				<aux x="499.208" y="106.191" width="63.25" height="12" name="Tid uten drikke"/>
-				<connector uid="25" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="0">
-					<from>Tid_uten_drikke</from>
-					<to>Elg_Tørste</to>
-				</connector>
-				<aux x="1158.35" y="106.191" width="101.25" height="12" name="Elg går til elv og drikker"/>
-				<connector uid="26" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="15.7402">
-					<from>Elg_Tørste</from>
-					<to>Elg_går_til_elv_og_drikker</to>
-				</connector>
-				<connector uid="27" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="inside" isee:type="info" angle="222.527">
-					<from>Elg_Tørste</from>
-					<to>Elg_Stress_Nivå</to>
-				</connector>
-				<aux x="1285.09" y="810.024" width="139.25" height="12" name="Sjangse for å møte en annen Elg"/>
-				<aux x="1459.34" y="714.024" width="82.25" height="26" name="Kamp om territoriet med annen elg"/>
-				<connector uid="28" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="146.197">
-					<from>Elg_migrerer_til_nytt_området</from>
-					<to>Sjangse_for_å_møte_en_annen_Elg</to>
-				</connector>
-				<connector uid="29" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="31.4097">
-					<from>Sjangse_for_å_møte_en_annen_Elg</from>
-					<to>Kamp_om_territoriet_med_annen_elg</to>
-				</connector>
-				<connector uid="30" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="270">
-					<from>Kamp_om_territoriet_med_annen_elg</from>
-					<to>Elg_migrerer_til_nytt_området</to>
-				</connector>
-				<connector uid="31" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="42.4092">
-					<from>Planter_i_området</from>
+				<connector uid="19" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="42.4092">
+					<from>Planter_og_Trær_i_området</from>
 					<to>Elg_Spiser</to>
 				</connector>
-				<isee:loop_indicator text="B1" orientation="counter_clockwise" uid="32" x="1187.34" y="858.524" width="30" height="30">
+				<isee:loop_indicator text="B1" orientation="counter_clockwise" uid="20" x="1172.34" y="669.524" width="30" height="30">
 					<isee:entities>
-						<item uid="18"/>
-						<item uid="31"/>
+						<item uid="14"/>
+						<item uid="19"/>
 					</isee:entities>
 				</isee:loop_indicator>
-				<isee:loop_indicator text="R1" orientation="counter_clockwise" uid="33" x="1435.63" y="798.024" width="30" height="30">
-					<isee:entities>
-						<item uid="30"/>
-						<item uid="28"/>
-						<item uid="29"/>
-					</isee:entities>
-				</isee:loop_indicator>
-				<aux x="1490.34" y="985.524" width="20.25" height="12" name="Vind"/>
-				<connector uid="34" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="90">
-					<from>Vind</from>
-					<to>Elg_migrerer_til_nytt_området</to>
-				</connector>
-				<connector uid="35" polarity="-" isee:polarity_placement="outside" angle="180">
+				<connector uid="21" polarity="-" isee:polarity_placement="outside" angle="180.879">
 					<from>Elg_blir_påkjørt</from>
 					<to>Elg_Populasjon</to>
 				</connector>
-				<connector uid="36" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="88.9614">
-					<from>Elg_Spiser</from>
-					<to>Elg_går_i_veien</to>
-				</connector>
-				<connector uid="37" color="#550000" font_color="#550000" polarity="-" isee:polarity_placement="inside" angle="192.189">
-					<from>Elg_går_til_elv_og_drikker</from>
-					<to>Elg_Tørste</to>
-				</connector>
-				<aux x="654.881" y="567.572" width="73.25" height="12" name="Elg møter rovdyr"/>
-				<connector uid="38" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="inside" angle="222.987">
-					<from>Elg_møter_rovdyr</from>
-					<to>Elg_Stress_Nivå</to>
-				</connector>
-				<connector uid="39" polarity="+" isee:polarity_placement="outside" angle="180">
-					<from>Jegere</from>
-					<to>Elg_møter_jeger</to>
-				</connector>
-				<connector uid="40" polarity="+" isee:polarity_placement="outside" angle="220.721">
-					<from>&quot;Rovdyr_/_Ulv&quot;</from>
-					<to>Elg_møter_rovdyr</to>
-				</connector>
-				<connector uid="41" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" isee:type="info" angle="270.331">
-					<from>Elg_går_til_elv_og_drikker</from>
-					<to>Elg_går_i_veien</to>
-				</connector>
-				<connector uid="42" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="inside" isee:type="info" angle="90">
-					<from>Elg_får_kalver</from>
-					<to>Elg_Populasjon</to>
-				</connector>
-				<connector uid="43" polarity="+" isee:polarity_placement="outside" isee:type="info" angle="296.657">
+				<connector uid="22" polarity="+" isee:polarity_placement="outside" isee:type="info" angle="270">
 					<from>Elg_Populasjon</from>
 					<to>Elg_blir_gravid</to>
 				</connector>
-				<connector uid="44" color="#550000" font_color="#550000" isee:type="info" angle="225.405">
+				<connector uid="23" color="#550000" font_color="#550000" isee:type="info" angle="270">
 					<from>Elg_får_kalver</from>
 					<to>Mat_mengde_nødvendig</to>
 				</connector>
-				<connector uid="45" polarity="-" isee:polarity_placement="outside" angle="160.985">
+				<connector uid="24" polarity="-" isee:polarity_placement="outside" angle="168.696">
 					<from>Lyd_Bokser</from>
 					<to>Elg_går_i_veien</to>
 				</connector>
-				<connector uid="46" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" isee:type="info" angle="8.76742">
-					<from>Elg_Stress_Nivå</from>
-					<to>Elg_går_i_veien</to>
+				<connector uid="25" polarity="-" isee:polarity_placement="outside" angle="6.73604">
+					<from>Planter_og_Trær_i_området</from>
+					<to>Skade_på_skogen</to>
 				</connector>
-				<alias font_style="italic" uid="47" x="461.792" y="628.857" width="62.25" height="12">
-					<of>Elg_Parringstid</of>
-				</alias>
-				<connector uid="48" color="#550000" font_color="#550000" polarity="+" isee:polarity_placement="outside" angle="0">
-					<from>
-						<alias uid="47"/>
-					</from>
-					<to>Elg_Stress_Nivå</to>
+				<connector uid="26" polarity="+" isee:polarity_placement="outside" isee:type="info" angle="312.077">
+					<from>Elg_Populasjon</from>
+					<to>Elg_Spiser</to>
 				</connector>
-				<aux x="859.804" y="270" width="33.25" height="12" name="Elg Dør"/>
-				<connector uid="49" polarity="-" isee:polarity_placement="inside" angle="296.815">
-					<from>Elg_Dør</from>
+				<aux x="785.054" y="173" width="72.25" height="12" name="Regler for jegere"/>
+				<connector uid="27" polarity="-" isee:polarity_placement="outside" angle="270">
+					<from>Regler_for_jegere</from>
+					<to>Jeger_skyter_Elg</to>
+				</connector>
+				<connector uid="28" polarity="+" isee:polarity_placement="outside" angle="98.8868">
+					<from>Elg_får_kalver</from>
 					<to>Elg_Populasjon</to>
 				</connector>
-				<connector uid="50" color="#550000" font_color="#550000" polarity="-" isee:polarity_placement="outside" angle="304.589">
-					<from>Elg_Tørste</from>
-					<to>Elg_Dør</to>
-				</connector>
+				<text_box uid="29" x="758.482" y="137" width="260" height="25">Regler har egen CLD</text_box>
+				<text_box uid="30" x="1420.48" y="647.607" width="260" height="25">Skogen har egen CLD</text_box>
+				<isee:loop_indicator text="R1" orientation="counter_clockwise" uid="31" x="856.804" y="456.905" width="30" height="30"/>
+				<isee:loop_indicator text="B1" orientation="clockwise" uid="32" x="1080.83" y="319.167" width="30" height="30"/>
 			</view>
 		</views>
 	</model>

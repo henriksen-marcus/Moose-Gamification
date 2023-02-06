@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TreeState_Type
+public enum ForestState_Type
 {
     none,
 
@@ -31,7 +31,7 @@ public enum TreeState_Health
     treeState_Chopped
 }
 
-public enum TreeState_Season
+public enum ForestState_Season
 {
     none,
 

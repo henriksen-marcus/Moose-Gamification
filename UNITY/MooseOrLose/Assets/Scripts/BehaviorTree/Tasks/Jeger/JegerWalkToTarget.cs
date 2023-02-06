@@ -8,16 +8,17 @@ public class JegerWalkToTarget : Node
 {
     NavMeshAgent mAgent;
     float walkSpeed;
+    float acceleration;
     public JegerWalkToTarget(NavMeshAgent agent)
     {
         mAgent = agent;
         walkSpeed = agent.speed;
+        acceleration = agent.acceleration;
     }
     public override NodeState Evaluate()
     {
         if (parent.GetData("Target") == null)
         {
-
             return NodeState.FAILURE;
         }
         if (parent.GetData("Shooting") != null)
@@ -32,7 +33,7 @@ public class JegerWalkToTarget : Node
 
         float speed = walkSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = speed;
-
+        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
 
         if ((Transform)parent.GetData("Target") == null)
         {

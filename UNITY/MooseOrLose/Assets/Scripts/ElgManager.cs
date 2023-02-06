@@ -18,6 +18,9 @@ public class ElgManager : MonoBehaviour
     public int elg_males;
     public int elg_females;
     public int elg_children;
+    public int carrying_capacity = 1500;
+
+    public float male_population_age;
 
     [Header("Spawning Preferences")]
     [SerializeField] int start_population;
@@ -44,6 +47,12 @@ public class ElgManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        GameObject Canvas = GameObject.Find("UI_Canvas");
+        populationUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Population").GetComponent<TextMeshProUGUI>();
+        malesUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Male").GetComponent<TextMeshProUGUI>();
+        femalesUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Female").GetComponent<TextMeshProUGUI>();
+        childrenUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Children").GetComponent<TextMeshProUGUI>();
+
         elg_children = 0;
         elg_population = start_population;
         float loop = start_population;
@@ -56,6 +65,7 @@ public class ElgManager : MonoBehaviour
             elg_list.Add(go);
         }
         PopulationChanged();
+        male_population_age = MalePopulationAge();
     }
 
     private void Update()
@@ -131,5 +141,37 @@ public class ElgManager : MonoBehaviour
         {
             OnPopulationChanged();
         }
+    }
+
+
+    float MalePopulationAge()
+    {
+        float age = 0;
+        foreach(GameObject go in elg_list)
+        {
+            if (go.GetComponent<Elg>().gender == Gender.Male)
+            {
+                age += go.GetComponent<Elg>().GetAge();
+            }
+        }
+        age /= (float)elg_males;
+        return age;
+
+    }
+
+
+    public float GetMalePopulationAge()
+    {
+        return male_population_age;
+    }
+
+    public void SetMalePopulationAge()
+    {
+        male_population_age = MalePopulationAge();
+    }
+
+    public float GetPopulationGrowthRate()
+    {
+        return (1 - ((elg_population / carrying_capacity) * (elg_population / carrying_capacity))) * 100;
     }
 }
