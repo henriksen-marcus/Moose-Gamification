@@ -386,7 +386,6 @@ public class Forest : MonoBehaviour
     void SubscribeToEvents()
     {
         TimeManager.instance.OnNewDay += UpdateTreeStats;
-        TimeManager.instance.OnNewDay += UpdateForestStats;
 
         TimeManager.instance.OnNewYear += UpdateBirth;
     }
@@ -400,6 +399,8 @@ public class Forest : MonoBehaviour
     }
     void UpdateTreeStats()
     {
+        UpdateForestStats();
+
         forest_Density = 0;
         forest_Height = 0;
 
