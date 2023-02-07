@@ -83,7 +83,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   homePosition: {x: -110, y: -10, z: 20}
-  range: 30
+  range: 15
   shotSpeed: 3
 --- !u!1001 &7957456964340317005
 PrefabInstance:

@@ -21,6 +21,7 @@ public class JegerShoot : Node
     {
         if (parent.GetData("Target") != null)
         {
+            shootSpeed = TimeManager.instance.playSpeed;
             shootTimer += Time.deltaTime;
 
             if (shootTimer > shootSpeed)

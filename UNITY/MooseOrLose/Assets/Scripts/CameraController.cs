@@ -60,7 +60,7 @@ public class CameraController : MonoBehaviour
 
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray.origin, ray.direction, out hit))
-            { 
+            {
                 Debug.Log(hit.collider.gameObject.name);
 
                 // Elg
@@ -75,6 +75,30 @@ public class CameraController : MonoBehaviour
                     SpawnElgInfoBar(script, background);
                 }
 
+                //Ulv
+                if (hit.collider.GetComponent<Ulv>() != null)
+                {
+                    GameObjectInfo.SetActive(true);
+
+                    Ulv script = hit.collider.GetComponent<Ulv>();
+
+                    Transform background = GameObjectInfo.transform.Find("Background");
+
+                    SpawnUlvInfoBar(script, background);
+                }
+
+                //Forest
+                //Ulv
+                if (hit.collider.GetComponent<Forest>() != null)
+                {
+                    GameObjectInfo.SetActive(true);
+
+                    Forest script = hit.collider.GetComponent<Forest>();
+
+                    Transform background = GameObjectInfo.transform.Find("Background");
+
+                    SpawnForestInfoBar(script, background);
+                }
 
             }
         }
@@ -86,35 +110,87 @@ public class CameraController : MonoBehaviour
         }
         
 
-        void SpawnElgInfoBar(Elg script, Transform background)
+
+    }
+
+
+    void SpawnElgInfoBar(Elg script, Transform background)
+    {
+        foreach (Transform child in background)
         {
-            foreach(Transform child in background)
-            {
-                
-                GameObject.Destroy(child.gameObject);
-                
-            }
 
-            GameObject name = Instantiate(InfoBar, background.transform);
-            name.GetComponent<TextMeshProUGUI>().text = "Elg";
-            name.GetComponent<TextMeshProUGUI>().fontSize = 36;
+            GameObject.Destroy(child.gameObject);
 
-            GameObject ib1 = Instantiate(InfoBar, background.transform);
-            ib1.GetComponent<TextMeshProUGUI>().text = "Age : " + script.age_years.ToString() + " y " + script.age_months.ToString() + " m " + script.age_days.ToString() + " d";
-
-            GameObject ib2 = Instantiate(InfoBar, background.transform);
-            ib2.GetComponent<TextMeshProUGUI>().text = "Gender : " + script.gender.ToString();
-
-            GameObject ib3 = Instantiate(InfoBar, background.transform);
-            ib3.GetComponent<TextMeshProUGUI>().text = "Weight : " + script.weight.ToString();
-
-            if (script.gender == Gender.Male)
-            {
-                GameObject ib4 = Instantiate(InfoBar, background.transform);
-                ib4.GetComponent<TextMeshProUGUI>().text = "Antler tags: " + script.antler_tag_number.ToString();
-            }
-            
         }
+
+        GameObject name = Instantiate(InfoBar, background.transform);
+        name.GetComponent<TextMeshProUGUI>().text = "Elg";
+        name.GetComponent<TextMeshProUGUI>().fontSize = 36;
+
+        GameObject ib1 = Instantiate(InfoBar, background.transform);
+        ib1.GetComponent<TextMeshProUGUI>().text = "Age : " + script.age_years.ToString() + " y " + script.age_months.ToString() + " m " + script.age_days.ToString() + " d";
+
+        GameObject ib2 = Instantiate(InfoBar, background.transform);
+        ib2.GetComponent<TextMeshProUGUI>().text = "Gender : " + script.gender.ToString();
+
+        GameObject ib3 = Instantiate(InfoBar, background.transform);
+        ib3.GetComponent<TextMeshProUGUI>().text = "Weight : " + script.weight.ToString();
+
+        if (script.gender == Gender.Male)
+        {
+            GameObject ib4 = Instantiate(InfoBar, background.transform);
+            ib4.GetComponent<TextMeshProUGUI>().text = "Antler tags: " + script.antler_tag_number.ToString();
+        }
+
+    }
+
+
+    void SpawnUlvInfoBar(Ulv script, Transform background)
+    {
+        foreach (Transform child in background)
+        {
+
+            GameObject.Destroy(child.gameObject);
+
+        }
+
+        GameObject name = Instantiate(InfoBar, background.transform);
+        name.GetComponent<TextMeshProUGUI>().text = "Ulv";
+        name.GetComponent<TextMeshProUGUI>().fontSize = 36;
+
+        GameObject ib1 = Instantiate(InfoBar, background.transform);
+        ib1.GetComponent<TextMeshProUGUI>().text = "Age : " + script.age_years.ToString() + " y " + script.age_months.ToString() + " m " + script.age_days.ToString() + " d";
+
+        GameObject ib2 = Instantiate(InfoBar, background.transform);
+        ib2.GetComponent<TextMeshProUGUI>().text = "Gender : " + script.gender.ToString();
+
+        GameObject ib3 = Instantiate(InfoBar, background.transform);
+        ib3.GetComponent<TextMeshProUGUI>().text = "Weight : " + script.weight.ToString();
+
+    }
+
+
+    void SpawnForestInfoBar(Forest script, Transform background)
+    {
+        foreach (Transform child in background)
+        {
+
+            GameObject.Destroy(child.gameObject);
+
+        }
+
+        GameObject name = Instantiate(InfoBar, background.transform);
+        name.GetComponent<TextMeshProUGUI>().text = "Forest";
+        name.GetComponent<TextMeshProUGUI>().fontSize = 36;
+
+        GameObject ib1 = Instantiate(InfoBar, background.transform);
+        ib1.GetComponent<TextMeshProUGUI>().text = "Tree Type : " + script.forestState_Type.ToString();
+
+        GameObject ib2 = Instantiate(InfoBar, background.transform);
+        ib2.GetComponent<TextMeshProUGUI>().text = "Density : " + script.forest_Density.ToString();
+
+        GameObject ib3 = Instantiate(InfoBar, background.transform);
+        ib3.GetComponent<TextMeshProUGUI>().text = "Height : " + script.forest_Height.ToString();
 
     }
 }
