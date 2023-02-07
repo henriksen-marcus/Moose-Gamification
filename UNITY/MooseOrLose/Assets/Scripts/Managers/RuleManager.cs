@@ -48,15 +48,15 @@ public class RuleManager : UI, IPointerEnterHandler
     //Get values - other classes refer to these
     public bool CanShootMale(int horns, int shotToday)
     {
-        return horns >= _antlerPointsLimit && shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > _moosePopMin;
+        return horns >= _antlerPointsLimit && shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > _moosePopMin && HuntingSeason();
     }
     public bool CanShootFemale(int children, int shotToday) //always shoot cow last? (children == 0)
     {
-        return shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > _moosePopMin && children == 0;
+        return shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > _moosePopMin && children == 0 && HuntingSeason();
     }
     public bool CanShootChild(int children, int shotToday)
     {
-        return children > _calfLimit && ElgManager.instance.elg_population > _moosePopMin && shotToday < _dailyMooseLimit;
+        return children > _calfLimit && ElgManager.instance.elg_population > _moosePopMin && shotToday < _dailyMooseLimit && HuntingSeason();
     }
     public bool CanShootWolf()
     {
