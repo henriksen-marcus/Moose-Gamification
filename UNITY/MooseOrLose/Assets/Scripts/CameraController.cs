@@ -59,7 +59,8 @@ public class CameraController : MonoBehaviour
             RaycastHit hit;
 
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray.origin, ray.direction, out hit))
+            LayerMask layerMask = 1 << 3;
+            if (Physics.Raycast(ray.origin, ray.direction, out hit, 500, layerMask))
             {
                 Debug.Log(hit.collider.gameObject.name);
 
@@ -86,20 +87,23 @@ public class CameraController : MonoBehaviour
 
                     SpawnUlvInfoBar(script, background);
                 }
-
-                //Forest
-                //Ulv
-                if (hit.collider.GetComponent<Forest>() != null)
+            }
+            else
+            {
+                if (Physics.Raycast(ray.origin, ray.direction, out hit))
                 {
-                    GameObjectInfo.SetActive(true);
+                    //Forest
+                    if (hit.collider.GetComponent<Forest>() != null)
+                    {
+                        GameObjectInfo.SetActive(true);
 
-                    Forest script = hit.collider.GetComponent<Forest>();
+                        Forest script = hit.collider.GetComponent<Forest>();
 
-                    Transform background = GameObjectInfo.transform.Find("Background");
+                        Transform background = GameObjectInfo.transform.Find("Background");
 
-                    SpawnForestInfoBar(script, background);
+                        SpawnForestInfoBar(script, background);
+                    }
                 }
-
             }
         }
 

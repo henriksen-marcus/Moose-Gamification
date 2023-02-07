@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1283675825903460230}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Antlers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3751069026185657850}
   - component: {fileID: 749921616626334152}
   - component: {fileID: 6799963532788571414}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Elg
   m_TagString: Elg
   m_Icon: {fileID: 0}
@@ -118,11 +118,14 @@ MonoBehaviour:
   age_months: 0
   age_years: 0
   weight: 0
+  antler_tag_number: 0
   hunger: 0
   AIstate: 0
   natural_size: 0
+  natural_antler_size: 0
   gender: 0
   mother: {fileID: 0}
+  number_of_children: 0
   ElgPrefab: {fileID: 7319174537759530065}
   smallAntler: {fileID: 5344464025957976426, guid: e38d0778e8ce60542ac951973284605d, type: 3}
   bigAntler: {fileID: 6277322592998919508, guid: 1afb51c570c229443a06bf272d694217, type: 3}
@@ -190,9 +193,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8391222552659086748, guid: 7f2ffd2cc2acd744a8eb15c5cadaf009, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -516098083770646512, guid: 7f2ffd2cc2acd744a8eb15c5cadaf009, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 7f2ffd2cc2acd744a8eb15c5cadaf009, type: 3}
       propertyPath: m_Name
       value: elgMeshTemp
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 7f2ffd2cc2acd744a8eb15c5cadaf009, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f2ffd2cc2acd744a8eb15c5cadaf009, type: 3}

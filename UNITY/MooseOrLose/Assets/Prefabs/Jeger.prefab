@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 9047591569083893924}
   - component: {fileID: 1947514804305662293}
   - component: {fileID: 3581306716321853952}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Jeger
   m_TagString: Jeger
   m_Icon: {fileID: 0}
@@ -148,9 +148,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8391222552659086748, guid: a8c2a8317b80d0045af54a60f493bbff, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -516098083770646512, guid: a8c2a8317b80d0045af54a60f493bbff, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: a8c2a8317b80d0045af54a60f493bbff, type: 3}
       propertyPath: m_Name
       value: playerMeshTemp
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: a8c2a8317b80d0045af54a60f493bbff, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a8c2a8317b80d0045af54a60f493bbff, type: 3}
