@@ -41,6 +41,7 @@ public class Elg : MonoBehaviour
 
     public Gender gender;
     public Transform mother;
+    public int number_of_children;
     bool hasBirthed;
     bool hasGrown;
 
@@ -62,6 +63,8 @@ public class Elg : MonoBehaviour
         hasGrown = true;
         hunger = 100;
         Antlers = transform.Find("Antlers").gameObject;
+        number_of_children = 0;
+
         age_years = Random.Range(2, 20);
         age_months = Random.Range(0, 12);
         age_days = Random.Range(0, 30);
@@ -91,11 +94,12 @@ public class Elg : MonoBehaviour
 
     private void Start()
     {
-        StartCoroutine(NextDay());
+        
         TimeManager.instance.OnNewYear += NewYearTM;
         TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
+        StartCoroutine(NextDay());
     }
 
     public IEnumerator NextDay()
@@ -168,8 +172,13 @@ public class Elg : MonoBehaviour
             ElgManager.instance.FemaleDie();
         }
 
-        if (age_years < 2)
+        if (age_years < 1)
         {
+            if (mother != null)
+                if (mother.GetComponent<Elg>() != null)
+                    mother.GetComponent<Elg>().number_of_children--;
+
+
             ElgManager.instance.ChildrenDie();
         }
         ElgManager.instance.RemoveFromList(gameObject);
@@ -198,6 +207,7 @@ public class Elg : MonoBehaviour
     public void SetMother(Transform _mother)
     {
         mother = _mother;
+        mother.GetComponent<Elg>().number_of_children++;
     }
 
     public void NewBorn()

@@ -32,7 +32,7 @@ public class FollowMother : Node
         {
             if (mScript.age_years < 1)
             {
-                if (timer > 3f)
+                if (timer > TimeManager.instance.playSpeed / 2)
                 {
                     timer = 0f;
                     mAgent.speed = speed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);

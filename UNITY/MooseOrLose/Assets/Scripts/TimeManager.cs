@@ -100,8 +100,6 @@ public class TimeManager : MonoBehaviour
     public int GetDay() { return day; }
     public bool MatingSeason() { return month == 7 || month == 8; }
 
-    public bool HuntingSeason() { return month == 9 || month == 10 || month == 11; }
-
     public bool IsSummer() { return month == 5 || month == 6 || month == 7; }
     public bool IsWinter() { return month == 11 || month == 0 || month == 1; }
     public bool IsSpring() { return month == 2 || month == 3 || month == 4; }

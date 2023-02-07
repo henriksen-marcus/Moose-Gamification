@@ -38,6 +38,10 @@ public class WalkRandom : Node
         mAgent.acceleration = acceleration * ratio;
         if (mAgent.GetComponent<Elg>() != null)
         {
+            if (mAgent.GetComponent<Elg>().age_years < 1)
+            {
+                return NodeState.FAILURE;
+            }
             mAgent.GetComponent<Elg>().AIstate = ElgState.Walking;
         }
         if (timer > timeToWait)

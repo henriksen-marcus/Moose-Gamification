@@ -17,7 +17,7 @@ public class RuleManager : UI, IPointerEnterHandler
     
     private int _hornLimit = 4;
     private int _dailyMooseLimit = 5;
-    private int _moosePopMin = 60;
+    private int _moosePopMin = 100;
     private int _childLimit = 2;
     private int _wolfLimit = 30;
     private List<MonthButton> _monthButtons;
@@ -29,6 +29,10 @@ public class RuleManager : UI, IPointerEnterHandler
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         _monthButtons = new(GetComponentsInChildren<MonthButton>());
         _list = new(GetComponentsInChildren<HorizontalLayoutGroup>());
     }

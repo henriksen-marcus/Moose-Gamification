@@ -38,7 +38,17 @@ public class JegerShoot : Node
                 parent.SetData("Shooting", false);
                 mAgent.isStopped = false;
                 target.GetComponent<Elg>().Die();
-
+                if (parent.GetData("Daily Kills") == null)
+                {                   
+                    parent.SetData("Daily Kills", 1);
+                }
+                else
+                {
+                    int num = (int)parent.GetData("Daily Kills");
+                    num++;
+                    parent.SetData("Daily Kills", num);
+                }
+                
             }
             return NodeState.SUCCESS;
 
