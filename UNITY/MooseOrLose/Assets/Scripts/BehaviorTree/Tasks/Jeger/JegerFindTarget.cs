@@ -23,7 +23,6 @@ public class JegerFindTarget : Node
         }
 
         Collider[] colliders = Physics.OverlapSphere(mTransform.position, mTargetRange);
-        int best = 0;
         
         foreach (Collider collider in colliders)
         {

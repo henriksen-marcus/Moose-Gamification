@@ -172,6 +172,6 @@ public class ElgManager : MonoBehaviour
 
     public float GetPopulationGrowthRate()
     {
-        return (1 - ((elg_population / carrying_capacity) * (elg_population / carrying_capacity))) * 100;
+        return (1 - (((float)elg_population / (float)carrying_capacity) * ((float)elg_population / (float)carrying_capacity))) * 100;
     }
 }
