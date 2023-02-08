@@ -22,6 +22,10 @@ public class JegerFindTarget : Node
             return NodeState.SUCCESS;
         }
 
+        if (parent.GetData("Daily Kills") == null)
+        {
+            parent.SetData("Daily Kills", 0);
+        }
         Collider[] colliders = Physics.OverlapSphere(mTransform.position, mTargetRange);
         
         foreach (Collider collider in colliders)
@@ -32,15 +36,13 @@ public class JegerFindTarget : Node
                 Elg mScript = collider.GetComponent<Elg>();
                 if (mScript.age_years < 1)
                 {
-                    continue;
+                    if (RuleManager.Instance.CanShootChild(mScript.mother.GetComponent<Elg>().number_of_children,(int)parent.GetData("Daily Kills")))
+                    {
+                        continue;
+                    }
                 }
                 if (mScript.gender == Gender.Male)
                 {
-                    if (parent.GetData("Daily Kills") == null)
-                    {
-                        parent.SetData("Daily Kills", 0);
-                    }
-
                     if (!RuleManager.Instance.CanShootMale(mScript.antler_tag_number, (int)parent.GetData("Daily Kills")))
                     {
                         continue;
@@ -48,7 +50,7 @@ public class JegerFindTarget : Node
                 }
                 else
                 {
-                    if (!RuleManager.Instance.CanShootFemale(mScript.number_of_children))
+                    if (!RuleManager.Instance.CanShootFemale(mScript.number_of_children, (int)parent.GetData("Daily Kills")))
                     {
                         continue;
                     }
