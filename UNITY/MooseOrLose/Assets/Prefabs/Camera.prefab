@@ -147,4 +147,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dragSpeed: 45
-  InfoBar: {fileID: 7703179266035033628, guid: 4f0acd6a5329a8d4788b430021860b1a, type: 3}
