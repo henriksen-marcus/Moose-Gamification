@@ -214,7 +214,7 @@ public class ForestManager : MonoBehaviour
     private int updtCnt = 0;
     
     /// <summary>
-    /// Runs every time the day changes. Updates every forest through tick.
+    /// Runs every time the day changes. Updates every forest over time.
     /// </summary>
     void UpdateForests()
     {
@@ -320,19 +320,41 @@ public class ForestManager : MonoBehaviour
         }
     }
 
+    void UpdateForests2()
+    {
+        currentIndex = 0;
+        bufferSize = 0;
+        updateTimer.Start();
+    }
+
+    // Get the next set of forests to update.
+    List<Forest> GetNextBuffer()
+    {
+        bufferSize = GetBufferSize();
+
+        // Jump to the next index for the next buffer
+        currentIndex += bufferSize;
+        
+        return forestList.GetRange(currentIndex, bufferSize);
+    }
+
     void Update()
     {
-        
-        //deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
-        LoadForestBuffer();
+        //LoadForestBuffer();
         
         // Update the current buffer
-        updateTickList.ForEach(obj =>
+        /*updateTickList.ForEach(obj =>
         {
             obj.UpdateTreeStats();
             obj.didUpdate = true;
             obj.updateCount++;
             ++cnt;
+        });*/
+        
+        GetNextBuffer().ForEach(forest =>
+        {
+            forest.UpdateTreeStats();
+            forest.updateCount++;
         });
         
     }
