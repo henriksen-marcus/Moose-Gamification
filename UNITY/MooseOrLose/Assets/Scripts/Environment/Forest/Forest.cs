@@ -26,6 +26,9 @@ public class Forest : MonoBehaviour
     Trees[] treeArray;
     public List<Trees> treeList;
 
+    public bool didUpdate = false;
+    public int updateCount = 0;
+    public bool gotAdded = false;
 
 
     //--------------------
@@ -145,9 +148,8 @@ public class Forest : MonoBehaviour
             forestHealth_Counter += (int)treeList[i].treeState_Health;
         }
 
-        forestHealth_Counter /= treeList.Count;
-
-
+        forestHealth_Counter = treeList.Count == 0 ? 0 : forestHealth_Counter / treeList.Count;
+        //forestHealth_Counter /= treeList.Count; // Division by zero
 
         //Calculate Forest Health State
         #region
@@ -171,20 +173,25 @@ public class Forest : MonoBehaviour
     }
     void SetForestSeason()
     {
-        switch (timeManager.GetSeason())
+        if (TimeManager.instance.IsSpring())
         {
-            case TimeManager.Season.Summer:
-                forestState_Season = ForestState_Season.forestSeason_Summer;
-                break;
-            case TimeManager.Season.Winter:
-                forestState_Season = ForestState_Season.forestSeason_Winter;
-                break;
-            case TimeManager.Season.Spring:
-                forestState_Season = ForestState_Season.forestSeason_Spring;
-                break;
-            case TimeManager.Season.Fall:
-                forestState_Season = ForestState_Season.forestSeason_Fall;
-                break;
+            forestState_Season = ForestState_Season.forestSeason_Spring;
+        }
+        else if (TimeManager.instance.IsSummer())
+        {
+            forestState_Season = ForestState_Season.forestSeason_Summer;
+        }
+        else if (TimeManager.instance.IsAutumn())
+        {
+            forestState_Season = ForestState_Season.forestSeason_Fall;
+        }
+        else if (TimeManager.instance.IsWinter())
+        {
+            forestState_Season = ForestState_Season.forestSeason_Winter;
+        }
+        else
+        {
+            forestState_Season = ForestState_Season.forestSeason_Summer;
         }
     }
 
@@ -378,7 +385,7 @@ public class Forest : MonoBehaviour
 
     void SubscribeToEvents()
     {
-        TimeManager.instance.OnNewDay += UpdateTreeStats;
+        //TimeManager.instance.OnNewDay += UpdateTreeStats;
 
         TimeManager.instance.OnNewYear += UpdateBirth;
     }
@@ -390,7 +397,8 @@ public class Forest : MonoBehaviour
 
         SetForestColor();
     }
-    void UpdateTreeStats()
+
+    public void UpdateTreeStats()
     {
         UpdateForestStats();
 
@@ -421,7 +429,8 @@ public class Forest : MonoBehaviour
             }
         }
 
-        forest_Height /= treeList.Count;
+        forest_Height = !treeList.Any() ? 0 : forest_Height / treeList.Count();
+        //forest_Height /= treeList.Count; // Possible division by zero
         forest_Density /= 1000;
     }
 

@@ -1,9 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Assertions;
 using System.Linq;
+using System.Threading.Tasks;
+using Unity.Collections;
+using Unity.Jobs;
+using Random = UnityEngine.Random;
 
 public class ForestManager : MonoBehaviour
 {
@@ -38,8 +43,34 @@ public class ForestManager : MonoBehaviour
     public Vector2 densitySpruce;
     public Vector2 densityPine;
 
-    private float timer = 0f;
+    [Header("Optimization")]
+    /// <summary>
+    /// Holds references to the forest component of each GameObject in forestSpawnerList.
+    /// </summary>
+    public List<Forest> forestList;
 
+    /// <summary>
+    /// Holds all the trees that will be updated in the next tick.
+    /// </summary>
+    private List<Forest> updateTickList;
+
+    /// <summary>
+    /// How many forests we will load into the updateTickList each tick.
+    /// </summary>
+    private int bufferSize;
+
+    /// <summary>
+    /// The index we are at in the forestList when updating all trees.
+    /// </summary>
+    private int currentIndex;
+    
+    private float deltaTime;
+    
+    [Header("Timers")]
+    private Timer timer = new();
+    private Timer updateTimer = new();
+
+    private static bool runOnce;
 
 
     //--------------------
@@ -50,6 +81,8 @@ public class ForestManager : MonoBehaviour
         mainManager = FindObjectOfType<MainManager>();
         forestSpawnerList = new List<GameObject>(forestSpawnCount);
 
+        forestList = new List<Forest>(forestSpawnCount);
+
         CalculateMapSize();
         SpawnForestsOnMap();
 
@@ -57,6 +90,10 @@ public class ForestManager : MonoBehaviour
     private void Start()
     {
         SubscribeToEvents();
+        // Init list with the estimate of amount of trees
+        updateTickList = new List<Forest>(forestSpawnCount / (int)TimeManager.instance.defaultPlaySpeed);
+        UpdateForests();
+        LoadForestBuffer();
     }
 
 
@@ -71,8 +108,7 @@ public class ForestManager : MonoBehaviour
 
     void SpawnForestsOnMap()
     {
-        timer = Time.realtimeSinceStartup;
-
+        timer.Start("Spawn Forests");
 
         //Spawn Forest
         for (int i = 0; i < forestSpawnCount;)
@@ -80,10 +116,11 @@ public class ForestManager : MonoBehaviour
             bool reset = false;
 
             //Make a random spawn position for this tree (y value i set way above the mesh by purpose)
-            spawnPosition = new Vector3((float)Random.Range(-mapSize_x / 2, mapSize_x / 2), 50, (float)Random.Range(-mapSize_z / 2, mapSize_z / 2));
+            spawnPosition = new Vector3(Random.Range(-mapSize_x / 2f, mapSize_x / 2f), 50f, Random.Range(-mapSize_z / 2f, mapSize_z / 2f));
 
             //Spawn a tree at the random position and place the GameObject in a parent-folder in the hierarchy
             forestSpawnerList.Add(Instantiate(forestPrefab, spawnPosition, Quaternion.identity) as GameObject);
+            
             forestSpawnerList[i].transform.parent = mainManager.forestParent.transform;
             forestSpawnerList[i].name = "Forest (" + i + ")";
 
@@ -167,17 +204,161 @@ public class ForestManager : MonoBehaviour
             }
         }
 
-        timer = Time.realtimeSinceStartup - timer;
-        print("Elapsed: " + timer);
+        print(timer);
+
+        // Store a ref to each forest component
+        forestSpawnerList.ForEach(obj => forestList.Add(obj.GetComponent<Forest>()));
+        currentIndex = forestList.Count;
     }
 
+    private int updtCnt = 0;
+    
+    /// <summary>
+    /// Runs every time the day changes. Updates every forest through tick.
+    /// </summary>
+    void UpdateForests()
+    {
+        if (!runOnce)
+        {
+            runOnce = true;
+        }
+        else
+        {
+            var cnt2 = forestList.Count(obj => !obj.didUpdate);
+
+            if (cnt2 > 0)
+            {
+                print("Not everything updated!!!!!!! NUM: " + cnt2);
+            }
+        }
+        forestList.ForEach(obj => obj.didUpdate = false);
+        //forestList.ForEach(obj => print("UpdateCount for Forest: " + obj.updateCount + " . Number of updates: " + updtCnt));
+        
+        print("CurIndex: " + currentIndex); 
+        /* If we somehow didn't finish updating all the trees in our time window,
+         update the rest now. */
+        if (currentIndex != forestList.Count && currentIndex != 0)
+        {
+            bufferSize = Math.Clamp(forestList.Count - (currentIndex + 1), 0, int.MaxValue);
+            
+            if (bufferSize > 0)
+            {
+                print("WARNING: Didn't update all trees in time! Updating " + (forestList.Count - (currentIndex + 1)) + " now... index:" + currentIndex + " size: " + forestList.Count);
+                updateTickList.Clear();
+                updateTickList.AddRange(forestList.GetRange(currentIndex, bufferSize));
+                currentIndex += bufferSize;
+                updateTickList.ForEach(obj =>
+                {
+                    obj.UpdateTreeStats();
+                    obj.didUpdate = true;
+                    obj.updateCount++;
+                });
+            
+                print("Updated " + cnt + " trees on the last tick. Total is " + (cnt + bufferSize) + " with fix.");
+            }
+        }
+        else
+        {
+            print("Updated " + cnt + " trees on the last tick. CurrentIndex: " + currentIndex);
+        }
+
+        var myCount = forestList.Count(obj => !obj.gotAdded);
+        if (updtCnt > 0 && myCount > 0) print("Objects didn't get added. Count: " + myCount);
+        
+        cnt = 0;
+        // Start measuring how far into the current day we are
+        updateTimer.Start();
+        currentIndex = 0;
+
+        //forestList.ForEach(obj => obj.UpdateTreeStats());
+        updtCnt++;
+    }
+    
+    private int GetBufferSize()
+    {
+        int remainingTrees = /*forestList.Count(obj => !obj.didUpdate);*/ forestList.Count - (currentIndex + 1);
+        float remainingSeconds = TimeManager.instance.playSpeed - updateTimer.GetTime();
+        float currentFPS = 1.0f / Time.unscaledDeltaTime;
+        float remainingFrames = currentFPS * remainingSeconds;
+
+        //print("Updated: " + (forestList.Count - remainingTrees) + " Remaining trees: " + remainingTrees +" Current FPS: " + currentFPS + "\nRemaining Seconds: " + remainingSeconds + " Trees per frame: " + ((int)Math.Ceiling(remainingTrees / remainingFrames)) + " Remaining frames: " + remainingFrames);
+        
+        return (int)Math.Ceiling(remainingTrees / remainingFrames); // Trees per frame
+    }
+
+    private int cnt;
+    void LoadForestBuffer()
+    {
+        // Update buffer size each tick to compensate for variable FPS
+        bufferSize = GetBufferSize();
+        switch (bufferSize)
+        {
+            case 0: return;
+            default:
+                // Ensure we don't go out of scope
+                if ((currentIndex + bufferSize) > (forestList.Count - 1))
+                {
+                    bufferSize = forestList.Count - currentIndex; // Not +1 here because math
+                    print("Buffersize went out of scope. Amount: " + ((currentIndex + bufferSize) - (forestList.Count - 1)));
+                }
+
+                updateTickList.Clear();
+
+                if (bufferSize <= 0) return;
+
+                //updateTickList.AddRange(forestList.GetRange(currentIndex, bufferSize));
+                for (int i = currentIndex; i < currentIndex + bufferSize; i++)
+                {
+                    updateTickList.Add(forestList[i]);
+                    forestList[i].gotAdded = true;
+                }
+                
+                //print("Adding to updateTickList, currentIndex: " + currentIndex + " bufferSize: " + bufferSize + " ending index: " + (currentIndex + bufferSize) + " First ObjID: " + forestList[currentIndex].GetInstanceID() + " Last ObjID: " + forestList[currentIndex+bufferSize].GetInstanceID());
+                
+                currentIndex += bufferSize; // We land on the next element, avoiding duplicates
+                break;
+        }
+    }
+
+    void Update()
+    {
+        
+        //deltaTime += (Time.unscaledDeltaTime - deltaTime) * 0.1f;
+        LoadForestBuffer();
+        
+        // Update the current buffer
+        updateTickList.ForEach(obj =>
+        {
+            obj.UpdateTreeStats();
+            obj.didUpdate = true;
+            obj.updateCount++;
+            ++cnt;
+        });
+        
+    }
+    
+    /*private struct MyParallelJob : IJobParallelFor
+    {
+        //public NativeArray<float> result;
+        private List<Forest> l;
+
+        public MyParallelJob(List<Forest> a)
+        {
+            l = new List<Forest>(a);
+        }
+
+        public void Execute(int i)
+        {
+            l[i].UpdateTreeStats();
+        }
+    }*/
 
     //--------------------
-
 
     void SubscribeToEvents()
     {
         TimeManager.instance.OnNewDay += TreeCount;
+        TimeManager.instance.OnNewDay += UpdateForests;
     }
     void TreeCount()
     {
