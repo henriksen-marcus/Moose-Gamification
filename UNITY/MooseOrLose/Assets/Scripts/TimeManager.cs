@@ -24,7 +24,6 @@ public class TimeManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI yearUI;
 
     private bool springbegun = false;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -94,6 +93,7 @@ public class TimeManager : MonoBehaviour
             }
             dayUI.SetText((day+1).ToString());
         }
+
     }
     public int GetYear() {  return year; }
     public int GetMonth() {  return month; }
@@ -102,30 +102,13 @@ public class TimeManager : MonoBehaviour
 
     public bool HuntingSeason() { return month == 9 || month == 10 || month == 11; }
 
-    //public bool IsSummer() { return month == 5 || month == 6 || month == 7; }
-    //public bool IsWinter() { return month == 11 || month == 0 || month == 1; }
-    //public bool IsSpring() { return month == 2 || month == 3 || month == 4; }
-    //public bool IsAutumn() { return month == 8 || month == 9 || month == 10; }
+    public bool IsSummer() { return month == 5 || month == 6 || month == 7; }
+    public bool IsWinter() { return month == 11 || month == 0 || month == 1; }
+    public bool IsSpring() { return month == 2 || month == 3 || month == 4; }
+    public bool IsAutumn() { return month == 8 || month == 9 || month == 10; }
 
-    public enum Season { Summer, Winter, Spring, Fall }
-
-    public Season GetSeason()
-    {
-        if (month is >= 5 and <= 7)
-            return Season.Summer;
-        else if (month is >= 11 or <= 1)
-            return Season.Winter;
-        else if (month is >= 2 and <= 4)
-            return Season.Spring;
-        else if (month is >= 8 and <= 10)
-            return Season.Fall;
-        else
-            return Season.Summer;
-    }
-
-    
     // Update is called once per frame
-    public IEnumerator NextDay()
+    IEnumerator NextDay()
     {
         yield return new WaitForSeconds(playSpeed);
         NewDay();
@@ -134,12 +117,13 @@ public class TimeManager : MonoBehaviour
         
         if (day > 29)
         {
+            //ElgManager.instance.SetMalePopulationAge();
+            month++;
             if (month > 1 && !springbegun)
             {
                 springbegun = true;
                 SpringBegin();
             }
-            month++;
             day = 0;
         }
         if (month > 11)
