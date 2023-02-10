@@ -30,7 +30,7 @@ public class FollowMother : Node
 
         if (mScript.mother != null)
         {
-            if (mScript.age_years < 1)
+            if (mScript.age_months < 10)
             {
                 if (timer > TimeManager.instance.playSpeed / 2)
                 {

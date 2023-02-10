@@ -81,7 +81,7 @@ public class Ulv : MonoBehaviour
     {
         yield return new WaitForSeconds(TimeManager.instance.playSpeed);
         age_days++;
-        if (age_days > 30)
+        if (age_days > 29)
         {
             age_days = 0;
             NextMonth();

@@ -14,6 +14,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] int month;
     [SerializeField] int day;
     [SerializeField] int year;
+    [SerializeField] int startMonth;
     public float playSpeed = 15;
     public float defaultPlaySpeed = 3;
     [HideInInspector]
@@ -27,6 +28,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI yearUI;
 
     private Season currentSeason;
+    private bool gamePaused = false;
     // Start is called before the first frame update
     void Awake()
     {
@@ -40,11 +42,13 @@ public class TimeManager : MonoBehaviour
             instance = this;
         }
         day = 0;
-        month = 5;
+        month = startMonth;
         year = 0;
         StartCoroutine(NextDay());
 
+        defaultPlaySpeed = 3;
         startPlaySpeed = defaultPlaySpeed;
+        gamePaused = false;
     }
 
     private void Update()
@@ -108,6 +112,8 @@ public class TimeManager : MonoBehaviour
     public bool IsSpring() { return currentSeason == Season.Spring; }
     public bool IsAutumn() { return currentSeason == Season.Autumn; }
 
+    public void SetGamePaused(bool input) {  gamePaused = input; }
+
     public Season GetSeason()
     {
         return currentSeason;
@@ -118,25 +124,26 @@ public class TimeManager : MonoBehaviour
     IEnumerator NextDay()
     {
         yield return new WaitForSeconds(playSpeed);
-        NewDay();
-
-        day++;
-        
-        if (day > 29)
+        if (!gamePaused)
         {
-            ElgManager.instance.SetMalePopulationAge();
-            month++;
-            NewMonth();
-            day = 0;
-        }
-        if (month > 11)
-        {
-            NewYear();
-            year++;
-            month = 0;
+            day++;
+            NewDay();
+
+            if (day > 29)
+            {
+                ElgManager.instance.SetMalePopulationAge();
+                month++;
+                NewMonth();
+                day = 0;
+            }
+            if (month > 11)
+            {
+                year++;
+                NewYear();
+                month = 0;
+            }
         }
 
-        
         StartCoroutine(NextDay());
     }
 
