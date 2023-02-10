@@ -71,6 +71,10 @@ public class ElgManager : MonoBehaviour
 
                 GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
                 elg_list.Add(go);
+                if (go.GetComponent<Elg>().gender == Gender.Female)
+                {
+                    go.GetComponent<Elg>().SpawnPregnant();
+                }
             }
         }
         // Spawn with children
@@ -86,7 +90,9 @@ public class ElgManager : MonoBehaviour
 
                 if (go.GetComponent<Elg>().gender == Gender.Female)
                 {
+
                     Elg script = go.GetComponent<Elg>();
+                    script.SpawnPregnant();
                     int children = script.GetNumberOfChildren();
                     loop -= children;
                     for (int j = 0; j < children; j++)

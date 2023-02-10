@@ -100,7 +100,11 @@ public class Elg : MonoBehaviour
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
         StartCoroutine(NextDay());
+       
+    }
 
+    public void SpawnPregnant()
+    {
         // Pregnancy
         if (gender == Gender.Female && age_years > 1)
         {
@@ -122,7 +126,6 @@ public class Elg : MonoBehaviour
                 daysPregnant = 0;
             }
         }
-       
     }
 
     public IEnumerator NextDay()
