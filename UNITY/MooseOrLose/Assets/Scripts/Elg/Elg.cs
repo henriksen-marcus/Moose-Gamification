@@ -200,7 +200,7 @@ public class Elg : MonoBehaviour
             ElgManager.instance.FemaleDie();
         }
 
-        if (age_months > 9)
+        if (age_months < 9 && age_years < 1)
         {
             if (mother != null)
                 if (mother.GetComponent<Elg>() != null)
