@@ -26,12 +26,27 @@ public class Forest : MonoBehaviour
     Trees[] treeArray;
     public List<Trees> treeList;
 
-    public bool didUpdate = false;
-    public int updateCount = 0;
-    public bool gotAdded = false;
+    private bool didUpdate = false;
+    private int updateCount = 0;
+    public bool hasBeenCalled;
 
 
     //--------------------
+
+    /** Debugging */
+    public void DidUpdate()
+    {
+        hasBeenCalled = true;
+        didUpdate = true;
+        updateCount++;
+        SetColor(Color.green);
+    }
+
+    /** Debugging */
+    public void SetColor(Color col)
+    {
+        gameObject.GetComponent<MeshRenderer>().materials[0].color = col;
+    }
 
 
     private void Awake()

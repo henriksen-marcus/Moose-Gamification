@@ -7,28 +7,27 @@ using UnityEngine;
 /// </summary>
 public class Timer
 {
-    private float m_Time;
-    private string msg;
+    private float _time;
+    private string _msg;
 
     public void Start()
     {
-        m_Time = Time.realtimeSinceStartup;
+        _time = Time.realtimeSinceStartup;
     }
 
     public void Start(string message)
     {
-        msg = message;
+        _msg = message;
         Start();
     }
 
     public float GetTime()
     {
-        return Time.realtimeSinceStartup - m_Time;
+        return Time.realtimeSinceStartup - _time;
     }
 
     public override string ToString()
     {
-        return msg + ": " + GetTime();
+        return _msg + ": " + GetTime();
     }
-    
 }
