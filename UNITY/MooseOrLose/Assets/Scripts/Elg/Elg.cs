@@ -102,7 +102,7 @@ public class Elg : MonoBehaviour
         StartCoroutine(NextDay());
 
         // Pregnancy
-        if (gender == Gender.Female)
+        if (gender == Gender.Female && age_years > 1)
         {
             if (TimeManager.instance.GetMonth() < 3 || TimeManager.instance.GetMonth() > 8)
             {
@@ -162,7 +162,7 @@ public class Elg : MonoBehaviour
 
         CalculateNewSize();
 
-        if (gender == Gender.Female)
+        if (gender == Gender.Female && age_years > 1)
         {
             if (TimeManager.instance.MatingSeason())
             {

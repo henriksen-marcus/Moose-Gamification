@@ -48,11 +48,22 @@ public class ElgPopulationGraph : MonoBehaviour
     private void ShowGraph(List<int> valueList)
     {
         float height = container.sizeDelta.y - 20;
+        float width = container.sizeDelta.x - 20;
         float yMax = 300;
         float xMin = 10;
+        float increment;
+        if (valueList.Count < 10)
+        {
+            increment = 10;
+        }
+        else
+        {
+            increment = width / valueList.Count;
+        }
+        
         for (int i = 0; i < valueList.Count; i++)
         {
-            float xPos = xMin + (i * 5);
+            float xPos = xMin + (i * increment);
             float yPos = (valueList[i] / yMax) * height;
             CreateCircle(new Vector2(xPos, yPos));
         }
