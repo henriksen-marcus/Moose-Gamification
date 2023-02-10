@@ -193,19 +193,19 @@ public class Trees
     }
     void UpdateTreeHealth()
     {
-        if (HP >= 0)
+        if (HP == 0)
         {
             treeState_Health = TreeState_Health.treeHealth_Chopped;
         }
-        else if (HP >= 10)
+        else if (HP <= 10)
         {
             treeState_Health = TreeState_Health.treeHealth_Broken;
         }
-        else if (HP >= 40)
+        else if (HP <= 40)
         {
             treeState_Health = TreeState_Health.treeHealth_Damaged;
         }
-        else if (HP >= 70)
+        else if (HP <= 70)
         {
             treeState_Health = TreeState_Health.treeHealth_Healthy;
         }
@@ -474,7 +474,7 @@ public class Trees
         }
         else
         {
-            Debug.Log("There are no more food to get from this tree");
+            //Debug.Log("There are no more food to get from this tree");
         }
     }
 

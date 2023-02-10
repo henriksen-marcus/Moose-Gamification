@@ -25,7 +25,7 @@ public class ElgTryToEat : Node
         for (float i = 0; i < hunger; i += n)
         {
             Forest forest = (Forest)parent.GetData("Forest");
-            Forest.Trees tree = forest.GetOptimalTreeToEat();
+            Trees tree = forest.GetOptimalTreeToEat();
             if (tree == null)
             {
                 return NodeState.FAILURE;
