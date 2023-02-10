@@ -11,7 +11,10 @@ public class JegerFindTarget : Node
     {
         mTargetRange = range;
         mTransform = transform;
+        TimeManager.instance.OnNewDay += NewDay;
     }
+
+
     public override NodeState Evaluate()
     {
         if (parent.GetData("Target") != null)
@@ -19,21 +22,55 @@ public class JegerFindTarget : Node
             return NodeState.SUCCESS;
         }
 
-
-
+        if (parent.GetData("Daily Kills") == null)
+        {
+            parent.SetData("Daily Kills", 0);
+        }
         Collider[] colliders = Physics.OverlapSphere(mTransform.position, mTargetRange);
+        
         foreach (Collider collider in colliders)
         {
+            
             if (collider.tag == "Elg")
             {
-                // Code Choosing of Elg Here
-                if (parent.GetData("Target") == null)
-                    parent.SetData("Target", collider.gameObject.transform);
+                Elg mScript = collider.GetComponent<Elg>();
+                if (mScript.age_years < 1)
+                {
+                    if (RuleManager.Instance.CanShootChild(mScript.mother.GetComponent<Elg>().number_of_children,(int)parent.GetData("Daily Kills")))
+                    {
+                        continue;
+                    }
+                }
+                if (mScript.gender == Gender.Male)
+                {
+                    if (!RuleManager.Instance.CanShootMale(mScript.antler_tag_number, (int)parent.GetData("Daily Kills")))
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    if (!RuleManager.Instance.CanShootFemale(mScript.number_of_children, (int)parent.GetData("Daily Kills")))
+                    {
+                        continue;
+                    }
+                }
+                
+                parent.SetData("Target", collider.gameObject.transform);
 
-                return NodeState.SUCCESS;
             }
+        }
+        if (parent.GetData("Target") != null)
+        {
+            return NodeState.SUCCESS;
         }
 
         return NodeState.FAILURE;
     }
+
+    void NewDay()
+    {
+        parent.SetData("Daily Kills", 0);
+    }
+
 }

@@ -18,7 +18,7 @@ public class ElgManager : MonoBehaviour
     public int elg_males;
     public int elg_females;
     public int elg_children;
-    public int carrying_capacity = 1500;
+    public int carrying_capacity = 500;
 
     public float male_population_age;
 
@@ -56,14 +56,52 @@ public class ElgManager : MonoBehaviour
         elg_children = 0;
         elg_population = start_population;
         float loop = start_population;
-        for (int i = 0; i < loop; i++)
-        {
-            NavMeshHit hit;
-            NavMesh.SamplePosition(new Vector3(UnityEngine.Random.Range(-200,200), 10, UnityEngine.Random.Range(-200,200)), out hit, 200, 1);
 
-            GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
-            elg_list.Add(go);
+
+        // Spawn without children
+        if (TimeManager.instance.GetMonth() < 3)
+        {
+            for (int i = 0; i < loop; i++)
+            {
+                NavMeshHit hit;
+                NavMesh.SamplePosition(new Vector3(UnityEngine.Random.Range(-200, 200), 10, UnityEngine.Random.Range(-200, 200)), out hit, 200, 1);
+
+                GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
+                elg_list.Add(go);
+            }
         }
+        // Spawn with children
+        else
+        {
+            for (int i = 0; i < loop; i++)
+            {
+                NavMeshHit hit;
+                NavMesh.SamplePosition(new Vector3(UnityEngine.Random.Range(-200, 200), 10, UnityEngine.Random.Range(-200, 200)), out hit, 200, 1);
+
+                GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
+                elg_list.Add(go);
+
+                if (go.GetComponent<Elg>().gender == Gender.Female)
+                {
+                    Elg script = go.GetComponent<Elg>();
+                    int children = script.GetNumberOfChildren();
+                    loop -= children;
+                    for (int j = 0; j < children; j++)
+                    {
+                        GameObject go1 = Instantiate(ElgPrefab, go.transform.position, Quaternion.identity, ElgManager.instance.transform);
+                        Elg script1 = go1.GetComponent<Elg>();
+                        script1.NewBorn();
+                        script1.age_months = TimeManager.instance.GetMonth() - 3;
+                        script1.SetMother(go.transform);
+                        elg_list.Add(go1);
+                        
+                    }
+
+                }
+            }
+
+        }
+
         PopulationChanged();
         male_population_age = MalePopulationAge();
     }
@@ -172,6 +210,6 @@ public class ElgManager : MonoBehaviour
 
     public float GetPopulationGrowthRate()
     {
-        return (1 - ((elg_population / carrying_capacity) * (elg_population / carrying_capacity))) * 100;
+        return (1 - (((float)elg_population / (float)carrying_capacity) * ((float)elg_population / (float)carrying_capacity))) * 100;
     }
 }

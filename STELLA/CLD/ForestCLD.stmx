@@ -2,8 +2,8 @@
 <xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
 	<header>
 		<smile version="1.0" namespace="std, isee"/>
-		<name>JegerCLD</name>
-		<uuid>59db312a-0bd1-4dc2-b3f4-b61a8a48b121</uuid>
+		<name>ForestCLD</name>
+		<uuid>7f340c15-f9cd-4ef7-b1fb-6946bd0c9e2b</uuid>
 		<vendor>isee systems, inc.</vendor>
 		<product version="1.7.1" isee:build_number="1574" isee:saved_by_v1="true" lang="en">Stella Architect</product>
 	</header>
@@ -21,55 +21,107 @@
 	<model_units/>
 	<model>
 		<variables>
-			<aux name="Elg Jakt">
+			<aux name="Trees Grow">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Restriksjoner på\nantall elg lov til\nå skyte per dag">
+			<aux name="Spring">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Elg Jaktsesong">
+			<aux name="Summer">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Stå stille i en by">
+			<aux name="Winter">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Ulv Jaktsesong">
+			<aux name="Autumn">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Ulv Jakt">
+			<aux name="Trees sprout">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Antall ulver">
+			<aux name="Trees fell leaves">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Restriksjoner på\nprosent andel\njakt på ku/okse">
+			<aux name="Spread Seeds">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Restriksjoner på\njakt på kuer med kalver">
+			<aux name="Seeds sprout into new Trees">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Restriksjoner på\nantall tagger på\nelgens gevir">
+			<aux name="Forest Density">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Restriksjoner på antall ulver lov å jakte på">
+			<aux name="Grass">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Moss">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Forest Temperature">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Blueberries">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Tree gets eaten">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Trees Height">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Trees die">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Forest Thinning">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Forest Planting">
 				<isee:delay_aux/>
 			</aux>
 			<isee:dependencies>
-				<var name="Elg_Jakt">
-					<in>Restriksjoner_på_antall_elg_lov_til_å_skyte_per_dag</in>
-					<in>Elg_Jaktsesong</in>
-					<in>&quot;Restriksjoner_på_prosent_andel_jakt_på_ku/okse&quot;</in>
-					<in>Restriksjoner_på_jakt_på_kuer_med_kalver</in>
-					<in>Restriksjoner_på_antall_tagger_på_elgens_gevir</in>
+				<var name="Trees_Grow">
+					<in>Spring</in>
+					<in>Summer</in>
+					<in>Winter</in>
+					<in>Autumn</in>
+					<in>Trees_sprout</in>
+					<in>Trees_fell_leaves</in>
+					<in>Tree_gets_eaten</in>
 				</var>
-				<var name="Stå_stille_i_en_by">
-					<in>Elg_Jaktsesong</in>
-					<in>Ulv_Jaktsesong</in>
+				<var name="Trees_sprout">
+					<in>Spring</in>
 				</var>
-				<var name="Ulv_Jakt">
-					<in>Antall_ulver</in>
-					<in>Ulv_Jaktsesong</in>
-					<in>Restriksjoner_på_antall_ulver_lov_å_jakte_på</in>
+				<var name="Trees_fell_leaves">
+					<in>Autumn</in>
+				</var>
+				<var name="Spread_Seeds">
+					<in>Spring</in>
+				</var>
+				<var name="Seeds_sprout_into_new_Trees">
+					<in>Spread_Seeds</in>
+					<in>Forest_Density</in>
+				</var>
+				<var name="Forest_Density">
+					<in>Trees_die</in>
+					<in>Forest_Thinning</in>
+					<in>Seeds_sprout_into_new_Trees</in>
+					<in>Forest_Planting</in>
+				</var>
+				<var name="Grass">
+					<in>Forest_Temperature</in>
+				</var>
+				<var name="Moss">
+					<in>Forest_Density</in>
+				</var>
+				<var name="Forest_Temperature">
+					<in>Forest_Density</in>
+				</var>
+				<var name="Blueberries">
+					<in>Forest_Temperature</in>
+				</var>
+				<var name="Trees_Height">
+					<in>Trees_Grow</in>
+					<in>Tree_gets_eaten</in>
 				</var>
 			</isee:dependencies>
 		</variables>
@@ -113,7 +165,7 @@
 				<isee:spatial_map color="black" background="white" font_size="12pt"/>
 				<isee:animation_object color="black" background="white" font_size="12pt"/>
 			</style>
-			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" zoom="160" isee:popup_graphs_are_comparative="true" type="stock_flow">
+			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" zoom="180" isee:popup_graphs_are_comparative="true" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -149,56 +201,113 @@
 					</graph>
 					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 				</style>
-				<aux x="410" y="245.875" width="36.25" height="12" name="Elg Jakt"/>
-				<aux x="242.375" y="124.375" width="70.25" height="40" name="Restriksjoner på\nantall elg lov til\nå skyte per dag"/>
-				<connector uid="1" polarity="-" isee:polarity_placement="outside" angle="338.839">
-					<from>Restriksjoner_på_antall_elg_lov_til_å_skyte_per_dag</from>
-					<to>Elg_Jakt</to>
+				<aux x="484.661" y="381.857" width="49.25" height="12" name="Trees Grow"/>
+				<aux x="366.589" y="300.429" width="28.25" height="12" name="Spring"/>
+				<connector uid="1" polarity="+" isee:polarity_placement="inside" angle="327.653">
+					<from>Spring</from>
+					<to>Trees_Grow</to>
 				</connector>
-				<aux x="395" y="339.625" width="66.25" height="12" name="Elg Jaktsesong"/>
-				<connector uid="2" polarity="+" isee:polarity_placement="outside" angle="88.7811">
-					<from>Elg_Jaktsesong</from>
-					<to>Elg_Jakt</to>
+				<aux x="604.554" y="300.429" width="37.25" height="12" name="Summer"/>
+				<connector uid="2" polarity="+" isee:polarity_placement="inside" angle="215.563">
+					<from>Summer</from>
+					<to>Trees_Grow</to>
 				</connector>
-				<aux x="528.625" y="339.625" width="70.25" height="12" name="Stå stille i en by"/>
-				<connector uid="3" polarity="-" isee:polarity_placement="outside" angle="1.41442">
-					<from>Elg_Jaktsesong</from>
-					<to>Stå_stille_i_en_by</to>
+				<aux x="494.661" y="300.429" width="29.25" height="12" name="Winter"/>
+				<aux x="606.054" y="466.143" width="34.25" height="12" name="Autumn"/>
+				<connector uid="3" polarity="-" isee:polarity_placement="inside" angle="270">
+					<from>Winter</from>
+					<to>Trees_Grow</to>
 				</connector>
-				<aux x="679.625" y="339.625" width="68.25" height="12" name="Ulv Jaktsesong"/>
-				<connector uid="4" polarity="-" isee:polarity_placement="outside" angle="178.977">
-					<from>Ulv_Jaktsesong</from>
-					<to>Stå_stille_i_en_by</to>
+				<connector uid="4" polarity="-" isee:polarity_placement="outside" angle="143.497">
+					<from>Autumn</from>
+					<to>Trees_Grow</to>
 				</connector>
-				<aux x="694.625" y="242.75" width="38.25" height="12" name="Ulv Jakt"/>
-				<aux x="806.625" y="242.75" width="49.25" height="12" name="Antall ulver"/>
-				<connector uid="5" polarity="+" isee:polarity_placement="outside" angle="175.061">
-					<from>Antall_ulver</from>
-					<to>Ulv_Jakt</to>
+				<aux x="354.125" y="381.857" width="54.25" height="12" name="Trees sprout"/>
+				<connector uid="5" polarity="+" isee:polarity_placement="outside" angle="275.711">
+					<from>Spring</from>
+					<to>Trees_sprout</to>
 				</connector>
-				<connector uid="6" polarity="+" isee:polarity_placement="outside" angle="85.5154">
-					<from>Ulv_Jaktsesong</from>
-					<to>Ulv_Jakt</to>
+				<connector uid="6" polarity="+" isee:polarity_placement="outside" angle="0">
+					<from>Trees_sprout</from>
+					<to>Trees_Grow</to>
 				</connector>
-				<aux x="204.25" y="186.875" width="70.25" height="40" name="Restriksjoner på\nprosent andel\njakt på ku/okse"/>
-				<connector uid="7" polarity="-" isee:polarity_placement="inside" angle="353.596">
-					<from>&quot;Restriksjoner_på_prosent_andel_jakt_på_ku/okse&quot;</from>
-					<to>Elg_Jakt</to>
+				<aux x="587.054" y="381.857" width="72.25" height="12" name="Trees fell leaves"/>
+				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="87.1376">
+					<from>Autumn</from>
+					<to>Trees_fell_leaves</to>
 				</connector>
-				<aux x="174.125" y="250.875" width="101.25" height="26" name="Restriksjoner på\njakt på kuer med kalver"/>
-				<connector uid="8" polarity="-" isee:polarity_placement="outside" angle="0.575818">
-					<from>Restriksjoner_på_jakt_på_kuer_med_kalver</from>
-					<to>Elg_Jakt</to>
+				<connector uid="8" polarity="-" isee:polarity_placement="outside" angle="180">
+					<from>Trees_fell_leaves</from>
+					<to>Trees_Grow</to>
 				</connector>
-				<aux x="204.25" y="306.625" width="70.25" height="40" name="Restriksjoner på\nantall tagger på\nelgens gevir"/>
-				<connector uid="9" polarity="-" isee:polarity_placement="outside" angle="4.57392">
-					<from>Restriksjoner_på_antall_tagger_på_elgens_gevir</from>
-					<to>Elg_Jakt</to>
+				<aux x="350.589" y="211.143" width="60.25" height="12" name="Spread Seeds"/>
+				<connector uid="9" polarity="+" isee:polarity_placement="outside" angle="97.125">
+					<from>Spring</from>
+					<to>Spread_Seeds</to>
 				</connector>
-				<aux x="741.375" y="134.5" width="95.25" height="26" name="Restriksjoner på antall ulver lov å jakte på"/>
-				<connector uid="10" polarity="-" isee:polarity_placement="outside" angle="214.136">
-					<from>Restriksjoner_på_antall_ulver_lov_å_jakte_på</from>
-					<to>Ulv_Jakt</to>
+				<aux x="320.589" y="138.286" width="120.25" height="12" name="Seeds sprout into new Trees"/>
+				<connector uid="10" polarity="+" isee:polarity_placement="outside" angle="90">
+					<from>Spread_Seeds</from>
+					<to>Seeds_sprout_into_new_Trees</to>
+				</connector>
+				<aux x="504.518" y="138.286" width="65.25" height="12" name="Forest Density"/>
+				<connector uid="11" polarity="-" isee:polarity_placement="outside" angle="196.798">
+					<from>Forest_Density</from>
+					<to>Seeds_sprout_into_new_Trees</to>
+				</connector>
+				<aux x="658.518" y="203.286" width="27.25" height="12" name="Grass"/>
+				<aux x="525.018" y="64" width="24.25" height="12" name="Moss"/>
+				<aux x="630.518" y="138.286" width="83.25" height="12" name="Forest Temperature"/>
+				<connector uid="12" polarity="-" isee:polarity_placement="outside" angle="0">
+					<from>Forest_Density</from>
+					<to>Forest_Temperature</to>
+				</connector>
+				<connector uid="13" polarity="+" isee:polarity_placement="outside" angle="270">
+					<from>Forest_Temperature</from>
+					<to>Grass</to>
+				</connector>
+				<aux x="648.018" y="72.7143" width="48.25" height="12" name="Blueberries"/>
+				<connector uid="14" polarity="-" isee:polarity_placement="outside" angle="88.6678">
+					<from>Forest_Temperature</from>
+					<to>Blueberries</to>
+				</connector>
+				<aux x="347.625" y="466.143" width="67.25" height="12" name="Tree gets eaten"/>
+				<connector uid="15" polarity="-" isee:polarity_placement="outside" angle="33.3568">
+					<from>Tree_gets_eaten</from>
+					<to>Trees_Grow</to>
+				</connector>
+				<aux x="481.661" y="466.143" width="55.25" height="12" name="Trees Height"/>
+				<connector uid="16" polarity="+" isee:polarity_placement="outside" angle="270">
+					<from>Trees_Grow</from>
+					<to>Trees_Height</to>
+				</connector>
+				<connector uid="17" polarity="-" isee:polarity_placement="outside" angle="358.837">
+					<from>Tree_gets_eaten</from>
+					<to>Trees_Height</to>
+				</connector>
+				<aux x="517.018" y="203.286" width="40.25" height="12" name="Trees die"/>
+				<connector uid="18" polarity="-" isee:polarity_placement="inside" angle="90">
+					<from>Trees_die</from>
+					<to>Forest_Density</to>
+				</connector>
+				<aux x="564.268" y="94.7143" width="66.25" height="12" name="Forest Thinning"/>
+				<connector uid="19" polarity="-" isee:polarity_placement="inside" angle="215.874">
+					<from>Forest_Thinning</from>
+					<to>Forest_Density</to>
+				</connector>
+				<connector uid="20" polarity="+" isee:polarity_placement="outside" angle="21.14">
+					<from>Seeds_sprout_into_new_Trees</from>
+					<to>Forest_Density</to>
+				</connector>
+				<aux x="564.768" y="179.714" width="65.25" height="12" name="Forest Planting"/>
+				<connector uid="21" polarity="+" isee:polarity_placement="inside" angle="145.667">
+					<from>Forest_Planting</from>
+					<to>Forest_Density</to>
+				</connector>
+				<isee:loop_indicator text="B1" orientation="counter_clockwise" uid="22" x="451.661" y="129.286" width="30" height="30"/>
+				<connector uid="23" polarity="+" isee:polarity_placement="outside" angle="90">
+					<from>Forest_Density</from>
+					<to>Moss</to>
 				</connector>
 			</view>
 		</views>

@@ -13,7 +13,7 @@ public class CheckForHuntingSeason : Node
     }
     public override NodeState Evaluate()
     {
-        if (TimeManager.instance.HuntingSeason())
+        if (RuleManager.Instance.HuntingSeason())
         {
 
             return NodeState.SUCCESS;

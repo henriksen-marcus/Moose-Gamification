@@ -42,7 +42,7 @@ public class JegerWalkToTarget : Node
         }
         Transform transform = (Transform)parent.GetData("Target");
 
-        if (Vector3.Distance(transform.position, mAgent.transform.position) < 10)
+        if (Vector3.Distance(transform.position, mAgent.transform.position) < 7.5f)
         {
             mAgent.isStopped = true;
             parent.SetData("Shooting", true);

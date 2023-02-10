@@ -15,10 +15,10 @@ public class RuleManager : UI, IPointerEnterHandler
     //moving rules from other managers here?
     [SerializeField] private List<int> huntingSeasonRange;
     
-    private int _hornLimit = 4;
+    private int _antlerPointsLimit = 4;
     private int _dailyMooseLimit = 5;
     private int _moosePopMin = 60;
-    private int _childLimit = 2;
+    private int _calfLimit = 1;
     private int _wolfLimit = 30;
     private List<MonthButton> _monthButtons;
     private bool _huntingSeason;
@@ -29,6 +29,10 @@ public class RuleManager : UI, IPointerEnterHandler
 
     private void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
         _monthButtons = new(GetComponentsInChildren<MonthButton>());
         _list = new(GetComponentsInChildren<HorizontalLayoutGroup>());
     }
@@ -44,15 +48,19 @@ public class RuleManager : UI, IPointerEnterHandler
     //Get values - other classes refer to these
     public bool CanShootMale(int horns, int shotToday)
     {
-        return horns >= _hornLimit && shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > _moosePopMin;
+        return horns >= _antlerPointsLimit && shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > _moosePopMin && HuntingSeason();
     }
-    public bool CanShootFemale(int children)
+    public bool CanShootFemale(int children, int shotToday) //always shoot cow last? (children == 0)
     {
-        return children >= _childLimit && ElgManager.instance.elg_population > _moosePopMin;
+        return shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > _moosePopMin && children == 0 && HuntingSeason();
+    }
+    public bool CanShootChild(int children, int shotToday)
+    {
+        return children > _calfLimit && ElgManager.instance.elg_population > _moosePopMin && shotToday < _dailyMooseLimit && HuntingSeason();
     }
     public bool CanShootWolf()
     {
-        return true;//wolf manager.pop > _wolfLimit
+        return UlvManager.instance.ulv_population > _wolfLimit;
     }
     public bool HuntingSeason()
     {
@@ -61,13 +69,13 @@ public class RuleManager : UI, IPointerEnterHandler
     
     
     //UI - setting values
-    public void SetHornLimit(string inLimit)
+    public void SetAntlerPointLimit(string inLimit)
     {
-        int.TryParse(inLimit, out _hornLimit);
+        int.TryParse(inLimit, out _antlerPointsLimit);
     }
-    public void SetChildLimit(string inLimit)
+    public void SetCalfLimit(string inLimit)
     {
-        int.TryParse(inLimit, out _childLimit);
+        int.TryParse(inLimit, out _calfLimit);
     }
     public void SetDailyMooseLimit(string inLimit)
     {
@@ -82,7 +90,14 @@ public class RuleManager : UI, IPointerEnterHandler
                 huntingSeasonRange.Add(monthButton.Month());
         }
     }
-
+    public void SetWolfPopLimit(string inLimit)
+    {
+        int.TryParse(inLimit, out _wolfLimit);
+    }
+    public void SetMoosePopMin(string inLimit)
+    {
+        int.TryParse(inLimit, out _moosePopMin);
+    }
     
     //UI functionality
     public void OnPointerEnter(PointerEventData eventData)

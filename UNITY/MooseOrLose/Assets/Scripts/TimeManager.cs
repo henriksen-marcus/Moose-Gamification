@@ -4,6 +4,9 @@ using UnityEngine;
 using TMPro;
 using System;
 
+
+public enum Season { Spring, Summer, Autumn, Winter }
+
 public class TimeManager : MonoBehaviour
 {
     static public TimeManager instance;
@@ -11,6 +14,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] int month;
     [SerializeField] int day;
     [SerializeField] int year;
+    [SerializeField] int startMonth;
     public float playSpeed = 15;
     public float defaultPlaySpeed = 3;
     [HideInInspector]
@@ -23,7 +27,8 @@ public class TimeManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI monthUI;
     [SerializeField] public TextMeshProUGUI yearUI;
 
-    private bool springbegun = false;
+    private Season currentSeason;
+    private bool gamePaused = false;
     // Start is called before the first frame update
     void Awake()
     {
@@ -37,11 +42,13 @@ public class TimeManager : MonoBehaviour
             instance = this;
         }
         day = 0;
-        month = 5;
+        month = startMonth;
         year = 0;
         StartCoroutine(NextDay());
 
+        defaultPlaySpeed = 3;
         startPlaySpeed = defaultPlaySpeed;
+        gamePaused = false;
     }
 
     private void Update()
@@ -58,7 +65,7 @@ public class TimeManager : MonoBehaviour
                     monthUI.SetText("Feb");
                     break;
                 case 2:
-                    monthUI.SetText("Mar");
+                    monthUI.SetText("Mar");                   
                     break;
                 case 3:
                     monthUI.SetText("Apr");
@@ -100,41 +107,43 @@ public class TimeManager : MonoBehaviour
     public int GetDay() { return day; }
     public bool MatingSeason() { return month == 7 || month == 8; }
 
-    public bool HuntingSeason() { return month == 9 || month == 10 || month == 11; }
+    public bool IsSummer() { return currentSeason == Season.Summer; }
+    public bool IsWinter() { return currentSeason == Season.Winter; }
+    public bool IsSpring() { return currentSeason == Season.Spring; }
+    public bool IsAutumn() { return currentSeason == Season.Autumn; }
 
-    public bool IsSummer() { return month == 5 || month == 6 || month == 7; }
-    public bool IsWinter() { return month == 11 || month == 0 || month == 1; }
-    public bool IsSpring() { return month == 2 || month == 3 || month == 4; }
-    public bool IsAutumn() { return month == 8 || month == 9 || month == 10; }
+    public void SetGamePaused(bool input) {  gamePaused = input; }
+
+    public Season GetSeason()
+    {
+        return currentSeason;
+    }
+
 
     // Update is called once per frame
     IEnumerator NextDay()
     {
         yield return new WaitForSeconds(playSpeed);
-        NewDay();
-
-        day++;
-        
-        if (day > 29)
+        if (!gamePaused)
         {
-            ElgManager.instance.SetMalePopulationAge();
-            month++;
-            if (month > 1 && !springbegun)
+            day++;
+            NewDay();
+
+            if (day > 29)
             {
-                springbegun = true;
-                SpringBegin();
+                ElgManager.instance.SetMalePopulationAge();
+                month++;
+                NewMonth();
+                day = 0;
             }
-            day = 0;
-        }
-        if (month > 11)
-        {
-            springbegun = false;
-            NewYear();
-            year++;
-            month = 0;
+            if (month > 11)
+            {
+                year++;
+                NewYear();
+                month = 0;
+            }
         }
 
-        
         StartCoroutine(NextDay());
     }
 
@@ -144,6 +153,60 @@ public class TimeManager : MonoBehaviour
         if (OnNewDay != null)
         {
             OnNewDay();
+        }
+    }
+
+    public event Action OnNewMonth;
+    public void NewMonth()
+    {
+        switch (month)
+        {
+            case 0:
+                currentSeason = Season.Winter;
+                break;
+            case 1:
+                currentSeason = Season.Winter;
+                break;
+            case 2:
+                currentSeason = Season.Spring;
+                SpringBegin();
+                break;
+            case 3:
+                currentSeason = Season.Spring;
+                break;
+            case 4:
+                currentSeason = Season.Spring;
+                break;
+            case 5:
+                currentSeason = Season.Summer;
+                break;
+            case 6:
+                currentSeason = Season.Summer;
+                break;
+            case 7:
+                currentSeason = Season.Summer;
+                break;
+            case 8:
+                currentSeason = Season.Autumn;
+                break;
+            case 9:
+                currentSeason = Season.Autumn;
+                break;
+            case 10:
+                currentSeason = Season.Autumn;
+                break;
+            case 11:
+                currentSeason = Season.Winter;
+                break;
+
+            default:
+                break;
+        }
+
+
+        if (OnNewMonth != null)
+        {
+            OnNewMonth();
         }
     }
 

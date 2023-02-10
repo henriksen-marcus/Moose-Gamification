@@ -72,7 +72,7 @@ public class Ulv : MonoBehaviour
     IEnumerator NaturalHungerDrain()
     {
         yield return new WaitForSeconds(TimeManager.instance.playSpeed);
-        hunger -= Random.Range(15,25);
+        hunger -= Random.Range(8,15);
         hunger = Mathf.Clamp(hunger, 0, 100);
         StartCoroutine(NaturalHungerDrain());
     }
@@ -81,7 +81,7 @@ public class Ulv : MonoBehaviour
     {
         yield return new WaitForSeconds(TimeManager.instance.playSpeed);
         age_days++;
-        if (age_days > 30)
+        if (age_days > 29)
         {
             age_days = 0;
             NextMonth();
