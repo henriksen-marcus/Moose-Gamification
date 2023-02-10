@@ -87,7 +87,9 @@ public class Elg : MonoBehaviour
         natural_size = Random.Range(0, 17);
         natural_antler_size = Random.Range(0, 17);
         CalculateNewSize();
-
+        pregnant = false;
+        childrenInBelly = 0;
+        daysPregnant = 0;
 
     }
 
