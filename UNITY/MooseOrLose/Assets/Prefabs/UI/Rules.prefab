@@ -226,6 +226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 1
+  huntingEnabled: 0
 --- !u!1 &222398917031996590
 GameObject:
   m_ObjectHideFlags: 0
@@ -452,6 +453,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 9
+  huntingEnabled: 1
 --- !u!1 &359498382917331755
 GameObject:
   m_ObjectHideFlags: 0
@@ -596,6 +598,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 6
+  huntingEnabled: 0
 --- !u!1 &716517372366043668
 GameObject:
   m_ObjectHideFlags: 0
@@ -687,6 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 8
+  huntingEnabled: 1
 --- !u!1 &734743255368557089
 GameObject:
   m_ObjectHideFlags: 0
@@ -778,6 +782,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 2
+  huntingEnabled: 0
 --- !u!1 &811016371939977249
 GameObject:
   m_ObjectHideFlags: 0
@@ -1139,6 +1144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 7
+  huntingEnabled: 0
 --- !u!1 &1772508754718166627
 GameObject:
   m_ObjectHideFlags: 0
@@ -1521,6 +1527,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 0
+  huntingEnabled: 0
 --- !u!1 &2497861573573778500
 GameObject:
   m_ObjectHideFlags: 0
@@ -2070,6 +2077,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 4
+  huntingEnabled: 0
 --- !u!1 &3106045374057320552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3118,6 +3126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 10
+  huntingEnabled: 1
 --- !u!1 &4421009630917035027
 GameObject:
   m_ObjectHideFlags: 0
@@ -4162,6 +4171,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 3
+  huntingEnabled: 0
 --- !u!1 &7668250814144423359
 GameObject:
   m_ObjectHideFlags: 0
@@ -4641,6 +4651,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 11
+  huntingEnabled: 1
 --- !u!1 &8433498384058119995
 GameObject:
   m_ObjectHideFlags: 0
@@ -5276,6 +5287,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 0}
   month: 5
+  huntingEnabled: 0
 --- !u!1 &9121963472093620423
 GameObject:
   m_ObjectHideFlags: 0

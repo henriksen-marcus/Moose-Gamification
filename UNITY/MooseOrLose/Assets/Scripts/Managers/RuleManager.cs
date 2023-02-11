@@ -40,11 +40,21 @@ public class RuleManager : UI, IPointerEnterHandler
     private void Start()
     {
         Shrink();
+        SetHuntingSeasonRange();
         Debug.Log("Rule shrink");
         InventoryUI.OnExpand += Shrink;
         MonthButton.OnMonthButtonChanged += SetHuntingSeasonRange;
+        // TimeManager.instance.OnNewMonth += HuntingSeasonGoals;
     }
 
+    private void HuntingSeasonGoals()
+    {
+        if (HuntingSeason())
+        {
+            
+        }
+    }
+    
     //Get values - other classes refer to these
     public bool CanShootMale(int horns, int shotToday)
     {
@@ -122,4 +132,7 @@ public class RuleManager : UI, IPointerEnterHandler
             hGroup.gameObject.SetActive(true);
         }
     }
+    
+    
+    
 }
