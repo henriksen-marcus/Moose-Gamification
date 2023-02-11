@@ -151,7 +151,7 @@
 				</style>
 				<aux x="410" y="245.875" width="36.25" height="12" name="Elg Jakt"/>
 				<aux x="242.375" y="124.375" width="70.25" height="40" name="Restriksjoner på\nantall elg lov til\nå skyte per dag"/>
-				<connector uid="1" polarity="+" isee:polarity_placement="outside" angle="338.839">
+				<connector uid="1" polarity="-" isee:polarity_placement="outside" angle="338.839">
 					<from>Restriksjoner_på_antall_elg_lov_til_å_skyte_per_dag</from>
 					<to>Elg_Jakt</to>
 				</connector>

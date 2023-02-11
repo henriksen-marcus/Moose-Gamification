@@ -24,8 +24,8 @@ public class ElgGoToForest : Node
             return NodeState.FAILURE;
         }
         float speed = mSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
-        mAgent.speed = speed;
-        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.speed = speed * ((100 + mAgent.GetComponent<Elg>().weight) / 500);
+        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed) * ((100 + mAgent.GetComponent<Elg>().weight) / 500); 
         if ((Forest)parent.GetData("Forest") == null)
         {
             parent.ClearData("Forest");

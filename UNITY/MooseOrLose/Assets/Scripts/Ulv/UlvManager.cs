@@ -46,6 +46,7 @@ public class UlvManager : MonoBehaviour
             {
                 GameObject go = Instantiate(Ulv, hit.position, Quaternion.identity, transform);
                 pack.Add(go);
+                ulv_population++;
             }
 
 
@@ -76,7 +77,44 @@ public class UlvManager : MonoBehaviour
         }
     }
 
+    public void SpawnPack(int size, Vector3 position)
+    {
+       
+      
+            List<GameObject> pack = new List<GameObject>();
+            NavMeshHit hit;
+            NavMesh.SamplePosition(position, out hit, 200, 1);
+            for (int j = 0; j < size; j++)
+            {
+                GameObject go = Instantiate(Ulv, hit.position, Quaternion.identity, transform);
+                pack.Add(go);
+                ulv_population++;
+            }
 
+
+            // Decide Leader
+            int best = 0;
+            int bestSize = 0;
+            for (int j = 0; j < pack.Count; j++)
+            {
+                int wolfsize = pack[j].GetComponent<Ulv>().natural_size;
+                if (wolfsize > bestSize && pack[j].GetComponent<Ulv>().gender == Gender.Male)
+                {
+                    best = j;
+                    bestSize = wolfsize;
+                }
+            }
+            pack[best].GetComponent<Ulv>().isLeader = true;
+
+            for (int j = 0; j < pack.Count; j++)
+            {
+                if (j != best)
+                {
+                    pack[j].GetComponent<Ulv>().leader = pack[best].transform;
+                }
+                pack[j].GetComponent<Ulv>().pack = pack;
+            }
+    }
     public void MaleBorn()
     {
         ulv_males++;

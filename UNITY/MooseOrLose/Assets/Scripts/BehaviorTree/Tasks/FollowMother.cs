@@ -30,13 +30,13 @@ public class FollowMother : Node
 
         if (mScript.mother != null)
         {
-            if (mScript.age_years < 1)
+            if (mScript.age_months < 10)
             {
-                if (timer > 3f)
+                if (timer > TimeManager.instance.playSpeed / 2)
                 {
                     timer = 0f;
-                    mAgent.speed = speed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
-                    mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+                    mAgent.speed = speed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed) * ((100 + mAgent.GetComponent<Elg>().weight) / 500);
+                    mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed) * ((100 + mAgent.GetComponent<Elg>().weight) / 500);
                     mAgent.SetDestination(mScript.mother.position);
                     return NodeState.RUNNING;
                 }

@@ -14,6 +14,9 @@ public class JegerBT : BehaviorTrees.BehaviorTree
         Node root = new Selector(new List<Node>
         {
             // List of Nodes
+
+            //Hunt for Wolves
+
             new Sequence(new List<Node> {
                 new CheckForHuntingSeason(GetComponent<NavMeshAgent>()),
                 new JegerFindTarget(range, transform),

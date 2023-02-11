@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee"/>
+		<name>ForestCLD</name>
+		<uuid>7f340c15-f9cd-4ef7-b1fb-6946bd0c9e2b</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="1.7.1" isee:build_number="1574" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:simulation_delay="0.1" method="Euler" time_units="Months" isee:instantaneous_flows="false">
+		<start>1</start>
+		<stop>13</stop>
+		<dt reciprocal="true">4</dt>
+	</sim_specs>
+	<isee:prefs show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="cld" interface_scale_ui="true" interface_max_page_width="10000" interface_max_page_height="10000" interface_min_page_width="0" interface_min_page_height="0" saved_runs="5" keep="false" rifp="true"/>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<default_format/>
+	<model_units/>
+	<model>
+		<variables>
+			<aux name="Trees Grow">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Spring">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Summer">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Winter">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Autumn">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Trees sprout">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Trees fell leaves">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Spread Seeds">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Seeds sprout into new Trees">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Forest Density">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Grass">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Moss">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Forest Temperature">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Blueberries">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Tree gets eaten">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Trees Height">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Trees die">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Forest Thinning">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Forest Planting">
+				<isee:delay_aux/>
+			</aux>
+			<isee:dependencies>
+				<var name="Trees_Grow">
+					<in>Spring</in>
+					<in>Summer</in>
+					<in>Winter</in>
+					<in>Autumn</in>
+					<in>Trees_sprout</in>
+					<in>Trees_fell_leaves</in>
+					<in>Tree_gets_eaten</in>
+				</var>
+				<var name="Trees_sprout">
+					<in>Spring</in>
+				</var>
+				<var name="Trees_fell_leaves">
+					<in>Autumn</in>
+				</var>
+				<var name="Spread_Seeds">
+					<in>Spring</in>
+				</var>
+				<var name="Seeds_sprout_into_new_Trees">
+					<in>Spread_Seeds</in>
+					<in>Forest_Density</in>
+				</var>
+				<var name="Forest_Density">
+					<in>Trees_die</in>
+					<in>Forest_Thinning</in>
+					<in>Seeds_sprout_into_new_Trees</in>
+					<in>Forest_Planting</in>
+				</var>
+				<var name="Grass">
+					<in>Forest_Temperature</in>
+				</var>
+				<var name="Moss">
+					<in>Forest_Density</in>
+				</var>
+				<var name="Forest_Temperature">
+					<in>Forest_Density</in>
+				</var>
+				<var name="Blueberries">
+					<in>Forest_Temperature</in>
+				</var>
+				<var name="Trees_Height">
+					<in>Trees_Grow</in>
+					<in>Tree_gets_eaten</in>
+				</var>
+			</isee:dependencies>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+				<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_background_color="#FFFECF"/>
+				<slider color="black" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:always_show_hover_tip="false" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+			</style>
+			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" zoom="180" isee:popup_graphs_are_comparative="true" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom"/>
+					<module color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="55" height="45"/>
+					</module>
+					<aux color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom">
+						<shape type="name_only"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="9pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+					<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<aux x="484.661" y="381.857" width="49.25" height="12" name="Trees Grow"/>
+				<aux x="366.589" y="300.429" width="28.25" height="12" name="Spring"/>
+				<connector uid="1" polarity="+" isee:polarity_placement="inside" angle="327.653">
+					<from>Spring</from>
+					<to>Trees_Grow</to>
+				</connector>
+				<aux x="604.554" y="300.429" width="37.25" height="12" name="Summer"/>
+				<connector uid="2" polarity="+" isee:polarity_placement="inside" angle="215.563">
+					<from>Summer</from>
+					<to>Trees_Grow</to>
+				</connector>
+				<aux x="494.661" y="300.429" width="29.25" height="12" name="Winter"/>
+				<aux x="606.054" y="466.143" width="34.25" height="12" name="Autumn"/>
+				<connector uid="3" polarity="-" isee:polarity_placement="inside" angle="270">
+					<from>Winter</from>
+					<to>Trees_Grow</to>
+				</connector>
+				<connector uid="4" polarity="-" isee:polarity_placement="outside" angle="143.497">
+					<from>Autumn</from>
+					<to>Trees_Grow</to>
+				</connector>
+				<aux x="354.125" y="381.857" width="54.25" height="12" name="Trees sprout"/>
+				<connector uid="5" polarity="+" isee:polarity_placement="outside" angle="275.711">
+					<from>Spring</from>
+					<to>Trees_sprout</to>
+				</connector>
+				<connector uid="6" polarity="+" isee:polarity_placement="outside" angle="0">
+					<from>Trees_sprout</from>
+					<to>Trees_Grow</to>
+				</connector>
+				<aux x="587.054" y="381.857" width="72.25" height="12" name="Trees fell leaves"/>
+				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="87.1376">
+					<from>Autumn</from>
+					<to>Trees_fell_leaves</to>
+				</connector>
+				<connector uid="8" polarity="-" isee:polarity_placement="outside" angle="180">
+					<from>Trees_fell_leaves</from>
+					<to>Trees_Grow</to>
+				</connector>
+				<aux x="350.589" y="211.143" width="60.25" height="12" name="Spread Seeds"/>
+				<connector uid="9" polarity="+" isee:polarity_placement="outside" angle="97.125">
+					<from>Spring</from>
+					<to>Spread_Seeds</to>
+				</connector>
+				<aux x="320.589" y="138.286" width="120.25" height="12" name="Seeds sprout into new Trees"/>
+				<connector uid="10" polarity="+" isee:polarity_placement="outside" angle="90">
+					<from>Spread_Seeds</from>
+					<to>Seeds_sprout_into_new_Trees</to>
+				</connector>
+				<aux x="504.518" y="138.286" width="65.25" height="12" name="Forest Density"/>
+				<connector uid="11" polarity="-" isee:polarity_placement="outside" angle="196.798">
+					<from>Forest_Density</from>
+					<to>Seeds_sprout_into_new_Trees</to>
+				</connector>
+				<aux x="658.518" y="203.286" width="27.25" height="12" name="Grass"/>
+				<aux x="525.018" y="64" width="24.25" height="12" name="Moss"/>
+				<aux x="630.518" y="138.286" width="83.25" height="12" name="Forest Temperature"/>
+				<connector uid="12" polarity="-" isee:polarity_placement="outside" angle="0">
+					<from>Forest_Density</from>
+					<to>Forest_Temperature</to>
+				</connector>
+				<connector uid="13" polarity="+" isee:polarity_placement="outside" angle="270">
+					<from>Forest_Temperature</from>
+					<to>Grass</to>
+				</connector>
+				<aux x="648.018" y="72.7143" width="48.25" height="12" name="Blueberries"/>
+				<connector uid="14" polarity="-" isee:polarity_placement="outside" angle="88.6678">
+					<from>Forest_Temperature</from>
+					<to>Blueberries</to>
+				</connector>
+				<aux x="347.625" y="466.143" width="67.25" height="12" name="Tree gets eaten"/>
+				<connector uid="15" polarity="-" isee:polarity_placement="outside" angle="33.3568">
+					<from>Tree_gets_eaten</from>
+					<to>Trees_Grow</to>
+				</connector>
+				<aux x="481.661" y="466.143" width="55.25" height="12" name="Trees Height"/>
+				<connector uid="16" polarity="+" isee:polarity_placement="outside" angle="270">
+					<from>Trees_Grow</from>
+					<to>Trees_Height</to>
+				</connector>
+				<connector uid="17" polarity="-" isee:polarity_placement="outside" angle="358.837">
+					<from>Tree_gets_eaten</from>
+					<to>Trees_Height</to>
+				</connector>
+				<aux x="517.018" y="203.286" width="40.25" height="12" name="Trees die"/>
+				<connector uid="18" polarity="-" isee:polarity_placement="inside" angle="90">
+					<from>Trees_die</from>
+					<to>Forest_Density</to>
+				</connector>
+				<aux x="564.268" y="94.7143" width="66.25" height="12" name="Forest Thinning"/>
+				<connector uid="19" polarity="-" isee:polarity_placement="inside" angle="215.874">
+					<from>Forest_Thinning</from>
+					<to>Forest_Density</to>
+				</connector>
+				<connector uid="20" polarity="+" isee:polarity_placement="outside" angle="21.14">
+					<from>Seeds_sprout_into_new_Trees</from>
+					<to>Forest_Density</to>
+				</connector>
+				<aux x="564.768" y="179.714" width="65.25" height="12" name="Forest Planting"/>
+				<connector uid="21" polarity="+" isee:polarity_placement="inside" angle="145.667">
+					<from>Forest_Planting</from>
+					<to>Forest_Density</to>
+				</connector>
+				<isee:loop_indicator text="B1" orientation="counter_clockwise" uid="22" x="451.661" y="129.286" width="30" height="30"/>
+				<connector uid="23" polarity="+" isee:polarity_placement="outside" angle="90">
+					<from>Forest_Density</from>
+					<to>Moss</to>
+				</connector>
+			</view>
+		</views>
+	</model>
+</xmile>
+

@@ -28,17 +28,24 @@ public class ElgFindForest : Node
             if (collider.tag == "Forest")
             {
                 float forestValue = 1;
-                if (collider.GetComponent<Forest>().forestState_Type == ForestState_Type.treeState_Spruce.ToString())
+                if (collider.GetComponent<Forest>().GetOptimalTreeToEat() != null)
                 {
-                    forestValue *= 0.5f;
-                }
-                float distance = Vector3.Distance(collider.transform.position, mTransform.position);
-                float forest = distance / forestValue;
-                if (bestForest > forest)
-                {
-                    bestForest = forest;
-                    parent.SetData("Forest", collider.GetComponent<Forest>());
+                    if (collider.GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Birch)
+                    {
+                        forestValue *= 0.5f;
+                    }
+                    if (collider.GetComponent<Forest>().GetOptimalTreeToEat().treeState_Health != TreeState_Health.treeHealth_Healthy)
+                    {
+                        forestValue *= 0.25f;
+                    }
+                    float distance = Vector3.Distance(collider.transform.position, mTransform.position);
+                    float forest = distance / forestValue;
+                    if (bestForest > forest)
+                    {
+                        bestForest = forest;
+                        parent.SetData("Forest", collider.GetComponent<Forest>());
 
+                    }
                 }
             }
         }

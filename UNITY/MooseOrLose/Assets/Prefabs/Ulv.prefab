@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3925801184222388161}
   - component: {fileID: 1453889949307147717}
   - component: {fileID: 3007808000768743409}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ulv
   m_TagString: Ulv
   m_Icon: {fileID: 0}
@@ -98,9 +98,9 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 8
-  m_Acceleration: 50
+  m_Acceleration: 70
   avoidancePriority: 50
-  m_AngularSpeed: 120
+  m_AngularSpeed: 150
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -160,9 +160,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -8391222552659086748, guid: 44eaddb888304c041b734c363468d9dc, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -516098083770646512, guid: 44eaddb888304c041b734c363468d9dc, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 44eaddb888304c041b734c363468d9dc, type: 3}
       propertyPath: m_Name
       value: ulvMeshTemp
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 44eaddb888304c041b734c363468d9dc, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44eaddb888304c041b734c363468d9dc, type: 3}
