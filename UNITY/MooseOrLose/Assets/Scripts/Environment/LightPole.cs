@@ -14,12 +14,6 @@ public class LightPole : MonoBehaviour
         lightComp = GetComponent<Light>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public bool IsOn()
     {
         return lightComp.enabled;
