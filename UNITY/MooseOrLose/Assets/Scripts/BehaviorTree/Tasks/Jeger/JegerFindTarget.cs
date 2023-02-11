@@ -64,8 +64,6 @@ public class JegerFindTarget : Node
 
                     parent.SetData("Target", collider.gameObject.transform);
                 }
-
-
             }
         }
         if (parent.GetData("Target") != null)

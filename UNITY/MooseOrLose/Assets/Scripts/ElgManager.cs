@@ -21,7 +21,6 @@ public class ElgManager : MonoBehaviour
     public int carrying_capacity = 500;
 
     public List<int> elg_population_graph;
-
     public float male_population_age;
 
     [Header("Spawning Preferences")]

@@ -47,7 +47,6 @@ public class ElgFindForest : Node
 
                     }
                 }
-
             }
         }
         if (parent.GetData("Forest") != null)

@@ -90,19 +90,16 @@ public class Elg : MonoBehaviour
         pregnant = false;
         childrenInBelly = 0;
         daysPregnant = 0;
-
     }
 
 
 
     private void Start()
-    {
-        
+    {    
         TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
         StartCoroutine(NextDay());
-       
     }
 
     public void SpawnPregnant()
@@ -183,7 +180,6 @@ public class Elg : MonoBehaviour
                 ElgManager.instance.ChildrenGrowUp();
             }
         }
-
     }
 
     public void NextYear()
