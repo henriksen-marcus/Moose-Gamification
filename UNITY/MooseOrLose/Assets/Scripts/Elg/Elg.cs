@@ -43,8 +43,8 @@ public class Elg : MonoBehaviour
     public Gender gender;
     public Transform mother;
     public int number_of_children;
-    private bool pregnant;
-    private int childrenInBelly;
+    public bool pregnant;
+    public int childrenInBelly;
     private int daysPregnant;
     bool hasGrown;
 
@@ -87,32 +87,43 @@ public class Elg : MonoBehaviour
         natural_size = Random.Range(0, 17);
         natural_antler_size = Random.Range(0, 17);
         CalculateNewSize();
-
-
+        pregnant = false;
+        childrenInBelly = 0;
+        daysPregnant = 0;
     }
 
 
 
     private void Start()
-    {
-        
+    {    
         TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
         StartCoroutine(NextDay());
+    }
 
+    public void SpawnPregnant()
+    {
         // Pregnancy
-        if (TimeManager.instance.GetMonth() < 3 || TimeManager.instance.GetMonth() > 8)
+        if (gender == Gender.Female && age_years > 1)
         {
-            pregnant = false;
-            childrenInBelly = GetNumberOfChildren();
-            daysPregnant = TimeManager.instance.GetMonth() > 8 ? (TimeManager.instance.GetMonth() - 8) * 30 : (8 - (3 - TimeManager.instance.GetMonth())) * 30;
-        }
-        else
-        {
-            pregnant = false;
-            childrenInBelly = 0;
-            daysPregnant = 0;
+            if (TimeManager.instance.GetMonth() < 3 || TimeManager.instance.GetMonth() > 8)
+            {
+                childrenInBelly = GetNumberOfChildren();
+                if (childrenInBelly > 0)
+                {
+                    pregnant = true;
+                    int random = Random.Range(-10, 10);
+                    daysPregnant = TimeManager.instance.GetMonth() > 8 ? ((TimeManager.instance.GetMonth() - 8) * 30) + random : ((8 - (3 - TimeManager.instance.GetMonth())) * 30) + random;
+                }
+
+            }
+            else
+            {
+                pregnant = false;
+                childrenInBelly = 0;
+                daysPregnant = 0;
+            }
         }
     }
 
@@ -122,8 +133,10 @@ public class Elg : MonoBehaviour
         age_days++;
         if (pregnant)
         {
+            daysPregnant++;
             if (daysPregnant > 240)
             {
+                daysPregnant = 0;
                 BirthChildren();
             }
         }
@@ -151,7 +164,7 @@ public class Elg : MonoBehaviour
 
         CalculateNewSize();
 
-        if (gender == Gender.Female)
+        if (gender == Gender.Female && age_years > 1)
         {
             if (TimeManager.instance.MatingSeason())
             {
@@ -167,7 +180,6 @@ public class Elg : MonoBehaviour
                 ElgManager.instance.ChildrenGrowUp();
             }
         }
-
     }
 
     public void NextYear()
@@ -257,7 +269,8 @@ public class Elg : MonoBehaviour
             if (!pregnant)
             {
                 childrenInBelly = GetNumberOfChildren();
-                pregnant = true;         
+                if (childrenInBelly > 0)
+                    pregnant = true;         
             }
 
         }
@@ -274,6 +287,7 @@ public class Elg : MonoBehaviour
             script.SetMother(transform);
             ElgManager.instance.AddToList(go);
         }
+        daysPregnant = 0;
         pregnant=false;
     }
 

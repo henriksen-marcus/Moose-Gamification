@@ -20,6 +20,7 @@ public class ElgManager : MonoBehaviour
     public int elg_children;
     public int carrying_capacity = 500;
 
+    public List<int> elg_population_graph;
     public float male_population_age;
 
     [Header("Spawning Preferences")]
@@ -42,6 +43,7 @@ public class ElgManager : MonoBehaviour
         {
             instance = this;
         }
+        elg_population = start_population;
     }
 
     // Start is called before the first frame update
@@ -54,7 +56,7 @@ public class ElgManager : MonoBehaviour
         childrenUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Children").GetComponent<TextMeshProUGUI>();
 
         elg_children = 0;
-        elg_population = start_population;
+
         float loop = start_population;
 
 
@@ -68,6 +70,10 @@ public class ElgManager : MonoBehaviour
 
                 GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
                 elg_list.Add(go);
+                if (go.GetComponent<Elg>().gender == Gender.Female)
+                {
+                    go.GetComponent<Elg>().SpawnPregnant();
+                }
             }
         }
         // Spawn with children
@@ -83,7 +89,9 @@ public class ElgManager : MonoBehaviour
 
                 if (go.GetComponent<Elg>().gender == Gender.Female)
                 {
+
                     Elg script = go.GetComponent<Elg>();
+                    script.SpawnPregnant();
                     int children = script.GetNumberOfChildren();
                     loop -= children;
                     for (int j = 0; j < children; j++)
@@ -104,6 +112,8 @@ public class ElgManager : MonoBehaviour
 
         PopulationChanged();
         male_population_age = MalePopulationAge();
+        elg_population_graph.Add(elg_population);
+        TimeManager.instance.OnNewMonth += NewMonth;
     }
 
     private void Update()
@@ -211,5 +221,11 @@ public class ElgManager : MonoBehaviour
     public float GetPopulationGrowthRate()
     {
         return (1 - (((float)elg_population / (float)carrying_capacity) * ((float)elg_population / (float)carrying_capacity))) * 100;
+    }
+
+
+    void NewMonth()
+    {
+        elg_population_graph.Add(elg_population);
     }
 }
