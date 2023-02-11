@@ -11,12 +11,11 @@ GameObject:
   - component: {fileID: 8119850469369189061}
   - component: {fileID: 1271439490497479653}
   - component: {fileID: 2387862491490670227}
-  - component: {fileID: 5899137919120859328}
-  - component: {fileID: 5558419478154532183}
-  - component: {fileID: 3007406015172587291}
+  - component: {fileID: 3033338854229683826}
+  - component: {fileID: 5586805854949889378}
   m_Layer: 0
-  m_Name: Forest
-  m_TagString: Forest
+  m_Name: Tree
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -30,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 901130458678886016}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 11, y: 2, z: 11}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -64,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 8762a6e90f6a50b4ea31082b977fb1f7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -86,36 +85,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &5899137919120859328
-SphereCollider:
+--- !u!65 &3033338854229683826
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 901130458678886016}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.50301236
-  m_Center: {x: -0.0025218725, y: -0.104148686, z: 0}
---- !u!54 &5558419478154532183
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 901130458678886016}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 1
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &3007406015172587291
+  m_Size: {x: 1, y: 2, z: 1}
+  m_Center: {x: 0, y: -0.005, z: 0}
+--- !u!114 &5586805854949889378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -124,15 +107,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 901130458678886016}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cec9d5dd12cfcf4683ddaca244f3a5b, type: 3}
+  m_Script: {fileID: 11500000, guid: 07c9d543e141d5d468e09bc184757e8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treesAmountInForest: 0
-  minTreesInForest: 100
-  maxTreesInForest: 1000
-  treeList: []
-  forestState_Type: 
-  forestState_Health: 
-  forestState_Season: 
-  forest_Height: 0
-  forest_Density: 0
+  treeType_Birch: 0
+  treeType_Pine: 0
+  treeType_Spruce: 0
+  treeAge: 0
+  treeState_Child: 0
+  treeState_Adult: 0
+  treeState_Old: 0
+  treeState_Healthy: 0
+  treeState_Damaged: 0
+  treeState_Broken: 0
+  treeState_Dead: 0
+  treeState_Chopped: 0
+  treeState_Spring: 0
+  treeState_Summer: 0
+  treeState_Fall: 0
+  treeState_Winter: 0

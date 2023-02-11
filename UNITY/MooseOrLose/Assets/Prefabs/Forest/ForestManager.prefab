@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1220831141287986691}
-  - component: {fileID: 1220831141287986690}
+  - component: {fileID: 7359131934506506399}
   m_Layer: 0
   m_Name: ForestManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1220831141287986690
+--- !u!114 &7359131934506506399
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,17 +41,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 1220831141287986701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cec9d5dd12cfcf4683ddaca244f3a5b, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f112ac84f8b4ba47a1ba0d9eb946726, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forestPrefab: {fileID: 901130458678886016, guid: e22e5997af67abb419377eb229e7e603, type: 3}
+  forestPrefab: {fileID: 901130458678886016, guid: 57a16d0d7f7594c46babcb8952b089e8, type: 3}
   forestSpawnerList: []
   BirchForestSpawn: {x: -2.1474836e+9, y: -5}
   PineForestSpawn: {x: -5, y: 5}
   SpruceForestSpawn: {x: 5, y: 2.1474836e+9}
-  forestSpawnCount: 700
+  forestSpawnCount: 1200
   respawnAmount: 15
   collisionRangeStart: 7
-  totalTreesAmount: 0
-  treesDiedOfAge: 0
-  treesBirth: 0

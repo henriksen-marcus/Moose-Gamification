@@ -44,18 +44,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abf5bb8d3adbe4447ae00984996af497, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  birchDensity_1: {r: 0.81509435, g: 1, b: 0.91621464, a: 0}
-  birchDensity_2: {r: 0.7490566, g: 1, b: 0.88682944, a: 0}
-  birchDensity_3: {r: 0.5981132, g: 1, b: 0.82049054, a: 0}
-  birchDensity_4: {r: 0.4039216, g: 0.9921569, b: 0.7294118, a: 0}
-  birchDensity_5: {r: 0.25882354, g: 0.96470594, b: 0.6509804, a: 0}
-  pineDensity_1: {r: 0.9191038, g: 1, b: 0.81509435, a: 0}
-  pineDensity_2: {r: 0.889369, g: 1, b: 0.7490566, a: 0}
-  pineDensity_3: {r: 0.83956987, g: 1, b: 0.63584906, a: 0}
-  pineDensity_4: {r: 0.75294125, g: 1, b: 0.43921572, a: 0}
-  pineDensity_5: {r: 0.6431373, g: 0.9450981, b: 0.25882354, a: 0}
-  spruceDensity_1: {r: 0.990566, g: 0.9378944, b: 0.8167497, a: 0}
-  spruceDensity_2: {r: 1, g: 0.9232572, b: 0.7396226, a: 0}
-  spruceDensity_3: {r: 1, g: 0.88893425, b: 0.6264151, a: 0}
-  spruceDensity_4: {r: 1, g: 0.82745105, b: 0.41960788, a: 0}
-  spruceDensity_5: {r: 0.9843138, g: 0.76470596, b: 0.2509804, a: 0}
+  birch_Healthy: {r: 0, g: 0.5176471, b: 1, a: 0}
+  birch_Damaged: {r: 0.25882354, g: 0.6431373, b: 1, a: 0}
+  birch_Broken: {r: 0.43921572, g: 0.7294118, b: 1, a: 0}
+  birch_Dead: {r: 0.6, g: 0.8078432, b: 1, a: 0}
+  birch_Chopped: {r: 0.81568635, g: 0.909804, b: 1, a: 0}
+  pine_Healthy: {r: 0.035983205, g: 1, b: 0, a: 0}
+  pine_Damaged: {r: 0.2588235, g: 1, b: 0.26189864, a: 0}
+  pine_Broken: {r: 0.43921566, g: 1, b: 0.4831585, a: 0}
+  pine_Dead: {r: 0.6, g: 1, b: 0.6372389, a: 0}
+  pine_Chopped: {r: 0.8156863, g: 1, b: 0.8304575, a: 0}
+  spruce_Healthy: {r: 1, g: 0.02764536, b: 0, a: 0}
+  spruce_Damaged: {r: 1, g: 0.2588235, b: 0.2588235, a: 0}
+  spruce_Broken: {r: 1, g: 0.43921566, b: 0.45518067, a: 0}
+  spruce_Dead: {r: 1, g: 0.6, b: 0.60751843, a: 0}
+  spruce_Chopped: {r: 1, g: 0.8156863, b: 0.8257712, a: 0}

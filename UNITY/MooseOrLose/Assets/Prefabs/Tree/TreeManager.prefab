@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2419157452762008535
+--- !u!1 &1220831141287986701
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,55 +8,45 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6115536142191957455}
-  - component: {fileID: 8348154608509237053}
+  - component: {fileID: 1220831141287986691}
+  - component: {fileID: 1220831141287986690}
   m_Layer: 0
-  m_Name: TreesManager
+  m_Name: TreeManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6115536142191957455
+--- !u!4 &1220831141287986691
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2419157452762008535}
+  m_GameObject: {fileID: 1220831141287986701}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 144.31839, y: 67.73307, z: -185.3356}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8348154608509237053
+--- !u!114 &1220831141287986690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2419157452762008535}
+  m_GameObject: {fileID: 1220831141287986701}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b94cdaa05064e644c939b6766d5b6b20, type: 3}
+  m_Script: {fileID: 11500000, guid: f5303010084d18a4191ee72b785a8a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  treeAge: 0
-  treeState_Age: 
-  treeState_Health: 0
-  treeHeight: 0
-  treeDiameter: 0
-  treeVolum: 0
-  stemHeight: 0
-  budSize: 0
-  barkDamage: 0
-  budDamage: 0
-  branchDamage: 0
-  foodAttached: 0
-  growthRate_Height: 0.1
-  growthRate_Diameter: 0.01
-  darknessTolerance: 0
-  soilWaterDrinkability: 0
+  treePrefab: {fileID: 901130458678886016, guid: 57a16d0d7f7594c46babcb8952b089e8, type: 3}
+  treeSpawnerList: []
+  BirchSpawn: {x: -2.1474836e+9, y: -0.1}
+  PineSpawn: {x: -0.1, y: 0.1}
+  SpruceSpawn: {x: 0.1, y: 2.1474836e+9}
+  treeSpawnCount: 7000

@@ -5,25 +5,25 @@ using UnityEngine;
 public class ColorManager : MonoBehaviour
 {
     [Header("Birch")]
-    public Color birchDensity_1;
-    public Color birchDensity_2;
-    public Color birchDensity_3;
-    public Color birchDensity_4;
-    public Color birchDensity_5;
+    public Color birch_Healthy;
+    public Color birch_Damaged;
+    public Color birch_Broken;
+    public Color birch_Dead;
+    public Color birch_Chopped;
 
     [Header("Pine")]
-    public Color pineDensity_1;
-    public Color pineDensity_2;
-    public Color pineDensity_3;
-    public Color pineDensity_4;
-    public Color pineDensity_5;
+    public Color pine_Healthy;
+    public Color pine_Damaged;
+    public Color pine_Broken;
+    public Color pine_Dead;
+    public Color pine_Chopped;
 
     [Header("Spruce")]
-    public Color spruceDensity_1;
-    public Color spruceDensity_2;
-    public Color spruceDensity_3;
-    public Color spruceDensity_4;
-    public Color spruceDensity_5;
+    public Color spruce_Healthy;
+    public Color spruce_Damaged;
+    public Color spruce_Broken;
+    public Color spruce_Dead;
+    public Color spruce_Chopped;
 
 
     //--------------------
