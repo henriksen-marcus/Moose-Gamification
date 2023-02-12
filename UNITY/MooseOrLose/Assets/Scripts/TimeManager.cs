@@ -4,12 +4,9 @@ using UnityEngine;
 using TMPro;
 using System;
 
-
-public enum Season { Spring, Summer, Autumn, Winter }
-
 public class TimeManager : MonoBehaviour
 {
-    static public TimeManager instance;
+    public static TimeManager instance;
 
     [SerializeField] int month;
     [SerializeField] int day;
@@ -20,16 +17,15 @@ public class TimeManager : MonoBehaviour
     [HideInInspector]
     public float startPlaySpeed;
 
-
-
-
     [SerializeField] public TextMeshProUGUI dayUI;
     [SerializeField] public TextMeshProUGUI monthUI;
     [SerializeField] public TextMeshProUGUI yearUI;
 
-    private Season currentSeason;
+
+    public Season currentSeason { get; private set; }
+    
     private bool gamePaused = false;
-    // Start is called before the first frame update
+
     void Awake()
     {
         GameObject Canvas = GameObject.Find("UI_Canvas");
@@ -37,10 +33,8 @@ public class TimeManager : MonoBehaviour
         monthUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Month").GetComponent<TextMeshProUGUI>();
         yearUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Year").GetComponent<TextMeshProUGUI>();
 
-        if (instance == null)
-        {
-            instance = this;
-        }
+        if (!instance) instance = this;
+        
         day = 0;
         month = startMonth;
         year = 0;
@@ -110,17 +104,10 @@ public class TimeManager : MonoBehaviour
     public bool IsSummer() { return currentSeason == Season.Summer; }
     public bool IsWinter() { return currentSeason == Season.Winter; }
     public bool IsSpring() { return currentSeason == Season.Spring; }
-    public bool IsAutumn() { return currentSeason == Season.Autumn; }
+    public bool IsAutumn() { return currentSeason == Season.Fall; }
 
     public void SetGamePaused(bool input) {  gamePaused = input; }
 
-    public Season GetSeason()
-    {
-        return currentSeason;
-    }
-
-
-    // Update is called once per frame
     IEnumerator NextDay()
     {
         yield return new WaitForSeconds(playSpeed);
@@ -187,13 +174,13 @@ public class TimeManager : MonoBehaviour
                 currentSeason = Season.Summer;
                 break;
             case 8:
-                currentSeason = Season.Autumn;
+                currentSeason = Season.Fall;
                 break;
             case 9:
-                currentSeason = Season.Autumn;
+                currentSeason = Season.Fall;
                 break;
             case 10:
-                currentSeason = Season.Autumn;
+                currentSeason = Season.Fall;
                 break;
             case 11:
                 currentSeason = Season.Winter;
@@ -203,14 +190,9 @@ public class TimeManager : MonoBehaviour
                 break;
         }
 
-
-        if (OnNewMonth != null)
-        {
-            OnNewMonth();
-        }
+        OnNewMonth?.Invoke();
     }
-
-
+    
     public event Action OnNewYear;
     public void NewYear()
     {
