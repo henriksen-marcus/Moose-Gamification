@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:UNITY/MooseOrLose/Assets/Prefabs/UI/HuntingGoals.prefab.meta
 guid: 3e9643f2c5b0e634285d5cce8ea70afb
+========
+guid: 425e9f0b71b99a740834299bd0bcea6e
+>>>>>>>> main:UNITY/MooseOrLose/Assets/Prefabs/UI/Inventory.prefab.meta
 PrefabImporter:
   externalObjects: {}
   userData: 

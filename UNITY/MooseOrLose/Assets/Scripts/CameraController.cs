@@ -188,7 +188,7 @@ public class CameraController : MonoBehaviour
         name.GetComponent<TextMeshProUGUI>().fontSize = 36;
 
         GameObject ib1 = Instantiate(InfoBar, background.transform);
-        ib1.GetComponent<TextMeshProUGUI>().text = "Tree Type : " + script.forestState_Type.ToString();
+        ib1.GetComponent<TextMeshProUGUI>().text = "Tree Type : " + script.forestType.ToString();
 
         GameObject ib2 = Instantiate(InfoBar, background.transform);
         ib2.GetComponent<TextMeshProUGUI>().text = "Density : " + script.forest_Density.ToString();

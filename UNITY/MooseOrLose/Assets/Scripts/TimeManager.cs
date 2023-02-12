@@ -9,7 +9,7 @@ public enum Season { Spring, Summer, Autumn, Winter }
 
 public class TimeManager : MonoBehaviour
 {
-    static public TimeManager instance;
+    public static TimeManager instance;
 
     [SerializeField] int month;
     [SerializeField] int day;
@@ -20,12 +20,15 @@ public class TimeManager : MonoBehaviour
     [HideInInspector]
     public float startPlaySpeed;
 
-
-
-
     [SerializeField] public TextMeshProUGUI dayUI;
     [SerializeField] public TextMeshProUGUI monthUI;
     [SerializeField] public TextMeshProUGUI yearUI;
+    
+    public Season currentSeason { get; private set; }
+    
+    private bool gamePaused = false;
+
+    public string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Des" };
 
     private Season currentSeason;
     private bool gamePaused = false;
@@ -33,17 +36,17 @@ public class TimeManager : MonoBehaviour
     void Awake()
     {
         GameObject Canvas = GameObject.Find("UI_Canvas");
+        
         dayUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Day").GetComponent<TextMeshProUGUI>();
         monthUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Month").GetComponent<TextMeshProUGUI>();
         yearUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Year").GetComponent<TextMeshProUGUI>();
 
-        if (instance == null)
-        {
-            instance = this;
-        }
+        if (!instance) instance = this;
+        
         day = 0;
         month = startMonth;
         year = 0;
+        
         StartCoroutine(NextDay());
 
         defaultPlaySpeed = 3;
@@ -53,74 +56,24 @@ public class TimeManager : MonoBehaviour
 
     private void Update()
     {
-        if (yearUI != null && monthUI != null && dayUI != null)
-        {
-            yearUI.SetText(year.ToString());
-            switch (month)
-            {
-                case 0:
-                    monthUI.SetText("Jan");
-                    break;
-                case 1:
-                    monthUI.SetText("Feb");
-                    break;
-                case 2:
-                    monthUI.SetText("Mar");                   
-                    break;
-                case 3:
-                    monthUI.SetText("Apr");
-                    break;
-                case 4:
-                    monthUI.SetText("May");
-                    break;
-                case 5:
-                    monthUI.SetText("Jun");
-                    break;
-                case 6:
-                    monthUI.SetText("Jul");
-                    break;
-                case 7:
-                    monthUI.SetText("Aug");
-                    break;
-                case 8:
-                    monthUI.SetText("Sep");
-                    break;
-                case 9:
-                    monthUI.SetText("Oct");
-                    break;
-                case 10:
-                    monthUI.SetText("Nov");
-                    break;
-                case 11:
-                    monthUI.SetText("Des");
-                    break;
-
-                default:
-                    break;
-            }
-            dayUI.SetText((day+1).ToString());
-        }
+        yearUI.SetText(year.ToString());
+        monthUI.SetText(monthNames[month - 1]);
+        dayUI.SetText((day+1).ToString());
 
     }
-    public int GetYear() {  return year; }
-    public int GetMonth() {  return month; }
+    public int GetYear() { return year; }
+    public int GetMonth() { return month; }
     public int GetDay() { return day; }
     public bool MatingSeason() { return month == 7 || month == 8; }
 
+    // TODO: Denne koden er ubrukt, fjern dersom den ikke skal brukes
     public bool IsSummer() { return currentSeason == Season.Summer; }
     public bool IsWinter() { return currentSeason == Season.Winter; }
     public bool IsSpring() { return currentSeason == Season.Spring; }
-    public bool IsAutumn() { return currentSeason == Season.Autumn; }
+    public bool IsAutumn() { return currentSeason == Season.Fall; }
 
     public void SetGamePaused(bool input) {  gamePaused = input; }
 
-    public Season GetSeason()
-    {
-        return currentSeason;
-    }
-
-
-    // Update is called once per frame
     IEnumerator NextDay()
     {
         yield return new WaitForSeconds(playSpeed);
@@ -162,9 +115,8 @@ public class TimeManager : MonoBehaviour
         switch (month)
         {
             case 0:
-                currentSeason = Season.Winter;
-                break;
             case 1:
+            case 11:
                 currentSeason = Season.Winter;
                 break;
             case 2:
@@ -172,60 +124,33 @@ public class TimeManager : MonoBehaviour
                 SpringBegin();
                 break;
             case 3:
-                currentSeason = Season.Spring;
-                break;
             case 4:
                 currentSeason = Season.Spring;
                 break;
             case 5:
-                currentSeason = Season.Summer;
-                break;
             case 6:
-                currentSeason = Season.Summer;
-                break;
             case 7:
                 currentSeason = Season.Summer;
                 break;
             case 8:
-                currentSeason = Season.Autumn;
-                break;
             case 9:
-                currentSeason = Season.Autumn;
-                break;
             case 10:
-                currentSeason = Season.Autumn;
-                break;
-            case 11:
-                currentSeason = Season.Winter;
-                break;
-
-            default:
+                currentSeason = Season.Fall;
                 break;
         }
 
-
-        if (OnNewMonth != null)
-        {
-            OnNewMonth();
-        }
+        OnNewMonth?.Invoke();
     }
-
-
+    
     public event Action OnNewYear;
     public void NewYear()
     {
-        if (OnNewYear != null)
-        {
-            OnNewYear();
-        }
+        OnNewYear?.Invoke();
     }
 
     public event Action OnSpringBegin;
     public void SpringBegin()
     {
-        if (OnSpringBegin != null)
-        {
-            OnSpringBegin();
-        }
+        OnSpringBegin?.Invoke();
     }
 }
