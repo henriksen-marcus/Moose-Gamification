@@ -34,8 +34,8 @@ public class HuntingGoals : MonoBehaviour
         _minPop = RuleManager.Instance.MoosePopMin;
         ElgManager instance = ElgManager.instance;
         int mooseToShoot = instance.elg_population - _minPop;
-        UpdateExpectedMales((mooseToShoot * instance.GetMaleRatio()).ToString());
-        UpdateExpectedFemales((mooseToShoot * (1 - instance.GetMaleRatio())).ToString());
+        UpdateExpectedMales((mooseToShoot * instance.GetMaleRatio()).ToString("F0"));
+        UpdateExpectedFemales((mooseToShoot * (1 - instance.GetMaleRatio())).ToString("F0"));
         currentHuntingSeason.text = "The current season will last from " + (RuleManager.Month)RuleManager.Instance.huntingSeasonRange.Min() + " to " + (RuleManager.Month)RuleManager.Instance.huntingSeasonRange.Max() + ".";
     }
 
