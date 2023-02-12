@@ -191,7 +191,7 @@ public class ElgManager : MonoBehaviour
         }
     }
 
-
+    // TODO: Bruk heller en forhåndsbestemt liste over <Elg> i stedet for å bruke getcomponent, se ForestManager
     float MalePopulationAge()
     {
         float age = 0;
