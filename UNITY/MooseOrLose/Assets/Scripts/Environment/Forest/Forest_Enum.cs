@@ -3,57 +3,45 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-//----- Forest
+// ---------- Enums for forests ---------- //
 
+public enum Season { Spring, Summer, Fall, Winter, None}
 
-public enum ForestState_Type
+public enum ForestType
 {
-    none,
-
-    forestType_Birch,
-    forestType_Pine,
-    forestType_Spruce
-}
-public enum ForestState_Density
-{
-    none,
-
-    forestVolum_1,
-    forestVolum_2,
-    forestVolum_3,
-    forestVolum_4,
-    forestVolum_5
-}
-public enum ForestState_Season
-{
-    none,
-
-    forestSeason_Spring,
-    forestSeason_Summer,
-    forestSeason_Fall,
-    forestSeason_Winter
+    Birch,
+    Pine,
+    Spruce,
+    None
 }
 
-
-//----- Tree
-
-
-public enum TreeState_Age
+public enum ForestDensity
 {
-    none,
-
-    treeAge_Child,
-    treeAge_Adult,
-    treeAge_Old,
-    treeAge_Dead
+    Density1,
+    Density2,
+    Density3,
+    Density4,
+    Density5,
+    None
 }
-public enum TreeState_Health
-{
-    none,
 
-    treeHealth_Healthy,
-    treeHealth_Damaged,
-    treeHealth_Broken,
-    treeHealth_Dead,
-    treeHealth_Chopped
+// ---------- Enums for trees ---------- //
+
+public enum TreeAge
+{
+    Child,
+    Adult,
+    Old,
+    Dead,
+    None
+}
+
+public enum TreeHealth
+{
+    Healthy,
+    Damaged,
+    Broken,
+    Dead,
+    Chopped,
+    None
 }

@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.Serialization;
+using UnityEngine.UIElements;
 
 public class Forest : MonoBehaviour
 {
@@ -11,14 +14,14 @@ public class Forest : MonoBehaviour
     TimeManager timeManager;
 
     [SerializeField] int treesAmountInForest;
-    [SerializeField] static int minTreesInForest = 1750;
-    [SerializeField] static int maxTreesInForest = 3500;
+    [SerializeField] int minTreesInForest = 1750;
+    [SerializeField] int maxTreesInForest = 3500;
 
     [Header("Tree States")]
-    public ForestState_Type forestState_Type;
-    public ForestState_Density forestState_Density;
-    public TreeState_Health forestState_Health;
-    public ForestState_Season forestState_Season;
+    public ForestType forestType;
+    public ForestDensity forestDensity;
+    public TreeHealth forestHealth;
+    public Season currentSeason;
 
     public float forest_Height;
     public float forest_Density;
@@ -26,8 +29,11 @@ public class Forest : MonoBehaviour
     Trees[] treeArray;
     public List<Trees> treeList;
 
-    private bool didUpdate = false;
-    private int updateCount = 0;
+    private MeshRenderer meshRenderer;
+
+    // Debugging
+    private bool didUpdate;
+    private int updateCount;
     public bool hasBeenCalled;
 
 
@@ -42,23 +48,19 @@ public class Forest : MonoBehaviour
         SetColor(Color.green);
     }
 
-    /** Debugging */
-    public void SetColor(Color col)
-    {
-        gameObject.GetComponent<MeshRenderer>().materials[0].color = col;
-    }
-
-
     private void Awake()
     {
         mainManager = FindObjectOfType<MainManager>();
         forestManager = FindObjectOfType<ForestManager>();
         colorManager = FindObjectOfType<ColorManager>();
 
+        meshRenderer = gameObject.GetComponent<MeshRenderer>();
+
         treesAmountInForest = UnityEngine.Random.Range(minTreesInForest, maxTreesInForest);
 
         RaycastPosition();
     }
+    
     private void Start()
     {
         timeManager = FindObjectOfType<TimeManager>();
@@ -94,7 +96,7 @@ public class Forest : MonoBehaviour
             treeArray[i] = new Trees
             {
                 //Tree age and height
-                treeState_Type = forestState_Type
+                treeType = forestType
             };
             treeArray[i].SetStats();
         }
@@ -133,215 +135,84 @@ public class Forest : MonoBehaviour
 
     //--------------------
 
+    public void SetColor(Color col)
+    {
+        meshRenderer.materials[0].color = col;
+    }
 
     void SetForestType()
     {
         if (gameObject.transform.position.y >= forestManager.BirchForestSpawn.x && gameObject.transform.position.y <= forestManager.BirchForestSpawn.y)
         {
-            forestState_Type = ForestState_Type.forestType_Birch;
+            forestType = ForestType.Birch;
         }
         else if (gameObject.transform.position.y >= forestManager.PineForestSpawn.x && gameObject.transform.position.y <= forestManager.PineForestSpawn.y)
         {
-            forestState_Type = ForestState_Type.forestType_Pine;
+            forestType = ForestType.Pine;
         }
         else if (gameObject.transform.position.y >= forestManager.SpruceForestSpawn.x && gameObject.transform.position.y <= forestManager.SpruceForestSpawn.y)
         {
-            forestState_Type = ForestState_Type.forestType_Spruce;
+            forestType = ForestType.Spruce;
         }
         else
         {
-            forestState_Type = ForestState_Type.none;
+            forestType = ForestType.None;
         }
     }
+
+    // TODO: Dette burde ikke oppdateres i tick! Heller pr. mnd via forest manager.
+    void SetForestSeason() { currentSeason = TimeManager.instance.currentSeason; }
+
     void SetForestHealth()
     {
-        int forestHealth_Counter = 0;
-
-        //Get the Health State of a Tree
-        for (int i = 0; i < treeList.Count; i++)
-        {
-            forestHealth_Counter += (int)treeList[i].treeState_Health;
-        }
-
-        forestHealth_Counter = treeList.Count == 0 ? 0 : forestHealth_Counter / treeList.Count;
-        //forestHealth_Counter /= treeList.Count; // Division by zero
+        // Sum the health of the trees
+        var averageHealth = treeList.Aggregate(0, (sum, nextTree) => sum + (int)nextTree.treeHealth);
+        
+        // Get the average
+        averageHealth = treeList.Count == 0 ? 0 : averageHealth / treeList.Count;
 
         //Calculate Forest Health State
-        #region
-        if (forestHealth_Counter >= 2)
+        forestHealth = averageHealth switch
         {
-            forestState_Health = TreeState_Health.treeHealth_Healthy;
-        }
-        else if (forestHealth_Counter >= 1)
-        {
-            forestState_Health = TreeState_Health.treeHealth_Damaged;
-        }
-        else if (forestHealth_Counter >= 0)
-        {
-            forestState_Health = TreeState_Health.treeHealth_Broken;
-        }
-        else
-        {
-            forestState_Health = TreeState_Health.treeHealth_Dead;
-        }
-        #endregion
+            >= 2 => TreeHealth.Healthy,
+            >= 1 => TreeHealth.Damaged,
+            >= 0 => TreeHealth.Broken,
+            _ => TreeHealth.Dead
+        };
     }
-    void SetForestSeason()
-    {
-        if (TimeManager.instance.IsSpring())
-        {
-            forestState_Season = ForestState_Season.forestSeason_Spring;
-        }
-        else if (TimeManager.instance.IsSummer())
-        {
-            forestState_Season = ForestState_Season.forestSeason_Summer;
-        }
-        else if (TimeManager.instance.IsAutumn())
-        {
-            forestState_Season = ForestState_Season.forestSeason_Fall;
-        }
-        else if (TimeManager.instance.IsWinter())
-        {
-            forestState_Season = ForestState_Season.forestSeason_Winter;
-        }
-        else
-        {
-            forestState_Season = ForestState_Season.forestSeason_Summer;
-        }
-    }
-
 
     void SetForestColor()
     {
-        switch (forestState_Type)
+        forestDensity = forestType switch
         {
-            case ForestState_Type.forestType_Birch:
-                switch (forest_Density)
-                {
-                    case < 30:
-                        forestState_Density = ForestState_Density.forestVolum_1;
-                        break;
-                    case < 40:
-                        forestState_Density = ForestState_Density.forestVolum_2;
-                        break;
-                    case < 50:
-                        forestState_Density = ForestState_Density.forestVolum_3;
-                        break;
-                    case < 60:
-                        forestState_Density = ForestState_Density.forestVolum_4;
-                        break;
-                    default:
-                        forestState_Density = ForestState_Density.forestVolum_5;
-                        break;
-                }
-                break;
-
-            case ForestState_Type.forestType_Spruce:
-                switch (forest_Density)
-                {
-                    case < 400:
-                        forestState_Density = ForestState_Density.forestVolum_1;
-                        break;
-                    case < 600:
-                        forestState_Density = ForestState_Density.forestVolum_2;
-                        break;
-                    case < 800:
-                        forestState_Density = ForestState_Density.forestVolum_3;
-                        break;
-                    case < 1000:
-                        forestState_Density = ForestState_Density.forestVolum_4;
-                        break;
-                    default:
-                        forestState_Density = ForestState_Density.forestVolum_5;
-                        break;
-                }
-                break;
-
-            case ForestState_Type.forestType_Pine:
-                switch (forest_Density)
-                {
-                    case < 140:
-                        forestState_Density = ForestState_Density.forestVolum_1;
-                        break;
-                    case < 200:
-                        forestState_Density = ForestState_Density.forestVolum_2;
-                        break;
-                    case < 250:
-                        forestState_Density = ForestState_Density.forestVolum_3;
-                        break;
-                    case < 300:
-                        forestState_Density = ForestState_Density.forestVolum_4;
-                        break;
-                    default:
-                        forestState_Density = ForestState_Density.forestVolum_5;
-                        break;
-                }
-                break;
-        }
-
-        switch (forestState_Type)
-        {
-            case ForestState_Type.forestType_Birch:
-                switch (forestState_Density)
-                {
-                    case ForestState_Density.forestVolum_1:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_1;
-                        break;
-                    case ForestState_Density.forestVolum_2:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_2;
-                        break;
-                    case ForestState_Density.forestVolum_3:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_3;
-                        break;
-                    case ForestState_Density.forestVolum_4:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_4;
-                        break;
-                    case ForestState_Density.forestVolum_5:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.birchDensity_5;
-                        break;
-                }
-                break;
-            case ForestState_Type.forestType_Pine:
-                switch (forestState_Density)
-                {
-                    case ForestState_Density.forestVolum_1:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_1;
-                        break;
-                    case ForestState_Density.forestVolum_2:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_2;
-                        break;
-                    case ForestState_Density.forestVolum_3:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_3;
-                        break;
-                    case ForestState_Density.forestVolum_4:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_4;
-                        break;
-                    case ForestState_Density.forestVolum_5:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.pineDensity_5;
-                        break;
-                }
-                break;
-            case ForestState_Type.forestType_Spruce:
-                switch (forestState_Density)
-                {
-                    case ForestState_Density.forestVolum_1:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_1;
-                        break;
-                    case ForestState_Density.forestVolum_2:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_2;
-                        break;
-                    case ForestState_Density.forestVolum_3:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_3;
-                        break;
-                    case ForestState_Density.forestVolum_4:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_4;
-                        break;
-                    case ForestState_Density.forestVolum_5:
-                        gameObject.GetComponent<MeshRenderer>().materials[0].color = colorManager.spruceDensity_5;
-                        break;
-                }
-                break;
-        }
+            ForestType.Birch => forest_Density switch
+            {
+                < 30 => ForestDensity.Density1,
+                < 40 => ForestDensity.Density2,
+                < 50 => ForestDensity.Density3,
+                < 60 => ForestDensity.Density4,
+                _ => ForestDensity.Density5
+            },
+            ForestType.Spruce => forest_Density switch
+            {
+                < 400 => ForestDensity.Density1,
+                < 600 => ForestDensity.Density2,
+                < 800 => ForestDensity.Density3,
+                < 1000 => ForestDensity.Density4,
+                _ => ForestDensity.Density5
+            },
+            ForestType.Pine => forest_Density switch
+            {
+                < 140 => ForestDensity.Density1,
+                < 200 => ForestDensity.Density2,
+                < 250 => ForestDensity.Density3,
+                < 300 => ForestDensity.Density4,
+                _ => ForestDensity.Density5
+            },
+            _ => ForestDensity.None
+        };
+        
+        SetColor(colorManager.GetColor(forestType, forestDensity));
     }
 
 
@@ -349,48 +220,18 @@ public class Forest : MonoBehaviour
 
 
     #region Functions for a Moose to call
-    public int GetForestTreeAmount()
-    {
-        return treeList.Count;
-    }
+    public int GetForestTreeAmount() { return treeList.Count; }
 
-    public Trees GetATree(int a)
-    {
-        return treeList[a];
-    }
+    public Trees GetATree(int a) { return treeList[a]; }
 
     public Trees GetOptimalTreeToEat()
     {
-        //Search for Healthy trees under 3 meter
-        for (int i = 0; i < treeList.Count; i++)
-        {
-            if (treeList[i].treeState_Health == TreeState_Health.treeHealth_Healthy && treeList[i].stemHeight < 3)
-            {
-                return treeList[i];
-            }
-        }
+        var bestTree = treeList.Find(t => t.treeHealth == TreeHealth.Healthy && t.stemHeight < 3);
+        if (bestTree != null) return bestTree;
 
-        //Search for Damaged trees under 3 meter
-        for (int i = 0; i < treeList.Count; i++)
-        {
-            if (treeList[i].treeState_Health == TreeState_Health.treeHealth_Damaged && treeList[i].stemHeight < 3)
-            {
-                return treeList[i];
-            }
-        }
-
-        //Search for Broken trees under 3 meter
-        for (int i = 0; i < treeList.Count; i++)
-        {
-            if (treeList[i].treeState_Health == TreeState_Health.treeHealth_Broken && treeList[i].stemHeight < 3)
-            {
-                return treeList[i];
-            }
-        }
-
-        //print("Found no edible trees in this Forest");
-
-        return null;
+        bestTree = treeList.Find(t => t.treeHealth == TreeHealth.Damaged && t.stemHeight < 3);
+        
+        return bestTree ?? treeList.Find(t => t.treeHealth == TreeHealth.Broken && t.stemHeight < 3);
     }
     #endregion
 
@@ -400,10 +241,9 @@ public class Forest : MonoBehaviour
 
     void SubscribeToEvents()
     {
-        //TimeManager.instance.OnNewDay += UpdateTreeStats;
-
         TimeManager.instance.OnNewYear += UpdateBirth;
     }
+    
     void UpdateForestStats()
     {
         SetForestSeason();
@@ -419,34 +259,26 @@ public class Forest : MonoBehaviour
 
         forest_Density = 0;
         forest_Height = 0;
-
+        
         for (int i = 0; i < treeList.Count;)
         {
-            //Update Tree Stats
             treeList[i].UpdateStats();
-
-            //Update Forest Density
-            forest_Density += treeList[i].treeVolum;
-
-            //Update Forest Height
+            
+            forest_Density += treeList[i].treeVolume;
             forest_Height += treeList[i].treeHeight;
 
-            //Check for dead trees
+            // Check for dead trees
             if (treeList[i].isDead)
             {
                 forestManager.treesDiedOfAge++;
-
                 treeList.RemoveAt(i);
             }
-            else
-            {
-                i++;
-            }
+            else i++;
         }
-
-        forest_Height = !treeList.Any() ? 0 : forest_Height / treeList.Count();
-        //forest_Height /= treeList.Count; // Possible division by zero
-        forest_Density /= 1000;
+        
+        int treeCount = treeList.Count;
+        forest_Height = treeCount == 0 ? 0 : forest_Height / treeCount;
+        forest_Density *= 0.001f; // Divide by 1000
     }
 
     void UpdateBirth()
@@ -456,7 +288,7 @@ public class Forest : MonoBehaviour
             for (int j = 0; j < treeList[i].CheckIfGettingBirth(); j++)
             {
                 treeList.Add(new Trees());
-                treeList[treeList.Count - 1].treeState_Type = forestState_Type;
+                treeList[treeList.Count - 1].treeType = forestType;
                 treeList[treeList.Count - 1].SetBirth();
             }
 

@@ -30,11 +30,11 @@ public class ElgFindForest : Node
                 float forestValue = 1;
                 if (collider.GetComponent<Forest>().GetOptimalTreeToEat() != null)
                 {
-                    if (collider.GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Birch)
+                    if (collider.GetComponent<Forest>().forestType == ForestType.Birch)
                     {
                         forestValue *= 0.5f;
                     }
-                    if (collider.GetComponent<Forest>().GetOptimalTreeToEat().treeState_Health != TreeState_Health.treeHealth_Healthy)
+                    if (collider.GetComponent<Forest>().GetOptimalTreeToEat().treeHealth != TreeHealth.Healthy)
                     {
                         forestValue *= 0.25f;
                     }

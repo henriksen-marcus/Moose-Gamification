@@ -200,6 +200,10 @@ public class ForestManager : MonoBehaviour
     /** Runs every time the day changes. Updates every forest over time. */
     void UpdateForests()
     {
+        /*updateTimer.Start("Update All Trees");
+        forestList.ForEach(f => f.UpdateTreeStats());
+        print(updateTimer);
+        return;*/
         // Update any remaining trees
         if (currentIndex < forestList.Count - 1 && TimeManager.instance.GetDay() > 0)
         {
@@ -356,3 +360,6 @@ public class ForestManager : MonoBehaviour
         #endregion
     }
 }
+
+// Update trees before:     0,2350874s
+// Update trees after:      0,1629381
