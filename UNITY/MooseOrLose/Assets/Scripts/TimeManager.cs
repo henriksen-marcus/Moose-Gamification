@@ -4,6 +4,9 @@ using UnityEngine;
 using TMPro;
 using System;
 
+
+public enum Season { Spring, Summer, Autumn, Winter }
+
 public class TimeManager : MonoBehaviour
 {
     public static TimeManager instance;
@@ -27,6 +30,9 @@ public class TimeManager : MonoBehaviour
 
     public string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Des" };
 
+    private Season currentSeason;
+    private bool gamePaused = false;
+    // Start is called before the first frame update
     void Awake()
     {
         GameObject Canvas = GameObject.Find("UI_Canvas");

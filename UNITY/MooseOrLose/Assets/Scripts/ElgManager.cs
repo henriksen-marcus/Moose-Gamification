@@ -223,7 +223,11 @@ public class ElgManager : MonoBehaviour
         return (1 - (((float)elg_population / (float)carrying_capacity) * ((float)elg_population / (float)carrying_capacity))) * 100;
     }
 
-
+    public float GetMaleRatio()
+    {
+        return (float)elg_males / elg_population;
+    }
+    
     void NewMonth()
     {
         elg_population_graph.Add(elg_population);

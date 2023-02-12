@@ -8,11 +8,15 @@ using UnityEngine.UI;
 
 public class InventoryUI : UI, IPointerEnterHandler
 {
+    public static InventoryUI Instance;
+    
     private List<HorizontalLayoutGroup> _list;
-    public static event Action OnExpand;
+    public event Action OnExpand;
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
         _list = new(GetComponentsInChildren<HorizontalLayoutGroup>());
     }
 

@@ -2,7 +2,7 @@
 <xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
 	<header>
 		<smile version="1.0" namespace="std, isee"/>
-		<name>Gamification</name>
+		<name>Psychology</name>
 		<uuid>071fd070-651d-4c22-b53d-d4dc9d03cf3e</uuid>
 		<vendor>isee systems, inc.</vendor>
 		<product version="1.7.1" isee:build_number="1574" isee:saved_by_v1="true" lang="en">Stella Architect</product>
@@ -48,7 +48,7 @@
 			<aux name="Goal orientation">
 				<isee:delay_aux/>
 			</aux>
-			<aux name="Maintaining smooth difficulty curve">
+			<aux name="Maintaining smooth\ndifficulty curve">
 				<isee:delay_aux/>
 			</aux>
 			<aux name="Flow">
@@ -72,6 +72,45 @@
 			<aux name="Moose knowledge">
 				<isee:delay_aux/>
 			</aux>
+			<aux name="Performance feedback">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Self-esteem">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Goals (get better results)">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Challenge">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Possible to fail">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Uncertain outcomes">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Control">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Fantasy">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Emotional aspects">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Drag-drop">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Choice">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Power">
+				<isee:delay_aux/>
+			</aux>
+			<aux name="Changeable rules">
+				<isee:delay_aux/>
+			</aux>
 			<isee:dependencies>
 				<var name="Attention">
 					<in>Inquiry</in>
@@ -91,6 +130,9 @@
 					<in>Confidence</in>
 					<in>Satisfaction</in>
 					<in>Extrinsic_motivation</in>
+					<in>Fantasy</in>
+					<in>Control</in>
+					<in>Challenge</in>
 				</var>
 				<var name="Completing_tasks">
 					<in>Intrinsic_motivation</in>
@@ -118,6 +160,40 @@
 				</var>
 				<var name="Moose_knowledge">
 					<in>Completing_tasks</in>
+				</var>
+				<var name="Performance_feedback">
+					<in>&quot;Post-game_report&quot;</in>
+				</var>
+				<var name='"Self-esteem"'>
+					<in>Positive_feedback</in>
+				</var>
+				<var name='"Goals_(get_better_results)"'>
+					<in>Performance_feedback</in>
+				</var>
+				<var name="Challenge">
+					<in>&quot;Goals_(get_better_results)&quot;</in>
+					<in>&quot;Self-esteem&quot;</in>
+					<in>Performance_feedback</in>
+					<in>Uncertain_outcomes</in>
+				</var>
+				<var name="Uncertain_outcomes">
+					<in>Possible_to_fail</in>
+				</var>
+				<var name="Control">
+					<in>Power</in>
+					<in>Choice</in>
+				</var>
+				<var name="Fantasy">
+					<in>Emotional_aspects</in>
+				</var>
+				<var name="Emotional_aspects">
+					<in>Pathos</in>
+				</var>
+				<var name="Choice">
+					<in>&quot;Drag-drop&quot;</in>
+				</var>
+				<var name="Power">
+					<in>Changeable_rules</in>
 				</var>
 			</isee:dependencies>
 		</variables>
@@ -161,7 +237,7 @@
 				<isee:spatial_map color="black" background="white" font_size="12pt"/>
 				<isee:animation_object color="black" background="white" font_size="12pt"/>
 			</style>
-			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1123" page_height="793" isee:page_cols="2" isee:scroll_x="572.5" isee:scroll_y="112.5" zoom="160" isee:popup_graphs_are_comparative="true" type="stock_flow">
+			<view isee:show_pages="false" isee:converter_size="name_only" page_width="1091" page_height="761" isee:page_cols="2" isee:page_rows="2" isee:scroll_x="547.143" isee:scroll_y="169.286" zoom="140" isee:popup_graphs_are_comparative="true" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -197,66 +273,66 @@
 					</graph>
 					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
 				</style>
-				<aux x="914.125" y="447.75" width="39.25" height="12" name="Attention"/>
-				<aux x="1128.63" y="502.75" width="50.25" height="12" name="Confidence"/>
-				<aux x="1149.5" y="447.75" width="52.25" height="12" name="Satisfaction"/>
-				<aux x="963.5" y="502.75" width="47.25" height="12" name="Relevance"/>
+				<aux color="#00AA00" font_color="#00AA00" x="659.125" y="262.75" width="39.25" height="12" name="Attention"/>
+				<aux color="#00AA00" font_color="#00AA00" x="790.773" y="482.75" width="50.25" height="12" name="Confidence"/>
+				<aux font_color="#00AA00" x="1149.5" y="447.75" width="52.25" height="12" name="Satisfaction"/>
+				<aux color="#00AA00" font_color="#00AA00" x="667.071" y="396.321" width="47.25" height="12" name="Relevance"/>
 				<aux x="1013.25" y="378.375" width="82.25" height="12" name="Intrinsic motivation"/>
 				<aux x="1016.75" y="266.375" width="75.25" height="12" name="Completing tasks"/>
 				<connector uid="1" polarity="+" isee:polarity_placement="outside" angle="90">
 					<from>Intrinsic_motivation</from>
 					<to>Completing_tasks</to>
 				</connector>
-				<connector uid="2" polarity="+" isee:polarity_placement="outside" angle="60.2551">
+				<connector uid="2" color="#55AAFF" font_color="#55AAFF" polarity="+" isee:polarity_placement="outside" angle="10.2222">
 					<from>Attention</from>
 					<to>Intrinsic_motivation</to>
 				</connector>
-				<connector uid="3" polarity="+" isee:polarity_placement="inside" angle="51.3402">
+				<connector uid="3" color="#55AAFF" font_color="#55AAFF" polarity="+" isee:polarity_placement="inside" angle="13.0217">
 					<from>Relevance</from>
 					<to>Intrinsic_motivation</to>
 				</connector>
-				<connector uid="4" polarity="+" isee:polarity_placement="inside" angle="148.349">
+				<connector uid="4" color="#55AAFF" font_color="#55AAFF" polarity="+" isee:polarity_placement="outside" angle="11.8671">
 					<from>Confidence</from>
 					<to>Intrinsic_motivation</to>
 				</connector>
-				<connector uid="5" polarity="+" isee:polarity_placement="outside" angle="113.962">
+				<connector uid="5" color="#55AAFF" font_color="#55AAFF" polarity="+" isee:polarity_placement="outside" angle="113.962">
 					<from>Satisfaction</from>
 					<to>Intrinsic_motivation</to>
 				</connector>
-				<aux x="836.563" y="509" width="31.25" height="12" name="Inquiry"/>
-				<text_box vertical_text_align="center" font_size="9pt" uid="6" x="787.313" y="528.688" width="129.75" height="29.875">How can we control the Swedish moose population?</text_box>
-				<connector uid="7" polarity="+" isee:polarity_placement="outside" angle="48.8937">
+				<aux color="#00AA00" x="581.563" y="324" width="31.25" height="12" name="Inquiry"/>
+				<text_box vertical_text_align="center" font_size="9pt" uid="6" x="532.313" y="343.688" width="129.75" height="29.875">How can we control the Swedish moose population?</text_box>
+				<connector uid="7" color="#FF007F" polarity="+" isee:polarity_placement="outside" angle="48.8937">
 					<from>Inquiry</from>
 					<to>Attention</to>
 				</connector>
-				<aux x="994.625" y="602.125" width="31.25" height="12" name="Pathos"/>
-				<aux x="962" y="549.625" width="67.25" height="12" name="Goal orientation"/>
-				<text_box vertical_text_align="center" font_size="9pt" uid="8" x="938.375" y="619.75" width="143.75" height="29.875">Moose getting roadkilled or hunted unnecessarily invokes sadness</text_box>
-				<connector uid="9" polarity="+" isee:polarity_placement="outside" angle="105.566">
+				<aux color="#00AA00" x="698.196" y="495.696" width="31.25" height="12" name="Pathos"/>
+				<aux color="#00AA00" x="665.571" y="443.196" width="67.25" height="12" name="Goal orientation"/>
+				<text_box vertical_text_align="center" font_size="9pt" uid="8" x="650.793" y="522.168" width="143.75" height="29.875">Moose getting roadkilled or hunted unnecessarily invokes sadness</text_box>
+				<connector uid="9" color="#FF007F" polarity="+" isee:polarity_placement="outside" angle="105.566">
 					<from>Pathos</from>
 					<to>Goal_orientation</to>
 				</connector>
-				<connector uid="10" polarity="+" isee:polarity_placement="outside" angle="106.091">
+				<connector uid="10" color="#FF007F" polarity="+" isee:polarity_placement="outside" angle="106.091">
 					<from>Goal_orientation</from>
 					<to>Relevance</to>
 				</connector>
-				<aux x="1182.63" y="584.5" width="82.25" height="26" name="Maintaining smooth difficulty curve"/>
-				<aux x="1168.75" y="537.625" width="21.25" height="12" name="Flow"/>
-				<connector uid="11" polarity="+" isee:polarity_placement="outside" angle="104.744">
+				<aux color="#00AA00" x="844.773" y="564.5" width="82.25" height="26" name="Maintaining smooth\ndifficulty curve"/>
+				<aux color="#00AA00" x="830.893" y="517.625" width="21.25" height="12" name="Flow"/>
+				<connector uid="11" color="#FF007F" polarity="+" isee:polarity_placement="outside" angle="104.744">
 					<from>Maintaining_smooth_difficulty_curve</from>
 					<to>Flow</to>
 				</connector>
-				<connector uid="12" polarity="+" isee:polarity_placement="outside" angle="120.892">
+				<connector uid="12" color="#FF007F" polarity="+" isee:polarity_placement="outside" angle="120.892">
 					<from>Flow</from>
 					<to>Confidence</to>
 				</connector>
 				<aux x="1227.75" y="465.563" width="78.25" height="12" name="Positive feedback"/>
-				<text_box vertical_text_align="center" font_size="9pt" uid="13" x="1314.38" y="456.626" width="161.875" height="29.875">Post-game report, happy icons for groups that thought you did a good job</text_box>
+				<text_box vertical_text_align="center" font_size="9pt" uid="13" x="1316.21" y="459.75" width="161.875" height="29.875">Post-game report, happy icons for groups that thought you did a good job</text_box>
 				<connector uid="14" polarity="+" isee:polarity_placement="outside" angle="126.027">
 					<from>Positive_feedback</from>
 					<to>Satisfaction</to>
 				</connector>
-				<text_box vertical_text_align="center" font_size="9pt" uid="15" x="1190" y="614.125" width="82.5" height="29.875">Gradual unlocking
+				<text_box vertical_text_align="center" font_size="9pt" uid="15" x="852.143" y="594.125" width="82.5" height="29.875">Gradual unlocking
 of game elements</text_box>
 				<aux x="1250.5" y="266.375" width="85.25" height="12" name="Extrinsic motivation"/>
 				<aux x="1164.13" y="227.75" width="134.25" height="12" name="In-game achievements(badges)"/>
@@ -302,6 +378,89 @@ of game elements</text_box>
 				<isee:loop_indicator text="R1" orientation="counter_clockwise" uid="25" x="1231.88" y="176.25" width="30" height="30"/>
 				<isee:loop_indicator text="R2" orientation="counter_clockwise" uid="26" x="1119.5" y="231.875" width="30" height="30"/>
 				<isee:loop_indicator text="B1" orientation="counter_clockwise" uid="27" x="1095.5" y="295.625" width="30" height="30"/>
+				<text_box font_color="#00AA00" uid="28" x="736.393" y="336" width="39.2857" height="18.626">ARCS</text_box>
+				<text_box font_color="#FF5500" uid="29" x="1343.74" y="663.857" width="130" height="35.251">Taxonomy of intrinsic motivation</text_box>
+				<aux x="1316.59" y="603.286" width="98.25" height="12" name="Performance feedback"/>
+				<connector uid="30" polarity="+" isee:polarity_placement="inside" angle="285.471">
+					<from>&quot;Post-game_report&quot;</from>
+					<to>Performance_feedback</to>
+				</connector>
+				<aux x="1299.49" y="543.554" width="53.25" height="12" name="Self-esteem"/>
+				<connector uid="31" polarity="+" isee:polarity_placement="outside" angle="307.218">
+					<from>Positive_feedback</from>
+					<to>&quot;Self-esteem&quot;</to>
+				</connector>
+				<aux x="1194.86" y="603.286" width="106.25" height="12" name="Goals (get better results)"/>
+				<connector uid="32" polarity="+" isee:polarity_placement="outside" angle="201.146">
+					<from>Performance_feedback</from>
+					<to>&quot;Goals_(get_better_results)&quot;</to>
+				</connector>
+				<aux font_color="#FF5500" x="1213.02" y="543.554" width="43.25" height="12" name="Challenge"/>
+				<connector uid="33" polarity="+" isee:polarity_placement="outside" angle="102.584">
+					<from>&quot;Goals_(get_better_results)&quot;</from>
+					<to>Challenge</to>
+				</connector>
+				<connector uid="34" polarity="+" isee:polarity_placement="outside" angle="154.806">
+					<from>&quot;Self-esteem&quot;</from>
+					<to>Challenge</to>
+				</connector>
+				<connector uid="35" polarity="+" isee:polarity_placement="outside" angle="155.499">
+					<from>Performance_feedback</from>
+					<to>Challenge</to>
+				</connector>
+				<aux x="1143.59" y="701.143" width="64.25" height="12" name="Possible to fail"/>
+				<aux x="1126.16" y="627.571" width="86.25" height="12" name="Uncertain outcomes"/>
+				<connector uid="36" polarity="+" isee:polarity_placement="outside" angle="81.3475">
+					<from>Possible_to_fail</from>
+					<to>Uncertain_outcomes</to>
+				</connector>
+				<connector uid="37" polarity="+" isee:polarity_placement="outside" angle="52.1187">
+					<from>Uncertain_outcomes</from>
+					<to>Challenge</to>
+				</connector>
+				<aux font_color="#FF5500" x="1024.59" y="647.571" width="32.25" height="12" name="Control"/>
+				<aux font_color="#FF5500" x="914.946" y="647.571" width="37.25" height="12" name="Fantasy"/>
+				<aux x="822.518" y="733.857" width="79.25" height="12" name="Emotional aspects"/>
+				<connector uid="38" polarity="+" isee:polarity_placement="outside" angle="321.268">
+					<from>Pathos</from>
+					<to>Emotional_aspects</to>
+				</connector>
+				<connector uid="39" polarity="+" isee:polarity_placement="outside" angle="50.3815">
+					<from>Emotional_aspects</from>
+					<to>Fantasy</to>
+				</connector>
+				<aux x="1076.25" y="764.714" width="43.25" height="12" name="Drag-drop"/>
+				<aux x="1077.32" y="726.857" width="31.25" height="12" name="Choice"/>
+				<aux x="991.375" y="726.857" width="27.25" height="12" name="Power"/>
+				<aux x="967.875" y="761.143" width="74.25" height="12" name="Changeable rules"/>
+				<connector uid="40" polarity="+" isee:polarity_placement="outside" angle="98.6525">
+					<from>Changeable_rules</from>
+					<to>Power</to>
+				</connector>
+				<connector uid="41" polarity="+" isee:polarity_placement="outside" angle="103.478">
+					<from>&quot;Drag-drop&quot;</from>
+					<to>Choice</to>
+				</connector>
+				<connector uid="42" polarity="+" isee:polarity_placement="outside" angle="99.4623">
+					<from>Power</from>
+					<to>Control</to>
+				</connector>
+				<connector uid="43" polarity="+" isee:polarity_placement="outside" angle="98.0047">
+					<from>Choice</from>
+					<to>Control</to>
+				</connector>
+				<connector uid="44" color="#00AD0B" font_color="#00AD0B" polarity="+" isee:polarity_placement="outside" angle="56.3099">
+					<from>Fantasy</from>
+					<to>Intrinsic_motivation</to>
+				</connector>
+				<connector uid="45" color="#00AD0B" font_color="#00AD0B" polarity="+" isee:polarity_placement="inside" angle="50.1944">
+					<from>Control</from>
+					<to>Intrinsic_motivation</to>
+				</connector>
+				<connector uid="46" color="#00AD0B" font_color="#00AD0B" polarity="+" isee:polarity_placement="inside" angle="117.959">
+					<from>Challenge</from>
+					<to>Intrinsic_motivation</to>
+				</connector>
 			</view>
 		</views>
 	</model>
