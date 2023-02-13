@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 
 // ---------- Enums for forests ---------- //
 
@@ -14,29 +10,6 @@ public enum ForestType
     Spruce,
     None
 }
-public enum ForestState_Density
-{
-    none,
-
-    forestVolum_1,
-    forestVolum_2,
-    forestVolum_3,
-    forestVolum_4,
-    forestVolum_5
-}
-public enum ForestState_Season
-{
-    none,
-
-    forestSeason_Spring,
-    forestSeason_Summer,
-    forestSeason_Fall,
-    forestSeason_Winter
-}
-
-
-//----- Tree
-
 
 public enum ForestDensity
 {

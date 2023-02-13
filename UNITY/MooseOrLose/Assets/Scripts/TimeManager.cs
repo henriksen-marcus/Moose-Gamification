@@ -4,9 +4,6 @@ using UnityEngine;
 using TMPro;
 using System;
 
-
-public enum Season { Spring, Summer, Autumn, Winter }
-
 public class TimeManager : MonoBehaviour
 {
     public static TimeManager instance;
@@ -29,9 +26,7 @@ public class TimeManager : MonoBehaviour
     private bool gamePaused = false;
 
     public string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Des" };
-
-    private Season currentSeason;
-    private bool gamePaused = false;
+    
     // Start is called before the first frame update
     void Awake()
     {
@@ -59,8 +54,8 @@ public class TimeManager : MonoBehaviour
         yearUI.SetText(year.ToString());
         monthUI.SetText(monthNames[month - 1]);
         dayUI.SetText((day+1).ToString());
-
     }
+    
     public int GetYear() { return year; }
     public int GetMonth() { return month; }
     public int GetDay() { return day; }
@@ -101,14 +96,8 @@ public class TimeManager : MonoBehaviour
     }
 
     public event Action OnNewDay;
-    public void NewDay()
-    {
-        if (OnNewDay != null)
-        {
-            OnNewDay();
-        }
-    }
-
+    public void NewDay() => OnNewDay?.Invoke();
+    
     public event Action OnNewMonth;
     public void NewMonth()
     {
@@ -138,19 +127,13 @@ public class TimeManager : MonoBehaviour
                 currentSeason = Season.Fall;
                 break;
         }
-
         OnNewMonth?.Invoke();
     }
     
     public event Action OnNewYear;
-    public void NewYear()
-    {
-        OnNewYear?.Invoke();
-    }
-
+    public void NewYear() => OnNewYear?.Invoke();
+    
     public event Action OnSpringBegin;
-    public void SpringBegin()
-    {
-        OnSpringBegin?.Invoke();
-    }
+    public void SpringBegin() => OnSpringBegin?.Invoke();
+    
 }
