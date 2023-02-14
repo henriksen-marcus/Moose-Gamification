@@ -101,10 +101,10 @@ public class ElgManager : MonoBehaviour
 
         }
 
-        PopulationChanged();
         male_population_age = MalePopulationAge();
         elg_population_graph.Add(elg_population);
         TimeManager.instance.OnNewMonth += NewMonth;
+        PopulationChanged();
     }
 
     public void MaleBorn()

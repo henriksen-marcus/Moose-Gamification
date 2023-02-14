@@ -43,7 +43,17 @@ public class InfoUI : UI
         mMaleCount.text = instance.elg_males.ToString();
         mFemaleCount.text = instance.elg_females.ToString();
         mChildCount.text = instance.elg_children.ToString();
-        mMaleAge.text = instance.GetMalePopulationAge().ToString("F2");
+
+
+        if (instance.GetMalePopulationAge().ToString().Length > 3)
+        {
+            mMaleAge.text = instance.GetMalePopulationAge().ToString().Remove(3, instance.GetMalePopulationAge().ToString().Length - 3);
+        }
+        else
+        {
+            mMaleAge.text = instance.GetMalePopulationAge().ToString();
+        }
+        
         string text = mMaleAgeGoal.text.ToString(CultureInfo.InvariantCulture);
         float result;
         if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
@@ -54,7 +64,16 @@ public class InfoUI : UI
         {
             Debug.Log("Not a valid number");
         }
-        mMaleRatio.text = instance.GetMaleRatio().ToString("F2");
+
+        if (instance.GetMaleRatio().ToString().Length > 5)
+        {
+            mMaleRatio.text = instance.GetMaleRatio().ToString().Remove(5, instance.GetMalePopulationAge().ToString().Length - 5);
+        }
+        else
+        {
+            mMaleRatio.text = instance.GetMaleRatio().ToString();
+        }
+        
         text = mMaleRatio.text.ToString(CultureInfo.InvariantCulture);
         if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
         {
