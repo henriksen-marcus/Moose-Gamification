@@ -201,7 +201,7 @@ public class ElgManager : MonoBehaviour
 
     public float GetMaleRatio()
     {
-        return (float)elg_males / elg_population;
+        return (float)elg_males / (float)elg_population;
     }
     
     void NewMonth()

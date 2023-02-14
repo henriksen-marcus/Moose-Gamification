@@ -47,7 +47,7 @@ public class InfoUI : UI
 
         if (instance.GetMalePopulationAge().ToString().Length > 5)
         {
-            mMaleAge.text = instance.GetMalePopulationAge().ToString().Remove(3, instance.GetMalePopulationAge().ToString().Length - 5);
+            mMaleAge.text = instance.GetMalePopulationAge().ToString().Remove(5, instance.GetMalePopulationAge().ToString().Length - 5);
         }
         else
         {
@@ -67,7 +67,7 @@ public class InfoUI : UI
 
         if (instance.GetMaleRatio().ToString().Length > 3)
         {
-            mMaleRatio.text = instance.GetMaleRatio().ToString().Remove(5, instance.GetMalePopulationAge().ToString().Length - 3);
+            mMaleRatio.text = instance.GetMaleRatio().ToString().Remove(3, instance.GetMalePopulationAge().ToString().Length - 3);
         }
         else
         {
