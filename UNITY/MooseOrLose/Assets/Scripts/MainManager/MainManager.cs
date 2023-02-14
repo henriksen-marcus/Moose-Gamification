@@ -13,6 +13,7 @@ public class MainManager : MonoBehaviour
     [SerializeField] GameObject mooseManager;
     [SerializeField] GameObject wolfManager;
     [SerializeField] GameObject hunterManager;
+    [SerializeField] GameObject gridManager;
 
     [Header("Map")]
     public GameObject map;
@@ -46,5 +47,8 @@ public class MainManager : MonoBehaviour
         (Instantiate(mooseManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
         (Instantiate(wolfManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
         (Instantiate(hunterManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
+
+
+        Instantiate(gridManager, Vector3.zero, Quaternion.identity, managerParent.transform);
     }
 }

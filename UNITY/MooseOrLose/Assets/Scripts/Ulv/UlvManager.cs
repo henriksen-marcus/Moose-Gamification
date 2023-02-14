@@ -185,4 +185,28 @@ public class UlvManager : MonoBehaviour
             OnUlvPopulationChanged();
         }
     }
+
+    public void PauseAgents(bool input)
+    {
+        if (input)
+        {
+            foreach (List<GameObject> go in ulv_list)
+            {
+                foreach (GameObject go2 in go)
+                {
+                    go2.GetComponent<NavMeshAgent>().isStopped = true;
+                }
+            }
+        }
+        else
+        {
+            foreach (List<GameObject> go in ulv_list)
+            {
+                foreach(GameObject go2 in go)
+                {
+                    go2.GetComponent<NavMeshAgent>().isStopped = false;
+                }
+            }
+        }
+    }
 }

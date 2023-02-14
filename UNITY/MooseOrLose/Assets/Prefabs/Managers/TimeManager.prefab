@@ -48,9 +48,22 @@ MonoBehaviour:
   day: 0
   year: 0
   startMonth: 1
-  playSpeed: 0.5
+  playSpeed: 3
   defaultPlaySpeed: 3
   startPlaySpeed: 0
   dayUI: {fileID: 0}
   monthUI: {fileID: 0}
   yearUI: {fileID: 0}
+  monthNames:
+  - Jan
+  - Feb
+  - Mar
+  - Apr
+  - May
+  - Jun
+  - Jul
+  - Aug
+  - Sep
+  - Oct
+  - Nov
+  - Des
