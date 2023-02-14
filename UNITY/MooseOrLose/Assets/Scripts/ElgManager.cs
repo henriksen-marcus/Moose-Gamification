@@ -28,10 +28,6 @@ public class ElgManager : MonoBehaviour
 
 
     public GameObject ElgPrefab;
-    [SerializeField] public TextMeshProUGUI populationUI;
-    [SerializeField] public TextMeshProUGUI malesUI;
-    [SerializeField] public TextMeshProUGUI femalesUI;
-    [SerializeField] public TextMeshProUGUI childrenUI;
 
 
     [Header("List of Spawned GameObjects")]
@@ -49,11 +45,6 @@ public class ElgManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject Canvas = GameObject.Find("UI_Canvas");
-        populationUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Population").GetComponent<TextMeshProUGUI>();
-        malesUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Male").GetComponent<TextMeshProUGUI>();
-        femalesUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Female").GetComponent<TextMeshProUGUI>();
-        childrenUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Children").GetComponent<TextMeshProUGUI>();
 
         elg_children = 0;
 
@@ -116,21 +107,6 @@ public class ElgManager : MonoBehaviour
         TimeManager.instance.OnNewMonth += NewMonth;
     }
 
-    private void Update()
-    {
-        if (populationUI != null)
-            populationUI.SetText(elg_population.ToString());
-
-        if (malesUI != null)
-            malesUI.SetText(elg_males.ToString());
-
-        if (femalesUI != null)
-            femalesUI.SetText(elg_females.ToString());
-
-        if (childrenUI != null)
-            childrenUI.SetText(elg_children.ToString());
-    }
-
     public void MaleBorn()
     {
         elg_males++;
@@ -169,16 +145,16 @@ public class ElgManager : MonoBehaviour
 
     public void AddToList(GameObject go)
     {
-        PopulationChanged();
-        elg_population++;
         elg_list.Add(go);
+        elg_population++;
+        PopulationChanged();
     }
 
     public void RemoveFromList(GameObject go)
     {
-        PopulationChanged();
-        elg_population--;
         elg_list.Remove(go);
+        elg_population--;
+        PopulationChanged();
     }
 
 
@@ -231,5 +207,23 @@ public class ElgManager : MonoBehaviour
     void NewMonth()
     {
         elg_population_graph.Add(elg_population);
+    }
+
+    public void PauseAgents(bool input)
+    {
+        if (input)
+        {
+            foreach(GameObject go in elg_list)
+            {
+                go.GetComponent<NavMeshAgent>().isStopped = true;
+            }
+        }
+        else
+        {
+            foreach (GameObject go in elg_list)
+            {
+                go.GetComponent<NavMeshAgent>().isStopped = false;
+            }
+        }
     }
 }

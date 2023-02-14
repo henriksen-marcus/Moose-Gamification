@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
     }
     private void Start()
     {
-        GameObjectInfo = GameObject.Find("UI_Canvas").transform.Find("GameObjectInfo").gameObject;
+        GameObjectInfo = GameObject.Find("Screen Canvas").transform.Find("GameObjectInfo").gameObject;
     }
 
 

@@ -51,7 +51,8 @@ MonoBehaviour:
   mooseManager: {fileID: 2499986977817424779, guid: 6e3bdb4f4058c334796e751d8cbd17b5, type: 3}
   wolfManager: {fileID: 209080958219635482, guid: bed84ad1a2219ac4da686c8799359de5, type: 3}
   hunterManager: {fileID: 4592113902454641521, guid: d9fd253ebbb402b46be869488faa15dd, type: 3}
+  gridManager: {fileID: 4434922882872394511, guid: 4a32c568ba2ff99429082182615e4891, type: 3}
   map: {fileID: 4601558451322357717, guid: cd7a300ac59aef3499646528762f2cd4, type: 3}
-  mapParent: {fileID: 0}
+  mapParent: {fileID: 4434922882872394511, guid: 4a32c568ba2ff99429082182615e4891, type: 3}
   maplist: []
   forestParent: {fileID: 0}

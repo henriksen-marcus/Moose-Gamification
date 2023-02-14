@@ -56,7 +56,7 @@ public class ElgPopulationGraph : MonoBehaviour
         float increment;
         if (valueList.Count < 10)
         {
-            increment = 10;
+            increment = width / 10f;
         }
         else
         {

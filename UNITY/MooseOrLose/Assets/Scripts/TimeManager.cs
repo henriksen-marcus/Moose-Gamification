@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 using System;
 
 public class TimeManager : MonoBehaviour
@@ -17,25 +16,15 @@ public class TimeManager : MonoBehaviour
     [HideInInspector]
     public float startPlaySpeed;
 
-    [SerializeField] public TextMeshProUGUI dayUI;
-    [SerializeField] public TextMeshProUGUI monthUI;
-    [SerializeField] public TextMeshProUGUI yearUI;
-    
+
     public Season currentSeason { get; private set; }
     
     private bool gamePaused = false;
 
-    public string[] monthNames = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Des" };
     
     // Start is called before the first frame update
     void Awake()
-    {
-        GameObject Canvas = GameObject.Find("UI_Canvas");
-        
-        dayUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Day").GetComponent<TextMeshProUGUI>();
-        monthUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Month").GetComponent<TextMeshProUGUI>();
-        yearUI = Canvas.transform.Find("Clock").transform.Find("Background").transform.Find("Year").GetComponent<TextMeshProUGUI>();
-
+    { 
         if (!instance) instance = this;
         
         day = 0;
@@ -49,12 +38,7 @@ public class TimeManager : MonoBehaviour
         gamePaused = false;
     }
 
-    private void Update()
-    {
-        yearUI.SetText(year.ToString());
-        monthUI.SetText(monthNames[month - 1]);
-        dayUI.SetText((day+1).ToString());
-    }
+
     
     public int GetYear() { return year; }
     public int GetMonth() { return month; }
@@ -67,7 +51,20 @@ public class TimeManager : MonoBehaviour
     public bool IsSpring() { return currentSeason == Season.Spring; }
     public bool IsAutumn() { return currentSeason == Season.Fall; }
 
-    public void SetGamePaused(bool input) {  gamePaused = input; }
+    public void SetGamePaused(bool input) 
+    {  
+        gamePaused = input; 
+        if (gamePaused)
+        {
+            ElgManager.instance.PauseAgents(true);
+            UlvManager.instance.PauseAgents(true);
+        }
+        else
+        {
+            ElgManager.instance.PauseAgents(false);
+            UlvManager.instance.PauseAgents(false);
+        }
+    }
 
     IEnumerator NextDay()
     {

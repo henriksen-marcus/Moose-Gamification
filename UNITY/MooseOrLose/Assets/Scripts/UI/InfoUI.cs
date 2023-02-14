@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using System.Globalization;
 
 public class InfoUI : UI
 {
@@ -43,9 +44,27 @@ public class InfoUI : UI
         mFemaleCount.text = instance.elg_females.ToString();
         mChildCount.text = instance.elg_children.ToString();
         mMaleAge.text = instance.GetMalePopulationAge().ToString("F2");
-        mMaleAge.color = Math.Abs(instance.GetMalePopulationAge() - float.Parse(mMaleAgeGoal.text)) > 0.1f ? Color.red : Color.white;
+        string text = mMaleAgeGoal.text.ToString(CultureInfo.InvariantCulture);
+        float result;
+        if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
+        {
+            mMaleAge.color = Math.Abs(instance.GetMalePopulationAge() - result) > 0.1f ? Color.red : Color.white;
+        }
+        else
+        {
+            Debug.Log("Not a valid number");
+        }
         mMaleRatio.text = instance.GetMaleRatio().ToString("F2");
-        mMaleRatio.color = Math.Abs(instance.GetMaleRatio() - float.Parse(mMaleRatioGoal.text)) > 0.03f ? Color.red : Color.white;
+        text = mMaleRatio.text.ToString(CultureInfo.InvariantCulture);
+        if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
+        {
+            mMaleRatio.color = Math.Abs(instance.GetMaleRatio() - result) > 0.03f ? Color.red : Color.white;
+        }
+        else
+        {
+            Debug.Log("Not a valid number");
+        }
+       
     }
 
     public void UpdateRatioGoal(float ratio)
