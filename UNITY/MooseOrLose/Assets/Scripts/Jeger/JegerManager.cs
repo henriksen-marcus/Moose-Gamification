@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class JegerManager : MonoBehaviour
 {
+
+    public static JegerManager instance;
+
     [Header("Jeger GameObject")]
     public GameObject jeger;
 
@@ -17,6 +21,14 @@ public class JegerManager : MonoBehaviour
     [Header("Array")]
     [SerializeField] List<GameObject> jeger_list;
 
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+    }
 
     private void Start()
     {
@@ -39,6 +51,25 @@ public class JegerManager : MonoBehaviour
     {
         jeger_population--;
         jeger_list.Remove(go);
+    }
+
+
+    public void PauseAgents(bool input)
+    {
+        if (input)
+        {
+            foreach (GameObject go in jeger_list)
+            {
+                go.GetComponent<NavMeshAgent>().isStopped = true;
+            }
+        }
+        else
+        {
+            foreach (GameObject go in jeger_list)
+            {
+                go.GetComponent<NavMeshAgent>().isStopped = false;
+            }
+        }
     }
 
 }
