@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
+    /*// Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(2))
@@ -196,5 +196,5 @@ public class CameraController : MonoBehaviour
         GameObject ib3 = Instantiate(InfoBar, background.transform);
         ib3.GetComponent<TextMeshProUGUI>().text = "Height : " + script.forest_Height.ToString();
 
-    }
+    }*/
 }
