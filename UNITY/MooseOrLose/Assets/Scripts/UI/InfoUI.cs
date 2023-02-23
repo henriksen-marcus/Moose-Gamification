@@ -65,9 +65,10 @@ public class InfoUI : UI
             Debug.Log("Not a valid number");
         }
 
-        if (instance.GetMaleRatio().ToString().Length > 3)
+        string maleratio = instance.GetMaleRatio().ToString();
+        if (maleratio.Length > 4)
         {
-            mMaleRatio.text = instance.GetMaleRatio().ToString().Remove(3, instance.GetMalePopulationAge().ToString().Length - 3);
+            mMaleRatio.text = maleratio.Remove(4, instance.GetMaleRatio().ToString().Length - 4);
         }
         else
         {

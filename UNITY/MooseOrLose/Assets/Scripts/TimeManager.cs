@@ -58,11 +58,13 @@ public class TimeManager : MonoBehaviour
         {
             ElgManager.instance.PauseAgents(true);
             UlvManager.instance.PauseAgents(true);
+            JegerManager.instance.PauseAgents(true);
         }
         else
         {
             ElgManager.instance.PauseAgents(false);
             UlvManager.instance.PauseAgents(false);
+            JegerManager.instance.PauseAgents(false);
         }
     }
 
