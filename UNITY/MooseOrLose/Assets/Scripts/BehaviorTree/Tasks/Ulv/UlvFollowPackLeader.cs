@@ -26,6 +26,13 @@ public class UlvFollowPackLeader : Node
         {
             return NodeState.SUCCESS;
         }
+        if (mScript.leader == null)
+        {
+            mScript.loneWolf();
+            return NodeState.FAILURE;
+        }
+
+
 
         if (mScript.leader.GetComponent<Ulv>().hasTarget)
         {

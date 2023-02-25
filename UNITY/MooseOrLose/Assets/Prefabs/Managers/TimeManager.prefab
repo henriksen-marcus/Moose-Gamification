@@ -47,23 +47,7 @@ MonoBehaviour:
   month: 0
   day: 0
   year: 0
-  startMonth: 1
-  playSpeed: 3
+  startMonth: 6
+  playSpeed: 1
   defaultPlaySpeed: 3
   startPlaySpeed: 0
-  dayUI: {fileID: 0}
-  monthUI: {fileID: 0}
-  yearUI: {fileID: 0}
-  monthNames:
-  - Jan
-  - Feb
-  - Mar
-  - Apr
-  - May
-  - Jun
-  - Jul
-  - Aug
-  - Sep
-  - Oct
-  - Nov
-  - Des

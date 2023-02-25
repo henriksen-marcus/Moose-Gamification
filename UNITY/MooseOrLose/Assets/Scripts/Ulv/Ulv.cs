@@ -148,6 +148,10 @@ public class Ulv : MonoBehaviour
                 }
                 pack[newLeader].GetComponent<Ulv>().isLeader = true;
             }
+            else
+            {
+                UlvManager.instance.DecreaseUlvPacks();
+            }
         }
 
 
@@ -166,6 +170,12 @@ public class Ulv : MonoBehaviour
         }
         UlvManager.instance.RemoveFromList(gameObject);
         Destroy(gameObject);
+    }
+
+    public void loneWolf()
+    {
+        isLeader = true;
+        UlvManager.instance.IncreaseUlvPacks();
     }
 
 
