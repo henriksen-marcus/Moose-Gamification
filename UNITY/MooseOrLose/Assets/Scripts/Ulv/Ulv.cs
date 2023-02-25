@@ -168,6 +168,11 @@ public class Ulv : MonoBehaviour
         Destroy(gameObject);
     }
 
+    public void loneWolf()
+    {
+        isLeader = true;
+    }
+
 
 
 }
