@@ -59,6 +59,20 @@ public class RuleManager : UI, IPointerEnterHandler
             InfoUI.Instance.gameObject.SetActive(false);
         }
     }
+    public void ToggleHuntingSeason()
+    {
+        if (HuntingGoals.Instance.gameObject.activeSelf)
+        {
+            HuntingGoals.Instance.gameObject.SetActive(false);
+            TimeManager.instance.SetGamePaused(false);
+        }
+        else
+        {
+            HuntingGoals.Instance.gameObject.SetActive(true);
+            TimeManager.instance.SetGamePaused(true);
+        }
+    }
+
     private void HuntingSeasonReview()
     {
         if (!HuntingSeason() && _lastMonthWasHuntingSeason)
