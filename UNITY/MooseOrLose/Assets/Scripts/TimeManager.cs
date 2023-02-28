@@ -19,7 +19,7 @@ public class TimeManager : MonoBehaviour
 
     public Season currentSeason { get; private set; }
     
-    private bool gamePaused = false;
+    public bool gamePaused = false;
 
     
     // Start is called before the first frame update
@@ -71,6 +71,7 @@ public class TimeManager : MonoBehaviour
     IEnumerator NextDay()
     {
         yield return new WaitForSeconds(playSpeed);
+
         if (!gamePaused)
         {
             day++;

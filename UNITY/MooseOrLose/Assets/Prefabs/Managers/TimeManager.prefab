@@ -47,7 +47,7 @@ MonoBehaviour:
   month: 0
   day: 0
   year: 0
-  startMonth: 6
+  startMonth: 7
   playSpeed: 1
   defaultPlaySpeed: 3
   startPlaySpeed: 0
