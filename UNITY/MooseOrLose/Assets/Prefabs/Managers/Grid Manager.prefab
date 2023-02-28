@@ -56,7 +56,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4434922882872394511}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -43.06926, y: -63.192772, z: -30.912125}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -79,7 +79,4 @@ MonoBehaviour:
   _widthX: 10
   _widthZ: 10
   _terrainPrefab: {fileID: 2284322481019234212, guid: eb94dfc12c4ca4f4692e7ea3efa39308, type: 3}
-  grassTerrain: {fileID: 0}
-  hillTerrain: {fileID: 0}
-  riverTerrain: {fileID: 0}
   tileParent: {fileID: 4434922881383572142}

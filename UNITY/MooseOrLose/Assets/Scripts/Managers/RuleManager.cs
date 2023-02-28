@@ -40,10 +40,7 @@ public class RuleManager : UI, IPointerEnterHandler
 
     private void Start()
     {
-        Shrink();
         SetHuntingSeasonRange();
-        Debug.Log("Rule shrink");
-        InventoryUI.Instance.OnExpand += Shrink;
         MonthButton.OnMonthButtonChanged += SetHuntingSeasonRange;
         TimeManager.instance.OnNewMonth += HuntingSeasonGoals;
         TimeManager.instance.OnNewMonth += HuntingSeasonReview;
@@ -53,13 +50,13 @@ public class RuleManager : UI, IPointerEnterHandler
     {
         if (HuntingSeason() && !_lastMonthWasHuntingSeason)
         {
+            gameObject.SetActive(true);
             TimeManager.instance.SetGamePaused(true);
             _lastMonthWasHuntingSeason = true;
             HuntingGoals.Instance.gameObject.SetActive(true);
             HuntingGoals.Instance.StartGoalSetting();
             InventoryUI.Instance.gameObject.SetActive(false);
             InfoUI.Instance.gameObject.SetActive(false);
-            gameObject.SetActive(false);
         }
     }
     private void HuntingSeasonReview()

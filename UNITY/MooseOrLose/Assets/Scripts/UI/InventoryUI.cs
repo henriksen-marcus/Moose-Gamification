@@ -20,10 +20,7 @@ public class InventoryUI : UI, IPointerEnterHandler
         _list = new(GetComponentsInChildren<HorizontalLayoutGroup>());
     }
 
-    private void Start()
-    {
-        RuleManager.OnExpand += Shrink;
-    }
+
     
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -32,14 +29,6 @@ public class InventoryUI : UI, IPointerEnterHandler
         OnExpand?.Invoke();
     }
 
-    protected override void Shrink()
-    {
-        base.Shrink();
-        foreach (var hGroup in _list)
-        {
-            hGroup.gameObject.SetActive(false);
-        }
-    }
     protected override void Expand()
     {
         base.Expand();
