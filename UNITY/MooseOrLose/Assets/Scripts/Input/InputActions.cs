@@ -38,12 +38,12 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""MouseDrag"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""2f7125b8-39d3-4f76-b845-78e4358e4fac"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
                     ""interactions"": ""Hold"",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Select"",
@@ -53,6 +53,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press(behavior=1)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ZoomCamera"",
+                    ""type"": ""Value"",
+                    ""id"": ""5e12d09f-b5be-4543-96d4-68ea9af7d66c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -101,9 +110,31 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 },
                 {
+                    ""name"": ""Up"",
+                    ""id"": ""5c6db5f5-f115-45d3-93b9-6320733db10b"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": ""Down"",
                     ""id"": ""a0882baa-d768-4c33-963d-1ac4045930a2"",
                     ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardMove"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Down"",
+                    ""id"": ""e0fc9bc3-12c3-473d-8aec-300f2ce3b469"",
+                    ""path"": ""<Mouse>/scroll/up"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -158,11 +189,22 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""7d0eea21-f9e5-4324-aa67-2ed9840266a0"",
-                    ""path"": ""<Mouse>/press"",
-                    ""interactions"": ""Hold"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""MouseDrag"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5635f3b9-6aac-4c64-82b8-633eb9e3d635"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZoomCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -176,6 +218,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_FlyingCamera_KeyboardMove = m_FlyingCamera.FindAction("KeyboardMove", throwIfNotFound: true);
         m_FlyingCamera_MouseDrag = m_FlyingCamera.FindAction("MouseDrag", throwIfNotFound: true);
         m_FlyingCamera_Select = m_FlyingCamera.FindAction("Select", throwIfNotFound: true);
+        m_FlyingCamera_ZoomCamera = m_FlyingCamera.FindAction("ZoomCamera", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -238,6 +281,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_FlyingCamera_KeyboardMove;
     private readonly InputAction m_FlyingCamera_MouseDrag;
     private readonly InputAction m_FlyingCamera_Select;
+    private readonly InputAction m_FlyingCamera_ZoomCamera;
     public struct FlyingCameraActions
     {
         private @InputActions m_Wrapper;
@@ -245,6 +289,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         public InputAction @KeyboardMove => m_Wrapper.m_FlyingCamera_KeyboardMove;
         public InputAction @MouseDrag => m_Wrapper.m_FlyingCamera_MouseDrag;
         public InputAction @Select => m_Wrapper.m_FlyingCamera_Select;
+        public InputAction @ZoomCamera => m_Wrapper.m_FlyingCamera_ZoomCamera;
         public InputActionMap Get() { return m_Wrapper.m_FlyingCamera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -263,6 +308,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Select.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnSelect;
                 @Select.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnSelect;
                 @Select.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnSelect;
+                @ZoomCamera.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnZoomCamera;
+                @ZoomCamera.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnZoomCamera;
+                @ZoomCamera.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnZoomCamera;
             }
             m_Wrapper.m_FlyingCameraActionsCallbackInterface = instance;
             if (instance != null)
@@ -276,6 +324,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
+                @ZoomCamera.started += instance.OnZoomCamera;
+                @ZoomCamera.performed += instance.OnZoomCamera;
+                @ZoomCamera.canceled += instance.OnZoomCamera;
             }
         }
     }
@@ -285,5 +336,6 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         void OnKeyboardMove(InputAction.CallbackContext context);
         void OnMouseDrag(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnZoomCamera(InputAction.CallbackContext context);
     }
 }

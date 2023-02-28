@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
 {
 
 
+    /*
     public float dragSpeed = 2;
     private Vector3 dragOrigin;
     Camera mainCamera;
@@ -25,7 +26,7 @@ public class CameraController : MonoBehaviour
     }
 
 
-    /*// Update is called once per frame
+    // Update is called once per frame
     void Update()
     {
         if (Input.GetMouseButtonDown(2))

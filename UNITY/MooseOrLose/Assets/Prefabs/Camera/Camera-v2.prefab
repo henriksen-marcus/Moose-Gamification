@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: a0b717d1bab9e1f458e0a6b13f8d7ec7, type: 3}
-  m_NotificationBehavior: 3
+  m_NotificationBehavior: 2
   m_UIInputModule: {fileID: 0}
   m_DeviceLostEvent:
     m_PersistentCalls:
@@ -59,7 +59,23 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d16cd758-e090-4abc-8408-81332ba8d348
+    m_ActionName: FlyingCamera/KeyboardMove[/Keyboard/e,/Keyboard/q,/Keyboard/a,/Keyboard/d,/Keyboard/w,/Keyboard/s]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 2f7125b8-39d3-4f76-b845-78e4358e4fac
+    m_ActionName: FlyingCamera/MouseDrag[/Mouse/press]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 82ea19d8-3e19-45ba-8034-af0ebf6fdd5d
+    m_ActionName: FlyingCamera/Select[/Mouse/press]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5e12d09f-b5be-4543-96d4-68ea9af7d66c
+    m_ActionName: FlyingCamera/ZoomCamera[/Mouse/scroll]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: FlyingCamera
@@ -88,8 +104,8 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
+  near clip plane: 0.2
+  far clip plane: 5000
   field of view: 60
   orthographic: 0
   orthographic size: 5
