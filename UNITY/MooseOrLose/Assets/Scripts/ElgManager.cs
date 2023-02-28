@@ -20,7 +20,13 @@ public class ElgManager : MonoBehaviour
     public int elg_children;
     public int carrying_capacity = 500;
 
-    public List<int> elg_population_graph;
+
+    [HideInInspector] public List<int> elg_population_graph;
+    [HideInInspector] public List<int> elg_males_graph;
+    [HideInInspector] public List<int> elg_females_graph;
+    [HideInInspector] public List<int> elg_children_graph;
+
+
     public float male_population_age;
 
     [Header("Spawning Preferences")]
@@ -102,6 +108,9 @@ public class ElgManager : MonoBehaviour
         }
 
         male_population_age = MalePopulationAge();
+        elg_males_graph.Add(elg_males);
+        elg_females_graph.Add(elg_females);
+        elg_children_graph.Add(elg_children);
         elg_population_graph.Add(elg_population);
         TimeManager.instance.OnNewMonth += NewMonth;
         PopulationChanged();
@@ -207,6 +216,9 @@ public class ElgManager : MonoBehaviour
     void NewMonth()
     {
         elg_population_graph.Add(elg_population);
+        elg_males_graph.Add(elg_males);
+        elg_females_graph.Add(elg_females);
+        elg_children_graph.Add(elg_children);
     }
 
     public void PauseAgents(bool input)
