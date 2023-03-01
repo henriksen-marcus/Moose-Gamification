@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class HuntingGoals : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class HuntingGoals : MonoBehaviour
 
     public static HuntingGoals Instance;
     
+    public List<MonthButton> monthButtons;
     public float ratioGoal = 0.5f;
     public float averageAgeGoal = 1;
     
@@ -22,6 +24,7 @@ public class HuntingGoals : MonoBehaviour
     {
         if (Instance == null)
             Instance = this;
+        monthButtons = new(GetComponentsInChildren<MonthButton>());
     }
 
     private void Start()
