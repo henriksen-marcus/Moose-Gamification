@@ -17,12 +17,12 @@ public class RuleManager : UI, IPointerEnterHandler
 
     [NonSerialized] public int MoosePopMin = 60;
     private int _antlerPointsLimit = 4;
-    private int _dailyMooseLimit = 5;
+    private int _weeklyMooseLimit = 5;
+    // moose per square kilometer
     private int _calfLimit = 1;
     private int _wolfLimit = 30;
     // private bool _huntingSeason = false;
     private bool _lastMonthWasHuntingSeason = false;
-    private List<MonthButton> _monthButtons;
     private List<HorizontalLayoutGroup> _list;
 
 
@@ -34,7 +34,6 @@ public class RuleManager : UI, IPointerEnterHandler
         {
             Instance = this;
         }
-        _monthButtons = new(GetComponentsInChildren<MonthButton>());
         _list = new(GetComponentsInChildren<HorizontalLayoutGroup>());
     }
 
@@ -84,17 +83,17 @@ public class RuleManager : UI, IPointerEnterHandler
     }
     
     //Get values - other classes refer to these
-    public bool CanShootMale(int horns, int shotToday)
+    public bool CanShootMale(int horns, int shotThisWeek)
     {
-        return horns >= _antlerPointsLimit && shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > MoosePopMin && HuntingSeason();
+        return horns >= _antlerPointsLimit && shotThisWeek < _weeklyMooseLimit && ElgManager.instance.elg_population > MoosePopMin && HuntingSeason();
     }
-    public bool CanShootFemale(int children, int shotToday) //always shoot cow last? (children == 0)
+    public bool CanShootFemale(int children, int shotThisWeek) //always shoot cow last? (children == 0)
     {
-        return shotToday < _dailyMooseLimit && ElgManager.instance.elg_population > MoosePopMin && children == 0 && HuntingSeason();
+        return shotThisWeek < _weeklyMooseLimit && ElgManager.instance.elg_population > MoosePopMin && children == 0 && HuntingSeason();
     }
     public bool CanShootChild(int children, int shotToday)
     {
-        return children > _calfLimit && ElgManager.instance.elg_population > MoosePopMin && shotToday < _dailyMooseLimit && HuntingSeason();
+        return children > _calfLimit && ElgManager.instance.elg_population > MoosePopMin && shotToday < _weeklyMooseLimit && HuntingSeason();
     }
     public bool CanShootWolf()
     {
@@ -117,12 +116,12 @@ public class RuleManager : UI, IPointerEnterHandler
     }
     public void SetDailyMooseLimit(string inLimit)
     {
-        int.TryParse(inLimit, out _dailyMooseLimit);
+        int.TryParse(inLimit, out _weeklyMooseLimit);
     }
     private void SetHuntingSeasonRange()
     {
         huntingSeasonRange.Clear();
-        foreach (var monthButton in _monthButtons)
+        foreach (var monthButton in HuntingGoals.Instance.monthButtons)
         {
             if(monthButton.HuntingEnabled())
                 huntingSeasonRange.Add(monthButton.Month());
