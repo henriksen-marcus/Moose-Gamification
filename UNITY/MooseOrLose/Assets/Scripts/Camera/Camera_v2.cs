@@ -63,6 +63,7 @@ public class Camera_v2 : MonoBehaviour
     private bool _waitForVelocity;
     
     public GameObject _gameObjectInfo;
+    ObjectInfo _infoBar;
     //public GameObject InfoBar;
 
     private void OnEnable()
@@ -87,6 +88,7 @@ public class Camera_v2 : MonoBehaviour
         _rotationPoint = GameObject.Find("RotationPoint");
         _cameraSocket = GameObject.Find("CameraSocket");
         _mainCamera = GameObject.Find("Camera").GetComponent<Camera>();
+        _infoBar = _gameObjectInfo.GetComponent<ObjectInfo>(); 
         var camTransform = _mainCamera.transform;
         camTransform.rotation = Quaternion.Euler(45f, 0f, 0f);
         camTransform.position = new Vector3(0f, 150f, -160f);
@@ -183,7 +185,7 @@ public class Camera_v2 : MonoBehaviour
             {
                 // get component clickable object -> get ui info
 
-                //_gameObjectInfo.GetComponent<ObjectInfo>().SpawnInfobar(closestAnimal.GetComponent<ClickableObject>().GetClickInfo());
+                //_infoBar.SpawnInfobar(closestAnimal.GetComponent<ClickableObject>().GetClickInfo());
 
                 // Last step
                 _gameObjectInfo.SetActive(true);
