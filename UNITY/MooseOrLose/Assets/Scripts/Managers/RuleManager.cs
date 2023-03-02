@@ -47,7 +47,7 @@ public class RuleManager : UI, IPointerEnterHandler
 
     private void HuntingSeasonGoals()
     {
-        if (HuntingSeason() && !_lastMonthWasHuntingSeason)
+        if (HuntingSeason() && !_lastMonthWasHuntingSeason && HuntingGoals.Instance.showGoals)
         {
             gameObject.SetActive(true);
             TimeManager.instance.SetGamePaused(true);
@@ -77,7 +77,7 @@ public class RuleManager : UI, IPointerEnterHandler
         if (!HuntingSeason() && _lastMonthWasHuntingSeason)
         {
             //TODO review screen
-
+            // graphs here maybe?
             _lastMonthWasHuntingSeason = false;
         }
     }

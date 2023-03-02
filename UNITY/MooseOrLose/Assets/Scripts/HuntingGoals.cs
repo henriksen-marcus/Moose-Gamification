@@ -17,6 +17,7 @@ public class HuntingGoals : MonoBehaviour
     public List<MonthButton> monthButtons;
     public float ratioGoal = 0.5f;
     public float averageAgeGoal = 1;
+    public bool showGoals = true;
     
     private int _minPop;
 
@@ -41,7 +42,10 @@ public class HuntingGoals : MonoBehaviour
         UpdateExpectedFemales((mooseToShoot * (1 - instance.GetMaleRatio())).ToString("F0"));
         currentHuntingSeason.text = "The current season will last from " + (RuleManager.Month)RuleManager.Instance.huntingSeasonRange.Min() + " to " + (RuleManager.Month)RuleManager.Instance.huntingSeasonRange.Max() + ".";
     }
-
+    public void SetShow(bool show)
+    {
+        showGoals = show;
+    }
     public void EndGoalSetting()
     {
         TimeManager.instance.SetGamePaused(false);
@@ -59,6 +63,11 @@ public class HuntingGoals : MonoBehaviour
     {
         float.TryParse(inString, out averageAgeGoal);
         InfoUI.Instance.UpdateAgeGoal(averageAgeGoal);
+    }
+    public void UpdateSquareKmGoal(string inString)
+    {
+        float.TryParse(inString, out ratioGoal);
+        InfoUI.Instance.UpdateRatioGoal(ratioGoal);
     }
     private void UpdateExpectedMales(string inString)
     {
