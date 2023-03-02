@@ -31,7 +31,16 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""name"": ""KeyboardMove"",
                     ""type"": ""Value"",
                     ""id"": ""d16cd758-e090-4abc-8408-81332ba8d348"",
-                    ""expectedControlType"": ""Vector3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""KeyboardRotate"",
+                    ""type"": ""Value"",
+                    ""id"": ""829820b9-14cd-471c-a7ab-02f98749be98"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -58,7 +67,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""name"": ""ZoomCamera"",
                     ""type"": ""Value"",
                     ""id"": ""5e12d09f-b5be-4543-96d4-68ea9af7d66c"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -77,20 +86,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
-                    ""name"": """",
-                    ""id"": ""e215b346-5c21-4f7f-873e-4aa46300d878"",
-                    ""path"": ""<Gamepad>/buttonSouth"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Select"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
                     ""name"": ""WASD"",
                     ""id"": ""0dd66743-7351-413e-9c3b-23a6b97b1f4c"",
-                    ""path"": ""3DVector"",
+                    ""path"": ""2DVector"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -100,19 +98,8 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Up"",
-                    ""id"": ""8d83229b-3fe9-47b7-a46f-a5543040f36f"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""KeyboardMove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Up"",
-                    ""id"": ""5c6db5f5-f115-45d3-93b9-6320733db10b"",
-                    ""path"": ""<Mouse>/scroll/down"",
+                    ""id"": ""44330b2b-87db-4189-82e3-6626eca989eb"",
+                    ""path"": ""<Keyboard>/w"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -122,19 +109,8 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Down"",
-                    ""id"": ""a0882baa-d768-4c33-963d-1ac4045930a2"",
-                    ""path"": ""<Keyboard>/q"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""KeyboardMove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Down"",
-                    ""id"": ""e0fc9bc3-12c3-473d-8aec-300f2ce3b469"",
-                    ""path"": ""<Mouse>/scroll/up"",
+                    ""id"": ""7be2e6ec-da12-4eed-84df-2c0c98fca3cd"",
+                    ""path"": ""<Keyboard>/s"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -144,7 +120,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Left"",
-                    ""id"": ""44330b2b-87db-4189-82e3-6626eca989eb"",
+                    ""id"": ""2cd7b4ac-d548-45e9-887d-f850fddb37b5"",
                     ""path"": ""<Keyboard>/a"",
                     ""interactions"": """",
                     ""processors"": """",
@@ -155,30 +131,8 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Right"",
-                    ""id"": ""7be2e6ec-da12-4eed-84df-2c0c98fca3cd"",
-                    ""path"": ""<Keyboard>/d"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""KeyboardMove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Forward"",
-                    ""id"": ""2cd7b4ac-d548-45e9-887d-f850fddb37b5"",
-                    ""path"": ""<Keyboard>/w"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""KeyboardMove"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": true
-                },
-                {
-                    ""name"": ""Backward"",
                     ""id"": ""32c082ed-f0f3-4d1d-b8dd-1fd7a207bf3a"",
-                    ""path"": ""<Keyboard>/s"",
+                    ""path"": ""<Keyboard>/d"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -200,13 +154,46 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5635f3b9-6aac-4c64-82b8-633eb9e3d635"",
-                    ""path"": ""<Mouse>/scroll"",
+                    ""path"": ""<Mouse>/scroll/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ZoomCamera"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1DAxis"",
+                    ""id"": ""72e951b0-a31c-4950-8c4c-3b3d855d7b56"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardRotate"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""3fca9ff9-1a23-4933-adde-748283865507"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardRotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""695d5dcb-60d0-40fd-8888-9a3ebbb56dd9"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""KeyboardRotate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         }
@@ -216,6 +203,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         // FlyingCamera
         m_FlyingCamera = asset.FindActionMap("FlyingCamera", throwIfNotFound: true);
         m_FlyingCamera_KeyboardMove = m_FlyingCamera.FindAction("KeyboardMove", throwIfNotFound: true);
+        m_FlyingCamera_KeyboardRotate = m_FlyingCamera.FindAction("KeyboardRotate", throwIfNotFound: true);
         m_FlyingCamera_MouseDrag = m_FlyingCamera.FindAction("MouseDrag", throwIfNotFound: true);
         m_FlyingCamera_Select = m_FlyingCamera.FindAction("Select", throwIfNotFound: true);
         m_FlyingCamera_ZoomCamera = m_FlyingCamera.FindAction("ZoomCamera", throwIfNotFound: true);
@@ -279,6 +267,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_FlyingCamera;
     private IFlyingCameraActions m_FlyingCameraActionsCallbackInterface;
     private readonly InputAction m_FlyingCamera_KeyboardMove;
+    private readonly InputAction m_FlyingCamera_KeyboardRotate;
     private readonly InputAction m_FlyingCamera_MouseDrag;
     private readonly InputAction m_FlyingCamera_Select;
     private readonly InputAction m_FlyingCamera_ZoomCamera;
@@ -287,6 +276,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         private @InputActions m_Wrapper;
         public FlyingCameraActions(@InputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @KeyboardMove => m_Wrapper.m_FlyingCamera_KeyboardMove;
+        public InputAction @KeyboardRotate => m_Wrapper.m_FlyingCamera_KeyboardRotate;
         public InputAction @MouseDrag => m_Wrapper.m_FlyingCamera_MouseDrag;
         public InputAction @Select => m_Wrapper.m_FlyingCamera_Select;
         public InputAction @ZoomCamera => m_Wrapper.m_FlyingCamera_ZoomCamera;
@@ -302,6 +292,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @KeyboardMove.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnKeyboardMove;
                 @KeyboardMove.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnKeyboardMove;
                 @KeyboardMove.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnKeyboardMove;
+                @KeyboardRotate.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnKeyboardRotate;
+                @KeyboardRotate.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnKeyboardRotate;
+                @KeyboardRotate.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnKeyboardRotate;
                 @MouseDrag.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnMouseDrag;
                 @MouseDrag.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnMouseDrag;
                 @MouseDrag.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnMouseDrag;
@@ -318,6 +311,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @KeyboardMove.started += instance.OnKeyboardMove;
                 @KeyboardMove.performed += instance.OnKeyboardMove;
                 @KeyboardMove.canceled += instance.OnKeyboardMove;
+                @KeyboardRotate.started += instance.OnKeyboardRotate;
+                @KeyboardRotate.performed += instance.OnKeyboardRotate;
+                @KeyboardRotate.canceled += instance.OnKeyboardRotate;
                 @MouseDrag.started += instance.OnMouseDrag;
                 @MouseDrag.performed += instance.OnMouseDrag;
                 @MouseDrag.canceled += instance.OnMouseDrag;
@@ -334,6 +330,7 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     public interface IFlyingCameraActions
     {
         void OnKeyboardMove(InputAction.CallbackContext context);
+        void OnKeyboardRotate(InputAction.CallbackContext context);
         void OnMouseDrag(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
         void OnZoomCamera(InputAction.CallbackContext context);
