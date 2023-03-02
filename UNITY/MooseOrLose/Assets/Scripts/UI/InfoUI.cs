@@ -63,7 +63,7 @@ public class InfoUI : UI
         }
         else
         {
-            Debug.Log("Not a valid number");
+            // Debug.Log("Not a valid number");
         }
 
         text = instance.GetMaleRatio().ToString();
@@ -83,7 +83,7 @@ public class InfoUI : UI
         }
         else
         {
-            Debug.Log("Not a valid number");
+            // Debug.Log("Not a valid number");
         }
         
         // mSquareKm.text = total moose shot by hunters / 15;
@@ -101,7 +101,7 @@ public class InfoUI : UI
 
     public void UpdateSquareKmGoal(float km)
     {
-        mSquareKmGoal.text = km.ToString("F1");
+        mSquareKmGoal.text = km.ToString("F2");
     }
     public void ToggleGrid()
     {
