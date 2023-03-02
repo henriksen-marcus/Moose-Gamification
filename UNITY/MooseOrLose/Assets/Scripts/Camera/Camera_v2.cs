@@ -162,6 +162,9 @@ public class Camera_v2 : MonoBehaviour
             mousePos.z = _mainCamera.transform.position.y; // set z-coordinate to camera height
             var mouseWorldPos = _mainCamera.ScreenToWorldPoint(mousePos);
             
+
+            // Raycast from mouseworldpos towards the ground
+
             var hits = Physics.OverlapSphere(mouseWorldPos, 20f);
             
             var minDistance = float.MaxValue;
@@ -174,12 +177,14 @@ public class Camera_v2 : MonoBehaviour
                 }
             }
 
+
+            // closesAnimal now is always null
             if (closestAnimal != null)
             {
                 // get component clickable object -> get ui info
-                
-                
-                
+
+                //_gameObjectInfo.GetComponent<ObjectInfo>().SpawnInfobar(closestAnimal.GetComponent<ClickableObject>().GetClickInfo());
+
                 // Last step
                 _gameObjectInfo.SetActive(true);
             }
