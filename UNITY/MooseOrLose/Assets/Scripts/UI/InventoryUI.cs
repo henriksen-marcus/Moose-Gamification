@@ -8,18 +8,19 @@ using UnityEngine.UI;
 
 public class InventoryUI : UI, IPointerEnterHandler
 {
+    public static InventoryUI Instance;
+    
     private List<HorizontalLayoutGroup> _list;
-    public static event Action OnExpand;
+    public event Action OnExpand;
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
         _list = new(GetComponentsInChildren<HorizontalLayoutGroup>());
     }
 
-    private void Start()
-    {
-        RuleManager.OnExpand += Shrink;
-    }
+
     
     public void OnPointerEnter(PointerEventData eventData)
     {
@@ -28,14 +29,6 @@ public class InventoryUI : UI, IPointerEnterHandler
         OnExpand?.Invoke();
     }
 
-    protected override void Shrink()
-    {
-        base.Shrink();
-        foreach (var hGroup in _list)
-        {
-            hGroup.gameObject.SetActive(false);
-        }
-    }
     protected override void Expand()
     {
         base.Expand();

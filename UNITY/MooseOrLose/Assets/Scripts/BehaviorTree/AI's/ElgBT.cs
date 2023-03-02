@@ -10,7 +10,11 @@ public class ElgBT : BehaviorTrees.BehaviorTree
         Node root = new Selector(new List<Node>
         {
             // List of Nodes
-            
+            new Sequence(new List<Node>{
+                new ElgMatingSeason(GetComponent<Elg>()),
+                new ElgFindPartner(transform, 35),
+                new ElgGoToPartner(GetComponent<NavMeshAgent>(), GetComponent<Elg>())
+            }),
             new Sequence(new List<Node>{ 
                 new ElgCheckForUlv(transform),
                 new ElgRunAway(GetComponent<NavMeshAgent>(), transform)

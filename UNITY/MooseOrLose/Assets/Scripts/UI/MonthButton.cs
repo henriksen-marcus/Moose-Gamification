@@ -10,7 +10,7 @@ public class MonthButton : MonoBehaviour, IPointerDownHandler
     [SerializeField] private Image _image;
     [SerializeField] private int month;
     
-    private bool _huntingEnabled = false;
+    [SerializeField] private bool huntingEnabled = false;
     // private IPointerDownHandler _pointerDownHandlerImplementation;
 
     public static event Action OnMonthButtonChanged;
@@ -21,16 +21,22 @@ public class MonthButton : MonoBehaviour, IPointerDownHandler
         _image = GetComponent<Image>();
     }
 
+    private void Start()
+    {
+        if (huntingEnabled)
+            _image.color = Color.green;
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
-        _huntingEnabled = !_huntingEnabled;
-        _image.color = !_huntingEnabled ? Color.white : Color.green;
+        huntingEnabled = !huntingEnabled;
+        _image.color = !huntingEnabled ? Color.white : Color.green;
         OnMonthButtonChanged?.Invoke();
     }
 
     public bool HuntingEnabled()
     {
-        return _huntingEnabled;
+        return huntingEnabled;
     }
 
     public int Month()

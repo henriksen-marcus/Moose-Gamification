@@ -20,7 +20,13 @@ public class ElgManager : MonoBehaviour
     public int elg_children;
     public int carrying_capacity = 500;
 
-    public List<int> elg_population_graph;
+
+    [HideInInspector] public List<int> elg_population_graph;
+    [HideInInspector] public List<int> elg_males_graph;
+    [HideInInspector] public List<int> elg_females_graph;
+    [HideInInspector] public List<int> elg_children_graph;
+
+
     public float male_population_age;
 
     [Header("Spawning Preferences")]
@@ -28,10 +34,6 @@ public class ElgManager : MonoBehaviour
 
 
     public GameObject ElgPrefab;
-    [SerializeField] public TextMeshProUGUI populationUI;
-    [SerializeField] public TextMeshProUGUI malesUI;
-    [SerializeField] public TextMeshProUGUI femalesUI;
-    [SerializeField] public TextMeshProUGUI childrenUI;
 
 
     [Header("List of Spawned GameObjects")]
@@ -49,11 +51,6 @@ public class ElgManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject Canvas = GameObject.Find("UI_Canvas");
-        populationUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Population").GetComponent<TextMeshProUGUI>();
-        malesUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Male").GetComponent<TextMeshProUGUI>();
-        femalesUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Female").GetComponent<TextMeshProUGUI>();
-        childrenUI = Canvas.transform.Find("ElgPopulation").transform.Find("Background").transform.Find("Children").GetComponent<TextMeshProUGUI>();
 
         elg_children = 0;
 
@@ -110,25 +107,13 @@ public class ElgManager : MonoBehaviour
 
         }
 
-        PopulationChanged();
         male_population_age = MalePopulationAge();
+        elg_males_graph.Add(elg_males);
+        elg_females_graph.Add(elg_females);
+        elg_children_graph.Add(elg_children);
         elg_population_graph.Add(elg_population);
         TimeManager.instance.OnNewMonth += NewMonth;
-    }
-
-    private void Update()
-    {
-        if (populationUI != null)
-            populationUI.SetText(elg_population.ToString());
-
-        if (malesUI != null)
-            malesUI.SetText(elg_males.ToString());
-
-        if (femalesUI != null)
-            femalesUI.SetText(elg_females.ToString());
-
-        if (childrenUI != null)
-            childrenUI.SetText(elg_children.ToString());
+        PopulationChanged();
     }
 
     public void MaleBorn()
@@ -169,16 +154,16 @@ public class ElgManager : MonoBehaviour
 
     public void AddToList(GameObject go)
     {
-        PopulationChanged();
-        elg_population++;
         elg_list.Add(go);
+        elg_population++;
+        PopulationChanged();
     }
 
     public void RemoveFromList(GameObject go)
     {
-        PopulationChanged();
-        elg_population--;
         elg_list.Remove(go);
+        elg_population--;
+        PopulationChanged();
     }
 
 
@@ -223,9 +208,34 @@ public class ElgManager : MonoBehaviour
         return (1 - (((float)elg_population / (float)carrying_capacity) * ((float)elg_population / (float)carrying_capacity))) * 100;
     }
 
-
+    public float GetMaleRatio()
+    {
+        return (float)elg_males / (float)elg_population;
+    }
+    
     void NewMonth()
     {
         elg_population_graph.Add(elg_population);
+        elg_males_graph.Add(elg_males);
+        elg_females_graph.Add(elg_females);
+        elg_children_graph.Add(elg_children);
+    }
+
+    public void PauseAgents(bool input)
+    {
+        if (input)
+        {
+            foreach(GameObject go in elg_list)
+            {
+                go.GetComponent<NavMeshAgent>().isStopped = true;
+            }
+        }
+        else
+        {
+            foreach (GameObject go in elg_list)
+            {
+                go.GetComponent<NavMeshAgent>().isStopped = false;
+            }
+        }
     }
 }

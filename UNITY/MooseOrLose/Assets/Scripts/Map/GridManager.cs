@@ -8,9 +8,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] private int _widthX, _widthZ;
     
     [SerializeField] private Terrain _terrainPrefab;
-    [SerializeField] private Terrain grassTerrain;
-    [SerializeField] private Terrain hillTerrain;
-    [SerializeField] private Terrain riverTerrain;
+    // [SerializeField] private Terrain grassTerrain;
+    // [SerializeField] private Terrain hillTerrain;
+    // [SerializeField] private Terrain riverTerrain;
     [SerializeField] private GameObject tileParent;
     
     // [SerializeField] private Transform _mapMesh;

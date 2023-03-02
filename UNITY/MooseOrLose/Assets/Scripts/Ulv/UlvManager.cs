@@ -10,6 +10,7 @@ public class UlvManager : MonoBehaviour
     static public UlvManager instance;
     [Header("Stats")]
     public int ulv_population;
+    public int ulv_packs;
     public int ulv_males;
     public int ulv_females;
     public int ulv_children;
@@ -75,6 +76,7 @@ public class UlvManager : MonoBehaviour
 
 
         }
+        ulv_packs = numberOfPacks;
     }
 
     public void SpawnPack(int size, Vector3 position)
@@ -114,6 +116,7 @@ public class UlvManager : MonoBehaviour
                 }
                 pack[j].GetComponent<Ulv>().pack = pack;
             }
+            ulv_packs++;
     }
     public void MaleBorn()
     {
@@ -184,5 +187,39 @@ public class UlvManager : MonoBehaviour
         {
             OnUlvPopulationChanged();
         }
+    }
+
+    public void PauseAgents(bool input)
+    {
+        if (input)
+        {
+            foreach (List<GameObject> go in ulv_list)
+            {
+                foreach (GameObject go2 in go)
+                {
+                    go2.GetComponent<NavMeshAgent>().isStopped = true;
+                }
+            }
+        }
+        else
+        {
+            foreach (List<GameObject> go in ulv_list)
+            {
+                foreach(GameObject go2 in go)
+                {
+                    go2.GetComponent<NavMeshAgent>().isStopped = false;
+                }
+            }
+        }
+    }
+
+    public void IncreaseUlvPacks()
+    {
+        ulv_packs++;
+    }
+
+    public void DecreaseUlvPacks()
+    {
+        ulv_packs--;
     }
 }

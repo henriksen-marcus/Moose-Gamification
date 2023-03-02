@@ -30,7 +30,6 @@ public class Elg : MonoBehaviour
     public int antler_tag_number;
 
     public float hunger;
-    private int daysHungry;
     public ElgState AIstate;
 
 
@@ -57,14 +56,17 @@ public class Elg : MonoBehaviour
     private GameObject Antlers;
     private bool antlersSpawned = false;
     private bool bigAntlersSpawned = false;
-    private bool antlersFelled = false;
+    private bool dead = false;
+    [HideInInspector]
+    public bool hasPartner;
+    public bool hasMated;
 
     void Awake()
     {
+        // set default values
         AIstate = ElgState.Walking;
         hasGrown = true;
         hunger = 100;
-        daysHungry = 0;
         Antlers = transform.Find("Antlers").gameObject;
         number_of_children = 0;
 
@@ -90,6 +92,9 @@ public class Elg : MonoBehaviour
         pregnant = false;
         childrenInBelly = 0;
         daysPregnant = 0;
+        hasPartner = false;
+        hasMated = false;
+
     }
 
 
@@ -99,7 +104,7 @@ public class Elg : MonoBehaviour
         TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
-        StartCoroutine(NextDay());
+        TimeManager.instance.OnNewDay += NextDay;
     }
 
     public void SpawnPregnant()
@@ -127,30 +132,32 @@ public class Elg : MonoBehaviour
         }
     }
 
-    public IEnumerator NextDay()
+    public void NextDay()
     {
-        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
-        age_days++;
-        if (pregnant)
+        if (!dead)
         {
-            daysPregnant++;
-            if (daysPregnant > 240)
+            age_days++;
+            if (pregnant)
             {
-                daysPregnant = 0;
-                BirthChildren();
+                daysPregnant++;
+                if (daysPregnant > 240)
+                {
+                    daysPregnant = 0;
+                    BirthChildren();
+                }
             }
-        }
 
 
-        if (age_days > 29)
-        {
-            age_days = 0;
-            NextMonth();
+            if (age_days > 29)
+            {
+                age_days = 0;
+                NextMonth();
+            }
+            NaturalHungerDrain();
+            CalculateNewSize();
         }
-        NaturalHungerDrain();
-        CalculateNewSize();
+
         
-        StartCoroutine(NextDay());
     }
 
     public void NextMonth()
@@ -160,16 +167,6 @@ public class Elg : MonoBehaviour
         {
             age_months = 0;
             NextYear();
-        }
-
-        CalculateNewSize();
-
-        if (gender == Gender.Female && age_years > 1)
-        {
-            if (TimeManager.instance.MatingSeason())
-            {
-                Pregnate();
-            }
         }
 
         if (age_months > 9 && age_years < 1)
@@ -192,10 +189,10 @@ public class Elg : MonoBehaviour
     {
         if (age_years > 15)
         {
-            int random = Random.Range(age_years, 25);
+            int random = Random.Range(age_years, 26);
             if (random == 25)
             {
-                Debug.Log("Natural Death");
+
                 Die();
             }
         }
@@ -203,26 +200,33 @@ public class Elg : MonoBehaviour
 
     public void Die()
     {
-        if (gender == Gender.Male)
+        if (!dead)
         {
-            ElgManager.instance.MaleDie();
-        }
-        else
-        {
-            ElgManager.instance.FemaleDie();
+            dead = true;
+            if (gender == Gender.Male)
+            {
+                ElgManager.instance.MaleDie();
+            }
+            else
+            {
+                ElgManager.instance.FemaleDie();
+            }
+
+            if (age_months < 9 && age_years < 1)
+            {
+                if (mother != null)
+                    if (mother.GetComponent<Elg>() != null)
+                        mother.GetComponent<Elg>().number_of_children--;
+
+
+                ElgManager.instance.ChildrenDie();
+            }
+            ElgManager.instance.RemoveFromList(gameObject);
+            Destroy(gameObject);
+
+
         }
 
-        if (age_months < 9 && age_years < 1)
-        {
-            if (mother != null)
-                if (mother.GetComponent<Elg>() != null)
-                    mother.GetComponent<Elg>().number_of_children--;
-
-
-            ElgManager.instance.ChildrenDie();
-        }
-        ElgManager.instance.RemoveFromList(gameObject);
-        Destroy(gameObject);
     }
 
 
@@ -238,7 +242,7 @@ public class Elg : MonoBehaviour
             weight *= 0.85f;
         }
 
-        transform.localScale = new Vector3(0.3f + (weight / 600f), 0.3f + (weight / 600f), 0.3f + (weight / 600f)) ;
+        transform.localScale = new Vector3(0.3f + (weight / 600f), 0.3f + (weight / 600f), 0.3f + (weight / 600f));
     
 
         CalculateAntlerTags();
@@ -262,18 +266,20 @@ public class Elg : MonoBehaviour
         CalculateNewSize();
     }
 
-    void Pregnate()
+    public void pregnate(Elg father)
     {
-        if (age_years >= 2)
-        {
-            if (!pregnant)
-            {
-                childrenInBelly = GetNumberOfChildren();
-                if (childrenInBelly > 0)
-                    pregnant = true;         
-            }
 
+        if (!pregnant)
+        {
+            childrenInBelly = GetNumberOfChildren(father.GetAge());
+            if (childrenInBelly > 0)
+            {
+                pregnant = true;         
+            }
+            hasMated = true;
         }
+
+        
     }
 
     void BirthChildren()
@@ -334,22 +340,50 @@ public class Elg : MonoBehaviour
         return 1;
     }
 
+
+    public int GetNumberOfChildren(float fatherAge)
+    {
+        int num = Random.Range(0, (int)ElgManager.instance.GetPopulationGrowthRate());
+
+        float noChildren = GetChanceOfNoChildren(fatherAge);
+        // low rate
+        if (age_years < 6)
+        {
+            if (num < noChildren)
+            {
+                return 0;
+            }
+            if (num > 85)
+            {
+                return 2;
+            }
+
+        }
+        // high rate
+        if (age_years >= 6 && age_years < 16)
+        {
+            if (num < noChildren - 10)
+            {
+                return 0;
+            }
+            if (num > 80)
+            {
+                return 2;
+            }
+
+        }
+
+        // No children
+        if (age_years > 15)
+        {
+            return 0;
+        }
+
+        return 1;
+    }
+
     void NaturalHungerDrain()
     {
-
-        if (hunger == 0)
-        {
-            daysHungry++;
-            if (daysHungry < 1)
-            {
-                ChanceToStarve();
-            }
-        }
-        else
-        {
-            daysHungry = 0;
-        }
-
 
         switch (TimeManager.instance.GetMonth())
         {
@@ -498,30 +532,5 @@ public class Elg : MonoBehaviour
     public int NumberOfAntlerTags()
     {
         return antler_tag_number;
-    }
-
-    void ChanceToStarve()
-    {
-        int random = Random.Range(0, 100);
-        int extra = 10 * (daysHungry - 1);
-        if (age_years < 1)
-        {
-            if (random + extra > 95)
-            {
-                Debug.Log("Starved");
-                Die();
-            }
-        }
-        else
-        {
-            if (random + extra > 98)
-            {
-                Debug.Log("Starved");
-                Die();
-
-            }
-        }
-
-
     }
 }

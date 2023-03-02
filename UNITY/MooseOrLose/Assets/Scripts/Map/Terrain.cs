@@ -65,7 +65,7 @@ public class Terrain : MonoBehaviour, IDropHandler
 
     private void OnMouseEnter()
     {
-        if (InfoUI.GridOn)
+        if (InfoUI.Instance.gridOn)
            highlight.SetActive(true);
     }
     private void OnMouseExit()
@@ -75,7 +75,7 @@ public class Terrain : MonoBehaviour, IDropHandler
     }
     private void OnMouseDown()
     {
-        if (InfoUI.GridOn)
+        if (InfoUI.Instance.gridOn)
             menu.SetActive(!menu.activeSelf);
     }
 

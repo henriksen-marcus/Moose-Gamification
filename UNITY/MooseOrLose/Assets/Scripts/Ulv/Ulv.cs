@@ -23,7 +23,6 @@ public class Ulv : MonoBehaviour
     public int natural_size;
     public int natural_mature_age;
 
-    bool hasBirthed;
     bool hasGrown;
 
     public bool isLeader;
@@ -33,11 +32,10 @@ public class Ulv : MonoBehaviour
     void Awake()
     {
         isLeader = false;
-        hasBirthed = false;
         hasGrown = true;
         hasTarget = false;
 
-        age_years = Random.Range(2, 12) + Random.Range(0, 12);
+        age_years = Random.Range(2, 21);
         age_months = Random.Range(0, 12);
         age_days = Random.Range(0, 30);
         if (Random.Range(0, 2) == 0)
@@ -63,23 +61,22 @@ public class Ulv : MonoBehaviour
     void Start()
     {
         hunger = 100;
-        StartCoroutine(NaturalHungerDrain());
-        StartCoroutine(NextDay());
-        TimeManager.instance.OnNewYear += NewYearTM;
+        TimeManager.instance.OnNewDay += NextDay;
+        TimeManager.instance.OnNewDay += NaturalHungerDrain;
     }
 
     // Update is called once per frame
-    IEnumerator NaturalHungerDrain()
+    void NaturalHungerDrain()
     {
-        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
+
         hunger -= Random.Range(8,15);
         hunger = Mathf.Clamp(hunger, 0, 100);
-        StartCoroutine(NaturalHungerDrain());
+
     }
 
-    public IEnumerator NextDay()
-    {
-        yield return new WaitForSeconds(TimeManager.instance.playSpeed);
+    public void NextDay()
+    { 
+
         age_days++;
         if (age_days > 29)
         {
@@ -88,7 +85,6 @@ public class Ulv : MonoBehaviour
         }
         CalculateNewSize();
         
-        StartCoroutine(NextDay());
     }
     public void NextMonth()
     {
@@ -97,9 +93,9 @@ public class Ulv : MonoBehaviour
         {
             age_months = 0;
             NextYear();
-            return;
+            
         }
-        CalculateNewSize();
+        
     }
 
     public void NextYear()
@@ -110,7 +106,6 @@ public class Ulv : MonoBehaviour
             hasGrown = true;
             UlvManager.instance.ChildrenGrowUp();
         }
-        CalculateNewSize();
         NaturalDeath();
     }
 
@@ -129,7 +124,7 @@ public class Ulv : MonoBehaviour
     {
         if (age_years > 15)
         {
-            int random = Random.Range(age_years, 25);
+            int random = Random.Range(age_years, 26);
             if (random == 25)
             {
                 Die();
@@ -153,6 +148,10 @@ public class Ulv : MonoBehaviour
                 }
                 pack[newLeader].GetComponent<Ulv>().isLeader = true;
             }
+            else
+            {
+                UlvManager.instance.DecreaseUlvPacks();
+            }
         }
 
 
@@ -173,9 +172,12 @@ public class Ulv : MonoBehaviour
         Destroy(gameObject);
     }
 
-
-    void NewYearTM()
+    public void loneWolf()
     {
-        hasBirthed = false;
+        isLeader = true;
+        UlvManager.instance.IncreaseUlvPacks();
     }
+
+
+
 }
