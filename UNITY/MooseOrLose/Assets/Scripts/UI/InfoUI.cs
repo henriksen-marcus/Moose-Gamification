@@ -9,7 +9,7 @@ public class InfoUI : UI
 {
     public static InfoUI Instance;
     
-    public bool gridOn = true;
+    public bool gridOn = false;
     [Header("Moose")]
     [SerializeField] private TextMeshProUGUI mooseCount;
     [SerializeField] private TextMeshProUGUI mMaleCount;
@@ -19,6 +19,8 @@ public class InfoUI : UI
     [SerializeField] private TextMeshProUGUI mMaleRatioGoal;
     [SerializeField] private TextMeshProUGUI mMaleAge;
     [SerializeField] private TextMeshProUGUI mMaleAgeGoal;
+    [SerializeField] private TextMeshProUGUI mSquareKm;
+    [SerializeField] private TextMeshProUGUI mSquareKmGoal;
     [Header("Hunters")]
     [SerializeField] private TextMeshProUGUI hunterCount;
     [Header("Wolves")]
@@ -26,7 +28,7 @@ public class InfoUI : UI
 
     private void Start()
     {
-        ElgManager.instance.OnPopulationChanged += UpdateCount/*Agent.Moose*/;
+        ElgManager.instance.OnPopulationChanged += UpdateCount;
         // TODO bind JegerManager and UlvManager events to functions to update text
     }
 
@@ -55,8 +57,7 @@ public class InfoUI : UI
         }
         
         string text = mMaleAgeGoal.text.ToString(CultureInfo.InvariantCulture);
-        float result;
-        if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
+        if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out float result))
         {
             mMaleAge.color = Math.Abs(instance.GetMalePopulationAge() - result) > 0.1f ? Color.red : Color.white;
         }
@@ -65,10 +66,10 @@ public class InfoUI : UI
             Debug.Log("Not a valid number");
         }
 
-        string maleratio = instance.GetMaleRatio().ToString();
-        if (maleratio.Length > 4)
+        text = instance.GetMaleRatio().ToString();
+        if (text.Length > 4)
         {
-            mMaleRatio.text = maleratio.Remove(4, instance.GetMaleRatio().ToString().Length - 4);
+            mMaleRatio.text = text.Remove(4, instance.GetMaleRatio().ToString().Length - 4);
         }
         else
         {
@@ -84,7 +85,8 @@ public class InfoUI : UI
         {
             Debug.Log("Not a valid number");
         }
-       
+        
+        // mSquareKm.text = total moose shot by hunters / 15;
     }
 
     public void UpdateRatioGoal(float ratio)
@@ -96,7 +98,11 @@ public class InfoUI : UI
     {
         mMaleAgeGoal.text = age.ToString("F2");
     }
-    
+
+    public void UpdateSquareKmGoal(float km)
+    {
+        mSquareKmGoal.text = km.ToString("F1");
+    }
     public void ToggleGrid()
     {
         gridOn = !gridOn;
