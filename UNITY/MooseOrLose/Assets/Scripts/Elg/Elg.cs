@@ -22,7 +22,29 @@ public class Elg : ClickableObject
     /* Needs to be implemented */
     public override ClickableObjectInfo GetClickInfo()
     {
-        return new ClickableObjectInfo();
+        ClickableObjectInfo returnObject = new ClickableObjectInfo();
+        returnObject.type = ClickableObjectInfo.ObjectType.Moose;
+        returnObject.age_years = age_years;
+        returnObject.age_months = age_months;
+        returnObject.age_years = age_years;
+        returnObject.weight = (int)weight;
+
+        returnObject.gender = gender;
+        switch(gender)
+        {
+            case Gender.Male:
+                returnObject.antler_tags = antler_tag_number;
+                break;
+            case Gender.Female:
+                returnObject.pregnant = pregnant;
+                returnObject.days_pregnant = daysPregnant;
+                returnObject.children_in_belly = childrenInBelly;
+                break;
+            default:
+                break;
+        }
+
+        return returnObject;
     }
 
     [Header("Statistics")]

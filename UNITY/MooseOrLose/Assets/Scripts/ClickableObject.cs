@@ -4,7 +4,26 @@ using UnityEngine;
 
 public struct ClickableObjectInfo
 {
-    
+    public enum ObjectType
+    {
+        Moose,
+        Wolf,
+        Forest
+    }
+
+    public ObjectType type;
+
+    public int age_years;
+    public int age_months;
+    public int age_days;
+    public int weight;
+
+    public Gender gender;
+    public int antler_tags;
+    public bool pregnant;
+    public int days_pregnant;
+    public int children_in_belly;
+
 }
 
 /* Base class for all visible objects in
