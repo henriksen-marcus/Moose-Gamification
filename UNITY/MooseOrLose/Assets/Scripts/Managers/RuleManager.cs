@@ -43,6 +43,8 @@ public class RuleManager : UI, IPointerEnterHandler
         MonthButton.OnMonthButtonChanged += SetHuntingSeasonRange;
         TimeManager.instance.OnNewMonth += HuntingSeasonGoals;
         TimeManager.instance.OnNewMonth += HuntingSeasonReview;
+
+        HuntingSeasonGoals();
     }
 
     private void HuntingSeasonGoals()
@@ -53,11 +55,12 @@ public class RuleManager : UI, IPointerEnterHandler
             TimeManager.instance.SetGamePaused(true);
             _lastMonthWasHuntingSeason = true;
             HuntingGoals.Instance.gameObject.SetActive(true);
-            HuntingGoals.Instance.StartGoalSetting();
+            HuntingGoals.Instance.UpdateGoalScreen();
             InventoryUI.Instance.gameObject.SetActive(false);
-            InfoUI.Instance.gameObject.SetActive(false);
+            // InfoUI.Instance.gameObject.SetActive(false);
         }
     }
+    
     public void ToggleHuntingSeason()
     {
         if (HuntingGoals.Instance.gameObject.activeSelf)
@@ -68,17 +71,21 @@ public class RuleManager : UI, IPointerEnterHandler
         else
         {
             HuntingGoals.Instance.gameObject.SetActive(true);
+            HuntingGoals.Instance.UpdateGoalScreen();
             TimeManager.instance.SetGamePaused(true);
         }
     }
 
     private void HuntingSeasonReview()
     {
-        if (!HuntingSeason() && _lastMonthWasHuntingSeason)
+        // Debug.Log(HuntingSeason() + _lastMonthWasHuntingSeason.ToString() + StatisticsUI.Instance.showStatistics);
+        if (!HuntingSeason() && _lastMonthWasHuntingSeason && StatisticsUI.Instance.showStatistics)
         {
-            //TODO review screen
-            // graphs here maybe?
+            StatisticsUI.Instance.gameObject.SetActive(true);
+            StatisticsUI.Instance.UpdateGraph();
+            TimeManager.instance.SetGamePaused(true);
             _lastMonthWasHuntingSeason = false;
+            // Debug.Log("Hunting season review");
         }
     }
     
@@ -139,9 +146,9 @@ public class RuleManager : UI, IPointerEnterHandler
     //UI functionality
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Expand();
-        Debug.Log("Rule expand");
-        OnExpand?.Invoke();
+        // Expand();
+        // Debug.Log("Rule expand");
+        // OnExpand?.Invoke();
     }
     protected override void Shrink()
     {

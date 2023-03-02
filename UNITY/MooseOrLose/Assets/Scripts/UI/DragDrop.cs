@@ -17,7 +17,12 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         // _rectTransform = GetComponent<RectTransform>();
         // _canvasGroup = GetComponent<CanvasGroup>();
     }
-    
+
+    private void Start()
+    {
+        InfoUI.Instance.gridOn = false;
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("On Pointer down");
