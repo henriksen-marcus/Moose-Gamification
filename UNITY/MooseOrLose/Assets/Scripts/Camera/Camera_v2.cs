@@ -158,6 +158,31 @@ public class Camera_v2 : MonoBehaviour
         if (!_hasUsedMouseDrag)
         {
             // Raycast for info bar when clicking on objects
+            Vector3 mousePos = Mouse.current.position.ReadValue();
+            mousePos.z = _mainCamera.transform.position.y; // set z-coordinate to camera height
+            var mouseWorldPos = _mainCamera.ScreenToWorldPoint(mousePos);
+            
+            var hits = Physics.OverlapSphere(mouseWorldPos, 20f);
+            
+            var minDistance = float.MaxValue;
+            GameObject closestAnimal = null;
+            foreach (var hit in hits) {
+                var distance = Vector3.Distance(mouseWorldPos, hit.transform.position);
+                if (distance < minDistance) {
+                    minDistance = distance;
+                    closestAnimal = hit.gameObject;
+                }
+            }
+
+            if (closestAnimal != null)
+            {
+                // get component clickable object -> get ui info
+                
+                
+                
+                // Last step
+                _gameObjectInfo.SetActive(true);
+            }
             
         }
 

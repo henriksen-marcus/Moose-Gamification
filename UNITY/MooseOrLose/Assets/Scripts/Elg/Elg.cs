@@ -17,10 +17,13 @@ public enum ElgState
 }
 
 
-public class Elg : MonoBehaviour
+public class Elg : ClickableObject
 {
-
-    
+    /* Needs to be implemented */
+    public override ClickableObjectInfo GetClickInfo()
+    {
+        return new ClickableObjectInfo();
+    }
 
     [Header("Statistics")]
     public int age_days;
