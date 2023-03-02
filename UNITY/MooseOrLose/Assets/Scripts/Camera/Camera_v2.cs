@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Newtonsoft.Json.Serialization;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,7 +13,7 @@ public class Camera_v2 : MonoBehaviour
     
     private float _acceleration = 0.1f;
     private float _maxKeyboardVelocity = 1f;
-    private float _maxMouseVelocity = 10f;
+    private float _maxMouseVelocity = 12f;
     private float _rotationSpeed = 0.4f;
     private float _rotationVelocity;
     private float _lerpSpeed = 4f;
@@ -22,7 +21,7 @@ public class Camera_v2 : MonoBehaviour
     private float _cameraDistance = 150f;
     private float _cameraTargetDistance = 150f;
     private float _minCameraDistance = 10f;
-    private float _maxCameraDistance = 500f;
+    private float _maxCameraDistance = 400f;
     
     /* How far the camera distance changed per scroll. */
     private float _scrollDistance = 35f;
@@ -38,13 +37,20 @@ public class Camera_v2 : MonoBehaviour
     private Vector3 _velocity = Vector3.zero;
     
     /* The location of the ground directly beneath the camera. */
-    private Vector3 _currentGroundPoint = Vector3.zero;
-    private Vector3 _currentForwardGroundPoint = Vector3.zero;
+    private Vector3 _lastGroundPoint = Vector3.zero;
+    private Vector3 _lastForwardGroundPoint = Vector3.zero;
+
+    private float _lastGroundDistance;
+    private float _lastForwardGroundDistance;
+
+    /* The camera cannot move outside this xz area. (+-) */
+    private Vector2 _cameraBounds;
+    /* How far outside the map's border the camera can move. */
+    private float _cameraBoundDistance = 40f;
     
     /* How far away from the ground directly beneath us before
      * a 'collision' triggers. */
     private float _groundCollisionRange = 20f;
-
     private float _maxMouseDeltaForClick = 2f;
     private bool _hasUsedMouseDrag;
     private bool _isPressingMouse;
@@ -89,18 +95,34 @@ public class Camera_v2 : MonoBehaviour
     
     void Start()
     {
+        // Default values
+        _cameraBounds.x = _cameraBoundDistance * 2;
+        _cameraBounds.y = _cameraBoundDistance * 2;
+        
+        // NOTE: This is unstable code.
+        var mesh = GameObject.Find("KirkesdalenMesh");
+        if (mesh)
+        {
+            var meshFilter = mesh.GetComponent<MeshFilter>();
+            if (meshFilter)
+            {
+                var meshSize = meshFilter.mesh.bounds.extents;
+                meshSize = Vector3.Scale(meshSize, mesh.transform.localScale);
+                var meshPos = mesh.transform.position;
+                // Set the 'look at' position of the camera to the center of the map
+                _rotationPoint.transform.position = meshPos;
+                _cameraBounds.x = meshPos.x + meshSize.x + _cameraBoundDistance;
+                _cameraBounds.y = meshPos.y + meshSize.y + _cameraBoundDistance;
+            } 
+        }
+        
         //_gameObjectInfo = GameObject.Find("Screen_Canvas").transform.Find("GameObjectInfo").gameObject;
-
-
-        var map = GameObject.Find("Map");
-        if (map) _rotationPoint.transform.position = map.transform.position;
     }
     
     void Update()
     {
         if (_isPressingMouse) MouseDrag();
         else Move();
-        
         CameraUpdate();
     }
 
@@ -163,44 +185,72 @@ public class Camera_v2 : MonoBehaviour
         _brakeFactor = _defaultBrakeFactor;
         ApplyMovement();
     }
+    
+    /* Handles movement using mouse dragging on the screen. */
+    private void MouseDrag()
+    {
+        // Using new input system to get mouse delta
+        Vector3 delta = _inputProvider.MouseDelta();
+        var deltaMag = delta.magnitude;
+        
+        _hasUsedMouseDrag = deltaMag > _maxMouseDeltaForClick;
+        
+        var clickWorldPos = _mainCamera.ScreenToViewportPoint(delta);
+        var moveOffset = new Vector3(-clickWorldPos.x, 0, -clickWorldPos.y) * _dragSpeed;
+
+        // Dragging fast gives an extra boost
+        _velocity += moveOffset * (delta.magnitude * 0.45f * 0.02f);
+        _velocity = Vector3.ClampMagnitude(_velocity, _maxMouseVelocity);
+        _waitForVelocity = true;
+
+        // Brake when holding mouse in a static position
+        _brakeFactor = deltaMag < 1f ? _highBrakeFactor : _defaultBrakeFactor;
+
+        ApplyMovement();
+    }
 
     //private Vector3 linePosition;
     
     /* Get the current camera distance based on input and 
      * collision in front of, under and the max camera distance
      * settings. Uses trigonometry with ray casting. */
-    void UpdateCameraDistance()
+    private void UpdateCameraDistance()
     {
         var camTransform = _mainCamera.transform;
-        
+
         // Find position on ground beneath + a buffer
         var ray = new Ray(camTransform.position, Vector3.down);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            _currentGroundPoint = hit.point;
-            _currentGroundPoint.y += _groundCollisionRange;
+            _lastGroundPoint = hit.point;
+            _lastGroundPoint.y += _groundCollisionRange;
+            _lastGroundDistance = Vector3.Distance(camTransform.position, _lastGroundPoint);
         }
 
         // Find position on ground in front + a buffer
         ray = new Ray(camTransform.position, camTransform.forward);
         if (Physics.Raycast(ray, out hit))
         {
-            _currentForwardGroundPoint = hit.point;
-            _currentForwardGroundPoint -= 
-                (_rotationPoint.transform.position - camTransform.position).normalized 
+            var rotPointPos = _rotationPoint.transform.position;
+            
+            _lastForwardGroundPoint = hit.point;
+            _lastForwardGroundPoint -= 
+                (rotPointPos - camTransform.position).normalized 
                 * (_groundCollisionRange * 1.4f);
+            _lastForwardGroundDistance = Vector3.Distance(rotPointPos, _lastForwardGroundPoint);
         }
 
         // Limit the minimum camera distance based on what is closest
-        var forwardDist = Vector3.Distance(_rotationPoint.transform.position, _currentForwardGroundPoint);
-        var downDist = Vector3.Distance(camTransform.position, _currentGroundPoint);
-        var localMinDistance = Mathf.Max(forwardDist, downDist);
+        var localMinDistance = Mathf.Max(_lastForwardGroundDistance, _lastGroundDistance);
         localMinDistance = Mathf.Max(localMinDistance, _minCameraDistance);
-        //print("local: " + localMinDistance);
+
         // Smooth interpolation when changing height with scroll
         _cameraTargetDistance = Mathf.Clamp(_cameraTargetDistance + GetScroll(), localMinDistance, _maxCameraDistance);
         _cameraDistance = Mathf.Lerp(_cameraDistance, _cameraTargetDistance, Time.deltaTime * _lerpSpeed);
+        
+        
+        
         /*print("actual: " + _cameraDistance);
         Debug.DrawLine(camTransform.position + new Vector3(5f, 0f, 0f), camTransform.position + new Vector3(-5f, 0f, 0f));
         Debug.DrawLine(camTransform.position + new Vector3(0f, 5f, 0f), camTransform.position + new Vector3(0f, -5f, 0f));
@@ -245,44 +295,29 @@ public class Camera_v2 : MonoBehaviour
     }
 
     /* Flips the movement plane from xy to xz. */
-    Vector3 Get3DMovement()
+    private Vector3 Get3DMovement()
     {
         Vector2 input = _inputProvider.MovementInput();
         return new Vector3(input.x, 0f, input.y);
     }
 
-    float GetScroll() => -_inputProvider.ScrollInput() / 120 * _scrollDistance;
+    private float GetScroll() => -_inputProvider.ScrollInput() / 120 * _scrollDistance;
 
-    /* Handles movement using mouse dragging on the screen. */
-    private void MouseDrag()
-    {
-        // Using new input system to get mouse delta
-        Vector3 delta = _inputProvider.MouseDelta();
-        var deltaMag = delta.magnitude;
-        
-        _hasUsedMouseDrag = deltaMag > _maxMouseDeltaForClick;
-        
-        var clickWorldPos = _mainCamera.ScreenToViewportPoint(delta);
-        var moveOffset = new Vector3(-clickWorldPos.x, 0, -clickWorldPos.y) * _dragSpeed;
+    
 
-        // Dragging fast gives an extra boost
-        _velocity += moveOffset * (delta.magnitude * 0.45f * 0.02f);
-        _velocity = Vector3.ClampMagnitude(_velocity, _maxMouseVelocity);
-        _waitForVelocity = true;
-
-        // Brake when holding mouse in a static position
-        _brakeFactor = deltaMag < 1f ? _highBrakeFactor : _defaultBrakeFactor;
-
-        ApplyMovement();
-    }
-
-    void ApplyMovement()
+    private void ApplyMovement()
     {
         _rotationPoint.transform.Translate(_velocity * (Time.deltaTime * 45f));
         _rotationPoint.transform.Rotate(new Vector3(0f, _rotationVelocity, 0f) * (Time.deltaTime * 45f));
         _velocity *= _brakeFactor;
-        _rotationVelocity *= _brakeFactor;
+        _rotationVelocity *= _highBrakeFactor;
+
+        // Constrain camera to bounds
+        var pos = _rotationPoint.transform.position;
+        pos.x = Mathf.Clamp(pos.x, -_cameraBounds.x, _cameraBounds.x);
+        pos.z = Mathf.Clamp(pos.z, -_cameraBounds.y, _cameraBounds.y);
+        _rotationPoint.transform.position = pos;
     }
 
-    void SetPressingMouse(InputAction.CallbackContext context) => _isPressingMouse = true;
+    private void SetPressingMouse(InputAction.CallbackContext context) => _isPressingMouse = true;
 }
