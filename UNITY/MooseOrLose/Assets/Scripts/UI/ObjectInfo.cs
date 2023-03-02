@@ -20,6 +20,12 @@ public class ObjectInfo : MonoBehaviour
     }
     public void SpawnInfobar(ClickableObjectInfo info)
     {
+        foreach(RectTransform child in background)
+        {
+            Destroy(child.gameObject);
+        }
+
+
         switch(info.type)
         {
             case ClickableObjectInfo.ObjectType.Moose:

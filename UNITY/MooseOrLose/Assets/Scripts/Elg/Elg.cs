@@ -19,7 +19,7 @@ public enum ElgState
 
 public class Elg : ClickableObject
 {
-    /* Needs to be implemented */
+    
     public override ClickableObjectInfo GetClickInfo()
     {
         ClickableObjectInfo returnObject = new ClickableObjectInfo();

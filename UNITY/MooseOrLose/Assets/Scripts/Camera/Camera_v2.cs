@@ -62,7 +62,7 @@ public class Camera_v2 : MonoBehaviour
      * your finger fast when swiping on your phone. */
     private bool _waitForVelocity;
     
-    GameObject _gameObjectInfo;
+    public GameObject _gameObjectInfo;
     //public GameObject InfoBar;
 
     private void OnEnable()
