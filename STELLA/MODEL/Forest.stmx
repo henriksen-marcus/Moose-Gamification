@@ -1,0 +1,1567 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee" uses_conveyor=""/>
+		<name>Forest</name>
+		<uuid>333e9404-f322-4b5a-a004-f9246282c03f</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="1.7.1" isee:build_number="1574" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:simulation_delay="0.0416667" method="Euler" time_units="Months" isee:instantaneous_flows="false">
+		<start>1</start>
+		<stop>240</stop>
+		<dt reciprocal="true">30</dt>
+	</sim_specs>
+	<isee:prefs show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="model" interface_scale_ui="true" interface_max_page_width="10000" interface_max_page_height="10000" interface_min_page_width="0" interface_min_page_height="0" saved_runs="5" keep="false" rifp="true"/>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<default_format/>
+	<model_units/>
+	<model>
+		<variables>
+			<aux name="Current Month">
+				<eqn>TIME MOD 12</eqn>
+			</aux>
+			<aux name="Summer">
+				<eqn>IF (Current_Month = 5)
+THEN 1
+ELSE IF (Current_Month = 6)
+THEN 1
+ELSE IF(Current_Month = 7)
+THEN 1
+ELSE IF (Current_Month = 8)
+THEN 1
+ELSE 0</eqn>
+			</aux>
+			<aux name="Spring">
+				<eqn>IF (Current_Month = 3)
+THEN 1
+ELSE IF (Current_Month = 4)
+THEN 1
+ELSE 0</eqn>
+			</aux>
+			<stock name="0-50 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Trees_Born</inflow>
+				<inflow>Flow_25</inflow>
+				<outflow>Flow_1</outflow>
+				<outflow>Not_Enough_Sun</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="50-100 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_1</inflow>
+				<inflow>Flow_24</inflow>
+				<outflow>Flow_2</outflow>
+				<outflow>Flow_25</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="100-150 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_2</inflow>
+				<inflow>Flow_23</inflow>
+				<outflow>Flow_3</outflow>
+				<outflow>Flow_24</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="150-200 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_3</inflow>
+				<inflow>Flow_22</inflow>
+				<outflow>Flow_4</outflow>
+				<outflow>Flow_23</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="200-250 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_4</inflow>
+				<inflow>Flow_21</inflow>
+				<outflow>Flow_5</outflow>
+				<outflow>Flow_22</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="250-300 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_5</inflow>
+				<inflow>Flow_20</inflow>
+				<outflow>Flow_6</outflow>
+				<outflow>Flow_21</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="300-350 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_6</inflow>
+				<outflow>Flow_7</outflow>
+				<outflow>Flow_20</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="350-400 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_7</inflow>
+				<outflow>Flow_8</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="400-450 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_8</inflow>
+				<outflow>Flow_9</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="400-500 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_9</inflow>
+				<outflow>Flow_10</outflow>
+				<conveyor>
+					<len>12</len>
+				</conveyor>
+			</stock>
+			<stock name="500-600 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_10</inflow>
+				<outflow>Flow_11</outflow>
+				<conveyor>
+					<len>24</len>
+				</conveyor>
+			</stock>
+			<stock name="600-700 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_11</inflow>
+				<outflow>Flow_12</outflow>
+				<conveyor>
+					<len>24</len>
+				</conveyor>
+			</stock>
+			<stock name="700-800 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_12</inflow>
+				<outflow>Flow_13</outflow>
+				<conveyor>
+					<len>24</len>
+				</conveyor>
+			</stock>
+			<stock name="800-900 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_13</inflow>
+				<outflow>Flow_14</outflow>
+				<conveyor>
+					<len>24</len>
+				</conveyor>
+			</stock>
+			<stock name="900-1000 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_14</inflow>
+				<outflow>Flow_15</outflow>
+				<conveyor>
+					<len>24</len>
+				</conveyor>
+			</stock>
+			<stock name="1000-1200 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_15</inflow>
+				<outflow>Flow_16</outflow>
+				<conveyor>
+					<len>48</len>
+				</conveyor>
+			</stock>
+			<stock name="1200-1400 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_16</inflow>
+				<outflow>Flow_17</outflow>
+				<conveyor>
+					<len>48</len>
+				</conveyor>
+			</stock>
+			<stock name="1400-1600 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_17</inflow>
+				<outflow>Flow_18</outflow>
+				<conveyor>
+					<len>48</len>
+				</conveyor>
+			</stock>
+			<stock name="1600-1800 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_18</inflow>
+				<outflow>Flow_19</outflow>
+				<conveyor>
+					<len>48</len>
+				</conveyor>
+			</stock>
+			<stock name="1800-2000 cm">
+				<eqn>RANDOM(100, 200)</eqn>
+				<inflow>Flow_19</inflow>
+				<outflow>Trees_Die</outflow>
+				<conveyor>
+					<len>720</len>
+				</conveyor>
+			</stock>
+			<flow name="Trees Die">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 1">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 2">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 3">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 4">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 5">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 6">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 7">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 8">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 9">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 10">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 11">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 12">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 13">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 14">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 15">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 16">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 17">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 18">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Flow 19">
+				<eqn>0</eqn>
+				<non_negative/>
+			</flow>
+			<aux name="Total Trees">
+				<eqn>&quot;0-50_cm&quot;+
+&quot;250-300_cm&quot;+
+&quot;300-350_cm&quot;+
+&quot;350-400_cm&quot;+
+&quot;400-450_cm&quot;+
+&quot;400-500_cm&quot;+
+&quot;1000-1200_cm&quot;+
+&quot;1200-1400_cm&quot;+
+&quot;1400-1600_cm&quot;+
+&quot;1600-1800_cm&quot;+
+&quot;1800-2000_cm&quot;+
+&quot;50-100_cm&quot;+
+&quot;100-150_cm&quot;+
+&quot;150-200_cm&quot;+
+&quot;900-1000_cm&quot;+
+&quot;800-900_cm&quot;+
+&quot;700-800_cm&quot;+
+&quot;600-700_cm&quot;+
+&quot;500-600_cm&quot;+
+&quot;200-250_cm&quot;</eqn>
+			</aux>
+			<aux name="Total Moose In this Forest">
+				<eqn>5</eqn>
+			</aux>
+			<aux name="Forest Density">
+				<eqn>Total_Trees / 70</eqn>
+			</aux>
+			<aux name="Total Grown Trees">
+				<eqn>&quot;400-450_cm&quot;+
+&quot;400-500_cm&quot;+
+&quot;1000-1200_cm&quot;+
+&quot;1200-1400_cm&quot;+
+&quot;1400-1600_cm&quot;+
+&quot;1600-1800_cm&quot;+
+&quot;1800-2000_cm&quot;+
+&quot;900-1000_cm&quot;+
+&quot;800-900_cm&quot;+
+&quot;700-800_cm&quot;+
+&quot;600-700_cm&quot;+
+&quot;500-600_cm&quot;</eqn>
+			</aux>
+			<flow name="Trees Born">
+				<eqn>PULSE(Total_Grown_Trees * (50 / Forest_Density) * (Available_Light / 350000) ,  4, 12)</eqn>
+				<non_negative/>
+			</flow>
+			<flow name="Not Enough Sun">
+				<eqn>0.9</eqn>
+				<non_negative/>
+				<leak/>
+				<leak_integers/>
+			</flow>
+			<aux name="Forest Light">
+				<eqn>&quot;0-50_cm&quot;* 0.02+
+&quot;50-100_cm&quot; * 0.1+
+&quot;100-150_cm&quot; * 0.19+
+&quot;150-200_cm&quot; * 0.5+
+&quot;200-250_cm&quot; * 0.78+
+&quot;250-300_cm&quot; * 1+
+&quot;300-350_cm&quot; * 1.5+
+&quot;350-400_cm&quot; * 2+
+&quot;400-450_cm&quot; * 3.14+
+&quot;400-500_cm&quot; * 5+
+&quot;500-600_cm&quot; * 8+
+&quot;600-700_cm&quot; * 12.5+
+&quot;700-800_cm&quot; * 20+
+&quot;800-900_cm&quot; * 35+
+&quot;900-1000_cm&quot; * 50+
+&quot;1000-1200_cm&quot; * 70+
+&quot;1200-1400_cm&quot; * 90+
+&quot;1400-1600_cm&quot; * 110+
+&quot;1600-1800_cm&quot; * 120+
+&quot;1800-2000_cm&quot; * 153</eqn>
+			</aux>
+			<aux name="Available Light">
+				<eqn>IF (350000-Forest_Light &gt; 0)
+THEN 350000-Forest_Light
+ELSE 1</eqn>
+			</aux>
+			<flow name="Flow 20">
+				<eqn>Leak_Fraction_6</eqn>
+				<non_negative/>
+				<leak/>
+				<leak_integers/>
+			</flow>
+			<flow name="Flow 21">
+				<eqn>Leak_Fraction_5</eqn>
+				<non_negative/>
+				<leak/>
+				<leak_integers/>
+			</flow>
+			<flow name="Flow 22">
+				<eqn>Leak_Fraction_4</eqn>
+				<non_negative/>
+				<leak/>
+				<leak_integers/>
+			</flow>
+			<flow name="Flow 23">
+				<eqn>Leak_Fraction_3</eqn>
+				<non_negative/>
+				<leak/>
+				<leak_integers/>
+			</flow>
+			<flow name="Flow 24">
+				<eqn>Leak_Fraction_2</eqn>
+				<non_negative/>
+				<leak/>
+				<leak_integers/>
+			</flow>
+			<flow name="Flow 25">
+				<eqn>Leak_Fraction_1</eqn>
+				<non_negative/>
+				<leak/>
+				<leak_integers/>
+			</flow>
+			<aux name="Leak Fraction 6">
+				<eqn>(70 / (&quot;300-350_cm&quot; +1)) *Total_Moose_In_this_Forest</eqn>
+			</aux>
+			<aux name="Leak Fraction 1">
+				<eqn>(70 /( &quot;50-100_cm&quot;+1) )*Total_Moose_In_this_Forest</eqn>
+			</aux>
+			<aux name="Leak Fraction 2">
+				<eqn>(70 /( &quot;100-150_cm&quot;+1)) *Total_Moose_In_this_Forest</eqn>
+			</aux>
+			<aux name="Leak Fraction 3">
+				<eqn>(70 /( &quot;150-200_cm&quot;+1)) *Total_Moose_In_this_Forest</eqn>
+			</aux>
+			<aux name="Leak Fraction 4">
+				<eqn>(70 /( &quot;200-250_cm&quot;+1)) *Total_Moose_In_this_Forest</eqn>
+			</aux>
+			<aux name="Leak Fraction 5">
+				<eqn>(70 / (&quot;250-300_cm&quot;+1)) * Total_Moose_In_this_Forest</eqn>
+			</aux>
+			<isee:dependencies>
+				<var name="Summer">
+					<in>Current_Month</in>
+				</var>
+				<var name="Spring">
+					<in>Current_Month</in>
+				</var>
+				<var name="Total_Trees">
+					<in>&quot;0-50_cm&quot;</in>
+					<in>&quot;250-300_cm&quot;</in>
+					<in>&quot;300-350_cm&quot;</in>
+					<in>&quot;350-400_cm&quot;</in>
+					<in>&quot;400-450_cm&quot;</in>
+					<in>&quot;400-500_cm&quot;</in>
+					<in>&quot;1000-1200_cm&quot;</in>
+					<in>&quot;1200-1400_cm&quot;</in>
+					<in>&quot;1400-1600_cm&quot;</in>
+					<in>&quot;1600-1800_cm&quot;</in>
+					<in>&quot;1800-2000_cm&quot;</in>
+					<in>&quot;50-100_cm&quot;</in>
+					<in>&quot;100-150_cm&quot;</in>
+					<in>&quot;150-200_cm&quot;</in>
+					<in>&quot;900-1000_cm&quot;</in>
+					<in>&quot;800-900_cm&quot;</in>
+					<in>&quot;700-800_cm&quot;</in>
+					<in>&quot;600-700_cm&quot;</in>
+					<in>&quot;500-600_cm&quot;</in>
+					<in>&quot;200-250_cm&quot;</in>
+				</var>
+				<var name="Forest_Density">
+					<in>Total_Trees</in>
+				</var>
+				<var name="Total_Grown_Trees">
+					<in>&quot;400-450_cm&quot;</in>
+					<in>&quot;400-500_cm&quot;</in>
+					<in>&quot;1000-1200_cm&quot;</in>
+					<in>&quot;1200-1400_cm&quot;</in>
+					<in>&quot;1400-1600_cm&quot;</in>
+					<in>&quot;1600-1800_cm&quot;</in>
+					<in>&quot;1800-2000_cm&quot;</in>
+					<in>&quot;900-1000_cm&quot;</in>
+					<in>&quot;800-900_cm&quot;</in>
+					<in>&quot;700-800_cm&quot;</in>
+					<in>&quot;600-700_cm&quot;</in>
+					<in>&quot;500-600_cm&quot;</in>
+				</var>
+				<var name="Trees_Born">
+					<in>Total_Grown_Trees</in>
+					<in>Forest_Density</in>
+					<in>Available_Light</in>
+				</var>
+				<var name="Forest_Light">
+					<in>&quot;100-150_cm&quot;</in>
+					<in>&quot;0-50_cm&quot;</in>
+					<in>&quot;50-100_cm&quot;</in>
+					<in>&quot;150-200_cm&quot;</in>
+					<in>&quot;200-250_cm&quot;</in>
+					<in>&quot;250-300_cm&quot;</in>
+					<in>&quot;300-350_cm&quot;</in>
+					<in>&quot;400-450_cm&quot;</in>
+					<in>&quot;400-500_cm&quot;</in>
+					<in>&quot;1000-1200_cm&quot;</in>
+					<in>&quot;1200-1400_cm&quot;</in>
+					<in>&quot;1400-1600_cm&quot;</in>
+					<in>&quot;1600-1800_cm&quot;</in>
+					<in>&quot;1800-2000_cm&quot;</in>
+					<in>&quot;900-1000_cm&quot;</in>
+					<in>&quot;800-900_cm&quot;</in>
+					<in>&quot;700-800_cm&quot;</in>
+					<in>&quot;600-700_cm&quot;</in>
+					<in>&quot;500-600_cm&quot;</in>
+					<in>&quot;350-400_cm&quot;</in>
+				</var>
+				<var name="Available_Light">
+					<in>Forest_Light</in>
+				</var>
+				<var name="Flow_20">
+					<in>Leak_Fraction_6</in>
+				</var>
+				<var name="Flow_21">
+					<in>Leak_Fraction_5</in>
+				</var>
+				<var name="Flow_22">
+					<in>Leak_Fraction_4</in>
+				</var>
+				<var name="Flow_23">
+					<in>Leak_Fraction_3</in>
+				</var>
+				<var name="Flow_24">
+					<in>Leak_Fraction_2</in>
+				</var>
+				<var name="Flow_25">
+					<in>Leak_Fraction_1</in>
+				</var>
+				<var name="Leak_Fraction_6">
+					<in>&quot;300-350_cm&quot;</in>
+					<in>Total_Moose_In_this_Forest</in>
+				</var>
+				<var name="Leak_Fraction_1">
+					<in>Total_Moose_In_this_Forest</in>
+					<in>&quot;50-100_cm&quot;</in>
+				</var>
+				<var name="Leak_Fraction_2">
+					<in>Total_Moose_In_this_Forest</in>
+					<in>&quot;100-150_cm&quot;</in>
+				</var>
+				<var name="Leak_Fraction_3">
+					<in>Total_Moose_In_this_Forest</in>
+					<in>&quot;150-200_cm&quot;</in>
+				</var>
+				<var name="Leak_Fraction_4">
+					<in>Total_Moose_In_this_Forest</in>
+					<in>&quot;200-250_cm&quot;</in>
+				</var>
+				<var name="Leak_Fraction_5">
+					<in>Total_Moose_In_this_Forest</in>
+					<in>&quot;250-300_cm&quot;</in>
+				</var>
+			</isee:dependencies>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+				<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" isee:highlight_on_hover="false" isee:highlight_color="#959595" popup_background_color="#FFFECF"/>
+				<slider color="black" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" vertical="false" isee:always_show_hover_tip="false" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+			</style>
+			<view isee:show_pages="false" page_width="1123" page_height="793" isee:page_cols="2" isee:page_rows="3" zoom="60" isee:popup_graphs_are_comparative="true" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom"/>
+					<module color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="55" height="45"/>
+					</module>
+					<aux color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="9pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+					<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false" axis_title_font_style="normal" axis_title_font_weight="normal" axis_title_text_decoration="none" axis_title_text_align="center" axis_title_vertical_text_align="center" axis_title_font_color="black" axis_title_font_family="Arial" axis_title_font_size="12pt" axis_title_text_padding="2" axis_title_text_border_color="black" axis_title_text_border_width="thin" axis_title_text_border_style="none" axis_label_font_style="normal" axis_label_font_weight="normal" axis_label_text_decoration="none" axis_label_text_align="center" axis_label_vertical_text_align="center" axis_label_font_color="black" axis_label_font_family="Arial" axis_label_font_size="9pt" axis_label_text_padding="2" axis_label_text_border_color="black" axis_label_text_border_width="thin" axis_label_text_border_style="none">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous" header_font_style="normal" header_font_weight="normal" header_text_decoration="none" header_text_align="center" header_vertical_text_align="center" header_font_color="black" header_font_family="Arial" header_font_size="12pt" header_text_padding="2" header_text_border_color="black" header_text_border_width="thin" header_text_border_style="none"/>
+				</style>
+				<stacked_container uid="1" x="1041.43" y="428" width="975.136" height="392">
+					<graph x="1041.43" y="428" width="975.136" height="392" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="red" pen_style="dot_dashed" pen_width="1" index="0" show_y_axis="true">
+							<entity name='"50-100_cm"'/>
+						</plot>
+						<plot color="fuchsia" pen_style="dotted" pen_width="1" index="1" show_y_axis="true">
+							<entity name='"100-150_cm"'/>
+						</plot>
+						<plot color="#008F44" pen_style="dashed" pen_width="1" index="2" show_y_axis="true">
+							<entity name='"150-200_cm"'/>
+						</plot>
+						<plot color="#FF7F00" pen_width="1" index="3" show_y_axis="true">
+							<entity name='"200-250_cm"'/>
+						</plot>
+						<plot color="#7F00FF" pen_style="dot_dashed" pen_width="1" index="4" show_y_axis="true">
+							<entity name='"250-300_cm"'/>
+						</plot>
+						<plot color="#0CA0FF" pen_style="dotted" pen_width="1" index="5" show_y_axis="true">
+							<entity name='"300-350_cm"'/>
+						</plot>
+						<plot color="lime" pen_style="dashed" pen_width="1" index="6" show_y_axis="true">
+							<entity name='"350-400_cm"'/>
+						</plot>
+						<plot color="#FF007F" pen_width="1" index="7" show_y_axis="true">
+							<entity name='"400-450_cm"'/>
+						</plot>
+						<plot color="aqua" pen_style="dot_dashed" pen_width="1" index="8" show_y_axis="true">
+							<entity name='"400-500_cm"'/>
+						</plot>
+						<plot color="#F586FF" pen_style="dotted" pen_width="1" index="9" show_y_axis="true">
+							<entity name='"1000-1200_cm"'/>
+						</plot>
+						<plot color="black" pen_style="dashed" pen_width="1" index="10" show_y_axis="true">
+							<entity name='"1200-1400_cm"'/>
+						</plot>
+						<plot color="#C8C8C8" pen_width="1" index="11" show_y_axis="true">
+							<entity name='"1400-1600_cm"'/>
+						</plot>
+						<plot color="blue" pen_width="1" index="12" show_y_axis="true">
+							<entity name='"1600-1800_cm"'/>
+						</plot>
+						<plot color="red" pen_style="dot_dashed" pen_width="1" index="13" show_y_axis="true">
+							<entity name='"1800-2000_cm"'/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="255.167" y="742" name="Current Month"/>
+				<aux x="342.599" y="700" name="Summer"/>
+				<connector uid="2" angle="28.6105">
+					<from>Current_Month</from>
+					<to>Summer</to>
+				</connector>
+				<aux x="255.167" y="672" name="Spring"/>
+				<connector uid="3" angle="85.2364">
+					<from>Current_Month</from>
+					<to>Spring</to>
+				</connector>
+				<stacked_container uid="4" x="759" y="751.75">
+					<graph x="584" y="626.75" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Forest_Density"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<stock x="161.834" y="253" width="45" height="35" name="0-50 cm"/>
+				<stock x="274.667" y="253" width="45" height="35" name="50-100 cm"/>
+				<stock x="380.166" y="253" width="45" height="35" name="100-150 cm"/>
+				<stock x="494.166" y="253" width="45" height="35" name="150-200 cm"/>
+				<stock x="609.166" y="253" width="45" height="35" name="200-250 cm"/>
+				<stock x="165.5" y="359.667" width="45" height="35" name="250-300 cm"/>
+				<stock x="293" y="377.167" name="300-350 cm"/>
+				<stock x="398.499" y="377.167" name="350-400 cm"/>
+				<stock x="512.499" y="377.167" name="400-450 cm"/>
+				<stock label_side="top" x="627.499" y="377.167" name="400-500 cm"/>
+				<stock x="184.334" y="491.5" name="500-600 cm"/>
+				<stock x="289.334" y="491.5" name="600-700 cm"/>
+				<stock x="394.833" y="491.5" name="700-800 cm"/>
+				<stock x="486.333" y="474" width="45" height="35" name="800-900 cm"/>
+				<stock x="623.833" y="491.5" name="900-1000 cm"/>
+				<stock x="180.167" y="598.167" name="1000-1200 cm"/>
+				<stock x="285.167" y="598.167" name="1200-1400 cm"/>
+				<stock x="390.666" y="598.167" name="1400-1600 cm"/>
+				<stock x="504.666" y="598.167" name="1600-1800 cm"/>
+				<stock x="617.166" y="598.167" name="1800-2000 cm"/>
+				<text_box uid="5" x="338.333" y="88" width="123.333" height="23">300 initial birch trees</text_box>
+				<flow x="671.166" y="586.5" width="18" height="18" name="Trees Die">
+					<pts>
+						<pt x="639.666" y="595.5"/>
+						<pt x="744.667" y="595.5"/>
+					</pts>
+				</flow>
+				<flow x="234.75" y="270.5" name="Flow 1">
+					<pts>
+						<pt x="206.834" y="270.5"/>
+						<pt x="274.667" y="270.5"/>
+					</pts>
+				</flow>
+				<flow x="343.917" y="270.5" name="Flow 2">
+					<pts>
+						<pt x="319.667" y="270.5"/>
+						<pt x="380.166" y="270.5"/>
+					</pts>
+				</flow>
+				<flow x="453.666" y="270.5" name="Flow 3">
+					<pts>
+						<pt x="425.166" y="270.5"/>
+						<pt x="494.166" y="270.5"/>
+					</pts>
+				</flow>
+				<flow x="568.166" y="270.5" name="Flow 4">
+					<pts>
+						<pt x="539.166" y="270.5"/>
+						<pt x="609.166" y="270.5"/>
+					</pts>
+				</flow>
+				<flow x="394.417" y="289.833" width="18" height="18" name="Flow 5">
+					<pts>
+						<pt x="654.166" y="272.167"/>
+						<pt x="693.833" y="272.167"/>
+						<pt x="693.833" y="298.833"/>
+						<pt x="113" y="298.833"/>
+						<pt x="113" y="379.667"/>
+						<pt x="165.5" y="379.667"/>
+					</pts>
+				</flow>
+				<flow x="234.5" y="377.167" name="Flow 6">
+					<pts>
+						<pt x="210.5" y="377.167"/>
+						<pt x="270.5" y="377.167"/>
+					</pts>
+				</flow>
+				<flow x="339.75" y="377.167" name="Flow 7">
+					<pts>
+						<pt x="315.5" y="377.167"/>
+						<pt x="375.999" y="377.167"/>
+					</pts>
+				</flow>
+				<flow x="449.499" y="377.167" name="Flow 8">
+					<pts>
+						<pt x="420.999" y="377.167"/>
+						<pt x="489.999" y="377.167"/>
+					</pts>
+				</flow>
+				<flow x="563.999" y="377.167" name="Flow 9">
+					<pts>
+						<pt x="534.999" y="377.167"/>
+						<pt x="604.999" y="377.167"/>
+					</pts>
+				</flow>
+				<flow x="382.75" y="398.167" width="18" height="18" name="Flow 10">
+					<pts>
+						<pt x="649.999" y="376.333"/>
+						<pt x="697.167" y="376.333"/>
+						<pt x="697.167" y="407.167"/>
+						<pt x="86.3333" y="407.167"/>
+						<pt x="86.3333" y="493"/>
+						<pt x="161.834" y="493"/>
+					</pts>
+				</flow>
+				<flow x="230.834" y="491.5" name="Flow 11">
+					<pts>
+						<pt x="206.834" y="491.5"/>
+						<pt x="266.834" y="491.5"/>
+					</pts>
+				</flow>
+				<flow x="336.083" y="491.5" name="Flow 12">
+					<pts>
+						<pt x="311.834" y="491.5"/>
+						<pt x="372.333" y="491.5"/>
+					</pts>
+				</flow>
+				<flow x="445.833" y="491.5" name="Flow 13">
+					<pts>
+						<pt x="417.333" y="491.5"/>
+						<pt x="486.333" y="491.5"/>
+					</pts>
+				</flow>
+				<flow x="560.333" y="491.5" name="Flow 14">
+					<pts>
+						<pt x="531.333" y="491.5"/>
+						<pt x="601.333" y="491.5"/>
+					</pts>
+				</flow>
+				<flow x="388.833" y="522.167" name="Flow 15">
+					<pts>
+						<pt x="646.333" y="491.333"/>
+						<pt x="687.167" y="491.333"/>
+						<pt x="687.167" y="522.167"/>
+						<pt x="90.5" y="522.167"/>
+						<pt x="90.5" y="601.333"/>
+						<pt x="157.667" y="601.333"/>
+					</pts>
+				</flow>
+				<flow x="217.667" y="589.167" width="18" height="18" name="Flow 16">
+					<pts>
+						<pt x="202.667" y="598.167"/>
+						<pt x="262.667" y="598.167"/>
+					</pts>
+				</flow>
+				<flow x="322.916" y="589.167" width="18" height="18" name="Flow 17">
+					<pts>
+						<pt x="307.667" y="598.167"/>
+						<pt x="368.166" y="598.167"/>
+					</pts>
+				</flow>
+				<flow x="432.666" y="589.167" width="18" height="18" name="Flow 18">
+					<pts>
+						<pt x="413.166" y="598.167"/>
+						<pt x="482.166" y="598.167"/>
+					</pts>
+				</flow>
+				<flow x="545.916" y="589.167" width="18" height="18" name="Flow 19">
+					<pts>
+						<pt x="527.166" y="598.167"/>
+						<pt x="594.666" y="598.167"/>
+					</pts>
+				</flow>
+				<aux x="1319" y="205" name="Total Trees"/>
+				<alias font_style="italic" uid="6" x="1156.5" y="48.5" width="45" height="35">
+					<of>&quot;0-50_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="7" x="1227.5" y="48.5" width="45" height="35">
+					<of>&quot;50-100_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="8" x="1300.5" y="48.5" width="45" height="35">
+					<of>&quot;100-150_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="9" x="1372.5" y="48.5" width="45" height="35">
+					<of>&quot;150-200_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="10" x="1437.5" y="48.5" width="45" height="35">
+					<of>&quot;200-250_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="11" x="1091.5" y="92.5" width="45" height="35">
+					<of>&quot;250-300_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="12" x="1091.5" y="148.5" width="45" height="35">
+					<of>&quot;300-350_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="13" x="1091.5" y="203" width="45" height="35">
+					<of>&quot;350-400_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="14" x="1091.5" y="256.833" width="45" height="35">
+					<of>&quot;400-450_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="15" x="1091.5" y="309.667" width="45" height="35">
+					<of>&quot;400-500_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="16" x="1506.5" y="92.5" width="45" height="35">
+					<of>&quot;500-600_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="17" x="1506.5" y="144.5" width="45" height="35">
+					<of>&quot;600-700_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="18" x="1506.5" y="200" width="45" height="35">
+					<of>&quot;700-800_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="19" x="1506.5" y="252.667" width="45" height="35">
+					<of>&quot;800-900_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="20" x="1506.5" y="301.667" width="45" height="35">
+					<of>&quot;900-1000_cm&quot;</of>
+				</alias>
+				<aux x="855.5" y="522.167" name="Total Moose In this Forest"/>
+				<alias font_style="italic" uid="21" x="1174.5" y="366.5" width="45" height="35">
+					<of>&quot;1000-1200_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="22" x="1255.5" y="366.5" width="45" height="35">
+					<of>&quot;1200-1400_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="23" x="1320.5" y="366.5" width="45" height="35">
+					<of>&quot;1400-1600_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="24" x="1383.5" y="366.5" width="45" height="35">
+					<of>&quot;1600-1800_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="25" x="1444.5" y="366.5" width="45" height="35">
+					<of>&quot;1800-2000_cm&quot;</of>
+				</alias>
+				<connector uid="26" angle="315.205">
+					<from>
+						<alias uid="6"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="27" angle="335.136">
+					<from>
+						<alias uid="11"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="28" angle="349.229">
+					<from>
+						<alias uid="12"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="29" angle="4.32389">
+					<from>
+						<alias uid="13"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="30" angle="18.6861">
+					<from>
+						<alias uid="14"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="31" angle="30.7922">
+					<from>
+						<alias uid="15"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="32" angle="55.7231">
+					<from>
+						<alias uid="21"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="33" angle="77.0989">
+					<from>
+						<alias uid="22"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="34" angle="97.6366">
+					<from>
+						<alias uid="23"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="35" angle="115.921">
+					<from>
+						<alias uid="24"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="36" angle="129.584">
+					<from>
+						<alias uid="25"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="37" angle="296.4">
+					<from>
+						<alias uid="7"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="38" angle="268.352">
+					<from>
+						<alias uid="8"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="39" angle="241.332">
+					<from>
+						<alias uid="9"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="40" angle="151.469">
+					<from>
+						<alias uid="20"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="41" angle="162.76">
+					<from>
+						<alias uid="19"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="42" angle="176.594">
+					<from>
+						<alias uid="18"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="43" angle="191.572">
+					<from>
+						<alias uid="17"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="44" angle="204.341">
+					<from>
+						<alias uid="16"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<connector uid="45" angle="224.591">
+					<from>
+						<alias uid="10"/>
+					</from>
+					<to>Total_Trees</to>
+				</connector>
+				<stacked_container uid="46" x="1772" y="229.167">
+					<graph x="1597" y="104.167" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Total_Trees"/>
+							<scale min="0"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="948.833" y="973" width="19" height="19" name="Forest Density"/>
+				<alias font_style="italic" uid="47" x="949.333" y="916.833" width="18" height="18">
+					<of>Total_Trees</of>
+				</alias>
+				<connector uid="48" angle="270">
+					<from>
+						<alias uid="47"/>
+					</from>
+					<to>Forest_Density</to>
+				</connector>
+				<aux x="1385" y="256.167" name="Total Grown Trees"/>
+				<connector uid="49" angle="6.21182">
+					<from>
+						<alias uid="14"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="50" angle="23.6729">
+					<from>
+						<alias uid="15"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="51" angle="36.8699">
+					<from>
+						<alias uid="21"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="52" angle="50.7928">
+					<from>
+						<alias uid="22"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="53" angle="75.3236">
+					<from>
+						<alias uid="23"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="54" angle="92.9357">
+					<from>
+						<alias uid="24"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="55" angle="125.538">
+					<from>
+						<alias uid="25"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="56" angle="149.484">
+					<from>
+						<alias uid="20"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="57" angle="174.109">
+					<from>
+						<alias uid="19"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="58" angle="199.654">
+					<from>
+						<alias uid="18"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="59" angle="219.289">
+					<from>
+						<alias uid="17"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<connector uid="60" angle="219.428">
+					<from>
+						<alias uid="16"/>
+					</from>
+					<to>Total_Grown_Trees</to>
+				</connector>
+				<alias font_style="italic" uid="61" x="25.0835" y="162" width="19" height="19">
+					<of>Total_Grown_Trees</of>
+				</alias>
+				<flow label_side="bottom" x="106.417" y="262" name="Trees Born">
+					<pts>
+						<pt x="51" y="262"/>
+						<pt x="161.834" y="262"/>
+					</pts>
+				</flow>
+				<connector uid="62" angle="308.44">
+					<from>
+						<alias uid="61"/>
+					</from>
+					<to>Trees_Born</to>
+				</connector>
+				<alias font_style="italic" uid="63" x="102.834" y="156.5" width="19" height="19">
+					<of>Forest_Density</of>
+				</alias>
+				<connector uid="64" angle="266.473">
+					<from>
+						<alias uid="63"/>
+					</from>
+					<to>Trees_Born</to>
+				</connector>
+				<flow x="172.167" y="190" name="Not Enough Sun">
+					<pts>
+						<pt x="172.167" y="253"/>
+						<pt x="172.167" y="106"/>
+					</pts>
+				</flow>
+				<alias font_style="italic" uid="65" x="1127.5" y="861.5" width="45" height="35">
+					<of>&quot;0-50_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="66" x="1198.5" y="861.5" width="45" height="35">
+					<of>&quot;50-100_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="67" x="1271.5" y="861.5" width="45" height="35">
+					<of>&quot;100-150_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="68" x="1343.5" y="861.5" width="45" height="35">
+					<of>&quot;150-200_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="69" x="1408.5" y="861.5" width="45" height="35">
+					<of>&quot;200-250_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="70" x="1062.5" y="905.5" width="45" height="35">
+					<of>&quot;250-300_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="71" x="1062.5" y="954.5" width="45" height="35">
+					<of>&quot;300-350_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="72" x="1062.5" y="1016" width="45" height="35">
+					<of>&quot;350-400_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="73" x="1062.5" y="1069.83" width="45" height="35">
+					<of>&quot;400-450_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="74" x="1062.5" y="1122.67" width="45" height="35">
+					<of>&quot;400-500_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="75" x="1477.5" y="905.5" width="45" height="35">
+					<of>&quot;500-600_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="76" x="1477.5" y="957.5" width="45" height="35">
+					<of>&quot;600-700_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="77" x="1477.5" y="1013" width="45" height="35">
+					<of>&quot;700-800_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="78" x="1477.5" y="1065.67" width="45" height="35">
+					<of>&quot;800-900_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="79" x="1477.5" y="1114.67" width="45" height="35">
+					<of>&quot;900-1000_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="80" x="1145.5" y="1179.5" width="45" height="35">
+					<of>&quot;1000-1200_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="81" x="1226.5" y="1179.5" width="45" height="35">
+					<of>&quot;1200-1400_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="82" x="1291.5" y="1179.5" width="45" height="35">
+					<of>&quot;1400-1600_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="83" x="1354.5" y="1179.5" width="45" height="35">
+					<of>&quot;1600-1800_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="84" x="1415.5" y="1179.5" width="45" height="35">
+					<of>&quot;1800-2000_cm&quot;</of>
+				</alias>
+				<aux x="1294" y="1030.5" name="Forest Light"/>
+				<connector uid="85" angle="270">
+					<from>
+						<alias uid="67"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="86" angle="313.546">
+					<from>
+						<alias uid="65"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="87" angle="295.727">
+					<from>
+						<alias uid="66"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="88" angle="233.13">
+					<from>
+						<alias uid="68"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="89" angle="227.877">
+					<from>
+						<alias uid="69"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="90" angle="332.781">
+					<from>
+						<alias uid="70"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="91" angle="344.363">
+					<from>
+						<alias uid="71"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="92" angle="0.822371">
+					<from>
+						<alias uid="72"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="93" angle="15.2125">
+					<from>
+						<alias uid="73"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="94" angle="27.687">
+					<from>
+						<alias uid="74"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="95" angle="62.8787">
+					<from>
+						<alias uid="80"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="96" angle="60.1011">
+					<from>
+						<alias uid="81"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="97" angle="96.8496">
+					<from>
+						<alias uid="82"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="98" angle="116.496">
+					<from>
+						<alias uid="83"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="99" angle="116.565">
+					<from>
+						<alias uid="84"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="100" angle="153.732">
+					<from>
+						<alias uid="79"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="101" angle="165.659">
+					<from>
+						<alias uid="78"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="102" angle="180">
+					<from>
+						<alias uid="77"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="103" angle="173.517">
+					<from>
+						<alias uid="76"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<connector uid="104" angle="177.455">
+					<from>
+						<alias uid="75"/>
+					</from>
+					<to>Forest_Light</to>
+				</connector>
+				<stacked_container uid="105" x="853" y="1164.5">
+					<graph x="678" y="1039.5" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Forest_Light"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="1626" y="1043" name="Available Light"/>
+				<alias font_style="italic" uid="106" x="1617" y="964" width="18" height="18">
+					<of>Forest_Light</of>
+				</alias>
+				<connector uid="107" angle="270">
+					<from>
+						<alias uid="106"/>
+					</from>
+					<to>Available_Light</to>
+				</connector>
+				<stacked_container uid="108" x="1778" y="1282.67">
+					<graph x="1603" y="1157.67" width="350" height="250" type="time_series" isee:points_only="false" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" pen_width="1" index="0" show_y_axis="true">
+							<entity name="Available_Light"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<alias font_style="italic" uid="109" x="61.1667" y="130.5" width="18" height="18">
+					<of>Available_Light</of>
+				</alias>
+				<connector uid="110" angle="286.485">
+					<from>
+						<alias uid="109"/>
+					</from>
+					<to>Trees_Born</to>
+				</connector>
+				<flow x="231.417" y="321.833" width="18" height="18" name="Flow 20">
+					<pts>
+						<pt x="291.667" y="359.667"/>
+						<pt x="291.667" y="330.833"/>
+						<pt x="189.167" y="330.833"/>
+						<pt x="189.167" y="359.667"/>
+					</pts>
+				</flow>
+				<flow x="441.667" y="313.667" name="Flow 21">
+					<pts>
+						<pt x="176.667" y="359.667"/>
+						<pt x="176.667" y="313.667"/>
+						<pt x="706.667" y="313.667"/>
+						<pt x="706.667" y="258.333"/>
+						<pt x="654.166" y="258.333"/>
+					</pts>
+				</flow>
+				<flow x="572.5" y="215.5" name="Flow 22">
+					<pts>
+						<pt x="629.167" y="253"/>
+						<pt x="629.167" y="215.5"/>
+						<pt x="515.833" y="215.5"/>
+						<pt x="515.833" y="253"/>
+					</pts>
+				</flow>
+				<flow x="441.417" y="206.5" width="18" height="18" name="Flow 23">
+					<pts>
+						<pt x="498.333" y="253"/>
+						<pt x="498.333" y="215.5"/>
+						<pt x="402.5" y="215.5"/>
+						<pt x="402.5" y="253"/>
+					</pts>
+				</flow>
+				<flow x="340.417" y="214.667" name="Flow 24">
+					<pts>
+						<pt x="385.833" y="253"/>
+						<pt x="385.833" y="214.667"/>
+						<pt x="295" y="214.667"/>
+						<pt x="295" y="253"/>
+					</pts>
+				</flow>
+				<flow x="228.625" y="205.667" width="18" height="18" name="Flow 25">
+					<pts>
+						<pt x="276.917" y="253"/>
+						<pt x="276.917" y="214.667"/>
+						<pt x="198.333" y="214.667"/>
+						<pt x="198.333" y="253"/>
+					</pts>
+				</flow>
+				<alias font_style="italic" uid="111" x="751.667" y="118" width="45" height="35">
+					<of>&quot;300-350_cm&quot;</of>
+				</alias>
+				<aux x="845" y="135.5" name="Leak Fraction 6"/>
+				<alias font_style="italic" uid="112" x="956.833" y="253" width="18" height="18">
+					<of>Total_Moose_In_this_Forest</of>
+				</alias>
+				<connector uid="113" angle="0">
+					<from>
+						<alias uid="111"/>
+					</from>
+					<to>Leak_Fraction_6</to>
+				</connector>
+				<connector uid="114" angle="133.688">
+					<from>
+						<alias uid="112"/>
+					</from>
+					<to>Leak_Fraction_6</to>
+				</connector>
+				<alias font_style="italic" uid="115" x="751.667" y="181" width="45" height="35">
+					<of>&quot;250-300_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="116" x="755" y="238.667" width="45" height="35">
+					<of>&quot;200-250_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="117" x="751.667" y="300.833" width="45" height="35">
+					<of>&quot;150-200_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="118" x="747.5" y="361.667" width="45" height="35">
+					<of>&quot;100-150_cm&quot;</of>
+				</alias>
+				<alias font_style="italic" uid="119" x="747.5" y="420.833" width="45" height="35">
+					<of>&quot;50-100_cm&quot;</of>
+				</alias>
+				<aux x="848.667" y="438.333" name="Leak Fraction 1"/>
+				<aux label_side="bottom" x="848.667" y="384" name="Leak Fraction 2"/>
+				<aux label_side="bottom" x="848.667" y="307.5" name="Leak Fraction 3"/>
+				<aux label_side="bottom" x="845" y="256.167" name="Leak Fraction 4"/>
+				<aux label_side="bottom" x="845" y="192.5" name="Leak Fraction 5"/>
+				<connector uid="120" angle="150.094">
+					<from>
+						<alias uid="112"/>
+					</from>
+					<to>Leak_Fraction_5</to>
+				</connector>
+				<connector uid="121" angle="172.497">
+					<from>
+						<alias uid="112"/>
+					</from>
+					<to>Leak_Fraction_4</to>
+				</connector>
+				<connector uid="122" angle="215.991">
+					<from>
+						<alias uid="112"/>
+					</from>
+					<to>Leak_Fraction_3</to>
+				</connector>
+				<connector uid="123" angle="235.987">
+					<from>
+						<alias uid="112"/>
+					</from>
+					<to>Leak_Fraction_2</to>
+				</connector>
+				<connector uid="124" angle="267.466">
+					<from>
+						<alias uid="112"/>
+					</from>
+					<to>Leak_Fraction_1</to>
+				</connector>
+				<connector uid="125" angle="4.84173">
+					<from>
+						<alias uid="115"/>
+					</from>
+					<to>Leak_Fraction_5</to>
+				</connector>
+				<connector uid="126" angle="8.24071">
+					<from>
+						<alias uid="116"/>
+					</from>
+					<to>Leak_Fraction_4</to>
+				</connector>
+				<connector uid="127" angle="7.72183">
+					<from>
+						<alias uid="117"/>
+					</from>
+					<to>Leak_Fraction_3</to>
+				</connector>
+				<connector uid="128" angle="354.987">
+					<from>
+						<alias uid="118"/>
+					</from>
+					<to>Leak_Fraction_2</to>
+				</connector>
+				<connector uid="129" angle="14.0362">
+					<from>
+						<alias uid="119"/>
+					</from>
+					<to>Leak_Fraction_1</to>
+				</connector>
+				<alias font_style="italic" uid="130" x="231.417" y="144.5" width="18" height="18">
+					<of>Leak_Fraction_1</of>
+				</alias>
+				<connector uid="131" angle="278.839">
+					<from>
+						<alias uid="130"/>
+					</from>
+					<to>Flow_25</to>
+				</connector>
+				<alias font_style="italic" uid="132" x="321.833" y="138.5" width="18" height="18">
+					<of>Leak_Fraction_2</of>
+				</alias>
+				<alias font_style="italic" uid="133" x="436" y="149.333" width="18" height="18">
+					<of>Leak_Fraction_3</of>
+				</alias>
+				<alias font_style="italic" uid="134" x="565.167" y="153.5" width="18" height="18">
+					<of>Leak_Fraction_4</of>
+				</alias>
+				<alias font_style="italic" uid="135" x="468.5" y="322.667" width="18" height="18">
+					<of>Leak_Fraction_5</of>
+				</alias>
+				<alias font_style="italic" uid="136" x="331" y="327.667" width="18" height="18">
+					<of>Leak_Fraction_6</of>
+				</alias>
+				<connector uid="137" angle="157.964">
+					<from>
+						<alias uid="136"/>
+					</from>
+					<to>Flow_20</to>
+				</connector>
+				<connector uid="138" angle="137.911">
+					<from>
+						<alias uid="135"/>
+					</from>
+					<to>Flow_21</to>
+				</connector>
+				<connector uid="139" angle="268.199">
+					<from>
+						<alias uid="134"/>
+					</from>
+					<to>Flow_22</to>
+				</connector>
+				<connector uid="140" angle="284.47">
+					<from>
+						<alias uid="133"/>
+					</from>
+					<to>Flow_23</to>
+				</connector>
+				<connector uid="141" angle="302.276">
+					<from>
+						<alias uid="132"/>
+					</from>
+					<to>Flow_24</to>
+				</connector>
+			</view>
+		</views>
+	</model>
+</xmile>
+
