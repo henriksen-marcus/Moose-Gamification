@@ -25,8 +25,10 @@ public class RuleManager : UI, IPointerEnterHandler
     private bool _lastMonthWasHuntingSeason = false;
     private List<HorizontalLayoutGroup> _list;
 
+    public event Action OnHuntingSeasonStart;
+    public event Action OnHuntingSeasonEnd;
 
-    public static event Action OnExpand;
+    // public event Action OnExpand;
 
     private void Awake()
     {
@@ -49,15 +51,19 @@ public class RuleManager : UI, IPointerEnterHandler
 
     private void HuntingSeasonGoals()
     {
-        if (HuntingSeason() && !_lastMonthWasHuntingSeason && HuntingGoals.Instance.showGoals)
+        if (HuntingSeason() && !_lastMonthWasHuntingSeason)
         {
-            gameObject.SetActive(true);
-            TimeManager.instance.SetGamePaused(true);
-            _lastMonthWasHuntingSeason = true;
-            HuntingGoals.Instance.gameObject.SetActive(true);
-            HuntingGoals.Instance.UpdateGoalScreen();
-            InventoryUI.Instance.gameObject.SetActive(false);
-            // InfoUI.Instance.gameObject.SetActive(false);
+            OnHuntingSeasonStart?.Invoke();
+            if (HuntingGoals.Instance.showGoals)
+            {
+                gameObject.SetActive(true);
+                TimeManager.instance.SetGamePaused(true);
+                _lastMonthWasHuntingSeason = true;
+                HuntingGoals.Instance.gameObject.SetActive(true);
+                HuntingGoals.Instance.UpdateGoalScreen();
+                InventoryUI.Instance.gameObject.SetActive(false);
+                // InfoUI.Instance.gameObject.SetActive(false);
+            }
         }
     }
     
@@ -79,13 +85,17 @@ public class RuleManager : UI, IPointerEnterHandler
     private void HuntingSeasonReview()
     {
         // Debug.Log(HuntingSeason() + _lastMonthWasHuntingSeason.ToString() + StatisticsUI.Instance.showStatistics);
-        if (!HuntingSeason() && _lastMonthWasHuntingSeason && StatisticsUI.Instance.showStatistics)
+        if (!HuntingSeason() && _lastMonthWasHuntingSeason)
         {
-            StatisticsUI.Instance.gameObject.SetActive(true);
-            StatisticsUI.Instance.UpdateGraph();
-            TimeManager.instance.SetGamePaused(true);
-            _lastMonthWasHuntingSeason = false;
-            // Debug.Log("Hunting season review");
+            OnHuntingSeasonEnd?.Invoke();
+            if (StatisticsUI.Instance.showStatistics)
+            {
+                StatisticsUI.Instance.gameObject.SetActive(true);
+                StatisticsUI.Instance.UpdateGraph();
+                TimeManager.instance.SetGamePaused(true);
+                _lastMonthWasHuntingSeason = false;
+                // Debug.Log("Hunting season review");
+            }
         }
     }
     
@@ -110,8 +120,32 @@ public class RuleManager : UI, IPointerEnterHandler
     {
         return huntingSeasonRange.Contains(TimeManager.instance.GetMonth());
     }
-    
-    
+
+    public int SeasonMaleQuota()
+    {
+        if (HuntingSeason())
+        {
+            HuntingGoals goalsInstance = HuntingGoals.Instance;
+            return (int)(goalsInstance.squareKmGoal * 15 * (1 - goalsInstance.ratioGoal));
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    public int SeasonFemaleQuota()
+    {
+        if (HuntingSeason())
+        {
+            HuntingGoals goalsInstance = HuntingGoals.Instance;
+            return (int)(goalsInstance.squareKmGoal * 15 * goalsInstance.ratioGoal);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
     //UI - setting values
     public void SetAntlerPointLimit(string inLimit)
     {
