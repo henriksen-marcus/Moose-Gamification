@@ -19,7 +19,7 @@ public class HuntingGoals : MonoBehaviour
     public float averageAgeGoal = 1;
     public bool showGoals = true;
     public float squareKmGoal = 3;
-    
+
     private int _minPop;
 
     private void Awake()
@@ -37,11 +37,8 @@ public class HuntingGoals : MonoBehaviour
 
     public void UpdateGoalScreen()
     {
-        _minPop = RuleManager.Instance.MoosePopMin;
-        ElgManager instance = ElgManager.instance;
-        int mooseToShoot = instance.elg_population - _minPop;
-        UpdateExpectedMales((mooseToShoot * instance.GetMaleRatio()).ToString("F0"));
-        UpdateExpectedFemales((mooseToShoot * (1 - instance.GetMaleRatio())).ToString("F0"));
+        UpdateExpectedMales((squareKmGoal * 15 * (1 - ratioGoal)).ToString("F0"));
+        UpdateExpectedFemales((squareKmGoal * 15 * ratioGoal).ToString("F0"));
         currentHuntingSeason.text = "The current season will last from " + (RuleManager.Month)RuleManager.Instance.huntingSeasonRange.Min() + " through " + (RuleManager.Month)RuleManager.Instance.huntingSeasonRange.Max() + ".";
     }
     public void SetShow(bool show)
