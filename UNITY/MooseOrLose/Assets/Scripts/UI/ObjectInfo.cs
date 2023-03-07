@@ -18,7 +18,6 @@ public class ObjectInfo : MonoBehaviour
             Debug.Log("ObjectInfo Error - Setup failed");
         }
 
-        Debug.Log(background.name);
     }
     public void SpawnInfobar(ClickableObjectInfo info)
     {
@@ -26,7 +25,14 @@ public class ObjectInfo : MonoBehaviour
         {
             foreach(RectTransform child in background)
             {
-                Destroy(child.gameObject);
+                if (child.gameObject.name == "Exit" || child.gameObject.name == "Name")
+                {
+
+                }
+                else
+                {
+                    Destroy(child.gameObject);
+                }
             }
         }
         
