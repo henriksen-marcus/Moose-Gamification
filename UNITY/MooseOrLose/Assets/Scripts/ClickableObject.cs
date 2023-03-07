@@ -23,7 +23,6 @@ public struct ClickableObjectInfo
     public bool pregnant;
     public int days_pregnant;
     public int children_in_belly;
-
 }
 
 /* Base class for all visible objects in

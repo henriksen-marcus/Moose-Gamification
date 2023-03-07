@@ -17,15 +17,19 @@ public class ObjectInfo : MonoBehaviour
         {
             Debug.Log("ObjectInfo Error - Setup failed");
         }
+
+        Debug.Log(background.name);
     }
     public void SpawnInfobar(ClickableObjectInfo info)
     {
-        foreach(RectTransform child in background)
+        if (background != null)
         {
-            Destroy(child.gameObject);
+            foreach(RectTransform child in background)
+            {
+                Destroy(child.gameObject);
+            }
         }
-
-
+        
         switch(info.type)
         {
             case ClickableObjectInfo.ObjectType.Moose:
@@ -78,18 +82,13 @@ public class ObjectInfo : MonoBehaviour
                             children_in_belly.GetComponent<TextMeshProUGUI>().fontSize = 12;
                         }
                         break;
-                    default:
-                        break;
                 }
-
                 break;
             case ClickableObjectInfo.ObjectType.Wolf:
                 name.text = info.type.ToString();
                 break;
             case ClickableObjectInfo.ObjectType.Forest:
                 name.text = info.type.ToString();
-                break;
-            default:
                 break;
         }
     }

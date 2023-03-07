@@ -51,7 +51,12 @@ public class Camera_v2 : MonoBehaviour
     /* How far away from the ground directly beneath us before
      * a 'collision' triggers. */
     private float _groundCollisionRange = 20f;
-    private float _maxMouseDeltaForClick = 2f;
+    /* How much mouse delta until the click counts as a drag. */
+    private float _mouseDeltaForDrag = 0.5f;
+
+    /* How far away the player can click to select a clickable object. */
+    private float _selectDistance = 20f;
+    
     private bool _hasUsedMouseDrag;
     private bool _isPressingMouse;
     
@@ -63,8 +68,9 @@ public class Camera_v2 : MonoBehaviour
     private bool _waitForVelocity;
     
     public GameObject _gameObjectInfo;
-    ObjectInfo _infoBar;
-    //public GameObject InfoBar;
+    private ObjectInfo _infoBar;
+
+    //private GameObject _sphereMesh = null;
 
     private void OnEnable()
     {
@@ -88,7 +94,8 @@ public class Camera_v2 : MonoBehaviour
         _rotationPoint = GameObject.Find("RotationPoint");
         _cameraSocket = GameObject.Find("CameraSocket");
         _mainCamera = GameObject.Find("Camera").GetComponent<Camera>();
-        _infoBar = _gameObjectInfo.GetComponent<ObjectInfo>(); 
+        _infoBar = _gameObjectInfo.GetComponent<ObjectInfo>();
+        
         var camTransform = _mainCamera.transform;
         camTransform.rotation = Quaternion.Euler(45f, 0f, 0f);
         camTransform.position = new Vector3(0f, 150f, -160f);
@@ -161,38 +168,51 @@ public class Camera_v2 : MonoBehaviour
         {
             // Raycast for info bar when clicking on objects
             Vector3 mousePos = Mouse.current.position.ReadValue();
-            mousePos.z = _mainCamera.transform.position.y; // set z-coordinate to camera height
-            var mouseWorldPos = _mainCamera.ScreenToWorldPoint(mousePos);
-            
+            var layerMask = 1 << LayerMask.NameToLayer("Map");
+            Ray ray = _mainCamera.ScreenPointToRay(mousePos);
 
-            // Raycast from mouseworldpos towards the ground
-
-            var hits = Physics.OverlapSphere(mouseWorldPos, 20f);
-            
-            var minDistance = float.MaxValue;
-            GameObject closestAnimal = null;
-            foreach (var hit in hits) {
-                var distance = Vector3.Distance(mouseWorldPos, hit.transform.position);
-                if (distance < minDistance) {
-                    minDistance = distance;
-                    closestAnimal = hit.gameObject;
-                }
-            }
-
-
-            // closesAnimal now is always null
-            if (closestAnimal != null)
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask))
             {
-                // get component clickable object -> get ui info
-
-                //_infoBar.SpawnInfobar(closestAnimal.GetComponent<ClickableObject>().GetClickInfo());
-
-                // Last step
-                _gameObjectInfo.SetActive(true);
-            }
-            
+                // TODO: Make this use a layermask as well
+                var hits = Physics.OverlapSphere(hit.point, _selectDistance);
+                var minDistance = float.MaxValue;
+                GameObject closestObject = null;
+                
+                foreach (var obj in hits) {
+                    var distance = Vector3.Distance(hit.point, obj.transform.position);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestObject = obj.gameObject;
+                    }
+                }
+                
+                if (closestObject != null)
+                {
+                    var clickComponent = closestObject.GetComponent<ClickableObject>();
+                    if (clickComponent)
+                    {
+                        _gameObjectInfo.SetActive(true);
+                        _infoBar.SpawnInfobar(clickComponent.GetClickInfo());
+                    }
+                }
+                // Debug
+                /*if (_sphereMesh)
+                {
+                    _sphereMesh.transform.position = mouseWorldPos;
+                }
+                else
+                {
+                    _sphereMesh = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                    _sphereMesh.transform.position = mouseWorldPos;
+                    _sphereMesh.transform.localScale = new Vector3(10f, 10f, 10f);
+                    Color sphereColor = Color.blue;
+                    Material sphereMaterial = new Material(Shader.Find("Standard"));
+                    sphereMaterial.color = sphereColor;
+                    _sphereMesh.GetComponent<MeshRenderer>().material = sphereMaterial;
+                }*/
+            } 
+            else _gameObjectInfo.SetActive(false);
         }
-
         _hasUsedMouseDrag = false;
     }
     
@@ -224,8 +244,10 @@ public class Camera_v2 : MonoBehaviour
         // Using new input system to get mouse delta
         Vector3 delta = _inputProvider.MouseDelta();
         var deltaMag = delta.magnitude;
+
+        var temp = Mathf.Abs(delta.x) + Mathf.Abs(delta.y);
         
-        _hasUsedMouseDrag = deltaMag > _maxMouseDeltaForClick;
+        _hasUsedMouseDrag = temp > _mouseDeltaForDrag;
         
         var clickWorldPos = _mainCamera.ScreenToViewportPoint(delta);
         var moveOffset = new Vector3(-clickWorldPos.x, 0, -clickWorldPos.y) * _dragSpeed;
@@ -334,9 +356,7 @@ public class Camera_v2 : MonoBehaviour
     }
 
     private float GetScroll() => -_inputProvider.ScrollInput() / 120 * _scrollDistance;
-
     
-
     private void ApplyMovement()
     {
         _rotationPoint.transform.Translate(_velocity * (Time.deltaTime * 45f));
