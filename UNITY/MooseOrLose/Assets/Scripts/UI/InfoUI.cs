@@ -9,7 +9,7 @@ public class InfoUI : UI
 {
     public static InfoUI Instance;
     
-    public bool gridOn = true;
+    public bool gridOn = false;
     [Header("Moose")]
     [SerializeField] private TextMeshProUGUI mooseCount;
     [SerializeField] private TextMeshProUGUI mMaleCount;
@@ -23,6 +23,9 @@ public class InfoUI : UI
     [SerializeField] private TextMeshProUGUI hunterCount;
     [Header("Wolves")]
     [SerializeField] private TextMeshProUGUI wolfCount;
+
+    [SerializeField] private TextMeshProUGUI mSquareKm;
+    [SerializeField] private TextMeshProUGUI mSquareKmGoal;
 
     private void Start()
     {
@@ -55,8 +58,7 @@ public class InfoUI : UI
         }
         
         string text = mMaleAgeGoal.text.ToString(CultureInfo.InvariantCulture);
-        float result;
-        if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out result))
+        if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out float result))
         {
             mMaleAge.color = Math.Abs(instance.GetMalePopulationAge() - result) > 0.1f ? Color.red : Color.white;
         }
@@ -106,7 +108,10 @@ public class InfoUI : UI
     {
         mMaleRatioGoal.text = inString;
     }
-    
+    public void UpdateSquareKmGoal(float km)
+    {
+        mSquareKmGoal.text = km.ToString("F2");
+    }
     // private enum Agent
     // {
     //     Moose = 0,
