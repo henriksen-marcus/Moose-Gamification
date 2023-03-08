@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
 {
 
 
+    /*
     public float dragSpeed = 2;
     private Vector3 dragOrigin;
     Camera mainCamera;
@@ -196,5 +197,5 @@ public class CameraController : MonoBehaviour
         GameObject ib3 = Instantiate(InfoBar, background.transform);
         ib3.GetComponent<TextMeshProUGUI>().text = "Height : " + script.forest_Height.ToString();
 
-    }
+    }*/
 }

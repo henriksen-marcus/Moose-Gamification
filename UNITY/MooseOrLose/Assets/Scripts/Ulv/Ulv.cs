@@ -2,9 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Ulv : MonoBehaviour
+public class Ulv : ClickableObject
 {
+    public override ClickableObjectInfo GetClickInfo()
+    {
+        ClickableObjectInfo info = new ClickableObjectInfo();
+        info.type = ClickableObjectInfo.ObjectType.Wolf;
 
+        return info;
+    }
 
     public GameObject ulvPrefab;
 

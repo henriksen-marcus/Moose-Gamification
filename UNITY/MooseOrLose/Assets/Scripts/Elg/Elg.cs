@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public enum Gender
 {
@@ -17,11 +19,8 @@ public enum ElgState
 }
 
 
-public class Elg : MonoBehaviour
+public class Elg : ClickableObject
 {
-
-    
-
     [Header("Statistics")]
     public int age_days;
     public int age_months;
@@ -31,10 +30,7 @@ public class Elg : MonoBehaviour
 
     public float hunger;
     public ElgState AIstate;
-
-
-
-
+    
     [Header("Genes")]
     public int natural_size;
     public int natural_antler_size;
@@ -94,19 +90,53 @@ public class Elg : MonoBehaviour
         daysPregnant = 0;
         hasPartner = false;
         hasMated = false;
-
+        
+        outline = gameObject.AddComponent<Outline>();
+        outline.OutlineColor = Color.white;
+        outline.OutlineWidth = 7f;
+        outline.enabled = false;
     }
-
-
-
+    
     private void Start()
     {    
         TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
         TimeManager.instance.OnNewDay += NextDay;
+        outline.OutlineMode = Outline.Mode.OutlineHidden;
     }
 
+    private void Update()
+    {
+        if (!IsSelected) ToggleOutline(false);
+    }
+
+    public override ClickableObjectInfo GetClickInfo()
+    {
+        ClickableObjectInfo returnObject = new ClickableObjectInfo();
+        returnObject.type = ClickableObjectInfo.ObjectType.Moose;
+        returnObject.age_years = age_years;
+        returnObject.age_months = age_months;
+        returnObject.age_years = age_years;
+        returnObject.weight = (int)weight;
+
+        returnObject.gender = gender;
+        switch(gender)
+        {
+            case Gender.Male:
+                returnObject.antler_tags = antler_tag_number;
+                break;
+            case Gender.Female:
+                returnObject.pregnant = pregnant;
+                returnObject.days_pregnant = daysPregnant;
+                returnObject.children_in_belly = childrenInBelly;
+                break;
+            default:
+                break;
+        }
+
+        return returnObject;
+    }
     public void SpawnPregnant()
     {
         // Pregnancy
