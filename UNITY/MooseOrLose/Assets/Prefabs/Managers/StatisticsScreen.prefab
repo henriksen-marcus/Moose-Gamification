@@ -1549,7 +1549,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graph: {fileID: 8177197757758405738}
-  showStatistics: 1
+  showStatistics: 0
 --- !u!1 &4719620069264652908
 GameObject:
   m_ObjectHideFlags: 0
@@ -2575,7 +2575,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!1 &8409221151776437789
 GameObject:
   m_ObjectHideFlags: 0

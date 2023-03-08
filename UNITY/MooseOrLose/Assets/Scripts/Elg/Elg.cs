@@ -91,10 +91,14 @@ public class Elg : ClickableObject
         hasPartner = false;
         hasMated = false;
         
-        outline = gameObject.AddComponent<Outline>();
-        outline.OutlineColor = Color.white;
-        outline.OutlineWidth = 7f;
-        outline.enabled = false;
+        if (gameObject.GetComponent<Outline>() == null)
+        {
+            outline = gameObject.AddComponent<Outline>();
+            outline.OutlineColor = Color.white;
+            outline.OutlineWidth = 7f;
+            outline.enabled = false;
+            outline.OutlineMode = Outline.Mode.OutlineHidden;
+        }
     }
     
     private void Start()
@@ -103,7 +107,17 @@ public class Elg : ClickableObject
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
         TimeManager.instance.OnNewDay += NextDay;
-        outline.OutlineMode = Outline.Mode.OutlineHidden;
+
+        if (gameObject.GetComponent<Outline>() == null)
+        {
+            outline = gameObject.AddComponent<Outline>();
+            outline.OutlineColor = Color.white;
+            outline.OutlineWidth = 7f;
+            outline.enabled = false;
+            outline.OutlineMode = Outline.Mode.OutlineHidden;
+        }
+        
+        
     }
 
     private void Update()
@@ -562,5 +576,12 @@ public class Elg : ClickableObject
     public int NumberOfAntlerTags()
     {
         return antler_tag_number;
+    }
+
+    private void OnDestroy()
+    {
+        TimeManager.instance.OnNewYear -= ShedAntlers; //TEMPORARY
+        TimeManager.instance.OnSpringBegin -= GrowAntlers;
+        TimeManager.instance.OnNewDay -= NextDay;
     }
 }

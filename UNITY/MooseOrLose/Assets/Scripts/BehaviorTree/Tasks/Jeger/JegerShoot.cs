@@ -35,19 +35,27 @@ public class JegerShoot : Node
                     mAgent.isStopped = false;
                     return NodeState.FAILURE;
                 }
+                if (target.GetComponent<Elg>().gender == Gender.Male)
+                {
+                    JegerManager.instance.ShotMale();
+                }
+                else
+                {
+                    JegerManager.instance.ShotFemale();
+                }
                 parent.ClearData("Target");
                 parent.SetData("Shooting", false);
                 mAgent.isStopped = false;
                 target.GetComponent<Elg>().Die();
-                if (parent.GetData("Daily Kills") == null)
+                if (parent.GetData("Weekly Kills") == null)
                 {                   
-                    parent.SetData("Daily Kills", 1);
+                    parent.SetData("Weekly Kills", 1);
                 }
                 else
                 {
-                    int num = (int)parent.GetData("Daily Kills");
+                    int num = (int)parent.GetData("Weekly Kills");
                     num++;
-                    parent.SetData("Daily Kills", num);
+                    parent.SetData("Weekly Kills", num);
                 }
                 
             }

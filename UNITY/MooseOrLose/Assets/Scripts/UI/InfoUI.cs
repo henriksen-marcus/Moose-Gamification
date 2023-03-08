@@ -64,7 +64,6 @@ public class InfoUI : UI
         }
         else
         {
-            Debug.Log("Not a valid number");
         }
 
         string maleratio = instance.GetMaleRatio().ToString();
@@ -84,7 +83,7 @@ public class InfoUI : UI
         }
         else
         {
-            Debug.Log("Not a valid number");
+            
         }
        
     }

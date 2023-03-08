@@ -37,7 +37,7 @@ public class Terrain : MonoBehaviour, IDropHandler
         _ray = new Ray(spawnPoint.position, -spawnPoint.up);
         if (Physics.Raycast(_ray, out _hit))
         {
-            Debug.Log("Test");
+            
             var pos = spawnPoint.position;
             pos = new Vector3(pos.x, pos.y -= _hit.distance - 1, pos.z);
             spawnPoint.position = pos;

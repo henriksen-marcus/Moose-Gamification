@@ -40,7 +40,7 @@ public class GridManager : MonoBehaviour
                 spawnedTerrain.name = $"Terrain {x} {z}";
                 spawnedTerrain.Init();
                 _terrainTiles[new Vector2(x, z)] = spawnedTerrain;
-                Debug.Log("Spawned tile");
+                
             }
         }
         
