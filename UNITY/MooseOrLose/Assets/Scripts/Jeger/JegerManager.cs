@@ -21,7 +21,12 @@ public class JegerManager : MonoBehaviour
     [Header("Array")]
     [SerializeField] List<GameObject> jeger_list;
 
+    int expectedFemales;
+    int expectedMales;
+    public int currentFemales;
+    public int currentMales;
 
+    private bool lastMonthWasHuntingSeason = false;
     private void Awake()
     {
         if (instance == null)
@@ -38,7 +43,28 @@ public class JegerManager : MonoBehaviour
             jeger_list.Add(go);
         }
         jeger_population = jeger_startpopulation;
+
+        TimeManager.instance.OnNewMonth += NewMonth;
     }
+
+    void NewMonth()
+    {
+        if (!lastMonthWasHuntingSeason && RuleManager.Instance.HuntingSeason())
+        {
+            setExpectedHunting();
+        }
+
+        lastMonthWasHuntingSeason = RuleManager.Instance.HuntingSeason();
+    }
+
+    public void setExpectedHunting()
+    {
+        expectedFemales = RuleManager.Instance.SeasonFemaleQuota();
+        expectedMales = RuleManager.Instance.SeasonMaleQuota();
+        currentFemales = expectedFemales;
+        currentMales = expectedMales;
+    }
+
 
 
     public void AddToList(GameObject go)
@@ -51,6 +77,33 @@ public class JegerManager : MonoBehaviour
     {
         jeger_population--;
         jeger_list.Remove(go);
+    }
+
+    public bool canShootMale()
+    {
+        if (currentMales > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+    public bool canShootFemale()
+    {
+        if (currentFemales > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public void ShotFemale()
+    {
+        currentFemales--;
+    }
+
+    public void ShotMale()
+    {
+        currentMales--;
     }
 
 

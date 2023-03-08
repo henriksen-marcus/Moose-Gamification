@@ -7,6 +7,7 @@ public class JegerFindTarget : Node
 {
     float mTargetRange;
     Transform mTransform;
+    int days;
     public JegerFindTarget(float range, Transform transform)
     {
         mTargetRange = range;
@@ -22,9 +23,9 @@ public class JegerFindTarget : Node
             return NodeState.SUCCESS;
         }
 
-        if (parent.GetData("Daily Kills") == null)
+        if (parent.GetData("Weekly Kills") == null)
         {
-            parent.SetData("Daily Kills", 0);
+            parent.SetData("Weekly Kills", 0);
         }
         Collider[] colliders = Physics.OverlapSphere(mTransform.position, mTargetRange);
         
@@ -42,21 +43,29 @@ public class JegerFindTarget : Node
                         {
 
                         }
-                        else if (RuleManager.Instance.CanShootChild(mScript.mother.GetComponent<Elg>().number_of_children, (int)parent.GetData("Daily Kills")))
+                        else if (!RuleManager.Instance.CanShootChild(mScript.mother.GetComponent<Elg>().number_of_children, (int)parent.GetData("Weekly Kills")))
                         {
                             continue;
                         }
                     }
                     if (mScript.gender == Gender.Male)
                     {
-                        if (!RuleManager.Instance.CanShootMale(mScript.antler_tag_number, (int)parent.GetData("Daily Kills")))
+                        if (!RuleManager.Instance.CanShootMale(mScript.antler_tag_number, (int)parent.GetData("Weekly Kills")))
+                        {
+                            continue;
+                        }
+                        if (!JegerManager.instance.canShootMale())
                         {
                             continue;
                         }
                     }
                     else
                     {
-                        if (!RuleManager.Instance.CanShootFemale(mScript.number_of_children, (int)parent.GetData("Daily Kills")))
+                        if (!RuleManager.Instance.CanShootFemale(mScript.number_of_children, (int)parent.GetData("Weekly Kills")))
+                        {
+                            continue;
+                        }
+                        if (!JegerManager.instance.canShootFemale())
                         {
                             continue;
                         }
@@ -76,7 +85,13 @@ public class JegerFindTarget : Node
 
     void NewDay()
     {
-        parent.SetData("Daily Kills", 0);
+        days++;
+        if (days > 6)
+        {
+            days = 0;
+            parent.SetData("Weekly Kills", 0);
+        }
+        
     }
 
 }

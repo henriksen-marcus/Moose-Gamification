@@ -21,7 +21,7 @@ public class UlvManager : MonoBehaviour
     public int minPackSize = 2;
     public int maxPackSize = 4;
     [Header("List of Spawned GameObjects")]
-    [SerializeField] List<List<GameObject>> ulv_list = new List<List<GameObject>>();
+    [SerializeField] public List<List<GameObject>> ulv_list = new List<List<GameObject>>();
 
     public GameObject Ulv;
     // Start is called before the first frame update
@@ -73,16 +73,43 @@ public class UlvManager : MonoBehaviour
                 }
                 pack[j].GetComponent<Ulv>().pack = pack;
             }
-
+            ulv_list.Add(pack);
 
         }
         ulv_packs = numberOfPacks;
     }
 
+    void Start()
+    {
+        TimeManager.instance.OnNewMonth += NewMonth;
+    }
+
+    void NewMonth()
+    {
+        if (TimeManager.instance.GetMonth() == 6 || TimeManager.instance.GetMonth() == 2)
+        {
+            SpawnPack(UnityEngine.Random.Range(minPackSize, maxPackSize + 1), new Vector3(UnityEngine.Random.Range(-200, 200), 10, 180));
+        }
+        else
+        {
+            for (int i = 0; i < ulv_list.Count; i++)
+            {
+                for (int j = 0; j < ulv_list[i].Count; j++)
+                {
+                    Destroy(ulv_list[i][j]);
+                    Debug.Log("Delete Wolf");
+                }
+            }
+            Debug.Log("Clear List");
+            ulv_list.Clear();
+        }
+        
+    }
+
     public void SpawnPack(int size, Vector3 position)
     {
-       
-      
+
+            Debug.Log("SpawnPack");
             List<GameObject> pack = new List<GameObject>();
             NavMeshHit hit;
             NavMesh.SamplePosition(position, out hit, 200, 1);
@@ -116,6 +143,7 @@ public class UlvManager : MonoBehaviour
                 }
                 pack[j].GetComponent<Ulv>().pack = pack;
             }
+            ulv_list.Add(pack);
             ulv_packs++;
     }
     public void MaleBorn()

@@ -28,6 +28,11 @@ public class Graph : MonoBehaviour
         mooseFemales = false;
         mooseChildren = false;
 
+        
+    }
+
+    private void Start()
+    {
         transform.parent.gameObject.SetActive(false);
     }
 

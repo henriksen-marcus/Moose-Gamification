@@ -75,7 +75,7 @@ public class Ulv : ClickableObject
     void NaturalHungerDrain()
     {
 
-        hunger -= Random.Range(8,15);
+        hunger -= Random.Range(15,25);
         hunger = Mathf.Clamp(hunger, 0, 100);
 
     }
@@ -182,6 +182,12 @@ public class Ulv : ClickableObject
     {
         isLeader = true;
         UlvManager.instance.IncreaseUlvPacks();
+    }
+
+    private void OnDestroy()
+    {
+        TimeManager.instance.OnNewDay -= NextDay;
+        TimeManager.instance.OnNewDay -= NaturalHungerDrain;
     }
 
 
