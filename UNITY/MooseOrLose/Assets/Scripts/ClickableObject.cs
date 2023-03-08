@@ -30,6 +30,21 @@ public struct ClickableObjectInfo
  * retrieved some UI info from. */
 public abstract class ClickableObject : MonoBehaviour
 {
+    /* When hovering hte mouse cursor */
+    protected Outline outline;
+    protected bool IsSelected;
+
     // This function needs to be overridden.
     public abstract ClickableObjectInfo GetClickInfo();
+
+    public void ToggleOutline(bool enabled) => outline.enabled = enabled;
+
+    public void SetOutlineSelected(bool selected)
+    {
+        outline.OutlineColor = selected ? Color.green : Color.white;
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.OutlineWidth = 6.5f;
+        outline.enabled = selected;
+        IsSelected = selected;
+    }
 }

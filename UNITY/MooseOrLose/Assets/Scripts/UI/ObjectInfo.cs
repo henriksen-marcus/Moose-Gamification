@@ -21,21 +21,18 @@ public class ObjectInfo : MonoBehaviour
     }
     public void SpawnInfobar(ClickableObjectInfo info)
     {
-        if (background != null)
+        foreach(RectTransform child in background)
         {
-            foreach(RectTransform child in background)
+            if (child.gameObject.name == "Exit" || child.gameObject.name == "Name")
             {
-                if (child.gameObject.name == "Exit" || child.gameObject.name == "Name")
-                {
 
-                }
-                else
-                {
-                    Destroy(child.gameObject);
-                }
+            }
+            else
+            {
+                Destroy(child.gameObject);
             }
         }
-        
+
         switch(info.type)
         {
             case ClickableObjectInfo.ObjectType.Moose:

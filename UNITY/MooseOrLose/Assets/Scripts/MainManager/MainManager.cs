@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MainManager : MonoBehaviour
 {
+    public static MainManager Instance;
+    
     [Header("Managers")]
     [SerializeField] GameObject managerParent;
     [SerializeField] GameObject colorManager;
@@ -23,12 +25,21 @@ public class MainManager : MonoBehaviour
     [Header("Forests")]
     public GameObject forestParent;
 
+    public delegate void ObjectSelectedEventHandler();
+    public event ObjectSelectedEventHandler ObjectDeselected;
+
+    public virtual void OnObjectDeselected()
+    {
+        ObjectDeselected?.Invoke();
+    }
 
     //--------------------
 
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
+        
         //Spawn "Map Folder" to Hirearchy
         Instantiate(mapParent, Vector3.zero, Quaternion.identity);
 

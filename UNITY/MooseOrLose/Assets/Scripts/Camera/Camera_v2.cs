@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 
 public class Camera_v2 : MonoBehaviour
 {
+    public Texture2D tex;
+    
     private InputProvider _inputProvider;
     private GameObject _rotationPoint;
     private GameObject _cameraSocket;
@@ -55,10 +57,13 @@ public class Camera_v2 : MonoBehaviour
     private float _mouseDeltaForDrag = 0.5f;
 
     /* How far away the player can click to select a clickable object. */
-    private float _selectDistance = 20f;
+    private float _selectDistance = 10f;
     
     private bool _hasUsedMouseDrag;
     private bool _isPressingMouse;
+
+    private ClickableObject _selectedObject;
+    private bool _isObjectSelected;
     
     /* If the mouse drag movement has been used, wait
      * for the velocity given by the mouse to decrease
@@ -135,6 +140,52 @@ public class Camera_v2 : MonoBehaviour
         CameraUpdate();
     }
 
+    private void LateUpdate()
+    {
+        HoverCheck();
+    }
+
+    /* Checks if a clickable object is under the cursor,
+     * and if so outlines that object. */
+    private void HoverCheck()
+    {
+        Vector3 mousePos = Mouse.current.position.ReadValue();
+        var layerMask = 1 << LayerMask.NameToLayer("Map");
+        Ray ray = _mainCamera.ScreenPointToRay(mousePos);
+
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask))
+        {
+            var closestObject = GetSphereOverlap(hit.point);
+            if (!closestObject || closestObject == _selectedObject) return;
+            
+            var clickComponent = closestObject.GetComponent<ClickableObject>();
+            if (clickComponent)
+            {
+                clickComponent.ToggleOutline(true);
+                //Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
+            };
+        }
+    }
+
+    /* Returns the closest moveable object to the given position. */
+    private GameObject GetSphereOverlap(Vector3 position)
+    {
+        var layerMask = 1 << 3;
+        var hits = Physics.OverlapSphere(position, _selectDistance, layerMask);
+        var minDistance = float.MaxValue;
+        GameObject closestObject = null;
+
+        foreach (var obj in hits) {
+            var distance = Vector3.Distance(position, obj.transform.position);
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestObject = obj.gameObject;
+            }
+        }
+        
+        return closestObject;
+    }
+
     /* In this function we simulate a camera spring arm. */
     private void CameraUpdate()
     {
@@ -173,19 +224,7 @@ public class Camera_v2 : MonoBehaviour
 
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask))
             {
-                // TODO: Make this use a layermask as well
-                var hits = Physics.OverlapSphere(hit.point, _selectDistance);
-                var minDistance = float.MaxValue;
-                GameObject closestObject = null;
-                
-                foreach (var obj in hits) {
-                    var distance = Vector3.Distance(hit.point, obj.transform.position);
-                    if (distance < minDistance) {
-                        minDistance = distance;
-                        closestObject = obj.gameObject;
-                    }
-                }
-                
+                var closestObject = GetSphereOverlap(hit.point);
                 if (closestObject != null)
                 {
                     var clickComponent = closestObject.GetComponent<ClickableObject>();
@@ -193,6 +232,10 @@ public class Camera_v2 : MonoBehaviour
                     {
                         _gameObjectInfo.SetActive(true);
                         _infoBar.SpawnInfobar(clickComponent.GetClickInfo());
+                        if (_selectedObject) _selectedObject.SetOutlineSelected(false);
+                        //MainManager.Instance.OnObjectDeselected();
+                        clickComponent.SetOutlineSelected(true);
+                        _selectedObject = clickComponent;
                     }
                 }
                 // Debug
@@ -253,7 +296,7 @@ public class Camera_v2 : MonoBehaviour
         var moveOffset = new Vector3(-clickWorldPos.x, 0, -clickWorldPos.y) * _dragSpeed;
 
         // Dragging fast gives an extra boost
-        _velocity += moveOffset * (delta.magnitude * 0.45f * 0.02f);
+        _velocity += moveOffset * (delta.magnitude * 0.5f * 0.02f);
         _velocity = Vector3.ClampMagnitude(_velocity, _maxMouseVelocity);
         _waitForVelocity = true;
 
