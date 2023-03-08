@@ -17,7 +17,12 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
         // _rectTransform = GetComponent<RectTransform>();
         // _canvasGroup = GetComponent<CanvasGroup>();
     }
-    
+
+    private void Start()
+    {
+        InfoUI.Instance.gridOn = false;
+    }
+
     public void OnPointerDown(PointerEventData eventData)
     {
         Debug.Log("On Pointer down");
@@ -28,6 +33,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     
     public void OnBeginDrag(PointerEventData eventData)
     {
+        InfoUI.Instance.gridOn = true;
         Debug.Log("On Start dragging");
         _canvasGroup.alpha = .6f;
         _canvasGroup.blocksRaycasts = false;
@@ -38,6 +44,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     }
     public void OnEndDrag(PointerEventData eventData)
     {
+        InfoUI.Instance.gridOn = false;
         Debug.Log("On End dragging");
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
