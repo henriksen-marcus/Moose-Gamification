@@ -35,48 +35,6 @@ public class UlvManager : MonoBehaviour
             instance = this;
         }
 
-        int numberOfPacks = UnityEngine.Random.Range(minNumberOfPacks, maxNumberOfPacks + 1);
-        for (int i = 0; i < numberOfPacks; i++)
-        {
-            // Spawn
-            int wolvedInPack = UnityEngine.Random.Range(minPackSize, maxPackSize + 1);
-            List<GameObject> pack = new List<GameObject>();
-            NavMeshHit hit;
-            NavMesh.SamplePosition(new Vector3(UnityEngine.Random.Range(-200, 200), 10, UnityEngine.Random.Range(-200, 200)), out hit, 200, 1);
-            for (int j = 0; j < wolvedInPack; j++)
-            {
-                GameObject go = Instantiate(Ulv, hit.position, Quaternion.identity, transform);
-                pack.Add(go);
-                ulv_population++;
-            }
-
-
-            // Decide Leader
-            int best = 0;
-            int bestSize = 0;
-            for (int j = 0; j < pack.Count; j++)
-            {
-                int wolfsize = pack[j].GetComponent<Ulv>().natural_size;
-                if (wolfsize > bestSize && pack[j].GetComponent<Ulv>().gender == Gender.Male)
-                {
-                    best = j;
-                    bestSize = wolfsize;
-                }
-            }
-            pack[best].GetComponent<Ulv>().isLeader = true;
-
-            for (int j = 0; j < pack.Count; j++)
-            { 
-                if (j != best)
-                {
-                    pack[j].GetComponent<Ulv>().leader = pack[best].transform;
-                }
-                pack[j].GetComponent<Ulv>().pack = pack;
-            }
-            ulv_list.Add(pack);
-
-        }
-        ulv_packs = numberOfPacks;
     }
 
     void Start()
