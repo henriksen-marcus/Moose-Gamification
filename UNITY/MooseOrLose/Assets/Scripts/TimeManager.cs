@@ -135,5 +135,27 @@ public class TimeManager : MonoBehaviour
     
     public event Action OnSpringBegin;
     public void SpringBegin() => OnSpringBegin?.Invoke();
-    
+
+
+    public void SpeedUp()
+    {
+        playSpeed *= 0.5f;
+        if (playSpeed < 0.5f)
+        {
+            playSpeed = 0.5f;
+        }
+    }
+    public void SlowDown()
+    {
+        playSpeed *= 2f;
+        if (playSpeed > 4f)
+        {
+            playSpeed = 4f;
+        }
+    }
+    public void TogglePlay()
+    {
+        SetGamePaused(!gamePaused);
+    }
+
 }
