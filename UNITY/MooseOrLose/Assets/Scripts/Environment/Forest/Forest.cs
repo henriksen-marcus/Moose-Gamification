@@ -26,8 +26,8 @@ public class Forest : MonoBehaviour
     public float forest_Height;
     public float forest_Density;
 
-    Trees[] treeArray;
-    public List<Trees> treeList;
+    Tree[] treeArray;
+    public List<Tree> treeList;
 
     private MeshRenderer meshRenderer;
 
@@ -89,11 +89,11 @@ public class Forest : MonoBehaviour
 
     void MakeTreesInForestArray()
     {
-        treeArray = new Trees[treesAmountInForest];
+        treeArray = new Tree[treesAmountInForest];
 
         for (int i = 0; i < treesAmountInForest; i++)
         {
-            treeArray[i] = new Trees
+            treeArray[i] = new Tree
             {
                 //Tree age and height
                 treeType = forestType
@@ -127,7 +127,7 @@ public class Forest : MonoBehaviour
 
     void MoveFromArrayToList()
     {
-        treeList = new List<Trees>(treeArray);
+        treeList = new List<Tree>(treeArray);
 
         treeArray = null;
     }
@@ -222,9 +222,9 @@ public class Forest : MonoBehaviour
     #region Functions for a Moose to call
     public int GetForestTreeAmount() { return treeList.Count; }
 
-    public Trees GetATree(int a) { return treeList[a]; }
+    public Tree GetATree(int a) { return treeList[a]; }
 
-    public Trees GetOptimalTreeToEat()
+    public Tree GetOptimalTreeToEat()
     {
         var bestTree = treeList.Find(t => t.treeHealth == TreeHealth.Healthy && t.stemHeight < 3);
         if (bestTree != null) return bestTree;
@@ -287,7 +287,7 @@ public class Forest : MonoBehaviour
         {
             for (int j = 0; j < treeList[i].CheckIfGettingBirth(); j++)
             {
-                treeList.Add(new Trees());
+                treeList.Add(new Tree());
                 treeList[treeList.Count - 1].treeType = forestType;
                 treeList[treeList.Count - 1].SetBirth();
             }

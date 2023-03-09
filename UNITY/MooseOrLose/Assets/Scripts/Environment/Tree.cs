@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 [System.Serializable]
-public class Trees
+public class Tree
 {
     ForestManager forestManager;
 
@@ -48,9 +49,13 @@ public class Trees
 
     float stemHeightPortionOfTree;
 
-
+    private bool _pauseGrowth = false;
     //--------------------
 
+    private void Start()
+    {
+        TimeManager.instance.OnSpringBegin += ResumeGrowth;
+    }
 
     public void SetBirth()
     {
@@ -68,7 +73,7 @@ public class Trees
         SetTreeDiameter();
         SetStemHeight();
         SetBudSize();
-        SetTreeVolum();
+        SetTreeVolume();
 
         SetTreeHP();
     }
@@ -91,7 +96,11 @@ public class Trees
 
     //--------------------
 
-
+    private void ResumeGrowth()
+    {
+        _pauseGrowth = false;
+    }
+    
     void SetTreeAge()
     {
         switch (treeType)
@@ -161,15 +170,14 @@ public class Trees
         budSize = treeAge_InDaysTotal * growthRate_Bud; 
     }
     
-    void SetTreeVolum()
+    void SetTreeVolume()
     {
         treeVolume = 0.5f * Mathf.Pow((Mathf.PI * treeHeight * (0.5f * treeDiameter)), 2f);
     }
 
 
     //--------------------
-
-
+    
     /* TODO: It's better if we update each tree's date through forestmanager.
      That way we ensure that it's correct and don't rely on each Tree to keep the date. */
     void UpdateTreeAge()
@@ -192,12 +200,14 @@ public class Trees
     
     void UpdateTreeHeight()
     {
-        treeHeight += growthRate_Height;
+        if (!_pauseGrowth)
+            treeHeight += growthRate_Height;
     }
     
     void UpdateTreeDiameter()
     {
-        treeDiameter += growthRate_Diameter;
+        if (!_pauseGrowth)
+            treeDiameter += growthRate_Diameter;
     }
     
     void UpdateTreeHealth()
@@ -357,17 +367,23 @@ public class Trees
     void UpdateStemHeight()
     {
         // TODO: All paths returned the same value. Update when proper data is acquired.
-        switch (treeType)
+        if (!_pauseGrowth)
         {
-            case ForestType.Birch:
-            case ForestType.Spruce:
-            case ForestType.Pine:
-                stemHeight += growthRate_Height / stemHeightPortionOfTree;
-                break;
+            switch (treeType)
+            {
+                case ForestType.Birch:
+                case ForestType.Spruce:
+                case ForestType.Pine:
+                    stemHeight += growthRate_Height / stemHeightPortionOfTree;
+                    break;
+            }
         }
     }
-    
-    void UpdateBudSize() { budSize += growthRate_Bud; }
+
+    void UpdateBudSize()
+    {
+        budSize += growthRate_Bud;
+    }
     
     void UpdateTreeVolume()
     {
@@ -378,35 +394,54 @@ public class Trees
 
     //--------------------
 
-
-    public void EatFromTree()
+    public bool Edible()
     {
-        switch (treeHealth)
+        if (treeHeight < 3 /* budSize > some value maybe */)
+            return true;
+        
+        return false;
+    }
+
+    public bool EatFromTree()
+    {
+        // switch (treeHealth)
+        // {
+        //     case TreeHealth.Healthy:
+        //         treeHealth = TreeHealth.Damaged;
+        //         break;
+        //     case TreeHealth.Damaged:
+        //         treeHealth = TreeHealth.Broken;
+        //         break;
+        //     case TreeHealth.Broken:
+        //         treeHealth = TreeHealth.Chopped;
+        //         break;
+        //     default:
+        //         //Debug.Log("There is no more food to get from this tree");
+        //         break;
+        // }
+        if (Edible())
         {
-            case TreeHealth.Healthy:
-                treeHealth = TreeHealth.Damaged;
-                break;
-            case TreeHealth.Damaged:
-                treeHealth = TreeHealth.Broken;
-                break;
-            case TreeHealth.Broken:
-                treeHealth = TreeHealth.Chopped;
-                break;
-            default:
-                //Debug.Log("There are no more food to get from this tree");
-                break;
+            _pauseGrowth = true;
+            budSize = 0;
+            return true;
+        }
+        else
+        {
+            Debug.Log("Tried eating from inedible tree");
+            return false;
         }
     }
 
     public void SetGenes()
     {
         float num = Random.Range(0.75f, 1.25f); // TODO: Vennligst beskriv hva denne verdien er.
+        // ^ Er det ikke bare random variance?
 
         switch (treeType)
         {
             case ForestType.Birch:
                 //Growth per day
-                growthRate_Height = 0.0006088f * num;
+                growthRate_Height = 0.0006088f * num; // Jeg er mer interessert i disse tallene :P
                 growthRate_Diameter = 0.0000122f * num;
                 growthRate_Bud = 0.000006088f * num;
                 break;
@@ -460,7 +495,6 @@ public class Trees
             }
             return 0;
         }
-
 
         /* Previous code had the same outcome for every tree type, putting this
          here for when proper data for each tree type is acquired. Just add
