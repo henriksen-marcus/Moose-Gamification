@@ -76,7 +76,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af408b80acaa10c4b954ceb381674df8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _widthX: 10
-  _widthZ: 10
+  _widthX: 40
+  _widthZ: 40
   _terrainPrefab: {fileID: 2284322481019234212, guid: eb94dfc12c4ca4f4692e7ea3efa39308, type: 3}
   tileParent: {fileID: 4434922881383572142}
