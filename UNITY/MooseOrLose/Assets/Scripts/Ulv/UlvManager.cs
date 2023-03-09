@@ -55,10 +55,10 @@ public class UlvManager : MonoBehaviour
                 for (int j = 0; j < ulv_list[i].Count; j++)
                 {
                     Destroy(ulv_list[i][j]);
-                    Debug.Log("Delete Wolf");
+                    
                 }
             }
-            Debug.Log("Clear List");
+            
             ulv_list.Clear();
         }
         
