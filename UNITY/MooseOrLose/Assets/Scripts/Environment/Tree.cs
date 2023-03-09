@@ -9,10 +9,15 @@ using Random = UnityEngine.Random;
 [System.Serializable]
 public class Tree
 {
-    ForestManager forestManager;
+    public Tree(Forest inOwner)
+    {
+        _ownerForest = inOwner;
+    }
+
+    private Forest _ownerForest;
 
     [Header("Tree Age")]
-    public float treeAge_InDaysTotal;
+    public int treeAgeInDaysTotal;
     public int year;
     public int month;
     public int day;
@@ -22,7 +27,7 @@ public class Tree
     public TreeHealth treeHealth;
     public ForestType treeType;
     public bool isDead = false;
-    int succeededSeeds = 0;
+    int _succeededSeeds = 0;
 
     [Header("Properties")]
     public float treeHeight;
@@ -30,6 +35,8 @@ public class Tree
     public float treeVolume;
     public float stemHeight;
     public float budSize;
+    public float shadowArea;
+    public float shadowFactor;
 
     [Header("Damages")]
     public float barkDamage;
@@ -41,13 +48,12 @@ public class Tree
     public float foodAttached;
 
     [Header("Genes")]
-    public float growthRate_Height;
-    public float growthRate_Diameter;
+    public float growthRateHeight;
+    public float growthRateDiameter;
     public float darknessTolerance;
     public float soilWaterDrinkability;
-    public float growthRate_Bud;
-
-    float stemHeightPortionOfTree;
+    public float growthRateBud;
+    float _stemHeightPortionOfTree;
 
     private bool _pauseGrowth = false;
     //--------------------
@@ -55,6 +61,7 @@ public class Tree
     private void Start()
     {
         TimeManager.instance.OnSpringBegin += ResumeGrowth;
+        TimeManager.instance.OnNewYear += UpdateTreeDie;
     }
 
     public void SetBirth()
@@ -87,10 +94,9 @@ public class Tree
         UpdateStemHeight();
         UpdateBudSize();
         UpdateTreeVolume();
+        UpdateShadowArea();
 
         UpdateTreeHealth();
-
-        UpdateTreeDie();
     }
 
 
@@ -106,33 +112,33 @@ public class Tree
         switch (treeType)
         {
             case ForestType.Birch:
-                year = Random.Range(0, 90);
+                year = Random.Range(0, 250);
                 month = Random.Range(1, 13);
-                day = Random.Range(1, 30);
+                day = Random.Range(1, 32);
                 break;
             case ForestType.Spruce:
-                year = Random.Range(0, 350);
+                year = Random.Range(0, 300);
                 month = Random.Range(1, 13);
-                day = Random.Range(1, 30);
+                day = Random.Range(1, 32);
                 break;
             case ForestType.Pine:
-                year = Random.Range(0, 450);
+                year = Random.Range(0, 350);
                 month = Random.Range(1, 13);
-                day = Random.Range(1, 30);
+                day = Random.Range(1, 32);
                 break;
         }
 
-        treeAge_InDaysTotal = (year * 365) + (month * 30) + (day);
+        treeAgeInDaysTotal = year * 365 + month * 30 + day;
     }
     
     void SetTreeHeight()
     {
-        treeHeight = treeAge_InDaysTotal * growthRate_Height;
+        treeHeight = treeAgeInDaysTotal * growthRateHeight;
     }
     
     void SetTreeDiameter()
     {
-        treeDiameter = treeAge_InDaysTotal * growthRate_Diameter;
+        treeDiameter = treeAgeInDaysTotal * growthRateDiameter;
     }
     
     void SetTreeHP()
@@ -151,23 +157,23 @@ public class Tree
         switch (treeType)
         {
             case ForestType.Birch:
-                stemHeightPortionOfTree = 3;
-                stemHeight = treeHeight / stemHeightPortionOfTree;
+                _stemHeightPortionOfTree = 3;
+                stemHeight = treeHeight / _stemHeightPortionOfTree;
                 break;
             case ForestType.Spruce:
-                stemHeightPortionOfTree = 8;
-                stemHeight = treeHeight / stemHeightPortionOfTree;
+                _stemHeightPortionOfTree = 8;
+                stemHeight = treeHeight / _stemHeightPortionOfTree;
                 break;
             case ForestType.Pine:
-                stemHeightPortionOfTree = 2;
-                stemHeight = treeHeight / stemHeightPortionOfTree;
+                _stemHeightPortionOfTree = 2;
+                stemHeight = treeHeight / _stemHeightPortionOfTree;
                 break;
         }
     }
     
     void SetBudSize()
     {
-        budSize = treeAge_InDaysTotal * growthRate_Bud; 
+        budSize = treeAgeInDaysTotal * growthRateBud; 
     }
     
     void SetTreeVolume()
@@ -182,7 +188,7 @@ public class Tree
      That way we ensure that it's correct and don't rely on each Tree to keep the date. */
     void UpdateTreeAge()
     {
-        treeAge_InDaysTotal++;
+        treeAgeInDaysTotal++;
         day++;
 
         if (day >= 31)
@@ -197,19 +203,20 @@ public class Tree
             month = 0;
         }
     }
-    
+    private void UpdateShadowArea()
+    {
+        shadowArea = treeDiameter + shadowFactor * treeAgeInDaysTotal / 3650;
+    }
     void UpdateTreeHeight()
     {
         if (!_pauseGrowth)
-            treeHeight += growthRate_Height;
+            treeHeight += growthRateHeight;
     }
-    
     void UpdateTreeDiameter()
     {
         if (!_pauseGrowth)
-            treeDiameter += growthRate_Diameter;
+            treeDiameter += growthRateDiameter;
     }
-    
     void UpdateTreeHealth()
     {
         treeHealth = HP switch
@@ -226,144 +233,56 @@ public class Tree
     {
         switch (treeType)
         {
-            //60 to 90 years
-            // ->50 years
-            case ForestType.Birch when treeAge_InDaysTotal <= 18250:
-            {
-                if (Random.Range(1, 10000) == 1) isDead = true;
-                break;
-            }
-            // ->60 years
-            case ForestType.Birch when treeAge_InDaysTotal <= 21900:
-            {
-                if (Random.Range(1, 8000) <= 2) isDead = true; 
-                break;
-            }
-            // ->70 years
-            case ForestType.Birch when treeAge_InDaysTotal <= 25550:
-            {
-                if (Random.Range(1, 6000) <= 3) isDead = true;
-                break;
-            }
-            // ->80 years
-            case ForestType.Birch when treeAge_InDaysTotal <= 29200:
-            {
-                if (Random.Range(1, 3000) <= 4) isDead = true;
-                break;
-            }
-            // ->85 years
-            case ForestType.Birch when treeAge_InDaysTotal <= 31025:
-            {
-                if (Random.Range(1, 1500) <= 5) isDead = true;
-                break;
-            }
-            // ->90 years
-            case ForestType.Birch when treeAge_InDaysTotal <= 32850:
-            {
-                if (Random.Range(1, 750) <= 6) isDead = true;
-                break;
-            }
+            // Birch max 300
+            // Spruce max 500
+            // Pine max 700
             case ForestType.Birch:
-                isDead = false;
-                break;
-            //250 to 350 years
-            // ->250 years
-            case ForestType.Spruce when treeAge_InDaysTotal <= 91250:
-            {
-                if (Random.Range(1, 10000) <= 1) isDead = true;
-                break;
-            }
-            // ->270 years
-            case ForestType.Spruce when treeAge_InDaysTotal <= 98550:
-            {
-                if (Random.Range(1, 8000) <= 2) isDead = true;
-                break;
-            }
-            // ->290 years
-            case ForestType.Spruce when treeAge_InDaysTotal <= 105850:
-            {
-                if (Random.Range(1, 6000) <= 3) isDead = true;
-                break;
-            }
-            // ->310 years
-            case ForestType.Spruce when treeAge_InDaysTotal <= 113150:
-            {
-                if (Random.Range(1, 3000) <= 4) isDead = true;
-                break;
-            }
-            // ->330 years
-            case ForestType.Spruce when treeAge_InDaysTotal <= 120450:
-            {
-                if (Random.Range(1, 1500) <= 5) isDead = true;
-                break;
-            }
-            // ->350 years
-            case ForestType.Spruce when treeAge_InDaysTotal <= 127750:
-            {
-                if (Random.Range(1, 750) <= 6) isDead = true;
-                break;
-            }
-            //50 to 450 years
-            // ->50 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 18250:
-            {
-                if (Random.Range(1, 100000) <= 1) isDead = true;
-                break;
-            }
-            // ->100 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 36500:
-            {
-                if (Random.Range(1, 80000) <= 2) isDead = true;
-                break;
-            }
-            // ->150 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 54750:
-            {
-                if (Random.Range(1, 60000) <= 3) isDead = true;
-                break;
-            }
-            // ->200 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 73000:
-            {
-                if (Random.Range(1, 30000) <= 4) isDead = true;
-                break;
-            }
-            // ->250 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 91250:
-            {
-                if (Random.Range(1, 15000) <= 5) isDead = true;
-                break;
-            }
-            // ->300 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 109500:
-            {
-                if (Random.Range(1, 7500) <= 6) isDead = true;
-                break;
-            }
-            // ->350 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 127750:
-            {
-                if (Random.Range(1, 3500) <= 7) isDead = true;
-                break;
-            }
-            // ->400 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 146000:
-            {
-                if (Random.Range(1, 1750) <= 8) isDead = true;
-                break;
-            }
-            // ->450 years
-            case ForestType.Pine when treeAge_InDaysTotal <= 164250:
-            {
-                if (Random.Range(1, 1000) <= 9) isDead = true;
-                break;
-            }
+                if (treeAgeInDaysTotal >= 109500)
+                {
+                    isDead = true;
+                    break;
+                }
+                else
+                {
+                    float chance = treeAgeInDaysTotal / 10950;
+                    int n = Random.Range(1, 21);
+                    if (n < chance)
+                        isDead = true;
+                    break;
+                }
+            case ForestType.Spruce:
+                if (treeAgeInDaysTotal >= 182500)
+                {
+                    isDead = true;
+                    break;
+                }
+                else
+                {
+                    float chance = treeAgeInDaysTotal / 18250;
+                    int n = Random.Range(1, 21);
+                    if (n < chance)
+                        isDead = true;
+                    break;
+                }
+            case ForestType.Pine:
+                if (treeAgeInDaysTotal >= 255500)
+                {
+                    isDead = true;
+                    break;
+                }
+                else
+                {
+                    float chance = treeAgeInDaysTotal / 25550;
+                    int n = Random.Range(1, 21);
+                    if (n < chance)
+                        isDead = true;
+                    break;
+                }
             default:
                 isDead = false;
                 break;
         }
     }
-    
     void UpdateStemHeight()
     {
         // TODO: All paths returned the same value. Update when proper data is acquired.
@@ -374,26 +293,21 @@ public class Tree
                 case ForestType.Birch:
                 case ForestType.Spruce:
                 case ForestType.Pine:
-                    stemHeight += growthRate_Height / stemHeightPortionOfTree;
+                    stemHeight += growthRateHeight / _stemHeightPortionOfTree;
                     break;
             }
         }
     }
-
     void UpdateBudSize()
     {
-        budSize += growthRate_Bud;
+        budSize += growthRateBud;
     }
-    
     void UpdateTreeVolume()
     {
         var a = Mathf.PI * treeHeight * (0.5f * treeDiameter);
         treeVolume = a * a * 0.5f;
     }
-
-
     //--------------------
-
     public bool Edible()
     {
         if (treeHeight < 3 /* budSize > some value maybe */)
@@ -401,7 +315,6 @@ public class Tree
         
         return false;
     }
-
     public bool EatFromTree()
     {
         // switch (treeHealth)
@@ -439,23 +352,26 @@ public class Tree
 
         switch (treeType)
         {
-            case ForestType.Birch:
-                //Growth per day
-                growthRate_Height = 0.0006088f * num; // Jeg er mer interessert i disse tallene :P
-                growthRate_Diameter = 0.0000122f * num;
-                growthRate_Bud = 0.000006088f * num;
-                break;
             case ForestType.Spruce:
                 //Growth per day
-                growthRate_Height = 0.0036529f * num;
-                growthRate_Diameter = 0.00000062f * num;
-                growthRate_Bud = 0.000036529f * num;
+                growthRateHeight = 0.0036529f * num;
+                growthRateDiameter = 0.00000062f * num;
+                growthRateBud = 0.000036529f * num;
+                shadowFactor = 0.75f;
                 break;
             case ForestType.Pine:
                 //Growth per day
-                growthRate_Height = 0.0012329f * num;
-                growthRate_Diameter = 0.00000061f * num;
-                growthRate_Bud = 0.00001232877f * num;
+                growthRateHeight = 0.0012329f * num;
+                growthRateDiameter = 0.00000061f * num;
+                growthRateBud = 0.00001232877f * num;
+                shadowFactor = 1f;
+                break;
+            case ForestType.Birch:
+                //Growth per day
+                growthRateHeight = 0.0006088f * num; // Jeg er mer interessert i disse tallene :P
+                growthRateDiameter = 0.000045f * num;
+                growthRateBud = 0.000006088f * num;
+                shadowFactor = 1.5f;
                 break;
         }
     }
@@ -499,7 +415,7 @@ public class Tree
         /* Previous code had the same outcome for every tree type, putting this
          here for when proper data for each tree type is acquired. Just add
          another argument to the local func and encapsulate it with another switch. */
-        succeededSeeds = treeType switch
+        _succeededSeeds = treeType switch
         {
             ForestType.Birch => GetSeed(),
             ForestType.Pine => GetSeed(),
@@ -507,6 +423,6 @@ public class Tree
             _ => 0
         };
 
-        return succeededSeeds;
+        return _succeededSeeds;
     }
 }
