@@ -6,6 +6,8 @@ using TMPro;
 public class UIPlayController : MonoBehaviour
 {
 
+    public static UIPlayController instance;
+
     TextMeshProUGUI playSpeed;
     TextMeshProUGUI playPause;
     // Start is called before the first frame update
@@ -14,6 +16,11 @@ public class UIPlayController : MonoBehaviour
         playSpeed = transform.Find("PlaySpeed").GetComponent<TextMeshProUGUI>();
         playPause = transform.Find("PlayPause").transform.Find("Text").GetComponent<TextMeshProUGUI>();
         playPause.text = "Pause";
+
+        if (instance == null)
+        {
+            instance = this;
+        }
     }
     private void Start()
     {
@@ -39,6 +46,10 @@ public class UIPlayController : MonoBehaviour
     public void TogglePlay()
     {
         TimeManager.instance.TogglePlay();
+    }
+
+    public void UpdateTexts()
+    {
         if (TimeManager.instance.gamePaused)
         {
             playPause.text = "Play";

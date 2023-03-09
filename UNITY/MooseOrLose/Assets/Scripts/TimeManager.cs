@@ -66,6 +66,7 @@ public class TimeManager : MonoBehaviour
             UlvManager.instance.PauseAgents(false);
             JegerManager.instance.PauseAgents(false);
         }
+        UIPlayController.instance.UpdateTexts();
     }
 
     IEnumerator NextDay()
@@ -156,6 +157,7 @@ public class TimeManager : MonoBehaviour
     public void TogglePlay()
     {
         SetGamePaused(!gamePaused);
+        
     }
 
 }
