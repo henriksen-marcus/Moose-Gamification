@@ -25,7 +25,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Debug.Log("On Pointer down");
+        // Debug.Log("On Pointer down");
         _copy = Instantiate(this, transform);
         _rectTransform = _copy.GetComponent<RectTransform>();
         _canvasGroup = _copy.GetComponent<CanvasGroup>();
@@ -34,7 +34,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     public void OnBeginDrag(PointerEventData eventData)
     {
         InfoUI.Instance.gridOn = true;
-        Debug.Log("On Start dragging");
+        // Debug.Log("On Start dragging");
         _canvasGroup.alpha = .6f;
         _canvasGroup.blocksRaycasts = false;
     }
@@ -45,7 +45,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     public void OnEndDrag(PointerEventData eventData)
     {
         InfoUI.Instance.gridOn = false;
-        Debug.Log("On End dragging");
+        // Debug.Log("On End dragging");
         _canvasGroup.alpha = 1f;
         _canvasGroup.blocksRaycasts = true;
         Destroy(_copy.gameObject);
