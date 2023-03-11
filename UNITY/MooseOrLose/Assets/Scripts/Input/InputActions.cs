@@ -64,6 +64,15 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Rightclick"",
+                    ""type"": ""Button"",
+                    ""id"": ""5f0ca6c6-0687-4e56-bb1e-b61ddce19aac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press(behavior=1)"",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""ZoomCamera"",
                     ""type"": ""Value"",
                     ""id"": ""5e12d09f-b5be-4543-96d4-68ea9af7d66c"",
@@ -71,13 +80,31 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""d4ad2afd-a5b7-4bc8-8985-e9545aa62eb3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Back"",
+                    ""type"": ""Button"",
+                    ""id"": ""d918e370-9b4f-4026-bf02-bbfa30b99591"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""7e4dc902-5cfd-440a-8961-c1621bd7ae2f"",
-                    ""path"": ""<Mouse>/press"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -194,6 +221,50 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                     ""action"": ""KeyboardRotate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""792187b9-6206-4340-8d72-26300ff4e258"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ceeeaac-42df-4446-85b5-8310a44d15b1"",
+                    ""path"": ""<Keyboard>/p"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""48fe6c39-5f82-4160-88c1-92fc828731fd"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Back"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""71659c7a-5d45-4570-8a6d-c9a43d1b313d"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Rightclick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,7 +277,10 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         m_FlyingCamera_KeyboardRotate = m_FlyingCamera.FindAction("KeyboardRotate", throwIfNotFound: true);
         m_FlyingCamera_MouseDrag = m_FlyingCamera.FindAction("MouseDrag", throwIfNotFound: true);
         m_FlyingCamera_Select = m_FlyingCamera.FindAction("Select", throwIfNotFound: true);
+        m_FlyingCamera_Rightclick = m_FlyingCamera.FindAction("Rightclick", throwIfNotFound: true);
         m_FlyingCamera_ZoomCamera = m_FlyingCamera.FindAction("ZoomCamera", throwIfNotFound: true);
+        m_FlyingCamera_Pause = m_FlyingCamera.FindAction("Pause", throwIfNotFound: true);
+        m_FlyingCamera_Back = m_FlyingCamera.FindAction("Back", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -270,7 +344,10 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_FlyingCamera_KeyboardRotate;
     private readonly InputAction m_FlyingCamera_MouseDrag;
     private readonly InputAction m_FlyingCamera_Select;
+    private readonly InputAction m_FlyingCamera_Rightclick;
     private readonly InputAction m_FlyingCamera_ZoomCamera;
+    private readonly InputAction m_FlyingCamera_Pause;
+    private readonly InputAction m_FlyingCamera_Back;
     public struct FlyingCameraActions
     {
         private @InputActions m_Wrapper;
@@ -279,7 +356,10 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         public InputAction @KeyboardRotate => m_Wrapper.m_FlyingCamera_KeyboardRotate;
         public InputAction @MouseDrag => m_Wrapper.m_FlyingCamera_MouseDrag;
         public InputAction @Select => m_Wrapper.m_FlyingCamera_Select;
+        public InputAction @Rightclick => m_Wrapper.m_FlyingCamera_Rightclick;
         public InputAction @ZoomCamera => m_Wrapper.m_FlyingCamera_ZoomCamera;
+        public InputAction @Pause => m_Wrapper.m_FlyingCamera_Pause;
+        public InputAction @Back => m_Wrapper.m_FlyingCamera_Back;
         public InputActionMap Get() { return m_Wrapper.m_FlyingCamera; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -301,9 +381,18 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Select.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnSelect;
                 @Select.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnSelect;
                 @Select.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnSelect;
+                @Rightclick.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnRightclick;
+                @Rightclick.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnRightclick;
+                @Rightclick.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnRightclick;
                 @ZoomCamera.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnZoomCamera;
                 @ZoomCamera.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnZoomCamera;
                 @ZoomCamera.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnZoomCamera;
+                @Pause.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnPause;
+                @Back.started -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnBack;
+                @Back.performed -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnBack;
+                @Back.canceled -= m_Wrapper.m_FlyingCameraActionsCallbackInterface.OnBack;
             }
             m_Wrapper.m_FlyingCameraActionsCallbackInterface = instance;
             if (instance != null)
@@ -320,9 +409,18 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
                 @Select.started += instance.OnSelect;
                 @Select.performed += instance.OnSelect;
                 @Select.canceled += instance.OnSelect;
+                @Rightclick.started += instance.OnRightclick;
+                @Rightclick.performed += instance.OnRightclick;
+                @Rightclick.canceled += instance.OnRightclick;
                 @ZoomCamera.started += instance.OnZoomCamera;
                 @ZoomCamera.performed += instance.OnZoomCamera;
                 @ZoomCamera.canceled += instance.OnZoomCamera;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
+                @Back.started += instance.OnBack;
+                @Back.performed += instance.OnBack;
+                @Back.canceled += instance.OnBack;
             }
         }
     }
@@ -333,6 +431,9 @@ public partial class @InputActions : IInputActionCollection2, IDisposable
         void OnKeyboardRotate(InputAction.CallbackContext context);
         void OnMouseDrag(InputAction.CallbackContext context);
         void OnSelect(InputAction.CallbackContext context);
+        void OnRightclick(InputAction.CallbackContext context);
         void OnZoomCamera(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
+        void OnBack(InputAction.CallbackContext context);
     }
 }

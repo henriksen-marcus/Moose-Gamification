@@ -1,42 +1,71 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+enum CameraMode
+{
+    Normal,
+    Orbit
+}
+
+enum CursorMode
+{
+    Normal,
+    Point,
+    Grab
+}
+
 public class Camera_v2 : MonoBehaviour
 {
-    public Texture2D tex;
-    
     private InputProvider _inputProvider;
     private GameObject _rotationPoint;
     private GameObject _cameraSocket;
     private Camera _mainCamera;
     
+    /* The velocity of the _rotationPoint the camera is attached to. */
+    private Vector2 _velocity = Vector2.zero;
     private float _acceleration = 0.1f;
-    private float _maxKeyboardVelocity = 1f;
+    private float _maxKeyboardVelocity = 3f;
     private float _maxMouseVelocity = 12f;
-    private float _rotationSpeed = 0.4f;
-    private float _rotationVelocity;
+    private float _rotationAcceleration = 0.19f;
+    private Vector2 _rotationVelocity;
+    private float _maxRotationKeyboardVelocity = 2.5f;
+    private float _maxRotationMouseVelocity = 12f;
     private float _lerpSpeed = 4f;
+    
+    /* If the mouse drag movement has been used, wait
+     * for the velocity given by the mouse to decrease
+     * naturally before clamping it again. This is to
+     * enable snappy dragging of the mouse, like dragging
+     * your finger fast when swiping on your phone. */
+    private bool _waitForVelocity;
+    private bool _waitForRotationalVelocity;
 
     private float _cameraDistance = 150f;
     private float _cameraTargetDistance = 150f;
-    private float _minCameraDistance = 10f;
+    private float _lastCameraDistance = 150f;
+    private float _minCameraDistance = 20f;
     private float _maxCameraDistance = 400f;
     
-    /* How far the camera distance changed per scroll. */
-    private float _scrollDistance = 35f;
+    private float _cameraAngle = 45f;
+    private float _defaultCameraAngle = 45f;
+    private float _minCamAngle = 15f;
+    private float _maxCamAngle = 89.9f;
+    
+    /* How far the camera distance changes per scroll. */
+    private float _scrollDistance = 32f;
     
     /* How much the camera movement will brake each tick.
      * Lower = more braking. */
-    private float _brakeFactor = 0.98f;
+    private float _brakeFactor = 0.97f;
     private float _defaultBrakeFactor = 0.97f;
-    private float _highBrakeFactor = 0.8f;
+    private float _highBrakeFactor = 0.81f;
+    private float _rotationBrakeFactor = 0.958f;
 
-    private float _dragSpeed = 55f;
-
-    private Vector3 _velocity = Vector3.zero;
+    private float _dragSpeed = 70f;
     
     /* The location of the ground directly beneath the camera. */
     private Vector3 _lastGroundPoint = Vector3.zero;
@@ -48,48 +77,74 @@ public class Camera_v2 : MonoBehaviour
     /* The camera cannot move outside this xz area. (+-) */
     private Vector2 _cameraBounds;
     /* How far outside the map's border the camera can move. */
-    private float _cameraBoundDistance = 40f;
+    private float _cameraBoundDistance = 30f;
     
     /* How far away from the ground directly beneath us before
      * a 'collision' triggers. */
-    private float _groundCollisionRange = 20f;
+    private float _defaultGroundCollisionRange = 15f;
+    private float _groundCollisionRange = 15f;
     /* How much mouse delta until the click counts as a drag. */
     private float _mouseDeltaForDrag = 0.5f;
 
-    /* How far away the player can click to select a clickable object. */
-    private float _selectDistance = 10f;
+    /* How far away horizontally the player can click to select a clickable object. */
+    private float _selectDistance = 9f;
     
     private bool _hasUsedMouseDrag;
-    private bool _isPressingMouse;
+    private bool _isPressingLMB;
+    private bool _isPressingRMB;
 
     private ClickableObject _selectedObject;
     private bool _isObjectSelected;
-    
-    /* If the mouse drag movement has been used, wait
-     * for the velocity given by the mouse to decrease
-     * naturally before clamping it again. This is to
-     * enable snappy dragging of the mouse, like dragging
-     * your finger fast when swiping on your phone. */
-    private bool _waitForVelocity;
-    
+
     public GameObject _gameObjectInfo;
     private ObjectInfo _infoBar;
+
+    /* The forest we are currently orbiting. */
+    private GameObject _selectedForest;
+    private Vector3 _selectedForestPosition;
+
+    private CameraMode _cameraMode = CameraMode.Normal;
+
+    private Timer _clickTimer;
+    private float _doubleClickTime = 0.3f;
+
+    /* Layermasks */
+    private int _mapLm;
+    private int _movableObjectsLm;
+    private int _forestLm;
+
+    [SerializeField] public Texture2D MouseNormalTexture;
+    [SerializeField] public Texture2D MousePointTexture;
+    [SerializeField] public Texture2D MouseGrabTexture;
 
     //private GameObject _sphereMesh = null;
 
     private void OnEnable()
     {
         _inputProvider = new InputProvider();
+        
+        _inputProvider.SelectPressed += SetPressingLMB;
         _inputProvider.SelectPerformed += Select;
-        _inputProvider.MousePressed += SetPressingMouse;
+        
+        _inputProvider.RightclickPressed += SetPressingRMB;
+        _inputProvider.RightclickPerformed += Rightclick;
+        
+        _inputProvider.Pause += Pause;
+        _inputProvider.Back += Back;
         
         _inputProvider.Enable();
     }
 
     private void OnDisable()
     {
+        _inputProvider.SelectPressed -= SetPressingLMB;
         _inputProvider.SelectPerformed -= Select;
-        _inputProvider.MousePressed -= SetPressingMouse;
+        
+        _inputProvider.RightclickPressed -= SetPressingRMB;
+        _inputProvider.RightclickPerformed -= Rightclick;
+        
+        _inputProvider.Pause -= Pause;
+        _inputProvider.Back -= Back;
         
         _inputProvider.Disable();
     }
@@ -100,10 +155,15 @@ public class Camera_v2 : MonoBehaviour
         _cameraSocket = GameObject.Find("CameraSocket");
         _mainCamera = GameObject.Find("Camera").GetComponent<Camera>();
         _infoBar = _gameObjectInfo.GetComponent<ObjectInfo>();
+        _clickTimer = new Timer();
         
         var camTransform = _mainCamera.transform;
         camTransform.rotation = Quaternion.Euler(45f, 0f, 0f);
         camTransform.position = new Vector3(0f, 150f, -160f);
+
+        _mapLm = 1 << LayerMask.NameToLayer("Map");
+        _movableObjectsLm = 1 << LayerMask.NameToLayer("Moveable Objects");
+        _forestLm = 1 << LayerMask.NameToLayer("Forest");
         //_mainCamera.enabled = false;
     }
     
@@ -127,7 +187,7 @@ public class Camera_v2 : MonoBehaviour
                 _rotationPoint.transform.position = meshPos;
                 _cameraBounds.x = meshPos.x + meshSize.x + _cameraBoundDistance;
                 _cameraBounds.y = meshPos.y + meshSize.y + _cameraBoundDistance;
-            } 
+            }
         }
         
         //_gameObjectInfo = GameObject.Find("Screen_Canvas").transform.Find("GameObjectInfo").gameObject;
@@ -135,8 +195,22 @@ public class Camera_v2 : MonoBehaviour
     
     void Update()
     {
-        if (_isPressingMouse) MouseDrag();
-        else Move();
+        switch (_cameraMode)
+        {
+            case CameraMode.Normal:
+                if (_isPressingLMB) MouseDrag();
+                else if (_isPressingRMB) MouseRotationalDrag();
+                else Move();
+                _cameraAngle = Mathf.Lerp(_cameraAngle, _defaultCameraAngle, Time.deltaTime * 6f);
+                break;
+            case CameraMode.Orbit:
+                if (_isPressingLMB || _isPressingRMB) MouseRotationalDrag();
+                else OrbitMove();
+                _rotationPoint.transform.position = Vector3.Lerp(_rotationPoint.transform.position,
+                    _selectedForestPosition, Time.deltaTime * 5f);
+                break;
+        }
+        UpdateCameraDistance();
         CameraUpdate();
     }
 
@@ -145,16 +219,56 @@ public class Camera_v2 : MonoBehaviour
         HoverCheck();
     }
 
+    private void Pause(InputAction.CallbackContext context)
+    {
+        
+    }
+
+    private void Back(InputAction.CallbackContext context)
+    {
+        if (_cameraMode == CameraMode.Orbit)
+        {
+            _cameraTargetDistance = 
+                Mathf.Abs(_lastCameraDistance - _cameraDistance) < 8f ? 
+                    _lastCameraDistance + 12f : _lastCameraDistance;
+            _cameraMode = CameraMode.Normal;
+            _rotationVelocity.y = 0f;
+            // Make sure we can still zoom the same amount after looking at a forest
+            _groundCollisionRange = _defaultGroundCollisionRange + _rotationPoint.transform.position.y;
+        }
+    }
+
+    private void SetCursor(CursorMode newCursor)
+    {
+        switch (newCursor)
+        {
+            case CursorMode.Normal:
+                Cursor.SetCursor(MouseNormalTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+                break;
+            case CursorMode.Point:
+                Cursor.SetCursor(MousePointTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+                break;
+            case CursorMode.Grab:
+                Cursor.SetCursor(MouseGrabTexture, Vector2.zero, UnityEngine.CursorMode.ForceSoftware);
+                break;
+        }
+    }
+    
     /* Checks if a clickable object is under the cursor,
      * and if so outlines that object. */
     private void HoverCheck()
     {
+        if (_isPressingLMB) return;
+        
         Vector3 mousePos = Mouse.current.position.ReadValue();
-        var layerMask = 1 << LayerMask.NameToLayer("Map");
         Ray ray = _mainCamera.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _mapLm))
         {
+            /* If we want mouse cursor to change on hover over a forest here,
+             * we can make a layermask including both map and forest and check
+             * each hit object's layer. If forest => cursor = pointer. */
+            
             var closestObject = GetSphereOverlap(hit.point);
             if (!closestObject || closestObject == _selectedObject) return;
             
@@ -162,27 +276,24 @@ public class Camera_v2 : MonoBehaviour
             if (clickComponent)
             {
                 clickComponent.ToggleOutline(true);
-                //Cursor.SetCursor(tex, Vector2.zero, CursorMode.Auto);
-            };
+            }
         }
     }
-
-    /* Returns the closest moveable object to the given position. */
+    
+    /* Returns the closest movable object to the given position. */
     private GameObject GetSphereOverlap(Vector3 position)
     {
-        var layerMask = 1 << 3;
-        var hits = Physics.OverlapSphere(position, _selectDistance, layerMask);
+        var hits = Physics.OverlapSphere(position, _selectDistance, _movableObjectsLm);
         var minDistance = float.MaxValue;
         GameObject closestObject = null;
-
-        foreach (var obj in hits) {
+        foreach (var obj in hits)
+        {
             var distance = Vector3.Distance(position, obj.transform.position);
             if (distance < minDistance) {
                 minDistance = distance;
                 closestObject = obj.gameObject;
             }
         }
-        
         return closestObject;
     }
 
@@ -193,15 +304,16 @@ public class Camera_v2 : MonoBehaviour
         var cameraSocketTransform = _cameraSocket.transform;
         
         // Set the socket location
+        var rotPointPos = rotPointTransform.position;
         _cameraSocket.transform.position =
-            rotPointTransform.position - rotPointTransform.forward * _cameraDistance;
-        _cameraSocket.transform.RotateAround(_rotationPoint.transform.position, _rotationPoint.transform.right, 45f);
+            rotPointPos - rotPointTransform.forward * _cameraDistance;
+        _cameraSocket.transform.RotateAround(_rotationPoint.transform.position, _rotationPoint.transform.right, _cameraAngle);
         
         _mainCamera.transform.position = _cameraSocket.transform.position;
         
         //Debug.DrawLine(rotPointTransform.position, cameraSocketTransform.position, Color.red, 0.1f);
 
-        var direction = rotPointTransform.position - cameraSocketTransform.position;
+        var direction = rotPointPos - cameraSocketTransform.position;
         var rotation = Quaternion.LookRotation(direction);
         _mainCamera.transform.rotation = rotation;
     }
@@ -211,73 +323,141 @@ public class Camera_v2 : MonoBehaviour
     {
         /* When 'performed' has finished we know that the mouse has been
          * released because the input mode is set to 'on release'. */
-        _isPressingMouse = false;
+        _isPressingLMB = false;
 
         /* We don't want to click when the user releases the mouse button
          * after having dragged on the screen. That would be annoying. */
         if (!_hasUsedMouseDrag)
         {
-            // Raycast for info bar when clicking on objects
-            Vector3 mousePos = Mouse.current.position.ReadValue();
-            var layerMask = 1 << LayerMask.NameToLayer("Map");
-            Ray ray = _mainCamera.ScreenPointToRay(mousePos);
-
-            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask))
-            {
-                var closestObject = GetSphereOverlap(hit.point);
-                if (closestObject != null)
-                {
-                    var clickComponent = closestObject.GetComponent<ClickableObject>();
-                    if (clickComponent)
-                    {
-                        _gameObjectInfo.SetActive(true);
-                        _infoBar.SpawnInfobar(clickComponent.GetClickInfo());
-                        if (_selectedObject) _selectedObject.SetOutlineSelected(false);
-                        //MainManager.Instance.OnObjectDeselected();
-                        clickComponent.SetOutlineSelected(true);
-                        _selectedObject = clickComponent;
-                    }
-                }
-                // Debug
-                /*if (_sphereMesh)
-                {
-                    _sphereMesh.transform.position = mouseWorldPos;
-                }
-                else
-                {
-                    _sphereMesh = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    _sphereMesh.transform.position = mouseWorldPos;
-                    _sphereMesh.transform.localScale = new Vector3(10f, 10f, 10f);
-                    Color sphereColor = Color.blue;
-                    Material sphereMaterial = new Material(Shader.Find("Standard"));
-                    sphereMaterial.color = sphereColor;
-                    _sphereMesh.GetComponent<MeshRenderer>().material = sphereMaterial;
-                }*/
-            } 
-            else _gameObjectInfo.SetActive(false);
+            var time = _clickTimer.GetTime();
+            if (time <= _doubleClickTime && time != 0f) // Double click
+                ForestRaycast();
+            else
+                ObjectRaycast();
+            
+            _clickTimer.Start();
         }
+        
         _hasUsedMouseDrag = false;
+    }
+
+    private void Rightclick(InputAction.CallbackContext context)
+    {
+        _isPressingRMB = false;
+    }
+    
+    /* Raycast for clickable objects. */
+    private void ObjectRaycast()
+    {
+        // Raycast for info bar when clicking on objects
+        Vector3 mousePos = Mouse.current.position.ReadValue(); ;
+        var ray = _mainCamera.ScreenPointToRay(mousePos);
+
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _mapLm))
+        {
+            var closestObject = GetSphereOverlap(hit.point);
+            if (closestObject != null)
+            {
+                var clickComponent = closestObject.GetComponent<ClickableObject>();
+                if (clickComponent)
+                {
+                    _gameObjectInfo.SetActive(true);
+                    _infoBar.SpawnInfobar(clickComponent.GetClickInfo());
+                    if (_selectedObject) _selectedObject.SetOutlineSelected(false);
+                    //MainManager.Instance.OnObjectDeselected();
+                    clickComponent.SetOutlineSelected(true);
+                    _selectedObject = clickComponent;
+                }
+            }
+            // Debug
+            /*if (_sphereMesh)
+            {
+                _sphereMesh.transform.position = mouseWorldPos;
+            }
+            else
+            {
+                _sphereMesh = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+                _sphereMesh.transform.position = mouseWorldPos;
+                _sphereMesh.transform.localScale = new Vector3(10f, 10f, 10f);
+                Color sphereColor = Color.blue;
+                Material sphereMaterial = new Material(Shader.Find("Standard"));
+                sphereMaterial.color = sphereColor;
+                _sphereMesh.GetComponent<MeshRenderer>().material = sphereMaterial;
+            }*/
+        } 
+        else _gameObjectInfo.SetActive(false);
+    }
+
+    private void ForestRaycast()
+    {
+        // Raycast for info bar when clicking on objects
+        Vector3 mousePos = Mouse.current.position.ReadValue();
+        var ray = _mainCamera.ScreenPointToRay(mousePos);
+
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _forestLm))
+        {
+            var forest = hit.transform.GetComponent<Forest>();
+            if (forest)
+            {
+                var forestPos = forest.transform.position;
+                _selectedForestPosition = new Vector3(forestPos.x, forestPos.y, forestPos.z);
+                _velocity = Vector3.zero;
+                _lastCameraDistance = _cameraTargetDistance;
+                _cameraTargetDistance = Mathf.Max(_minCameraDistance, 25f);
+                
+                // Find out if object is on right of left side of screen
+                var screenPosition = _mainCamera.WorldToViewportPoint(_selectedForestPosition);
+                var rotAmount = Mathf.Lerp(0.1f, 2.9f, Mathf.Abs(screenPosition.x - 0.5f) + 0.5f);
+                _rotationVelocity.x += screenPosition.x > 0.5f ? rotAmount : -rotAmount;
+                _cameraMode = CameraMode.Orbit;
+            }
+        }
     }
     
     /* Handles movement using keyboard keys. */
     private void Move()
     {
-        var inputVector = Get3DMovement();
-        var newVelocity = _velocity + inputVector * _acceleration;
+        var newVelocity = _velocity + _inputProvider.MovementInput() * _acceleration;
 
         // Make sure there is a smooth transition from mouse to keyboard
-        if (_waitForVelocity) _velocity = newVelocity;
-        else if (_velocity.magnitude <= _maxKeyboardVelocity)
+        if (_waitForVelocity)
         {
-            _velocity = newVelocity;
-            _waitForVelocity = false;
+            if (_velocity.magnitude <= _maxKeyboardVelocity)
+            {
+                _velocity = newVelocity;
+                _waitForVelocity = false;
+            }
+            else _velocity = newVelocity;
         }
         else _velocity = Vector3.ClampMagnitude(newVelocity, _maxKeyboardVelocity);
+        
 
-        UpdateCameraDistance();
-
-        _rotationVelocity += _inputProvider.RotationInput() * _rotationSpeed;
+        _rotationVelocity.x += _inputProvider.RotationInput() * _rotationAcceleration;
         _brakeFactor = _defaultBrakeFactor;
+        ApplyMovement();
+    }
+    
+    private void OrbitMove()
+    {
+        var keyboardInput = _inputProvider.MovementInput();
+        var rotationInput = _inputProvider.RotationInput();
+        
+        var xInput = Mathf.Abs(keyboardInput.x) > Mathf.Abs(rotationInput) ? -keyboardInput.x : rotationInput;
+        var newXVelocity = xInput * _rotationAcceleration;
+        _rotationVelocity.y += keyboardInput.y * _rotationAcceleration * 0.4f;
+        
+        // Make sure there is a smooth transition from mouse to keyboard
+        if (_waitForRotationalVelocity)
+        {
+            if (_rotationVelocity.x <= _maxRotationKeyboardVelocity)
+            {
+                _rotationVelocity.x += newXVelocity;
+                _waitForVelocity = false;
+            }
+            else _rotationVelocity.x += newXVelocity;
+        }
+        else _rotationVelocity.x = Mathf.Clamp(_rotationVelocity.x, -_maxRotationKeyboardVelocity, _maxRotationKeyboardVelocity);
+        
         ApplyMovement();
     }
     
@@ -286,28 +466,48 @@ public class Camera_v2 : MonoBehaviour
     {
         // Using new input system to get mouse delta
         Vector3 delta = _inputProvider.MouseDelta();
-        var deltaMag = delta.magnitude;
+        //var deltaMag = delta.magnitude;
 
         var temp = Mathf.Abs(delta.x) + Mathf.Abs(delta.y);
-        
-        _hasUsedMouseDrag = temp > _mouseDeltaForDrag;
-        
+        if (temp > _mouseDeltaForDrag) _hasUsedMouseDrag = true;
+
         var clickWorldPos = _mainCamera.ScreenToViewportPoint(delta);
-        var moveOffset = new Vector3(-clickWorldPos.x, 0, -clickWorldPos.y) * _dragSpeed;
+        var moveOffset = new Vector2(-clickWorldPos.x, -clickWorldPos.y) * _dragSpeed;
 
         // Dragging fast gives an extra boost
         _velocity += moveOffset * (delta.magnitude * 0.5f * 0.02f);
-        _velocity = Vector3.ClampMagnitude(_velocity, _maxMouseVelocity);
+        _velocity = Vector2.ClampMagnitude(_velocity, _maxMouseVelocity);
         _waitForVelocity = true;
 
         // Brake when holding mouse in a static position
-        _brakeFactor = deltaMag < 1f ? _highBrakeFactor : _defaultBrakeFactor;
+        _brakeFactor = temp < 1f ? _highBrakeFactor : _defaultBrakeFactor;
 
         ApplyMovement();
     }
 
-    //private Vector3 linePosition;
-    
+    private void MouseRotationalDrag()
+    {
+        // Using new input system to get mouse delta
+        Vector3 delta = _inputProvider.MouseDelta();
+        var xMagnitude = Mathf.Abs(delta.x);
+        var yMagnitude = Mathf.Abs(delta.y);
+        
+        _hasUsedMouseDrag = xMagnitude > _mouseDeltaForDrag || yMagnitude > _mouseDeltaForDrag;
+        
+        var clickWorldPos = _mainCamera.ScreenToViewportPoint(delta);
+        var xRotationOffset = clickWorldPos.x * _dragSpeed;
+        var yRotationOffset = _cameraMode == CameraMode.Orbit ? clickWorldPos.y * _dragSpeed : 0f;
+
+        // Dragging fast gives an extra boost
+        _rotationVelocity.x += xRotationOffset * (xMagnitude * 0.5f * 0.05f);
+        _rotationVelocity.y += -yRotationOffset * (yMagnitude * 0.5f * 0.015f);
+        _rotationVelocity.x = Mathf.Clamp(_rotationVelocity.x, -_maxRotationMouseVelocity, _maxRotationMouseVelocity);
+        _rotationVelocity.y = Mathf.Clamp(_rotationVelocity.y, -_maxRotationMouseVelocity, _maxRotationMouseVelocity);
+        _waitForRotationalVelocity = true;
+
+        ApplyMovement();
+    }
+
     /* Get the current camera distance based on input and 
      * collision in front of, under and the max camera distance
      * settings. Uses trigonometry with ray casting. */
@@ -317,8 +517,7 @@ public class Camera_v2 : MonoBehaviour
 
         // Find position on ground beneath + a buffer
         var ray = new Ray(camTransform.position, Vector3.down);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out var hit, _mapLm))
         {
             _lastGroundPoint = hit.point;
             _lastGroundPoint.y += _groundCollisionRange;
@@ -334,61 +533,17 @@ public class Camera_v2 : MonoBehaviour
             _lastForwardGroundPoint = hit.point;
             _lastForwardGroundPoint -= 
                 (rotPointPos - camTransform.position).normalized 
-                * (_groundCollisionRange * 1.4f);
+                * (_groundCollisionRange * 1.3f);
             _lastForwardGroundDistance = Vector3.Distance(rotPointPos, _lastForwardGroundPoint);
         }
 
         // Limit the minimum camera distance based on what is closest
         var localMinDistance = Mathf.Max(_lastForwardGroundDistance, _lastGroundDistance);
         localMinDistance = Mathf.Max(localMinDistance, _minCameraDistance);
-
+        
         // Smooth interpolation when changing height with scroll
         _cameraTargetDistance = Mathf.Clamp(_cameraTargetDistance + GetScroll(), localMinDistance, _maxCameraDistance);
         _cameraDistance = Mathf.Lerp(_cameraDistance, _cameraTargetDistance, Time.deltaTime * _lerpSpeed);
-        
-        
-        
-        /*print("actual: " + _cameraDistance);
-        Debug.DrawLine(camTransform.position + new Vector3(5f, 0f, 0f), camTransform.position + new Vector3(-5f, 0f, 0f));
-        Debug.DrawLine(camTransform.position + new Vector3(0f, 5f, 0f), camTransform.position + new Vector3(0f, -5f, 0f));
-        
-        Debug.DrawLine(_currentGroundPoint + new Vector3(5f, 0f, 0f), _currentGroundPoint + new Vector3(-5f, 0f, 0f), Color.magenta);
-        Debug.DrawLine(_currentGroundPoint + new Vector3(0f, 0f, 5f), _currentGroundPoint + new Vector3(0f, 0f, -5f), Color.magenta);
-        
-        Debug.DrawLine(_currentForwardGroundPoint + new Vector3(5f, 0f, 0f), _currentForwardGroundPoint + new Vector3(-5f, 0f, 0f), Color.yellow, 0.01f, true);
-        Debug.DrawLine(_currentForwardGroundPoint + new Vector3(0f, 5f, 0f), _currentForwardGroundPoint + new Vector3(0f, -5f, 0f), Color.yellow, 0.01f, true);*/
-
-        /*Debug.DrawLine(linePosition + new Vector3(5f, 0f, 0f), linePosition + new Vector3(-5f, 0f, 0f));
-        Debug.DrawLine(linePosition + new Vector3(0f, 5f, 0f), linePosition + new Vector3(0f, -5f, 0f));*/
-
-        return;
-        // Calculate direction vector from camera to rotation point
-        /*var direction = (_rotationPoint.transform.position - camTransform.position).normalized;
-
-        // Calculate distance between camera position and rotation point in the y-axis direction
-        float distanceY = _rotationPoint.transform.position.y - camTransform.position.y;
-
-        // Calculate ratio between the y-distance and the direction vector's y-component
-        float ratio = distanceY / direction.y;
-
-        // Calculate the point on the line at the desired y-value
-        linePosition = camTransform.position + direction * ratio;
-        linePosition.y = _currentGroundPoint.y;
-
-        // Transform the position by the rotation quaternion
-        linePosition = camTransform.rotation * (linePosition - _rotationPoint.transform.position) + _rotationPoint.transform.position;
-
-        return;
-        var a = Vector3.Distance(camTransform.position, _currentGroundPoint);
-        var b = Vector3.Distance(_currentGroundPoint, _rotationPoint.transform.position);
-        var max_x = Mathf.Sqrt(a * a + b * b); // Pythagorean theorem
-        
-        /* The max_x variable gives us the maximum allowed cam length
-         * based on collision on the ground beneath us. #1#
-        
-        // Smooth interpolation when changing height with scroll.
-        _cameraTargetDistance = Mathf.Clamp(_cameraTargetDistance + GetScroll(), _minCameraDistance, _maxCameraDistance);
-        _cameraDistance = Mathf.Lerp(_cameraDistance, _cameraTargetDistance, Time.deltaTime * _lerpSpeed);*/
     }
 
     /* Flips the movement plane from xy to xz. */
@@ -402,10 +557,11 @@ public class Camera_v2 : MonoBehaviour
     
     private void ApplyMovement()
     {
-        _rotationPoint.transform.Translate(_velocity * (Time.deltaTime * 45f));
-        _rotationPoint.transform.Rotate(new Vector3(0f, _rotationVelocity, 0f) * (Time.deltaTime * 45f));
+        _rotationPoint.transform.Translate(new Vector3(_velocity.x, 0f, _velocity.y) * (Time.deltaTime * 45f));
+        _rotationPoint.transform.Rotate(new Vector3(0f, _rotationVelocity.x, 0f) * (Time.deltaTime * 45f));
+        _cameraAngle = Mathf.Clamp(_cameraAngle + _rotationVelocity.y, _minCamAngle, _maxCamAngle);
         _velocity *= _brakeFactor;
-        _rotationVelocity *= _highBrakeFactor;
+        _rotationVelocity *= _rotationBrakeFactor;
 
         // Constrain camera to bounds
         var pos = _rotationPoint.transform.position;
@@ -414,5 +570,7 @@ public class Camera_v2 : MonoBehaviour
         _rotationPoint.transform.position = pos;
     }
 
-    private void SetPressingMouse(InputAction.CallbackContext context) => _isPressingMouse = true;
+    private void SetPressingLMB(InputAction.CallbackContext context) => _isPressingLMB = true;
+    
+    private void SetPressingRMB(InputAction.CallbackContext context) => _isPressingRMB = true;
 }

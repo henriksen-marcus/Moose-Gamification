@@ -31,21 +31,21 @@ public class Forest : MonoBehaviour
     private MeshRenderer _meshRenderer;
 
     // Debugging
-    private bool _didUpdate;
-    private int _updateCount;
-    public bool hasBeenCalled;
+    /*private bool didUpdate;
+    private int updateCount;
+    public bool hasBeenCalled;*/
 
 
     //--------------------
 
     /** Debugging */
-    public void DidUpdate()
+    /*public void DidUpdate()
     {
         hasBeenCalled = true;
         _didUpdate = true;
         _updateCount++;
         SetColor(Color.green);
-    }
+    }*/
 
     private void Awake()
     {
