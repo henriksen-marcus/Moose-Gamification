@@ -37,7 +37,10 @@ public abstract class ClickableObject : MonoBehaviour
     // This function needs to be overridden.
     public abstract ClickableObjectInfo GetClickInfo();
 
-    public void ToggleOutline(bool enabled) { if (outline != null) outline.enabled = enabled; }
+    public void ToggleOutline(bool enabled)
+    {
+        if (outline) outline.enabled = enabled;
+    }
 
     public void SetOutlineSelected(bool selected)
     {

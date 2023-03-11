@@ -25,14 +25,6 @@ public class MainManager : MonoBehaviour
     [Header("Forests")]
     public GameObject forestParent;
 
-    public delegate void ObjectSelectedEventHandler();
-    public event ObjectSelectedEventHandler ObjectDeselected;
-
-    public virtual void OnObjectDeselected()
-    {
-        ObjectDeselected?.Invoke();
-    }
-
     //--------------------
 
 

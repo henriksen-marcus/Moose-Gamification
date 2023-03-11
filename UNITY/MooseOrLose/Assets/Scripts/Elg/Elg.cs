@@ -97,7 +97,6 @@ public class Elg : ClickableObject
             outline.OutlineColor = Color.white;
             outline.OutlineWidth = 7f;
             outline.enabled = false;
-            outline.OutlineMode = Outline.Mode.OutlineHidden;
         }
     }
     

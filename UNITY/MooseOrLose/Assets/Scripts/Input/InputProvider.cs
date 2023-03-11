@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class InputProvider
 {
@@ -17,6 +14,8 @@ public class InputProvider
         _input.FlyingCamera.MouseDrag.Enable();
         _input.FlyingCamera.KeyboardRotate.Enable();
         _input.FlyingCamera.ZoomCamera.Enable();
+        _input.FlyingCamera.Pause.Enable();
+        _input.FlyingCamera.Back.Enable();
     }
 
     public void Disable()
@@ -26,9 +25,11 @@ public class InputProvider
         _input.FlyingCamera.MouseDrag.Disable();
         _input.FlyingCamera.KeyboardRotate.Disable();
         _input.FlyingCamera.ZoomCamera.Disable();
+        _input.FlyingCamera.Pause.Disable();
+        _input.FlyingCamera.Back.Disable();
     }
     
-    public event Action<InputAction.CallbackContext> MousePressed
+    public event Action<InputAction.CallbackContext> SelectPressed
     {
         add => _input.FlyingCamera.Select.started += value;
         remove => _input.FlyingCamera.Select.started -= value;
@@ -38,6 +39,18 @@ public class InputProvider
     {
         add => _input.FlyingCamera.Select.performed += value;
         remove => _input.FlyingCamera.Select.performed -= value;
+    }
+    
+    public event Action<InputAction.CallbackContext> Pause
+    {
+        add => _input.FlyingCamera.Pause.performed += value;
+        remove => _input.FlyingCamera.Pause.performed -= value;
+    }
+    
+    public event Action<InputAction.CallbackContext> Back
+    {
+        add => _input.FlyingCamera.Back.performed += value;
+        remove => _input.FlyingCamera.Back.performed -= value;
     }
 
     public Vector2 MouseDelta() => _input.FlyingCamera.MouseDrag.ReadValue<Vector2>();

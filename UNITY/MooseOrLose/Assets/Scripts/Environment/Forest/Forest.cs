@@ -32,21 +32,21 @@ public class Forest : MonoBehaviour
     private MeshRenderer meshRenderer;
 
     // Debugging
-    private bool didUpdate;
+    /*private bool didUpdate;
     private int updateCount;
-    public bool hasBeenCalled;
+    public bool hasBeenCalled;*/
 
 
     //--------------------
 
     /** Debugging */
-    public void DidUpdate()
+    /*public void DidUpdate()
     {
         hasBeenCalled = true;
         didUpdate = true;
         updateCount++;
         SetColor(Color.green);
-    }
+    }*/
 
     private void Awake()
     {
