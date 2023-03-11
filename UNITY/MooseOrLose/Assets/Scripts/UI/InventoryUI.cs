@@ -11,7 +11,7 @@ public class InventoryUI : UI, IPointerEnterHandler
     public static InventoryUI Instance;
     
     private List<HorizontalLayoutGroup> _list;
-    public event Action OnExpand;
+    // public event Action OnExpand;
 
     private void Awake()
     {
@@ -24,9 +24,9 @@ public class InventoryUI : UI, IPointerEnterHandler
     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        Expand();
-        Debug.Log("Inventory expand");
-        OnExpand?.Invoke();
+        // Expand();
+        // Debug.Log("Inventory expand");
+        // OnExpand?.Invoke();
     }
 
     protected override void Expand()

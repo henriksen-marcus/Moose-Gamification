@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MainManager : MonoBehaviour
 {
-    public static MainManager Instance;
+    static public MainManager Instance;
     
     [Header("Managers")]
     [SerializeField] GameObject managerParent;
@@ -26,6 +27,7 @@ public class MainManager : MonoBehaviour
     public GameObject forestParent;
 
     //--------------------
+
 
 
     private void Awake()
@@ -51,7 +53,7 @@ public class MainManager : MonoBehaviour
         (Instantiate(wolfManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
         (Instantiate(hunterManager, Vector3.zero, Quaternion.identity) as GameObject).transform.parent = managerParent.transform;
 
-
-        Instantiate(gridManager, Vector3.zero, Quaternion.identity, managerParent.transform);
+        Instantiate(gridManager, new Vector3(-195,0,-195), Quaternion.identity, managerParent.transform);
     }
+
 }

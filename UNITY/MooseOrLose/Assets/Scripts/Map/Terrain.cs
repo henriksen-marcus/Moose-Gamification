@@ -81,11 +81,11 @@ public class Terrain : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("On Dropped");
+        // Debug.Log("On Dropped");
         if (eventData.pointerDrag.TryGetComponent(out DragDrop drop))
         {
             Instantiate(drop.prefab, spawnPoint.position, Quaternion.identity, _mooseParent);
-            Debug.Log("Dropped " + drop.prefab.name + " into world");
+            // Debug.Log("Dropped " + drop.prefab.name + " into world");
             ElgManager.instance.AddToList(drop.prefab);
         }
         else

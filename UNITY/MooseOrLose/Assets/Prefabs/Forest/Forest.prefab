@@ -128,13 +128,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   treesAmountInForest: 0
-  minTreesInForest: 1750
-  maxTreesInForest: 3500
+  minTreesInForest: 600
+  maxTreesInForest: 2000
   forestType: 0
-  forestDensity: 0
+  forestDensityLevel: 0
   forestHealth: 0
   currentSeason: 0
-  forest_Height: 0
-  forest_Density: 0
+  forestHeight: 0
+  forestDensity: 0
   treeList: []
   hasBeenCalled: 0
