@@ -90,7 +90,8 @@ public class Camera_v2 : MonoBehaviour
     private float _selectDistance = 9f;
     
     private bool _hasUsedMouseDrag;
-    private bool _isPressingMouse;
+    private bool _isPressingLMB;
+    private bool _isPressingRMB;
 
     private ClickableObject _selectedObject;
     private bool _isObjectSelected;
@@ -121,8 +122,13 @@ public class Camera_v2 : MonoBehaviour
     private void OnEnable()
     {
         _inputProvider = new InputProvider();
+        
+        _inputProvider.SelectPressed += SetPressingLMB;
         _inputProvider.SelectPerformed += Select;
-        _inputProvider.SelectPressed += SetPressingMouse;
+        
+        _inputProvider.RightclickPressed += SetPressingRMB;
+        _inputProvider.RightclickPerformed += Rightclick;
+        
         _inputProvider.Pause += Pause;
         _inputProvider.Back += Back;
         
@@ -131,8 +137,12 @@ public class Camera_v2 : MonoBehaviour
 
     private void OnDisable()
     {
+        _inputProvider.SelectPressed -= SetPressingLMB;
         _inputProvider.SelectPerformed -= Select;
-        _inputProvider.SelectPressed -= SetPressingMouse;
+        
+        _inputProvider.RightclickPressed -= SetPressingRMB;
+        _inputProvider.RightclickPerformed -= Rightclick;
+        
         _inputProvider.Pause -= Pause;
         _inputProvider.Back -= Back;
         
@@ -188,12 +198,13 @@ public class Camera_v2 : MonoBehaviour
         switch (_cameraMode)
         {
             case CameraMode.Normal:
-                if (_isPressingMouse) MouseDrag();
+                if (_isPressingLMB) MouseDrag();
+                else if (_isPressingRMB) MouseRotationalDrag();
                 else Move();
                 _cameraAngle = Mathf.Lerp(_cameraAngle, _defaultCameraAngle, Time.deltaTime * 6f);
                 break;
             case CameraMode.Orbit:
-                if (_isPressingMouse) MouseRotationalDrag();
+                if (_isPressingLMB || _isPressingRMB) MouseRotationalDrag();
                 else OrbitMove();
                 _rotationPoint.transform.position = Vector3.Lerp(_rotationPoint.transform.position,
                     _selectedForestPosition, Time.deltaTime * 5f);
@@ -247,7 +258,7 @@ public class Camera_v2 : MonoBehaviour
      * and if so outlines that object. */
     private void HoverCheck()
     {
-        if (_isPressingMouse) return;
+        if (_isPressingLMB) return;
         
         Vector3 mousePos = Mouse.current.position.ReadValue();
         Ray ray = _mainCamera.ScreenPointToRay(mousePos);
@@ -312,7 +323,7 @@ public class Camera_v2 : MonoBehaviour
     {
         /* When 'performed' has finished we know that the mouse has been
          * released because the input mode is set to 'on release'. */
-        _isPressingMouse = false;
+        _isPressingLMB = false;
 
         /* We don't want to click when the user releases the mouse button
          * after having dragged on the screen. That would be annoying. */
@@ -330,15 +341,19 @@ public class Camera_v2 : MonoBehaviour
         _hasUsedMouseDrag = false;
     }
 
+    private void Rightclick(InputAction.CallbackContext context)
+    {
+        _isPressingRMB = false;
+    }
+    
     /* Raycast for clickable objects. */
     private void ObjectRaycast()
     {
         // Raycast for info bar when clicking on objects
-        Vector3 mousePos = Mouse.current.position.ReadValue();
-        var layerMask = 1 << LayerMask.NameToLayer("Map");
+        Vector3 mousePos = Mouse.current.position.ReadValue(); ;
         var ray = _mainCamera.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _mapLm))
         {
             var closestObject = GetSphereOverlap(hit.point);
             if (closestObject != null)
@@ -377,10 +392,9 @@ public class Camera_v2 : MonoBehaviour
     {
         // Raycast for info bar when clicking on objects
         Vector3 mousePos = Mouse.current.position.ReadValue();
-        var layerMask = 1 << LayerMask.NameToLayer("Forest");
         var ray = _mainCamera.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _forestLm))
         {
             var forest = hit.transform.GetComponent<Forest>();
             if (forest)
@@ -430,7 +444,7 @@ public class Camera_v2 : MonoBehaviour
         
         var xInput = Mathf.Abs(keyboardInput.x) > Mathf.Abs(rotationInput) ? -keyboardInput.x : rotationInput;
         var newXVelocity = xInput * _rotationAcceleration;
-        _rotationVelocity.y += keyboardInput.y * _rotationAcceleration;
+        _rotationVelocity.y += keyboardInput.y * _rotationAcceleration * 0.4f;
         
         // Make sure there is a smooth transition from mouse to keyboard
         if (_waitForRotationalVelocity)
@@ -482,7 +496,7 @@ public class Camera_v2 : MonoBehaviour
         
         var clickWorldPos = _mainCamera.ScreenToViewportPoint(delta);
         var xRotationOffset = clickWorldPos.x * _dragSpeed;
-        var yRotationOffset = clickWorldPos.y * _dragSpeed;
+        var yRotationOffset = _cameraMode == CameraMode.Orbit ? clickWorldPos.y * _dragSpeed : 0f;
 
         // Dragging fast gives an extra boost
         _rotationVelocity.x += xRotationOffset * (xMagnitude * 0.5f * 0.05f);
@@ -503,7 +517,7 @@ public class Camera_v2 : MonoBehaviour
 
         // Find position on ground beneath + a buffer
         var ray = new Ray(camTransform.position, Vector3.down);
-        if (Physics.Raycast(ray, out var hit, LayerMask.NameToLayer("Map")))
+        if (Physics.Raycast(ray, out var hit, _mapLm))
         {
             _lastGroundPoint = hit.point;
             _lastGroundPoint.y += _groundCollisionRange;
@@ -556,5 +570,7 @@ public class Camera_v2 : MonoBehaviour
         _rotationPoint.transform.position = pos;
     }
 
-    private void SetPressingMouse(InputAction.CallbackContext context) => _isPressingMouse = true;
+    private void SetPressingLMB(InputAction.CallbackContext context) => _isPressingLMB = true;
+    
+    private void SetPressingRMB(InputAction.CallbackContext context) => _isPressingRMB = true;
 }

@@ -42,6 +42,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "Rightclick",
+                    "type": "Button",
+                    "id": "5f0ca6c6-0687-4e56-bb1e-b61ddce19aac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "ZoomCamera",
                     "type": "Value",
                     "id": "5e12d09f-b5be-4543-96d4-68ea9af7d66c",
@@ -73,7 +82,7 @@
                 {
                     "name": "",
                     "id": "7e4dc902-5cfd-440a-8961-c1621bd7ae2f",
-                    "path": "<Mouse>/press",
+                    "path": "<Mouse>/leftButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -221,6 +230,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Back",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "71659c7a-5d45-4570-8a6d-c9a43d1b313d",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rightclick",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

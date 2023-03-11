@@ -16,6 +16,7 @@ public class InputProvider
         _input.FlyingCamera.ZoomCamera.Enable();
         _input.FlyingCamera.Pause.Enable();
         _input.FlyingCamera.Back.Enable();
+        _input.FlyingCamera.Rightclick.Enable();
     }
 
     public void Disable()
@@ -27,6 +28,7 @@ public class InputProvider
         _input.FlyingCamera.ZoomCamera.Disable();
         _input.FlyingCamera.Pause.Disable();
         _input.FlyingCamera.Back.Disable();
+        _input.FlyingCamera.Rightclick.Disable();
     }
     
     public event Action<InputAction.CallbackContext> SelectPressed
@@ -39,6 +41,18 @@ public class InputProvider
     {
         add => _input.FlyingCamera.Select.performed += value;
         remove => _input.FlyingCamera.Select.performed -= value;
+    }
+    
+    public event Action<InputAction.CallbackContext> RightclickPressed
+    {
+        add => _input.FlyingCamera.Rightclick.started += value;
+        remove => _input.FlyingCamera.Rightclick.started -= value;
+    }
+    
+    public event Action<InputAction.CallbackContext> RightclickPerformed
+    {
+        add => _input.FlyingCamera.Rightclick.performed += value;
+        remove => _input.FlyingCamera.Rightclick.performed -= value;
     }
     
     public event Action<InputAction.CallbackContext> Pause
