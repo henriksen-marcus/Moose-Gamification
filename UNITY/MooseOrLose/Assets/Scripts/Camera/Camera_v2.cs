@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -66,6 +65,7 @@ public class Camera_v2 : MonoBehaviour
     private float _rotationBrakeFactor = 0.958f;
 
     private float _dragSpeed = 70f;
+    private float _defaultDragSpeed = 70f;
     
     /* The location of the ground directly beneath the camera. */
     private Vector3 _lastGroundPoint = Vector3.zero;
@@ -164,6 +164,7 @@ public class Camera_v2 : MonoBehaviour
         _mapLm = 1 << LayerMask.NameToLayer("Map");
         _movableObjectsLm = 1 << LayerMask.NameToLayer("Moveable Objects");
         _forestLm = 1 << LayerMask.NameToLayer("Forest");
+        
         //_mainCamera.enabled = false;
     }
     
@@ -189,9 +190,14 @@ public class Camera_v2 : MonoBehaviour
                 _cameraBounds.y = meshPos.y + meshSize.y + _cameraBoundDistance;
             }
         }
-        
         //_gameObjectInfo = GameObject.Find("Screen_Canvas").transform.Find("GameObjectInfo").gameObject;
     }
+    
+    /*IEnumerator DelayedAction(float delayTime, System.Action action)
+    {
+        yield return new WaitForSeconds(delayTime);
+        action();
+    }*/
     
     void Update()
     {
@@ -238,6 +244,8 @@ public class Camera_v2 : MonoBehaviour
         }
     }
 
+    public void SetMovementEnabled(bool enabled) => _dragSpeed = enabled ? _defaultDragSpeed : 0f; 
+    
     private void SetCursor(CursorMode newCursor)
     {
         switch (newCursor)
