@@ -160,11 +160,12 @@ public class Feedback : MonoBehaviour
                 int pop = ElgManager.instance.elg_population;
                 if (pop > moosePopulationHigherLimit)
                 {
-                    SpawnPopUp("Hunter", "The moose population is getting too low, the hunters are getting unhappy");
+                    SpawnPopUp("Hunter", "The moose population is getting too high, the hunters are getting unhappy");
                 }
                 if (pop < moosePopulationLowerLimit)
                 {
-                    SpawnPopUp("Hunter", "The moose population is getting too high, the hunters are getting unhappy");
+                    SpawnPopUp("Hunter", "The moose population is getting too low, the hunters are getting unhappy");
+                    
                 }
             }
         }
