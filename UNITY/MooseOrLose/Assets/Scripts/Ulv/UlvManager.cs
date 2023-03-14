@@ -15,11 +15,6 @@ public class UlvManager : MonoBehaviour
     public int ulv_females;
     public int ulv_children;
 
-    [Header("Spawning")]
-    public int minNumberOfPacks = 0;
-    public int maxNumberOfPacks = 2;
-    public int minPackSize = 2;
-    public int maxPackSize = 4;
     [Header("List of Spawned GameObjects")]
     [SerializeField] public List<List<GameObject>> ulv_list = new List<List<GameObject>>();
 
@@ -46,7 +41,7 @@ public class UlvManager : MonoBehaviour
     {
         if (TimeManager.instance.GetMonth() == 6 || TimeManager.instance.GetMonth() == 2)
         {
-            SpawnPack(UnityEngine.Random.Range(minPackSize, maxPackSize + 1), new Vector3(UnityEngine.Random.Range(-200, 200), 10, 180));
+            SpawnPack(UnityEngine.Random.Range(2, 4 + 1), new Vector3(UnityEngine.Random.Range(-200, 200), 10, 180));
         }
         else
         {
@@ -55,19 +50,21 @@ public class UlvManager : MonoBehaviour
                 for (int j = 0; j < ulv_list[i].Count; j++)
                 {
                     Destroy(ulv_list[i][j]);
-                    
                 }
             }
             
             ulv_list.Clear();
+            ulv_population = 0;
+            ulv_packs = 0;
+            ulv_males = 0;
+            ulv_females = 0;
+            ulv_children = 0;
         }
         
     }
 
     public void SpawnPack(int size, Vector3 position)
     {
-
-            Debug.Log("SpawnPack");
             List<GameObject> pack = new List<GameObject>();
             NavMeshHit hit;
             NavMesh.SamplePosition(position, out hit, 200, 1);
