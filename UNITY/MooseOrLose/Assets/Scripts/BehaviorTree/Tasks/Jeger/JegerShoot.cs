@@ -47,6 +47,7 @@ public class JegerShoot : Node
                 parent.SetData("Shooting", false);
                 mAgent.isStopped = false;
                 target.GetComponent<Elg>().Die();
+                JegerManager.instance.shotThisMonth++;
                 if (parent.GetData("Weekly Kills") == null)
                 {                   
                     parent.SetData("Weekly Kills", 1);

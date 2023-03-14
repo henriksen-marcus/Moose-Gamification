@@ -17,6 +17,8 @@ public class JegerManager : MonoBehaviour
 
     [Header("Stats")]
     public int jeger_population;
+    public int shotLastMonth;
+    public int shotThisMonth;
 
     [Header("Array")]
     [SerializeField] List<GameObject> jeger_list;
@@ -53,9 +55,11 @@ public class JegerManager : MonoBehaviour
         {
             setExpectedHunting();
         }
-
+        shotLastMonth = shotThisMonth;
+        shotThisMonth = 0;
         lastMonthWasHuntingSeason = RuleManager.Instance.HuntingSeason();
     }
+    
 
     public void setExpectedHunting()
     {

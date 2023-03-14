@@ -58,11 +58,7 @@ public class Tree
     private bool _pauseGrowth = false;
     //--------------------
 
-    private void Start()
-    {
-        TimeManager.instance.OnSpringBegin += ResumeGrowth;
-        TimeManager.instance.OnNewYear += UpdateTreeDie;
-    }
+
 
     public void SetBirth()
     {
