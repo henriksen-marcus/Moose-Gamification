@@ -50,10 +50,9 @@ public class UlvManager : MonoBehaviour
                 for (int j = 0; j < ulv_list[i].Count; j++)
                 {
                     Destroy(ulv_list[i][j]);
-
                 }
             }
-
+            
             ulv_list.Clear();
             ulv_population = 0;
             ulv_packs = 0;

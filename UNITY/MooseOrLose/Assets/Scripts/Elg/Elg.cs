@@ -43,15 +43,21 @@ public class Elg : ClickableObject
     private int daysPregnant;
     bool hasGrown;
 
+    [SerializeField] List<GameObject> antlers = new List<GameObject>();
+
     [Header("Set In Inspector")]
     public GameObject ElgPrefab;
-    public GameObject smallAntler;
-    public GameObject bigAntler;
+
+    public GameObject AdultMale;
+    public GameObject AdultFemale;
+    public GameObject Child;
 
 
     private GameObject Antlers;
     private bool antlersSpawned = false;
-    private bool bigAntlersSpawned = false;
+
+
+
     private bool dead = false;
     [HideInInspector]
     public bool hasPartner;
@@ -72,12 +78,37 @@ public class Elg : ClickableObject
         if (Random.Range(0, 2) == 0)
         {
             gender = Gender.Male;
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.name != "Antlers")
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+            Instantiate(AdultMale, transform);
+            foreach (Transform child in transform)
+            {
+                child.transform.localPosition = new Vector3(0, 1, 0);
+            }
             ElgManager.instance.MaleBorn();
         }
         else
         {
             Antlers.SetActive(false);
             gender = Gender.Female;
+
+            foreach(Transform child in transform)
+            {
+                if (child.gameObject.name != "Antlers")
+                {
+                    Destroy(child.gameObject);
+                }
+            }
+            Instantiate(AdultFemale, transform);
+            foreach (Transform child in transform)
+            {
+                child.transform.localPosition = new Vector3(0, 1, 0);
+            }
             ElgManager.instance.FemaleBorn();
         }
 
@@ -212,11 +243,36 @@ public class Elg : ClickableObject
             NextYear();
         }
 
-        if (age_months > 9 && age_years < 1)
+        if (age_years > 0)
         {
             if (!hasGrown)
             {
                 hasGrown = true;
+                foreach (Transform child in transform)
+                {
+                    if (child.gameObject.name != "Antlers")
+                    {
+                        Destroy(child.gameObject);
+                    }
+                }
+                if(gender == Gender.Male)
+                {
+                    Instantiate(AdultMale, transform);
+                    foreach (Transform child in transform)
+                    {
+                        child.transform.localPosition = new Vector3(0, 1, 0);
+                    }
+                }
+                    
+                else
+                {
+                    Instantiate(AdultFemale, transform);
+                    foreach (Transform child in transform)
+                    {
+                        child.transform.localPosition = new Vector3(0, 1, 0);
+                    }
+                }
+                    
                 ElgManager.instance.ChildrenGrowUp();
             }
         }
@@ -283,10 +339,7 @@ public class Elg : ClickableObject
         if (gender == Gender.Female)
         {
             weight *= 0.85f;
-        }
-
-        transform.localScale = new Vector3(0.3f + (weight / 600f), 0.3f + (weight / 600f), 0.3f + (weight / 600f));
-    
+        }   
 
         CalculateAntlerTags();
     }
@@ -303,7 +356,18 @@ public class Elg : ClickableObject
         age_months = 0;
         age_days = 0;
         hasGrown = false;
-
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.name != "Antlers")
+            {
+                Destroy(child.gameObject);
+            }
+        }
+        Instantiate(Child, transform);
+        foreach (Transform child in transform)
+        {
+            child.transform.localPosition = Vector3.zero;
+        }
         ElgManager.instance.ChildrenBorn();
 
         CalculateNewSize();
@@ -490,61 +554,60 @@ public class Elg : ClickableObject
 
     void CalculateAntlerTags()
     {
-        int gene = natural_antler_size / 4;
+        
         if (gender == Gender.Female)
         {
             antler_tag_number = 0;
             return;
         }
-        if (GetAge() < 1)
-        {
-            antler_tag_number = 0;
-            return;
-        }
-        if (GetAge() < 2)
-        {
-            antler_tag_number = gene;
-            return;
-        }
-        if (GetAge() < 6)
-        {
-            antler_tag_number = (int)f(GetAge()) + gene;
-            return;
-        }
-        if (GetAge() >= 6)
-        {
-            antler_tag_number = (int)g(GetAge()) + gene;
-            return;
-        }
+        antler_tag_number = (int)g(GetAge());
 
-        
+
+
     }
 
     void GrowAntlers()
     {
-        if (Antlers != null)
+        if (antler_tag_number == 0)
         {
-            if (age_years < 4 && age_years > 1 && !antlersSpawned)
+            return;
+        }
+        if (Antlers != null)
+        {            
+            antlersSpawned = true;
+            foreach (Transform child in Antlers.transform)
             {
-                antlersSpawned = true;
-                bigAntlersSpawned = false;
-                foreach (Transform child in Antlers.transform)
-                {
-                    Destroy(child.gameObject);
-                }
-                Instantiate(smallAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+                Destroy(child.gameObject);
             }
-            else if (!bigAntlersSpawned && age_years >= 4)
+            if (antlers.Count > antler_tag_number - 3)
             {
-                bigAntlersSpawned = true;
-                antlersSpawned = false;
-                foreach (Transform child in Antlers.transform)
+                if (hasGrown)
                 {
-                    if (child != null)
-                        Destroy(child.gameObject);
+                    int num = antler_tag_number;
+                    if (num < 12)
+                    {
+                        num = 12;
+                    }
+                    Instantiate(antlers[num - 3], Antlers.transform.position, transform.rotation, Antlers.transform);
                 }
-                Instantiate(bigAntler, Antlers.transform.position, transform.rotation, Antlers.transform);
+                else
+                {
+                    int num = antler_tag_number;
+                    if (num > 11)
+                    {
+                        num = 11;
+                    }
+                    Instantiate(antlers[num - 3], Antlers.transform.position, transform.rotation, Antlers.transform);
+                }
+                   
+            }                
+            else
+            {
+                Debug.Log("FailedToSpawnAntlers");
+                Debug.Log(antler_tag_number);
             }
+                
+            
         }
     }
 
@@ -557,7 +620,6 @@ public class Elg : ClickableObject
                 Destroy(child.gameObject);
             }
             antlersSpawned = false;
-            bigAntlersSpawned = false;
         }
 
     }
@@ -569,7 +631,7 @@ public class Elg : ClickableObject
     // used to calculate antler size 6-25 years
     float g(float x)
     {
-        return (-0.006f * x * x * x) + (0.3f * x * x) - (4.9f * x) + 45;
+        return hasGrown ? Mathf.Clamp((7.2f + (2 * (natural_antler_size / 16))) * (1.85f * Mathf.Pow(0.7f,x)) * Mathf.Pow(x, 1.44f),12,30) : Mathf.Clamp((7.2f + (2 * (natural_antler_size / 16))) * (1.85f * Mathf.Pow(0.7f, x)) * Mathf.Pow(x, 1.44f), 3, 11);
     }
 
     public int NumberOfAntlerTags()
