@@ -47,6 +47,7 @@ public class Feedback : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        populationCounts = new List<int>();
         TimeManager.instance.OnNewDay += NewDay;
         TimeManager.instance.OnNewYear += NewYear;
         FeedbackPopUpContainer = (RectTransform)transform.parent.Find("FeedbackPopUpContainer");
@@ -88,7 +89,7 @@ public class Feedback : MonoBehaviour
         if (size > 2)
         {
             populationDifferencePoints = populationCounts[size - 1] - populationCounts[size - 2];
-            populationDifferencePoints *= 10;
+            populationDifferencePoints *= 5;
         }
         else
         {
@@ -104,16 +105,16 @@ public class Feedback : MonoBehaviour
     {
         if (populationDifferencePoints != populationDifferencePointsPrev)
         {
-            int diff = populationDifferencePointsPrev - populationDifferencePoints;
-            if (diff < -30)
+            int diff = populationDifferencePoints - populationDifferencePointsPrev;
+            if (diff > 30)
             {
                 SpawnPopUp("Moose", "Moose population is growing and they are happy");
             }
-            if (diff > 20 && diff < 70)
+            if (diff < -20 && diff >  -70)
             {               
                 SpawnPopUp("Moose", "Moose population is dropping and they are becoming unhappy");
             }
-            if (diff > 70)
+            if (diff < -70)
             {
                 SpawnPopUp("Moose", "Moose population is dropping quickly and they are becoming very unhappy");
             }
@@ -146,12 +147,12 @@ public class Feedback : MonoBehaviour
         int moosePop = ElgManager.instance.elg_population;
         if (moosePop < moosePopulationLowerLimit)
         {           
-            populationLimitScore = (moosePop - moosePopulationLowerLimit) * -10;
+            populationLimitScore = (moosePopulationLowerLimit - moosePop) * -10;
         }
         else if (moosePop > moosePopulationHigherLimit)
         {
             
-            populationLimitScore = (moosePopulationHigherLimit - moosePop) * -10;
+            populationLimitScore = (moosePop - moosePopulationHigherLimit) * -10;
         }
         else
         {
