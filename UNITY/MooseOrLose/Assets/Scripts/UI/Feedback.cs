@@ -40,6 +40,9 @@ public class Feedback : MonoBehaviour
     private bool hasSpawnedPopulationPopUp1;
     private bool hasSpawnedPopulationPopUp2;
 
+    private List<int> populationCounts;
+    private int weekDay;
+
 
     // Start is called before the first frame update
     void Start()
@@ -55,10 +58,21 @@ public class Feedback : MonoBehaviour
         populationPointsPrev = 150;
         hasSpawnedPopulationPopUp1 = false;
         hasSpawnedPopulationPopUp2 = false;
+        weekDay = 0;
     }
 
     void NewDay()
     {
+        weekDay++;       
+        if (weekDay > 6)
+        {
+            weekDay = 0;
+            populationCounts.Add(ElgManager.instance.elg_population);
+        }
+        if (populationCounts.Count > 3)
+        {
+            populationCounts.RemoveAt(0);
+        }
         MooseCalc();
         HunterCalc();
         ForestCalc();
@@ -70,11 +84,11 @@ public class Feedback : MonoBehaviour
     {
         populationPoints = ElgManager.instance.elg_population;
 
-        int size = ElgManager.instance.elg_population_graph.Count;
+        int size = populationCounts.Count;
         if (size > 2)
         {
-            populationDifferencePoints = ElgManager.instance.elg_population_graph[size - 1] - ElgManager.instance.elg_population_graph[size - 2];
-            populationDifferencePoints *= 5;
+            populationDifferencePoints = populationCounts[size - 1] - populationCounts[size - 2];
+            populationDifferencePoints *= 10;
         }
         else
         {
