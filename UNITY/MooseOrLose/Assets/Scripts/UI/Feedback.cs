@@ -176,15 +176,22 @@ public class Feedback : MonoBehaviour
         {
 
             int pop = ElgManager.instance.elg_population;
-            if (pop > moosePopulationHigherLimit && !hasSpawnedPopulationLimit)
+            if (pop > moosePopulationHigherLimit)
             {
-                hasSpawnedPopulationLimit = true;
-                SpawnPopUp("Hunter", "The moose population is getting too high, the hunters are getting unhappy");
+                if (!hasSpawnedPopulationLimit)
+                {
+                    hasSpawnedPopulationLimit = true;
+                    SpawnPopUp("Hunter", "The moose population is getting too high, the hunters are getting unhappy");
+                }
+
             }
-            else if (pop < moosePopulationLowerLimit && !hasSpawnedPopulationLimit)
+            else if (pop < moosePopulationLowerLimit)
             {
-                hasSpawnedPopulationLimit = true;
-                SpawnPopUp("Hunter", "The moose population is getting too low, the hunters are getting unhappy");
+                if (!hasSpawnedPopulationLimit)
+                {
+                    hasSpawnedPopulationLimit = true;
+                    SpawnPopUp("Hunter", "The moose population is getting too low, the hunters are getting unhappy");
+                }
                     
             }
             else
@@ -195,17 +202,25 @@ public class Feedback : MonoBehaviour
         }
         if (shotLastMonthScore != shotLastMonthScorePrev)
         {
+            
 
-
-            if (shotLastMonthScore < -20 && !hasSpawnedShotLastMonth)
+            if (shotLastMonthScore < -20 )
             {
-                hasSpawnedShotLastMonth = true;
-                SpawnPopUp("Hunter", "The hunters are shooting less moose and are losing happiness");               
+                if (!hasSpawnedShotLastMonth)
+                {
+                    hasSpawnedShotLastMonth = true;
+                    SpawnPopUp("Hunter", "The hunters are shooting less moose and are losing happiness");
+                }
+
+             
             }
-            else if (shotLastMonthScore > 20 && !hasSpawnedShotLastMonth)
+            else if (shotLastMonthScore > 20)
             {
-                hasSpawnedShotLastMonth = true;
-                SpawnPopUp("Hunter", "The hunters are shooting enough and are getting happier");
+                if (!hasSpawnedShotLastMonth)
+                {
+                    hasSpawnedShotLastMonth = true;
+                    SpawnPopUp("Hunter", "The hunters are shooting enough and are getting happier");
+                }
             }
             else
             {
@@ -214,15 +229,22 @@ public class Feedback : MonoBehaviour
         }
         if (leftOverMooseScore != leftOverMooseScorePrev)
         {
-            if (leftOverMooseScore < -20 && !hasSpawnedLeftOverMoose)
+            if (leftOverMooseScore < -20)
             {
-                hasSpawnedLeftOverMoose = true;
-                SpawnPopUp("Hunter", "The hunters met their target and are getting happier because of it");
+                if (!hasSpawnedShotLastMonth)
+                {
+                    hasSpawnedLeftOverMoose = true;
+                    SpawnPopUp("Hunter", "The hunters met their target and are getting happier because of it");
+                }
             }
-            else if (leftOverMooseScore > 20 && !hasSpawnedLeftOverMoose)
+            else if (leftOverMooseScore > 20)
             {
-                hasSpawnedLeftOverMoose = true;
-                SpawnPopUp("Hunter", "The hunters didn't meet their hunting targets and they are getting unhappy");
+                if (!hasSpawnedShotLastMonth)
+                {
+                    hasSpawnedLeftOverMoose = true;
+                    SpawnPopUp("Hunter", "The hunters didn't meet their hunting targets and they are getting unhappy");
+                }
+
             }
             else
             {
