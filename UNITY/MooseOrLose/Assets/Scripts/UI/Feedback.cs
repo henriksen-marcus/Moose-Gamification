@@ -51,6 +51,7 @@ public class Feedback : MonoBehaviour
     void Start()
     {
         populationCounts = new List<int>();
+
         TimeManager.instance.OnNewDay += NewDay;
         TimeManager.instance.OnNewYear += NewYear;
         FeedbackPopUpContainer = (RectTransform)transform.parent.Find("FeedbackPopUpContainer");
@@ -156,7 +157,6 @@ public class Feedback : MonoBehaviour
         }
         else if (moosePop > moosePopulationHigherLimit)
         {
-            
             populationLimitScore = (moosePop - moosePopulationHigherLimit) * -10;
         }
         else
@@ -174,7 +174,6 @@ public class Feedback : MonoBehaviour
     {
         if (populationLimitScore != populationLimitScorePrev)
         {
-
             int pop = ElgManager.instance.elg_population;
             if (pop > moosePopulationHigherLimit)
             {
