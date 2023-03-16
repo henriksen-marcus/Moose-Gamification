@@ -39,11 +39,19 @@ public class Feedback : MonoBehaviour
 
     private bool hasSpawnedPopulationPopUp1;
     private bool hasSpawnedPopulationPopUp2;
+    private bool hasSpawnedPopulationLimit;
+    private bool hasSpawnedShotLastMonth;
+    private bool hasSpawnedLeftOverMoose;
+
+    private List<int> populationCounts;
+    private int weekDay;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        populationCounts = new List<int>();
+
         TimeManager.instance.OnNewDay += NewDay;
         TimeManager.instance.OnNewYear += NewYear;
         FeedbackPopUpContainer = (RectTransform)transform.parent.Find("FeedbackPopUpContainer");
@@ -55,10 +63,24 @@ public class Feedback : MonoBehaviour
         populationPointsPrev = 150;
         hasSpawnedPopulationPopUp1 = false;
         hasSpawnedPopulationPopUp2 = false;
+        hasSpawnedPopulationLimit = false;
+        hasSpawnedShotLastMonth = false;
+        hasSpawnedLeftOverMoose = false;
+        weekDay = 0;
     }
 
     void NewDay()
     {
+        weekDay++;       
+        if (weekDay > 6)
+        {
+            weekDay = 0;
+            populationCounts.Add(ElgManager.instance.elg_population);
+        }
+        if (populationCounts.Count > 3)
+        {
+            populationCounts.RemoveAt(0);
+        }
         MooseCalc();
         HunterCalc();
         ForestCalc();
@@ -70,10 +92,10 @@ public class Feedback : MonoBehaviour
     {
         populationPoints = ElgManager.instance.elg_population;
 
-        int size = ElgManager.instance.elg_population_graph.Count;
+        int size = populationCounts.Count;
         if (size > 2)
         {
-            populationDifferencePoints = ElgManager.instance.elg_population_graph[size - 1] - ElgManager.instance.elg_population_graph[size - 2];
+            populationDifferencePoints = populationCounts[size - 1] - populationCounts[size - 2];
             populationDifferencePoints *= 5;
         }
         else
@@ -89,17 +111,16 @@ public class Feedback : MonoBehaviour
     void MoosePopUp()
     {
         if (populationDifferencePoints != populationDifferencePointsPrev)
-        {
-            int diff = populationDifferencePointsPrev - populationDifferencePoints;
-            if (diff < -30)
+        {           
+            if (populationDifferencePoints > 30)
             {
                 SpawnPopUp("Moose", "Moose population is growing and they are happy");
             }
-            if (diff > 20 && diff < 70)
+            if (populationDifferencePoints < -20 && populationDifferencePoints >  -70)
             {               
                 SpawnPopUp("Moose", "Moose population is dropping and they are becoming unhappy");
             }
-            if (diff > 70)
+            if (populationDifferencePoints < -70)
             {
                 SpawnPopUp("Moose", "Moose population is dropping quickly and they are becoming very unhappy");
             }
@@ -132,12 +153,11 @@ public class Feedback : MonoBehaviour
         int moosePop = ElgManager.instance.elg_population;
         if (moosePop < moosePopulationLowerLimit)
         {           
-            populationLimitScore = (moosePop - moosePopulationLowerLimit) * -10;
+            populationLimitScore = (moosePopulationLowerLimit - moosePop) * -10;
         }
         else if (moosePop > moosePopulationHigherLimit)
         {
-            
-            populationLimitScore = (moosePopulationHigherLimit - moosePop) * -10;
+            populationLimitScore = (moosePop - moosePopulationHigherLimit) * -10;
         }
         else
         {
@@ -154,43 +174,80 @@ public class Feedback : MonoBehaviour
     {
         if (populationLimitScore != populationLimitScorePrev)
         {
-            int diff = populationLimitScore - populationLimitScorePrev;
-            if (diff > 20)
+            int pop = ElgManager.instance.elg_population;
+            if (pop > moosePopulationHigherLimit)
             {
-                int pop = ElgManager.instance.elg_population;
-                if (pop > moosePopulationHigherLimit)
+                if (!hasSpawnedPopulationLimit)
                 {
+                    hasSpawnedPopulationLimit = true;
                     SpawnPopUp("Hunter", "The moose population is getting too high, the hunters are getting unhappy");
                 }
-                if (pop < moosePopulationLowerLimit)
-                {
-                    SpawnPopUp("Hunter", "The moose population is getting too low, the hunters are getting unhappy");
-                    
-                }
+
             }
+            else if (pop < moosePopulationLowerLimit)
+            {
+                if (!hasSpawnedPopulationLimit)
+                {
+                    hasSpawnedPopulationLimit = true;
+                    SpawnPopUp("Hunter", "The moose population is getting too low, the hunters are getting unhappy");
+                }
+                    
+            }
+            else
+            {
+                hasSpawnedPopulationLimit = false;
+            }
+            
         }
         if (shotLastMonthScore != shotLastMonthScorePrev)
         {
-            int diff = shotLastMonthScore - shotLastMonthScorePrev;
-            if (diff < -20)
+            
+
+            if (shotLastMonthScore < -20 )
             {
-                SpawnPopUp("Hunter", "The hunters are shooting less moose and are losing happiness");               
+                if (!hasSpawnedShotLastMonth)
+                {
+                    hasSpawnedShotLastMonth = true;
+                    SpawnPopUp("Hunter", "The hunters are shooting less moose and are losing happiness");
+                }
+
+             
             }
-            if (diff > 40)
+            else if (shotLastMonthScore > 20)
             {
-                SpawnPopUp("Hunter", "The hunters are shooting enough and are getting happier");
+                if (!hasSpawnedShotLastMonth)
+                {
+                    hasSpawnedShotLastMonth = true;
+                    SpawnPopUp("Hunter", "The hunters are shooting enough and are getting happier");
+                }
+            }
+            else
+            {
+                hasSpawnedShotLastMonth = false;
             }
         }
         if (leftOverMooseScore != leftOverMooseScorePrev)
         {
-            int diff = leftOverMooseScore - leftOverMooseScorePrev;
-            if (diff < -20)
+            if (leftOverMooseScore < -20)
             {
-                SpawnPopUp("Hunter", "The hunters met their target and are getting happier because of it");
+                if (!hasSpawnedShotLastMonth)
+                {
+                    hasSpawnedLeftOverMoose = true;
+                    SpawnPopUp("Hunter", "The hunters met their target and are getting happier because of it");
+                }
             }
-            if (diff > 20)
+            else if (leftOverMooseScore > 20)
             {
-                SpawnPopUp("Hunter", "The hunters didn't meet their hunting targets and they are getting unhappy");
+                if (!hasSpawnedShotLastMonth)
+                {
+                    hasSpawnedLeftOverMoose = true;
+                    SpawnPopUp("Hunter", "The hunters didn't meet their hunting targets and they are getting unhappy");
+                }
+
+            }
+            else
+            {
+                hasSpawnedLeftOverMoose = false;
             }
         }
     }

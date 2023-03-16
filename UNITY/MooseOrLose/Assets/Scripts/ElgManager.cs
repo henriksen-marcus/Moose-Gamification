@@ -182,10 +182,14 @@ public class ElgManager : MonoBehaviour
         float age = 0;
         foreach(GameObject go in elg_list)
         {
-            if (go.GetComponent<Elg>().gender == Gender.Male)
+            if (go.GetComponent<Elg>() != null)
             {
-                age += go.GetComponent<Elg>().GetAge();
+                if (go.GetComponent<Elg>().gender == Gender.Male)
+                {
+                    age += go.GetComponent<Elg>().GetAge();
+                }
             }
+            
         }
         age /= (float)elg_males;
         return age;
