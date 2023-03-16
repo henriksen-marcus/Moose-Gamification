@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+
 public class Feedback : MonoBehaviour
 {
     public RectTransform MooseBackground;
@@ -46,6 +47,16 @@ public class Feedback : MonoBehaviour
     private List<int> populationCounts;
     private int weekDay;
 
+    private HoverableUIElement MooseToolTip;
+    private HoverableUIElement HunterToolTip;
+    private HoverableUIElement ForestToolTip;
+
+    private void Awake()
+    {
+        MooseToolTip = transform.Find("HorizontalLayout").Find("MooseBackground").GetComponent<HoverableUIElement>();
+        HunterToolTip = transform.Find("HorizontalLayout").Find("HuntersBackground").GetComponent<HoverableUIElement>();
+        ForestToolTip = transform.Find("HorizontalLayout").Find("ForestBackground").GetComponent<HoverableUIElement>();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -85,6 +96,7 @@ public class Feedback : MonoBehaviour
         HunterCalc();
         ForestCalc();
 
+        ToolTips();
         UpdatePrevious();
     }
 
@@ -164,7 +176,7 @@ public class Feedback : MonoBehaviour
             populationLimitScore = 0;
         }
 
-        shotLastMonthScore = JegerManager.instance.shotLastMonth * 10;
+        shotLastMonthScore = JegerManager.instance.shotLastMonth * 5;
         HunterScore = 150 + populationLimitScore + shotLastMonthScore + leftOverMooseScore;
         HuntersBackground.GetComponent<Image>().color = gradient.Evaluate((float)HunterScore / 300f);
         HunterPopUp();
@@ -279,5 +291,42 @@ public class Feedback : MonoBehaviour
         TextMeshProUGUI Text = popUp.transform.Find("Text").GetComponent<TextMeshProUGUI>();
         Text.text = text;
 
+    }
+
+    void ToolTips()
+    {
+        Color popColor = gradient.Evaluate((float)populationPoints / 200f);
+
+        int popDiff = Mathf.Clamp(populationDifferencePoints, -100,100);
+        popDiff += 100;
+        Color popDiffColor = gradient.Evaluate((float)popDiff / 200f);
+
+
+        MooseToolTip.SetText(ColorString("Population: " + populationPoints.ToString(), popColor) +
+                             ColorString("Growth: " + populationDifferencePoints.ToString(), popDiffColor));
+
+
+
+        int popLimit = Mathf.Clamp(populationLimitScore, -100, 0);
+        popLimit += 100;
+        Color popLimitColor = gradient.Evaluate((float)popLimit/100f);
+
+        int shot = Mathf.Clamp(shotLastMonthScore, 0, 100);
+        Color shotLastMonthColor = gradient.Evaluate((float)shot / 100f);
+
+        int leftOverMoose = Mathf.Clamp(leftOverMooseScore, -100, 0);
+        leftOverMoose += 100;
+        Color leftOverMooseColor = gradient.Evaluate((float)leftOverMoose/100f);
+
+        HunterToolTip.SetText(ColorString("Base: 150", Color.yellow) +
+                              ColorString("Population Control: " + populationLimitScore.ToString(), popLimitColor) +
+                              ColorString("Shooting: " + shotLastMonthScore.ToString(), shotLastMonthColor) +
+                              ColorString("Meeting targets: " + leftOverMooseScore.ToString(), leftOverMooseColor));
+                                
+        ForestToolTip.SetText("");
+    }
+    string ColorString(string text, Color color)
+    {
+        return "<color=#" + ColorUtility.ToHtmlStringRGBA(color) + ">" + text + "\n" + "</color>";
     }
 }
