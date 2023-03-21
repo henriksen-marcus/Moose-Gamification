@@ -5,15 +5,15 @@ using TMPro;
 
 public class ObjectInfo : MonoBehaviour
 {
-    TextMeshProUGUI name;
+    TextMeshProUGUI _name;
     public GameObject info_bar;
     RectTransform background;
 
     public void Awake()
     {
-        name = transform.Find("Background").transform.Find("Name").GetComponent<TextMeshProUGUI>();
+        _name = transform.Find("Background").transform.Find("Name").GetComponent<TextMeshProUGUI>();
         background = transform.Find("Background").GetComponent<RectTransform>();
-        if (name == null || background == null)
+        if (_name == null || background == null)
         {
             Debug.Log("ObjectInfo Error - Setup failed");
         }
@@ -36,7 +36,7 @@ public class ObjectInfo : MonoBehaviour
         switch(info.type)
         {
             case ClickableObjectInfo.ObjectType.Moose:
-                name.text = info.type.ToString();
+                _name.text = info.type.ToString();
 
                 GameObject scacing1 = Instantiate(info_bar, background.transform);
                 scacing1.GetComponent<TextMeshProUGUI>().text = "";
@@ -88,10 +88,10 @@ public class ObjectInfo : MonoBehaviour
                 }
                 break;
             case ClickableObjectInfo.ObjectType.Wolf:
-                name.text = info.type.ToString();
+                _name.text = info.type.ToString();
                 break;
             case ClickableObjectInfo.ObjectType.Forest:
-                name.text = info.type.ToString();
+                _name.text = info.type.ToString();
                 break;
         }
     }

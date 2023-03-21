@@ -3840,10 +3840,10 @@ MonoBehaviour:
   mMaleRatioGoal: {fileID: 5239639501177269841}
   mMaleAge: {fileID: 4007269451435027134}
   mMaleAgeGoal: {fileID: 3523650201044139051}
-  mSquareKm: {fileID: 2540278925857369386}
-  mSquareKmGoal: {fileID: 894228857897858847}
   hunterCount: {fileID: 7937514033767029280}
   wolfCount: {fileID: 3618591800286698442}
+  mSquareKm: {fileID: 2540278925857369386}
+  mSquareKmGoal: {fileID: 894228857897858847}
 --- !u!1 &5485103041909029873
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
+using UnityEngine.AI;
 
 public class Forest : MonoBehaviour
 {
@@ -22,13 +23,17 @@ public class Forest : MonoBehaviour
     public TreeHealth forestHealth;
     public Season currentSeason;
 
+    [Header("Tree Spawning")]
+    [SerializeField] GameObject Tree;
+    [SerializeField] int spawningRadius = 20;
+
     public float forestHeight;
     public float forestDensity;
 
     private Tree[] _treeArray;
     public List<Tree> treeList;
 
-    private MeshRenderer _meshRenderer;
+    
 
     // Debugging
     /*private bool didUpdate;
@@ -52,11 +57,12 @@ public class Forest : MonoBehaviour
         _forestManager = FindObjectOfType<ForestManager>();
         _colorManager = FindObjectOfType<ColorManager>();
 
-        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
-
         treesAmountInForest = UnityEngine.Random.Range(minTreesInForest, maxTreesInForest);
 
         RaycastPosition();
+        var loadedObject = Resources.Load("Trees/Spruce/Spruce1");
+        
+        Tree = (GameObject)loadedObject;
     }
     
     private void Start()
@@ -75,9 +81,10 @@ public class Forest : MonoBehaviour
         SetForestSeason();
         SetForestHealth();
         UpdateForestDensity();
-        SetForestColor();
 
         UpdateTreeStats();
+
+        SpawnTrees();
     }
 
 
@@ -132,10 +139,6 @@ public class Forest : MonoBehaviour
 
     //--------------------
 
-    public void SetColor(Color col)
-    {
-        _meshRenderer.materials[0].color = col;
-    }
 
     void SetForestType()
     {
@@ -178,10 +181,6 @@ public class Forest : MonoBehaviour
         };
     }
 
-    void SetForestColor()
-    {
-        SetColor(_colorManager.GetColor(forestType, forestDensityLevel));
-    }
 
     void UpdateForestDensity()
     {
@@ -262,7 +261,6 @@ public class Forest : MonoBehaviour
         SetForestHealth();
 
         UpdateForestDensity();
-        SetForestColor();
 
         treesAmountInForest = treeList.Count;
         
@@ -317,6 +315,51 @@ public class Forest : MonoBehaviour
                 }
 
                 _forestManager.treesBirth += treeList[i].CheckIfGettingBirth();
+            }
+        }
+    }
+
+    void SpawnTrees()
+    {
+        int numberOfTrees = 0;
+        switch (forestDensityLevel)
+        {
+            case ForestDensity.Density1:
+                numberOfTrees = 7;
+                break;
+            case ForestDensity.Density2:
+                numberOfTrees = 10;
+                break;
+            case ForestDensity.Density3:
+                numberOfTrees = 15;
+                break;
+            case ForestDensity.Density4:
+                numberOfTrees = 20;
+                break;
+            case ForestDensity.Density5:
+                numberOfTrees = 25;
+                break;
+            default:
+                break;
+        }
+
+        for(int i = 0;i < numberOfTrees;i++)
+        {
+            int angle = UnityEngine.Random.Range(0, 361);
+            float radian = angle * (Mathf.PI / 180f);
+            Vector3 direction = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0);
+            direction *= UnityEngine.Random.Range(5,spawningRadius);
+            Vector3 position = transform.position + direction;
+            NavMeshHit hit;
+            NavMesh.SamplePosition(position, out hit, 20, 1);
+            if (hit.hit)
+            {
+                GameObject obj = Instantiate(Tree, hit.position, Quaternion.identity, gameObject.transform);
+                obj.transform.localScale = new Vector3(1, 1, 1);
+            }
+            else
+            {
+                i--;
             }
         }
     }

@@ -875,9 +875,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UIRect: {fileID: 5485103041850787481}
   titleRect: {fileID: 9195990304202907258}
+  gridOn: 0
   mooseCount: {fileID: 2474490181849908980}
+  mMaleCount: {fileID: 0}
+  mFemaleCount: {fileID: 0}
+  mChildCount: {fileID: 0}
+  mMaleRatio: {fileID: 0}
+  mMaleRatioGoal: {fileID: 0}
+  mMaleAge: {fileID: 0}
+  mMaleAgeGoal: {fileID: 0}
   hunterCount: {fileID: 5093143576810323945}
   wolfCount: {fileID: 1540945673847025397}
+  mSquareKm: {fileID: 0}
+  mSquareKmGoal: {fileID: 0}
 --- !u!1 &5485103041909029873
 GameObject:
   m_ObjectHideFlags: 0

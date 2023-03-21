@@ -13,6 +13,7 @@ using Random = UnityEngine.Random;
 public class ForestManager : MonoBehaviour
 {
     MainManager mainManager;
+    public static ForestManager instance;
 
     [Header("GameObjects")]
     public GameObject forestPrefab;
@@ -58,7 +59,10 @@ public class ForestManager : MonoBehaviour
     private int currentIndex;
     
     private float deltaTime;
-    
+
+    public List<int> forest1;
+
+
     [Header("Timers")]
     private Timer timer = new();
     private Timer updateTimer = new();
@@ -68,6 +72,10 @@ public class ForestManager : MonoBehaviour
 
     private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
         mainManager = FindObjectOfType<MainManager>();
         forestSpawnerList = new List<GameObject>(forestSpawnCount);
 
@@ -81,6 +89,7 @@ public class ForestManager : MonoBehaviour
     {
         SubscribeToEvents();
         UpdateForests();
+        forest1.Add(forestList[0].treeList.Count);
     }
 
 
@@ -109,6 +118,7 @@ public class ForestManager : MonoBehaviour
             forestSpawnerList.Add(Instantiate(forestPrefab, spawnPosition, Quaternion.identity) as GameObject);
             
             forestSpawnerList[i].transform.parent = mainManager.forestParent.transform;
+            forestSpawnerList[i].transform.localScale = new Vector3(1, 1, 1);
             forestSpawnerList[i].name = "Forest (" + i + ")";
 
             //Check if another Forest is located on this position
@@ -282,6 +292,7 @@ public class ForestManager : MonoBehaviour
     {
         TimeManager.instance.OnNewDay += TreeCount;
         TimeManager.instance.OnNewDay += UpdateForests;
+        TimeManager.instance.OnNewMonth += Statistics;
     }
     
     void TreeCount()
@@ -358,6 +369,11 @@ public class ForestManager : MonoBehaviour
         //    }
         //}
         #endregion
+    }
+
+    void Statistics()
+    {
+        forest1.Add(forestList[0].treeList.Count);
     }
 }
 

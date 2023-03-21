@@ -11,7 +11,7 @@ public class Terrain : MonoBehaviour, IDropHandler
     public Terrain(int movementCost, bool isWater, Texture texture)
     {
         this.movementCost = movementCost;
-        this.hasWater = hasWater;
+        this.hasWater = isWater;
         // this.texture = texture;
     }
     

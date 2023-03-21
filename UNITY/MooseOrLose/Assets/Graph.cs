@@ -14,6 +14,7 @@ public class Graph : MonoBehaviour
     bool mooseMales;
     bool mooseFemales;
     bool mooseChildren;
+    bool forest1;
 
     private int highest;
     // Start is called before the first frame update
@@ -27,8 +28,9 @@ public class Graph : MonoBehaviour
         mooseMales = false;
         mooseFemales = false;
         mooseChildren = false;
+        forest1 = false;
 
-        
+
     }
 
     private void Start()
@@ -61,11 +63,15 @@ public class Graph : MonoBehaviour
         }
         if(mooseFemales)
         {
-            ShowGraph(ElgManager.instance.elg_females_graph, Color.green);
+            ShowGraph(ElgManager.instance.elg_females_graph, Color.yellow);
         }
         if(mooseChildren)
         {
             ShowGraph(ElgManager.instance.elg_children_graph, Color.cyan);
+        }
+        if (forest1)
+        {
+            ShowGraph(ForestManager.instance.forest1, Color.green);
         }
 
     }
@@ -123,7 +129,7 @@ public class Graph : MonoBehaviour
         mooseMales = settings.Find("MooseMales").transform.Find("MooseMalesCheckBox").GetComponent<Toggle>().isOn;
         mooseFemales = settings.Find("MooseFemales").transform.Find("MooseFemalesCheckBox").GetComponent<Toggle>().isOn;
         mooseChildren = settings.Find("MooseChildren").transform.Find("MooseChildrenCheckBox").GetComponent<Toggle>().isOn;
-
+        forest1 = settings.Find("Forest1").transform.Find("Forest1CheckBox").GetComponent<Toggle>().isOn;
         if (transform.parent.gameObject.activeSelf)
             UpdateGraphMenu();
     }
