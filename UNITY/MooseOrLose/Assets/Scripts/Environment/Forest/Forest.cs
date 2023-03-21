@@ -25,7 +25,7 @@ public class Forest : MonoBehaviour
 
     [Header("Tree Spawning")]
     [SerializeField] GameObject Tree;
-    [SerializeField] int spawningRadius = 20;
+    [SerializeField] int spawningRadius = 10;
 
     public float forestHeight;
     public float forestDensity;
@@ -325,19 +325,19 @@ public class Forest : MonoBehaviour
         switch (forestDensityLevel)
         {
             case ForestDensity.Density1:
-                numberOfTrees = 7;
+                numberOfTrees = 5;
                 break;
             case ForestDensity.Density2:
-                numberOfTrees = 10;
+                numberOfTrees = 7;
                 break;
             case ForestDensity.Density3:
-                numberOfTrees = 15;
+                numberOfTrees = 10;
                 break;
             case ForestDensity.Density4:
-                numberOfTrees = 20;
+                numberOfTrees = 13;
                 break;
             case ForestDensity.Density5:
-                numberOfTrees = 25;
+                numberOfTrees = 17;
                 break;
             default:
                 break;
@@ -345,16 +345,18 @@ public class Forest : MonoBehaviour
 
         for(int i = 0;i < numberOfTrees;i++)
         {
-            int angle = UnityEngine.Random.Range(0, 361);
-            float radian = angle * (Mathf.PI / 180f);
-            Vector3 direction = new Vector3(Mathf.Cos(radian), Mathf.Sin(radian), 0);
-            direction *= UnityEngine.Random.Range(5,spawningRadius);
+
+
+            Vector2 pos = UnityEngine.Random.insideUnitCircle;
+            Debug.Log(pos.x + ", " + pos.y);
+            Vector3 direction = new Vector3(pos.x,0, pos.y);
+            direction *= UnityEngine.Random.Range(2,spawningRadius);
             Vector3 position = transform.position + direction;
-            NavMeshHit hit;
-            NavMesh.SamplePosition(position, out hit, 20, 1);
-            if (hit.hit)
+            RaycastHit hit;
+            
+            if (Physics.Raycast(position, new Vector3(0, -1, 0), out hit))
             {
-                GameObject obj = Instantiate(Tree, hit.position, Quaternion.identity, gameObject.transform);
+                GameObject obj = Instantiate(Tree, hit.point, Quaternion.identity, gameObject.transform);
                 obj.transform.localScale = new Vector3(1, 1, 1);
             }
             else
