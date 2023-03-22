@@ -35,7 +35,9 @@ public class Forest : MonoBehaviour
     private List<Tree> trackableTrees;
     private List<GameObject> spawnedTrees;
 
-    
+    float borderRadius = 10f;
+    float maxDistanceVariation = 2f;
+    float lastDistance = 2f;
 
     // Debugging
     /*private bool didUpdate;
@@ -71,7 +73,7 @@ public class Forest : MonoBehaviour
     
     private void Start()
     {
-        spawningRadius = 20f;
+        spawningRadius = 10f;
         SubscribeToEvents();
 
         SetForestType();
@@ -351,23 +353,31 @@ public class Forest : MonoBehaviour
                 break;
         }
 
-        for(int i = 0;i < numberOfTrees;i++)
+        
+        for (int i = 0;i < numberOfTrees;i++)
         {
+                      
+            var distanceFromMiddle = UnityEngine.Random.Range(1f, borderRadius);
+            distanceFromMiddle = Mathf.Clamp(
+                distanceFromMiddle,
+                lastDistance - maxDistanceVariation,
+                lastDistance + maxDistanceVariation);
+            lastDistance = distanceFromMiddle;
 
-
-            Vector2 pos = UnityEngine.Random.insideUnitCircle;
+            var angle = i * 360f / numberOfTrees;
+            var angleInRadians = angle * Mathf.Deg2Rad;
+            var x = Mathf.Cos(angleInRadians);
+            var z = Mathf.Sin(angleInRadians);
+            var offset = new Vector3(x, 0f, z).normalized;
+            offset *= distanceFromMiddle;
+            Vector3 position = transform.position + offset + new Vector3(0,5,0);
             
-            Vector3 direction = new Vector3(pos.x,0, pos.y);
-            float random = UnityEngine.Random.Range(3f, spawningRadius);
-            direction *= random;
-            Vector3 position = transform.position + direction;
             RaycastHit hit;
             
             if (Physics.Raycast(position, new Vector3(0, -1, 0), out hit))
             {
                 GameObject obj = Instantiate(Tree, hit.point, Quaternion.identity, gameObject.transform);
                 int rand = UnityEngine.Random.Range(0, treeList.Count - 1);
-                Debug.Log(treeList.Count);
                 trackableTrees.Add(treeList[rand]);
                 float treeHeight = (float)trackableTrees[trackableTrees.Count - 1].treeHeight;
                 
@@ -377,7 +387,7 @@ public class Forest : MonoBehaviour
             }
             else
             {
-                i--;
+                Debug.Log("Failed" + hit.point);
             }
         }
 
