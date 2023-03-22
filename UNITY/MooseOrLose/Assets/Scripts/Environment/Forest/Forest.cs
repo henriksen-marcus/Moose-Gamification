@@ -25,13 +25,15 @@ public class Forest : MonoBehaviour
 
     [Header("Tree Spawning")]
     [SerializeField] GameObject Tree;
-    [SerializeField] float spawningRadius = 150f;
+    [SerializeField] float spawningRadius;
 
     public float forestHeight;
     public float forestDensity;
 
     private Tree[] _treeArray;
     public List<Tree> treeList;
+    private List<Tree> trackableTrees;
+    private List<GameObject> spawnedTrees;
 
     
 
@@ -57,6 +59,8 @@ public class Forest : MonoBehaviour
         _forestManager = FindObjectOfType<ForestManager>();
         _colorManager = FindObjectOfType<ColorManager>();
 
+        trackableTrees = new List<Tree>();
+        spawnedTrees = new List<GameObject>();  
         treesAmountInForest = UnityEngine.Random.Range(minTreesInForest, maxTreesInForest);
 
         RaycastPosition();
@@ -67,6 +71,7 @@ public class Forest : MonoBehaviour
     
     private void Start()
     {
+        spawningRadius = 20f;
         SubscribeToEvents();
 
         SetForestType();
@@ -252,6 +257,8 @@ public class Forest : MonoBehaviour
     void SubscribeToEvents()
     {
         TimeManager.instance.OnSpringBegin += UpdateBirth;
+
+        TimeManager.instance.OnNewMonth += UpdateSpawnedTrees;
     }
     
     void UpdateForestStats()
@@ -326,19 +333,19 @@ public class Forest : MonoBehaviour
         switch (forestDensityLevel)
         {
             case ForestDensity.Density1:
-                numberOfTrees = 3;
+                numberOfTrees = 2;
                 break;
             case ForestDensity.Density2:
-                numberOfTrees = 5;
+                numberOfTrees = 4;
                 break;
             case ForestDensity.Density3:
-                numberOfTrees = 8;
+                numberOfTrees = 5;
                 break;
             case ForestDensity.Density4:
-                numberOfTrees = 10;
+                numberOfTrees = 6;
                 break;
             case ForestDensity.Density5:
-                numberOfTrees = 13;
+                numberOfTrees = 8;
                 break;
             default:
                 break;
@@ -349,9 +356,9 @@ public class Forest : MonoBehaviour
 
 
             Vector2 pos = UnityEngine.Random.insideUnitCircle;
-            Debug.Log(pos.x + ", " + pos.y);
+            
             Vector3 direction = new Vector3(pos.x,0, pos.y);
-            float random = UnityEngine.Random.Range(15f, spawningRadius); 
+            float random = UnityEngine.Random.Range(3f, spawningRadius);
             direction *= random;
             Vector3 position = transform.position + direction;
             RaycastHit hit;
@@ -359,12 +366,36 @@ public class Forest : MonoBehaviour
             if (Physics.Raycast(position, new Vector3(0, -1, 0), out hit))
             {
                 GameObject obj = Instantiate(Tree, hit.point, Quaternion.identity, gameObject.transform);
-                obj.transform.localScale = new Vector3(1, 1, 1);
+                int rand = UnityEngine.Random.Range(0, treeList.Count - 1);
+                Debug.Log(treeList.Count);
+                trackableTrees.Add(treeList[rand]);
+                float treeHeight = (float)trackableTrees[trackableTrees.Count - 1].treeHeight;
+                
+                float scale = map(treeHeight, 0f, 250f, 0.6f, 1f);
+                obj.transform.localScale = new Vector3(scale, scale, scale);
+                spawnedTrees.Add(obj);
             }
             else
             {
                 i--;
             }
+        }
+
+        
+    }
+
+    public static float map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
+    {
+        return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
+    }
+
+    void UpdateSpawnedTrees()
+    {
+        for (int i = 0; i < spawnedTrees.Count; i++)
+        {
+            float treeHeight = (float)trackableTrees[i].treeHeight;
+            float scale = map(treeHeight, 0f, 250f, 0.6f, 1f);
+            spawnedTrees[i].transform.localScale = new Vector3(scale, scale, scale);
         }
     }
 }

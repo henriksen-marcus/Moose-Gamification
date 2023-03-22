@@ -54,8 +54,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.50301236
-  m_Center: {x: -0.0025218725, y: -0.104148686, z: 0}
+  m_Radius: 1.8595872
+  m_Center: {x: -0.0025211682, y: -0.104148865, z: 0}
 --- !u!54 &5558419478154532183
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -90,6 +90,8 @@ MonoBehaviour:
   forestDensityLevel: 0
   forestHealth: 0
   currentSeason: 0
+  Tree: {fileID: 0}
+  spawningRadius: 150
   forestHeight: 0
   forestDensity: 0
   treeList: []

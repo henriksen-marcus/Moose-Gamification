@@ -89,6 +89,7 @@ public class ForestManager : MonoBehaviour
     {
         SubscribeToEvents();
         UpdateForests();
+        AddCamera();
         forest1.Add(forestList[0].treeList.Count);
     }
 
@@ -219,7 +220,8 @@ public class ForestManager : MonoBehaviour
         {
             for (var i = currentIndex; i < forestList.Count; i++)
             {
-                forestList[i].UpdateTreeStats();
+                forestList[i].UpdateTreeStats();              
+                
                 //forestList[i].DidUpdate();
                 //print("Last frame updated index " + i);
             }
@@ -374,6 +376,11 @@ public class ForestManager : MonoBehaviour
     void Statistics()
     {
         forest1.Add(forestList[0].treeList.Count);
+    }
+
+    void AddCamera()
+    {
+        
     }
 }
 
