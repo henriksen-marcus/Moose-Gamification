@@ -25,7 +25,7 @@ public class Forest : MonoBehaviour
 
     [Header("Tree Spawning")]
     [SerializeField] GameObject Tree;
-    [SerializeField] int spawningRadius = 10;
+    [SerializeField] float spawningRadius = 150f;
 
     public float forestHeight;
     public float forestDensity;
@@ -321,23 +321,24 @@ public class Forest : MonoBehaviour
 
     void SpawnTrees()
     {
+        UpdateTreeStats();
         int numberOfTrees = 0;
         switch (forestDensityLevel)
         {
             case ForestDensity.Density1:
-                numberOfTrees = 5;
+                numberOfTrees = 3;
                 break;
             case ForestDensity.Density2:
-                numberOfTrees = 7;
+                numberOfTrees = 5;
                 break;
             case ForestDensity.Density3:
-                numberOfTrees = 10;
+                numberOfTrees = 8;
                 break;
             case ForestDensity.Density4:
-                numberOfTrees = 13;
+                numberOfTrees = 10;
                 break;
             case ForestDensity.Density5:
-                numberOfTrees = 17;
+                numberOfTrees = 13;
                 break;
             default:
                 break;
@@ -350,7 +351,8 @@ public class Forest : MonoBehaviour
             Vector2 pos = UnityEngine.Random.insideUnitCircle;
             Debug.Log(pos.x + ", " + pos.y);
             Vector3 direction = new Vector3(pos.x,0, pos.y);
-            direction *= UnityEngine.Random.Range(2,spawningRadius);
+            float random = UnityEngine.Random.Range(15f, spawningRadius); 
+            direction *= random;
             Vector3 position = transform.position + direction;
             RaycastHit hit;
             
