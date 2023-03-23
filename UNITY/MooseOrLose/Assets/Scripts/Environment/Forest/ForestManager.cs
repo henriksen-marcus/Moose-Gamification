@@ -268,8 +268,11 @@ public class ForestManager : MonoBehaviour
         GetNextBuffer()?.ForEach(forest =>
         {
             forest.UpdateTreeStats();
+            forest.UpdateSpawnedTrees();
             //forest.DidUpdate();
         });
+
+        
     }
     
     /*private struct MyParallelJob : IJobParallelFor
@@ -295,6 +298,7 @@ public class ForestManager : MonoBehaviour
         TimeManager.instance.OnNewDay += TreeCount;
         TimeManager.instance.OnNewDay += UpdateForests;
         TimeManager.instance.OnNewMonth += Statistics;
+        
     }
     
     void TreeCount()
