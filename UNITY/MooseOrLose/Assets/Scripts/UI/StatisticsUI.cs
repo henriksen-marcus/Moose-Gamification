@@ -9,7 +9,7 @@ public class StatisticsUI : MonoBehaviour
 
     [SerializeField] private Graph graph;
     
-    public bool showStatistics = true;
+    public bool showStatistics = false;
 
     private void Awake()
     {

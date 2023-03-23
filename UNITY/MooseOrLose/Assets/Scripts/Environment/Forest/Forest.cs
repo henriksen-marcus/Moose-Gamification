@@ -5,6 +5,7 @@ using UnityEngine;
 using System.Linq;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
+using UnityEngine.AI;
 
 public class Forest : MonoBehaviour
 {
@@ -19,16 +20,25 @@ public class Forest : MonoBehaviour
     [Header("Tree States")]
     public ForestType forestType;
     public ForestDensity forestDensityLevel;
+    private ForestDensity lastDensity;
     public TreeHealth forestHealth;
     public Season currentSeason;
+
+    [Header("Tree Spawning")]
+    [SerializeField] GameObject Tree;
+    [SerializeField] float spawningRadius;
 
     public float forestHeight;
     public float forestDensity;
 
     private Tree[] _treeArray;
     public List<Tree> treeList;
+    private List<Tree> trackableTrees;
+    private List<GameObject> spawnedTrees;
 
-    private MeshRenderer _meshRenderer;
+    float borderRadius = 10f;
+    float maxDistanceVariation = 2f;
+    float lastDistance = 2f;
 
     // Debugging
     /*private bool didUpdate;
@@ -52,15 +62,19 @@ public class Forest : MonoBehaviour
         _forestManager = FindObjectOfType<ForestManager>();
         _colorManager = FindObjectOfType<ColorManager>();
 
-        _meshRenderer = gameObject.GetComponent<MeshRenderer>();
-
+        trackableTrees = new List<Tree>();
+        spawnedTrees = new List<GameObject>();  
         treesAmountInForest = UnityEngine.Random.Range(minTreesInForest, maxTreesInForest);
 
         RaycastPosition();
+        var loadedObject = Resources.Load("Trees/Spruce/Spruce1");
+        
+        Tree = (GameObject)loadedObject;
     }
     
     private void Start()
     {
+        spawningRadius = 10f;
         SubscribeToEvents();
 
         SetForestType();
@@ -75,9 +89,10 @@ public class Forest : MonoBehaviour
         SetForestSeason();
         SetForestHealth();
         UpdateForestDensity();
-        SetForestColor();
-
+        lastDensity = forestDensityLevel;
         UpdateTreeStats();
+
+        SpawnTrees();
     }
 
 
@@ -132,10 +147,6 @@ public class Forest : MonoBehaviour
 
     //--------------------
 
-    public void SetColor(Color col)
-    {
-        _meshRenderer.materials[0].color = col;
-    }
 
     void SetForestType()
     {
@@ -178,10 +189,6 @@ public class Forest : MonoBehaviour
         };
     }
 
-    void SetForestColor()
-    {
-        SetColor(_colorManager.GetColor(forestType, forestDensityLevel));
-    }
 
     void UpdateForestDensity()
     {
@@ -225,6 +232,8 @@ public class Forest : MonoBehaviour
             < 100 => ForestDensity.Density4,
             _ => ForestDensity.Density5
         };
+
+        
     }
 
     //--------------------
@@ -253,6 +262,8 @@ public class Forest : MonoBehaviour
     void SubscribeToEvents()
     {
         TimeManager.instance.OnSpringBegin += UpdateBirth;
+
+        TimeManager.instance.OnNewMonth += UpdateSpawnedTrees;
     }
     
     void UpdateForestStats()
@@ -262,7 +273,6 @@ public class Forest : MonoBehaviour
         SetForestHealth();
 
         UpdateForestDensity();
-        SetForestColor();
 
         treesAmountInForest = treeList.Count;
         
@@ -319,5 +329,102 @@ public class Forest : MonoBehaviour
                 _forestManager.treesBirth += treeList[i].CheckIfGettingBirth();
             }
         }
+    }
+
+    void SpawnTrees()
+    {
+        UpdateTreeStats();
+        int numberOfTrees = 0;
+        switch (forestDensityLevel)
+        {
+            case ForestDensity.Density1:
+                numberOfTrees = 2;
+                break;
+            case ForestDensity.Density2:
+                numberOfTrees = 4;
+                break;
+            case ForestDensity.Density3:
+                numberOfTrees = 5;
+                break;
+            case ForestDensity.Density4:
+                numberOfTrees = 6;
+                break;
+            case ForestDensity.Density5:
+                numberOfTrees = 8;
+                break;
+            default:
+                break;
+        }
+
+        
+        for (int i = 0;i < numberOfTrees;i++)
+        {
+                      
+            var distanceFromMiddle = UnityEngine.Random.Range(1f, borderRadius);
+            distanceFromMiddle = Mathf.Clamp(
+                distanceFromMiddle,
+                lastDistance - maxDistanceVariation,
+                lastDistance + maxDistanceVariation);
+            lastDistance = distanceFromMiddle;
+
+            var angle = i * 360f / numberOfTrees;
+            var angleInRadians = angle * Mathf.Deg2Rad;
+            var x = Mathf.Cos(angleInRadians);
+            var z = Mathf.Sin(angleInRadians);
+            var offset = new Vector3(x, 0f, z).normalized;
+            offset *= distanceFromMiddle;
+            Vector3 position = transform.position + offset + new Vector3(0,5,0);
+            
+            RaycastHit hit;
+            LayerMask mask = LayerMask.GetMask("Map");
+            Ray ray = new Ray(position, new Vector3(0, -1, 0));
+            if (Physics.Raycast(position, new Vector3(0, -1, 0), out hit,200f, mask))
+            {
+                GameObject obj = Instantiate(Tree, hit.point, Quaternion.identity, gameObject.transform);
+                int rand = UnityEngine.Random.Range(0, treeList.Count - 1);
+                trackableTrees.Add(treeList[rand]);
+                float treeHeight = (float)trackableTrees[trackableTrees.Count - 1].treeHeight;
+                
+                float scale = map(treeHeight, 0f, 250f, 0.6f, 1f);
+                obj.transform.localScale = new Vector3(scale, scale, scale);
+                spawnedTrees.Add(obj);
+            }
+            else
+            {
+                Debug.Log("Failed" + hit.point);
+                
+            }
+        }
+
+        
+    }
+
+    public static float map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
+    {
+        return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
+    }
+
+    public void UpdateSpawnedTrees()
+    {
+        if (lastDensity != forestDensityLevel)
+        {
+            foreach(Transform child in transform)
+            {
+                Destroy(child.gameObject);
+                spawnedTrees.Clear();
+                trackableTrees.Clear();
+            }
+            SpawnTrees();
+        }
+        else
+        {
+            for (int i = 0; i < spawnedTrees.Count; i++)
+            {
+                float treeHeight = (float)trackableTrees[i].treeHeight;
+                float scale = map(treeHeight, 0f, 250f, 0.6f, 1f);
+                spawnedTrees[i].transform.localScale = new Vector3(scale, scale, scale);
+            }
+        }
+        lastDensity = forestDensityLevel;
     }
 }

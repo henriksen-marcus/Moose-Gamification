@@ -56,8 +56,6 @@ public class Elg : ClickableObject
     private GameObject Antlers;
     private bool antlersSpawned = false;
 
-
-
     private bool dead = false;
     [HideInInspector]
     public bool hasPartner;
