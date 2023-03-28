@@ -108,7 +108,7 @@ public class Feedback : MonoBehaviour
         if (size > 2)
         {
             populationDifferencePoints = populationCounts[size - 1] - populationCounts[size - 2];
-            populationDifferencePoints *= 5;
+            populationDifferencePoints *= 3;
         }
         else
         {
@@ -165,11 +165,11 @@ public class Feedback : MonoBehaviour
         int moosePop = ElgManager.instance.elg_population;
         if (moosePop < moosePopulationLowerLimit)
         {           
-            populationLimitScore = (moosePopulationLowerLimit - moosePop) * -10;
+            populationLimitScore = (moosePopulationLowerLimit - moosePop) * -3;
         }
         else if (moosePop > moosePopulationHigherLimit)
         {
-            populationLimitScore = (moosePop - moosePopulationHigherLimit) * -10;
+            populationLimitScore = (moosePop - moosePopulationHigherLimit) * -3;
         }
         else
         {
