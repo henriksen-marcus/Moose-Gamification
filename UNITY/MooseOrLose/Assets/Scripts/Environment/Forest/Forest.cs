@@ -67,9 +67,7 @@ public class Forest : MonoBehaviour
         treesAmountInForest = UnityEngine.Random.Range(minTreesInForest, maxTreesInForest);
 
         RaycastPosition();
-        var loadedObject = Resources.Load("Trees/Spruce/Spruce1");
-        
-        Tree = (GameObject)loadedObject;
+    
     }
     
     private void Start()
@@ -91,6 +89,25 @@ public class Forest : MonoBehaviour
         UpdateForestDensity();
         lastDensity = forestDensityLevel;
         UpdateTreeStats();
+
+        switch (forestType)
+        {
+            case ForestType.Spruce:
+                var loadedObject1 = Resources.Load("Trees/Spruce/Spruce1");
+                Tree = (GameObject)loadedObject1;
+                break;
+            case ForestType.Pine:
+                var loadedObject2 = Resources.Load("Trees/Pine/Pine1");
+                Tree = (GameObject)loadedObject2;
+                break;
+            case ForestType.Birch:
+                var loadedObject3 = Resources.Load("Trees/Birch/Birch1");
+                Tree = (GameObject)loadedObject3;
+                break;
+            default:
+                break;
+        }
+        
 
         SpawnTrees();
     }
@@ -354,6 +371,10 @@ public class Forest : MonoBehaviour
                 break;
             default:
                 break;
+        }
+        if (forestType == ForestType.Birch && forestDensityLevel > ForestDensity.Density1)
+        {
+            numberOfTrees--;
         }
 
         
