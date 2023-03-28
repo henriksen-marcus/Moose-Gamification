@@ -176,7 +176,7 @@ public class Feedback : MonoBehaviour
             populationLimitScore = 0;
         }
 
-        shotLastMonthScore = JegerManager.instance.shotLastMonth * 5;
+        shotLastMonthScore = JegerManager.instance.shotLastMonth * 3;
         HunterScore = 150 + populationLimitScore + shotLastMonthScore + leftOverMooseScore;
         HuntersBackground.GetComponent<Image>().color = gradient.Evaluate((float)HunterScore / 300f);
         HunterPopUp();
@@ -271,7 +271,7 @@ public class Feedback : MonoBehaviour
 
     void NewYear()
     {
-        leftOverMooseScore = (JegerManager.instance.currentFemales + JegerManager.instance.currentMales) * -10;
+        leftOverMooseScore = (JegerManager.instance.currentFemales + JegerManager.instance.currentMales) * -5;
     }
 
     void UpdatePrevious()
