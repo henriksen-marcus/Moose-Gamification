@@ -67,7 +67,6 @@ public class Forest : MonoBehaviour
         treesAmountInForest = UnityEngine.Random.Range(minTreesInForest, maxTreesInForest);
 
         RaycastPosition();
-    
     }
     
     private void Start()
@@ -107,8 +106,6 @@ public class Forest : MonoBehaviour
             default:
                 break;
         }
-        
-
         SpawnTrees();
     }
 
