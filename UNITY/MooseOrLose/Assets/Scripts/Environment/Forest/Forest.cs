@@ -409,7 +409,7 @@ public class Forest : MonoBehaviour
             }
             else
             {
-                Debug.Log("Failed" + hit.point);
+                
                 
             }
         }

@@ -7,6 +7,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+[System.Serializable]
+public class Rule<T>
+{
+    public string Name { get; set; }
+    public List<Interval<T>> Intervals { get; set; }
+}
+[System.Serializable]
+public class Interval<T>
+{
+    public int StartDay { get; set; }
+    public T Value { get; set; }
+}
+
 public class RuleManager : UI, IPointerEnterHandler
 {
     // Singleton
@@ -14,6 +27,10 @@ public class RuleManager : UI, IPointerEnterHandler
     
     //moving rules from other managers here?
     public List<int> huntingSeasonRange;
+
+    public ArrayList Rules = new ArrayList();
+    private int startDay;
+
 
     [NonSerialized] public int MoosePopMin = 60;
     private int _antlerPointsLimit = 4;
@@ -47,6 +64,8 @@ public class RuleManager : UI, IPointerEnterHandler
         TimeManager.instance.OnNewMonth += HuntingSeasonReview;
 
         HuntingSeasonGoals();
+
+        InitiateRules();
     }
 
     private void HuntingSeasonGoals()
@@ -66,19 +85,208 @@ public class RuleManager : UI, IPointerEnterHandler
             }
         }
     }
-    
+    private void InitiateRules()
+    {
+        startDay = TimeManager.instance.GetDay();
+
+        // AverageMaleAge
+        Rules.Add(new Rule<float> { 
+            Name = "AverageMaleAge", 
+            Intervals = new List<Interval<float>>()
+            {               
+                new Interval<float> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = HuntingGoals.Instance.averageAgeGoal}                
+            }                    
+        });
+        Rule<float> ruleF = (Rule<float>)Rules[0];
+        //Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+        // Male To Population Ratio
+        Rules.Add(new Rule<float>
+        {
+            Name = "MaleRatio",
+            Intervals = new List<Interval<float>>()
+            {
+                new Interval<float> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = HuntingGoals.Instance.ratioGoal}
+            }
+        });
+        ruleF = (Rule<float>)Rules[1];
+        //Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+        // Moose to Shoot per km^2
+        Rules.Add(new Rule<float>
+        {
+            Name = "ShootingGoal",
+            Intervals = new List<Interval<float>>()
+            {
+                new Interval<float> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = HuntingGoals.Instance.squareKmGoal}
+            }
+        });
+        ruleF = (Rule<float>)Rules[2];
+        //Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+        // Antler Limit
+        Rules.Add(new Rule<int>
+        {
+            Name = "AntlerLimit",
+            Intervals = new List<Interval<int>>()
+            {
+                new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = _antlerPointsLimit}
+            }
+        });
+        Rule<int> ruleI = (Rule<int>)Rules[3];
+        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        // Calves To Leave Alive
+        Rules.Add(new Rule<int>
+        {
+            Name = "CalfLimit",
+            Intervals = new List<Interval<int>>()
+            {
+                new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = _calfLimit}
+            }
+        });
+        ruleI = (Rule<int>)Rules[4];
+        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        // WeeklyLimit
+        Rules.Add(new Rule<int>
+        {
+            Name = "ShootLimit",
+            Intervals = new List<Interval<int>>()
+            {
+                new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = _weeklyMooseLimit}
+            }
+        });
+        ruleI = (Rule<int>)Rules[5];
+        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        // Min Population Limit
+        Rules.Add(new Rule<int>
+        {
+            Name = "PopulationLimit",
+            Intervals = new List<Interval<int>>()
+            {
+                new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = MoosePopMin}
+            }
+        });
+        ruleI = (Rule<int>)Rules[6];
+        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        // WolfLimit
+        Rules.Add(new Rule<int>
+        {
+            Name = "WolfLimit",
+            Intervals = new List<Interval<int>>()
+            {
+                new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = _wolfLimit}
+            }
+        });
+        ruleI = (Rule<int>)Rules[7];
+        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+
+
+    }
     public void ToggleHuntingSeason()
     {
         if (HuntingGoals.Instance.gameObject.activeSelf)
         {
             HuntingGoals.Instance.gameObject.SetActive(false);
             TimeManager.instance.SetGamePaused(false);
+            CheckForRuleUpdates();
         }
         else
         {
             HuntingGoals.Instance.gameObject.SetActive(true);
             HuntingGoals.Instance.UpdateGoalScreen();
             TimeManager.instance.SetGamePaused(true);
+        }
+    }
+
+    public void CheckForRuleUpdates()
+    {
+        foreach (var rule in Rules)
+        {
+            Rule<float> ruleF = null;
+            Rule<int> ruleI = null;
+            try { 
+                ruleF = (Rule<float>)rule;
+            } 
+            catch {                  
+            }
+            try
+            {
+                ruleI = (Rule<int>)rule;
+            }
+            catch {                
+            }
+            if (ruleI != null)
+            {
+                switch (ruleI.Name)
+                {
+                    case "AntlerLimit":
+                        if (ruleI.Intervals[ruleI.Intervals.Count - 1].Value != _antlerPointsLimit)
+                        {
+                            ruleI.Intervals.Add(new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = _antlerPointsLimit }); 
+                            //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+                        }
+                        break;
+                    case "CalfLimit":
+                        if (ruleI.Intervals[ruleI.Intervals.Count - 1].Value != _calfLimit)
+                        {
+                            ruleI.Intervals.Add(new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = _calfLimit });
+                            //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+                        }
+                        break;
+                    case "ShootLimit":
+                        if (ruleI.Intervals[ruleI.Intervals.Count - 1].Value != _weeklyMooseLimit)
+                        {
+                            ruleI.Intervals.Add(new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = _weeklyMooseLimit });
+                            //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+                        }
+                        break;
+                    case "PopulationLimit":
+                        if (ruleI.Intervals[ruleI.Intervals.Count - 1].Value != MoosePopMin)
+                        {
+                            ruleI.Intervals.Add(new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = MoosePopMin });
+                            //Debug.Log(ruleI.Name + " Changed from to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+                        }
+                        break;
+                    case "WolfLimit":
+                        if (ruleI.Intervals[ruleI.Intervals.Count - 1].Value != _wolfLimit)
+                        {
+                            ruleI.Intervals.Add(new Interval<int> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = _wolfLimit });
+                            //Debug.Log(ruleI.Name + " Changed from to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                continue;
+            }
+            if (ruleF != null)
+            {
+                switch (ruleF.Name)
+                {
+                    case "AverageMaleAge":
+                        if (ruleF.Intervals[ruleF.Intervals.Count - 1].Value != HuntingGoals.Instance.averageAgeGoal)
+                        {
+                            ruleF.Intervals.Add(new Interval<float> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = HuntingGoals.Instance.averageAgeGoal });
+                            //Debug.Log(ruleF.Name + " Changed from to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+                        }
+                        break;
+                    case "MaleRatio":
+                        if (ruleF.Intervals[ruleF.Intervals.Count - 1].Value != HuntingGoals.Instance.ratioGoal)
+                        {
+                            ruleF.Intervals.Add(new Interval<float> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = HuntingGoals.Instance.ratioGoal });
+                            //Debug.Log(ruleF.Name + " Changed from to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+                        }
+                        break;
+                    case "ShootingGoal":
+                        if (ruleF.Intervals[ruleF.Intervals.Count - 1].Value != HuntingGoals.Instance.squareKmGoal)
+                        {
+                            ruleF.Intervals.Add(new Interval<float> { StartDay = TimeManager.instance.GetDay() + (TimeManager.instance.GetYear() * 360) - startDay, Value = HuntingGoals.Instance.squareKmGoal });
+                            //Debug.Log(ruleF.Name + " Changed from to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+                continue;
+            }
+            
         }
     }
 
