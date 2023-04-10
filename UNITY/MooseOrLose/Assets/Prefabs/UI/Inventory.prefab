@@ -283,6 +283,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2380203515379903375}
   - component: {fileID: 2451066267024351851}
+  - component: {fileID: 4082538395851546094}
   m_Layer: 5
   m_Name: WolfSlot
   m_TagString: Untagged
@@ -338,6 +339,18 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &4082538395851546094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4729441499248579463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad749dbe563fd1047b51e2faf2fbde63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5368987196090899113
 GameObject:
   m_ObjectHideFlags: 0

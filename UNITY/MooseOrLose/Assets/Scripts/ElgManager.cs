@@ -151,7 +151,10 @@ public class ElgManager : MonoBehaviour
         elg_children++;
     }
 
-
+    public void Spawn(Vector3 pos)
+    {
+        AddToList(Instantiate(ElgPrefab, pos, Quaternion.identity, transform));
+    }
     public void AddToList(GameObject go)
     {
         elg_list.Add(go);

@@ -76,7 +76,10 @@ public class JegerManager : MonoBehaviour
         jeger_population++;
         jeger_list.Add(go);
     }
-
+    public void Spawn(Vector3 pos)
+    {
+        AddToList(Instantiate(jeger, pos, Quaternion.identity, transform));
+    }
     public void RemoveFromList(GameObject go)
     {
         jeger_population--;

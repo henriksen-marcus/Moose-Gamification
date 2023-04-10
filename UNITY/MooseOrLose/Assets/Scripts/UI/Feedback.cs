@@ -53,9 +53,9 @@ public class Feedback : MonoBehaviour
 
     private void Awake()
     {
-        MooseToolTip = transform.Find("HorizontalLayout").Find("MooseBackground").GetComponent<HoverableUIElement>();
-        HunterToolTip = transform.Find("HorizontalLayout").Find("HuntersBackground").GetComponent<HoverableUIElement>();
-        ForestToolTip = transform.Find("HorizontalLayout").Find("ForestBackground").GetComponent<HoverableUIElement>();
+        MooseToolTip = transform.Find("Vertical").Find("MooseBackground").GetComponent<HoverableUIElement>();
+        HunterToolTip = transform.Find("Vertical").Find("HuntersBackground").GetComponent<HoverableUIElement>();
+        ForestToolTip = transform.Find("Vertical").Find("ForestBackground").GetComponent<HoverableUIElement>();
     }
 
     // Start is called before the first frame update

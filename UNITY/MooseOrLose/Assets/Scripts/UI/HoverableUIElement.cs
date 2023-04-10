@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class HoverableUIElement : MonoBehaviour
 {
 
-    private string text;
+    [SerializeField] private string text;
  
     public void SetText(string input) { text = input; }
 
