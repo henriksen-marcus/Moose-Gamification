@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 64
   m_IsActive: 1
 --- !u!4 &6190672597112334458
 Transform:
@@ -95,9 +95,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 121712793109757091, guid: d03feb139e155754f8c49bcf8b4f3340, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 64
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: d03feb139e155754f8c49bcf8b4f3340, type: 3}
       propertyPath: m_Name
       value: spruce_tree_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d03feb139e155754f8c49bcf8b4f3340, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 1122427853962064952, guid: d03feb139e155754f8c49bcf8b4f3340, type: 3}
       propertyPath: m_Materials.Array.data[0]
