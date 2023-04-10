@@ -182,7 +182,8 @@ public class UlvManager : MonoBehaviour
             {
                 foreach (GameObject go2 in go)
                 {
-                    go2.GetComponent<NavMeshAgent>().isStopped = true;
+                    if (go2.GetComponent<NavMeshAgent>().isOnNavMesh)
+                        go2.GetComponent<NavMeshAgent>().isStopped = true;
                 }
             }
         }
@@ -192,7 +193,8 @@ public class UlvManager : MonoBehaviour
             {
                 foreach(GameObject go2 in go)
                 {
-                    go2.GetComponent<NavMeshAgent>().isStopped = false;
+                    if (go2.GetComponent<NavMeshAgent>().isOnNavMesh)
+                        go2.GetComponent<NavMeshAgent>().isStopped = false;
                 }
             }
         }

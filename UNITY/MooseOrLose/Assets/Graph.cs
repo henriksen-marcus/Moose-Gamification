@@ -15,7 +15,10 @@ public class Graph : MonoBehaviour
     bool mooseMales;
     bool mooseFemales;
     bool mooseChildren;
-    bool forest1;
+    bool forestDensity;
+    bool forestQuantity;
+    bool forestAge;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -25,9 +28,9 @@ public class Graph : MonoBehaviour
         moosePopulation = false;
         mooseMales = false;
         mooseFemales = false;
-        mooseChildren = false;
-        forest1 = false;
-
+        forestDensity = false;
+        forestQuantity = false;
+        forestAge = false;
 
     }
 
@@ -67,9 +70,17 @@ public class Graph : MonoBehaviour
         {
             ShowGraph(ElgManager.instance.elg_children_graph, Color.cyan);
         }
-        if (forest1)
+        if (forestQuantity)
         {
-            ShowGraph(ForestManager.instance.forest1, Color.green);
+            ShowGraph(ForestManager.instance.forestQuantityAverage, new Color(170f / 255f, 255f / 255f, 0, 1));
+        }
+        if (forestDensity)
+        {
+            ShowGraph(ForestManager.instance.forestDensityAverage, new Color(80f / 255f, 200f / 255f, 120f / 255f, 1));
+        }
+        if (forestAge)
+        {
+            ShowGraph(ForestManager.instance.forestTreeAgeAverage, new Color(175f / 255f, 225f / 255f, 175f / 255f, 1));
         }
 
     }
@@ -145,7 +156,15 @@ public class Graph : MonoBehaviour
         rectTransform.sizeDelta = new Vector2((pos2 - pos1).magnitude, 2);
         Vector3 rotation = rectTransform.transform.eulerAngles;
         float angle = Vector2.Angle(new Vector2(1,0), pos2 - pos1);
-        rotation.z = angle;
+
+        if (pos1.y > pos2.y)
+        {
+            rotation.z = 360 - angle;
+        }
+        else
+        {
+            rotation.z = angle;
+        }
         rectTransform.transform.eulerAngles = rotation;
 
     }
@@ -157,11 +176,13 @@ public class Graph : MonoBehaviour
             container = GetComponent<RectTransform>();
             settings = transform.parent.transform.Find("Background").transform.Find("Settings").GetComponent<RectTransform>();
         }
-        moosePopulation = settings.Find("MoosePopulation").transform.Find("MoosePopulationCheckBox").GetComponent<Toggle>().isOn;
-        mooseMales = settings.Find("MooseMales").transform.Find("MooseMalesCheckBox").GetComponent<Toggle>().isOn;
-        mooseFemales = settings.Find("MooseFemales").transform.Find("MooseFemalesCheckBox").GetComponent<Toggle>().isOn;
-        mooseChildren = settings.Find("MooseChildren").transform.Find("MooseChildrenCheckBox").GetComponent<Toggle>().isOn;
-        forest1 = settings.Find("Forest1").transform.Find("Forest1CheckBox").GetComponent<Toggle>().isOn;
+        moosePopulation = settings.Find("MoosePopulation").GetComponentInChildren<Toggle>().isOn;
+        mooseMales = settings.Find("MooseMales").GetComponentInChildren<Toggle>().isOn;
+        mooseFemales = settings.Find("MooseFemales").GetComponentInChildren<Toggle>().isOn;
+        mooseChildren = settings.Find("MooseChildren").GetComponentInChildren<Toggle>().isOn;
+        forestAge = settings.Find("ForestAge").GetComponentInChildren<Toggle>().isOn;
+        forestDensity = settings.Find("ForestDensity").GetComponentInChildren<Toggle>().isOn;
+        forestQuantity = settings.Find("ForestQuantity").GetComponentInChildren<Toggle>().isOn;
         if (transform.parent.gameObject.activeSelf)
             UpdateGraphMenu();
     }

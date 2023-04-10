@@ -60,8 +60,9 @@ public class ForestManager : MonoBehaviour
     
     private float deltaTime;
 
-    public List<int> forest1;
-
+    public List<int> forestDensityAverage;
+    public List<int> forestQuantityAverage;
+    public List<int> forestTreeAgeAverage;
 
     [Header("Timers")]
     private Timer timer = new();
@@ -90,7 +91,7 @@ public class ForestManager : MonoBehaviour
         SubscribeToEvents();
         UpdateForests();
         AddCamera();
-        forest1.Add(forestList[0].treeList.Count);
+        Statistics();
     }
 
 
@@ -379,8 +380,20 @@ public class ForestManager : MonoBehaviour
 
     void Statistics()
     {
-        forest1.Add(forestList[0].treeList.Count);
+        float denisies = 0;
+        float quantity = 0;
+        int age = 0;
+        forestList.ForEach(forest =>
+        {
+            denisies += forest.forestDensity;
+            quantity += forest.GetForestTreeAmount();   
+            age += forest.GetAverageAge();
+        });
+        forestDensityAverage.Add((int)(denisies / forestList.Count));
+        forestQuantityAverage.Add((int)(quantity / forestList.Count));
+        forestTreeAgeAverage.Add((age / forestList.Count));
     }
+
 
     void AddCamera()
     {

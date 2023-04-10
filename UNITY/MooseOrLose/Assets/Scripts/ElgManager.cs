@@ -64,7 +64,7 @@ public class ElgManager : MonoBehaviour
             {
                 NavMeshHit hit;
                 NavMesh.SamplePosition(new Vector3(UnityEngine.Random.Range(-200, 200), 10, UnityEngine.Random.Range(-200, 200)), out hit, 200, 1);
-
+                if (!hit.hit) return;
                 GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
                 elg_list.Add(go);
                 if (go.GetComponent<Elg>().gender == Gender.Female)
@@ -80,7 +80,7 @@ public class ElgManager : MonoBehaviour
             {
                 NavMeshHit hit;
                 NavMesh.SamplePosition(new Vector3(UnityEngine.Random.Range(-200, 200), 10, UnityEngine.Random.Range(-200, 200)), out hit, 200, 1);
-
+                if (!hit.hit) return;
                 GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform);
                 elg_list.Add(go);
 
@@ -93,7 +93,10 @@ public class ElgManager : MonoBehaviour
                     loop -= children;
                     for (int j = 0; j < children; j++)
                     {
-                        GameObject go1 = Instantiate(ElgPrefab, go.transform.position, Quaternion.identity, ElgManager.instance.transform);
+                        NavMeshHit hit2;
+                        NavMesh.SamplePosition(go.transform.position, out hit2, 200, 1);
+                        if (!hit2.hit) return;
+                        GameObject go1 = Instantiate(ElgPrefab, hit2.position, Quaternion.identity, ElgManager.instance.transform);
                         Elg script1 = go1.GetComponent<Elg>();
                         script1.NewBorn();
                         script1.age_months = TimeManager.instance.GetMonth() - 3;
@@ -153,7 +156,10 @@ public class ElgManager : MonoBehaviour
 
     public void Spawn(Vector3 pos)
     {
-        AddToList(Instantiate(ElgPrefab, pos, Quaternion.identity, transform));
+        NavMeshHit hit;
+        NavMesh.SamplePosition(pos, out hit, 200, 1);
+        if (!hit.hit) return;
+        AddToList(Instantiate(ElgPrefab, hit.position, Quaternion.identity, transform));
     }
     public void AddToList(GameObject go)
     {
@@ -234,14 +240,16 @@ public class ElgManager : MonoBehaviour
         {
             foreach(GameObject go in elg_list)
             {
-                go.GetComponent<NavMeshAgent>().isStopped = true;
+                if (go.GetComponent<NavMeshAgent>().isOnNavMesh)
+                    go.GetComponent<NavMeshAgent>().isStopped = true;
             }
         }
         else
         {
             foreach (GameObject go in elg_list)
             {
-                go.GetComponent<NavMeshAgent>().isStopped = false;
+                if (go.GetComponent<NavMeshAgent>().isOnNavMesh)
+                    go.GetComponent<NavMeshAgent>().isStopped = false;
             }
         }
     }
