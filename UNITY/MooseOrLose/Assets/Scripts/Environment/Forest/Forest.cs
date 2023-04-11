@@ -36,7 +36,7 @@ public class Forest : MonoBehaviour
     private List<Tree> trackableTrees;
     private List<GameObject> spawnedTrees;
 
-    float borderRadius = 10f;
+    float borderRadius = 7.5f;
     float maxDistanceVariation = 2f;
     float lastDistance = 2f;
 
