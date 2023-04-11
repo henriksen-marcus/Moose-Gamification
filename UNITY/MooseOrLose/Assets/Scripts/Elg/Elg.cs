@@ -391,8 +391,10 @@ public class Elg : ClickableObject
     {
         for (int i = 0; i < childrenInBelly; i++)
         {
-
-            GameObject go = Instantiate(ElgPrefab, transform.position, Quaternion.identity, ElgManager.instance.transform);
+            NavMeshHit hit;
+            NavMesh.SamplePosition(transform.position, out hit, 200, 1);
+            if (!hit.hit) return;
+            GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, ElgManager.instance.transform);
             Elg script = go.GetComponent<Elg>();
             script.NewBorn();
             script.SetMother(transform);

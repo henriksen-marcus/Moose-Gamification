@@ -51,6 +51,7 @@ public class HuntingGoals : MonoBehaviour
         // InfoUI.Instance.gameObject.SetActive(true);
         InventoryUI.Instance.gameObject.SetActive(true);
         gameObject.SetActive(false);
+        RuleManager.Instance.CheckForRuleUpdates();
     }
     
     public void UpdateRatioGoal(string inString)

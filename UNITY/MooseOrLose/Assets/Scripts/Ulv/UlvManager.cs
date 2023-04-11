@@ -19,6 +19,7 @@ public class UlvManager : MonoBehaviour
     [SerializeField] public List<List<GameObject>> ulv_list = new List<List<GameObject>>();
 
     public GameObject Ulv;
+    public GameObject UlvWarning;
     // Start is called before the first frame update
 
 
@@ -35,6 +36,7 @@ public class UlvManager : MonoBehaviour
     void Start()
     {
         TimeManager.instance.OnNewMonth += NewMonth;
+        UlvWarning = GameObject.Find("Screen Canvas").transform.Find("WolfWarning").gameObject;
     }
 
     void NewMonth()
@@ -180,7 +182,8 @@ public class UlvManager : MonoBehaviour
             {
                 foreach (GameObject go2 in go)
                 {
-                    go2.GetComponent<NavMeshAgent>().isStopped = true;
+                    if (go2.GetComponent<NavMeshAgent>().isOnNavMesh)
+                        go2.GetComponent<NavMeshAgent>().isStopped = true;
                 }
             }
         }
@@ -190,7 +193,8 @@ public class UlvManager : MonoBehaviour
             {
                 foreach(GameObject go2 in go)
                 {
-                    go2.GetComponent<NavMeshAgent>().isStopped = false;
+                    if (go2.GetComponent<NavMeshAgent>().isOnNavMesh)
+                        go2.GetComponent<NavMeshAgent>().isStopped = false;
                 }
             }
         }
@@ -204,5 +208,17 @@ public class UlvManager : MonoBehaviour
     public void DecreaseUlvPacks()
     {
         ulv_packs--;
+    }
+
+    private void Update()
+    {
+        if (ulv_population > 0)
+        {
+            UlvWarning.SetActive(true);
+        }
+        else
+        {
+            UlvWarning.SetActive(false);
+        }
     }
 }

@@ -14,7 +14,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 64
   m_IsActive: 1
 --- !u!4 &1283675825903460230
 Transform:
@@ -49,7 +49,7 @@ GameObject:
   m_TagString: Elg
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 64
   m_IsActive: 1
 --- !u!4 &3376597261074670399
 Transform:
@@ -186,6 +186,14 @@ PrefabInstance:
     - target: {fileID: 3382474990113045419, guid: 94db0887a52714f41b78a576253efd4b, type: 3}
       propertyPath: m_Name
       value: MooseMale
+      objectReference: {fileID: 0}
+    - target: {fileID: 3382474990113045419, guid: 94db0887a52714f41b78a576253efd4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 4508240495617605179, guid: 94db0887a52714f41b78a576253efd4b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 8785819298790059538, guid: 94db0887a52714f41b78a576253efd4b, type: 3}
       propertyPath: m_RootOrder

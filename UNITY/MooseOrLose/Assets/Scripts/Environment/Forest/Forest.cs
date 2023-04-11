@@ -13,7 +13,7 @@ public class Forest : MonoBehaviour
     private ColorManager _colorManager;
 
     [SerializeField] int treesAmountInForest;
-    [SerializeField] float averageAge;
+    [SerializeField] public float averageAge;
     private int minTreesInForest = 1500;
     private int maxTreesInForest = 2500;
 
@@ -112,7 +112,7 @@ public class Forest : MonoBehaviour
 
     //--------------------
 
-
+    public int GetAverageAge() { return float.IsNaN(averageAge) ? 0 : Mathf.FloorToInt(averageAge); }
     void MakeTreesInForestArray()
     {
         _treeArray = new Tree[treesAmountInForest];
@@ -409,7 +409,7 @@ public class Forest : MonoBehaviour
             }
             else
             {
-                Debug.Log("Failed" + hit.point);
+                
                 
             }
         }

@@ -76,7 +76,13 @@ public class JegerManager : MonoBehaviour
         jeger_population++;
         jeger_list.Add(go);
     }
-
+    public void Spawn(Vector3 pos)
+    {
+        NavMeshHit hit;
+        NavMesh.SamplePosition(pos, out hit, 200, 1);
+        if (!hit.hit) return;
+        AddToList(Instantiate(jeger, hit.position, Quaternion.identity, transform));
+    }
     public void RemoveFromList(GameObject go)
     {
         jeger_population--;
@@ -117,14 +123,16 @@ public class JegerManager : MonoBehaviour
         {
             foreach (GameObject go in jeger_list)
             {
-                go.GetComponent<NavMeshAgent>().isStopped = true;
+                if (go.GetComponent<NavMeshAgent>().isOnNavMesh)
+                    go.GetComponent<NavMeshAgent>().isStopped = true;
             }
         }
         else
         {
             foreach (GameObject go in jeger_list)
             {
-                go.GetComponent<NavMeshAgent>().isStopped = false;
+                if (go.GetComponent<NavMeshAgent>().isOnNavMesh)
+                    go.GetComponent<NavMeshAgent>().isStopped = false;
             }
         }
     }
