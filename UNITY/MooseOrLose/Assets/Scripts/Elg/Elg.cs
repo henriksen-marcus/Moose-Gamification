@@ -61,6 +61,10 @@ public class Elg : ClickableObject
     public bool hasPartner;
     public bool hasMated;
 
+    private Vector3 Home;
+
+
+
     void Awake()
     {
         // set default values
@@ -135,7 +139,7 @@ public class Elg : ClickableObject
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
         TimeManager.instance.OnNewDay += NextDay;
-
+        Home = transform.position;
         if (gameObject.GetComponent<Outline>() == null)
         {
             outline = gameObject.AddComponent<Outline>();
@@ -203,6 +207,8 @@ public class Elg : ClickableObject
             }
         }
     }
+
+    public Vector3 GetHome() { return Home; }
 
     public void NextDay()
     {
