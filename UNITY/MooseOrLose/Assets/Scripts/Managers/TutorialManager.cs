@@ -114,7 +114,7 @@ public class TutorialManager : MonoBehaviour
         tutorialItems[currentLayer + 1].transform.SetSiblingIndex(lastChildIndex);
         
         // Check if we are done
-        if (currentLayer == 1)
+        if (currentLayer == 0)
         {
             Prev.gameObject.SetActive(false);
         }
