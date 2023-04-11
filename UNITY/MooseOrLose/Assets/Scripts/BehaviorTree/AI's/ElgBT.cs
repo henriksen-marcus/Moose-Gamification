@@ -19,12 +19,22 @@ public class ElgBT : BehaviorTrees.BehaviorTree
                 new ElgCheckForUlv(transform),
                 new ElgRunAway(GetComponent<NavMeshAgent>(), transform)
             }),
+            new Sequence(new List<Node>
+            {
+                new ElgIsWinter(),
+                new ElgGoToWinterLocation(GetComponent<NavMeshAgent>(), transform)
+            }),
+            new Sequence(new List<Node>
+            {
+                new ElgIsSummer(),
+                new ElgGoToSummerLocation(GetComponent<NavMeshAgent>(), transform)
+            }),
             new Sequence(new List<Node>{
                 new ElgHungerCheck(GetComponent<Elg>()),
                 new ElgFindForest(transform),
                 new ElgGoToForest(GetComponent<NavMeshAgent>()),
                 new ElgTryToEat(GetComponent<Elg>())
-            }),
+            }),           
             new Selector(new List<Node>
             {
                 new FollowMother(GetComponent<NavMeshAgent>(), transform, GetComponent<Elg>()),
