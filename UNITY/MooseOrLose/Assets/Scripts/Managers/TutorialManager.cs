@@ -79,7 +79,7 @@ public class TutorialManager : MonoBehaviour
     {
         currentLayer++;
         tutorialItems[currentLayer - 1].transform.SetSiblingIndex(lastChildIndex);
-        
+        Prev.gameObject.SetActive(true);
 
         // Check if we are done
         if (currentLayer >= tutorialTexts.Count)
