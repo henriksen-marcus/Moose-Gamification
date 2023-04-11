@@ -61,7 +61,8 @@ public class Elg : ClickableObject
     public bool hasPartner;
     public bool hasMated;
 
-    private Vector3 Home;
+    private Vector3 WinterLocation;
+    private Vector3 SummerLocation;
 
 
 
@@ -139,7 +140,18 @@ public class Elg : ClickableObject
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
         TimeManager.instance.OnNewDay += NextDay;
-        Home = transform.position;
+
+
+        WinterLocation = transform.position;
+        SummerLocation = transform.position;
+        while(WinterLocation.y >= -1f)
+        {
+            NavMeshHit hit;
+            NavMesh.SamplePosition(new Vector3(Random.Range(-200, 200), 10, Random.Range(-200, 200)), out hit, 200, 1);
+            if (hit.hit)
+                WinterLocation = hit.position;
+        }
+
         if (gameObject.GetComponent<Outline>() == null)
         {
             outline = gameObject.AddComponent<Outline>();
@@ -208,7 +220,8 @@ public class Elg : ClickableObject
         }
     }
 
-    public Vector3 GetHome() { return Home; }
+    public Vector3 GetWinterLocation() { return WinterLocation; }
+    public Vector3 GetSummerLocation() { return SummerLocation; }
 
     public void NextDay()
     {

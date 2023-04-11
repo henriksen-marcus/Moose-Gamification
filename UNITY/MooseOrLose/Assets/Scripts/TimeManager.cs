@@ -30,7 +30,48 @@ public class TimeManager : MonoBehaviour
         day = 0;
         month = startMonth;
         year = 0;
-        
+
+        switch (startMonth)
+        {
+            case 0:
+                currentSeason = Season.Winter;
+                break;
+            case 1:
+                currentSeason = Season.Winter;
+                break;
+            case 2:
+                currentSeason = Season.Spring;
+                break;
+            case 3:
+                currentSeason = Season.Spring;
+                break;
+            case 4:
+                currentSeason = Season.Spring;
+                break;
+            case 5:
+                currentSeason = Season.Summer;
+                break;
+            case 6:
+                currentSeason = Season.Summer;
+                break;
+            case 7:
+                currentSeason = Season.Summer;
+                break;
+            case 8:
+                currentSeason = Season.Fall;
+                break;
+            case 9:
+                currentSeason = Season.Fall;
+                break;
+            case 10:
+                currentSeason = Season.Fall;
+                break;
+            case 11:
+                currentSeason = Season.Winter;
+                break;
+        }
+
+
         StartCoroutine(NextDay());
 
         defaultPlaySpeed = 3;
@@ -105,7 +146,11 @@ public class TimeManager : MonoBehaviour
         switch (month)
         {
             case 0:
+                currentSeason = Season.Winter;
+                break;
             case 1:
+                currentSeason = Season.Winter;
+                break;
             case 11:
                 currentSeason = Season.Winter;
                 break;
@@ -114,16 +159,26 @@ public class TimeManager : MonoBehaviour
                 SpringBegin();
                 break;
             case 3:
+                currentSeason = Season.Spring;
+                break;
             case 4:
                 currentSeason = Season.Spring;
                 break;
             case 5:
+                currentSeason = Season.Summer;
+                break;
             case 6:
+                currentSeason = Season.Summer;
+                break;
             case 7:
                 currentSeason = Season.Summer;
                 break;
             case 8:
+                currentSeason = Season.Fall;
+                break;
             case 9:
+                currentSeason = Season.Fall;
+                break;
             case 10:
                 currentSeason = Season.Fall;
                 break;
