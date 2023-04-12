@@ -134,6 +134,8 @@ public class Elg : ClickableObject
             outline.OutlineWidth = 7f;
             outline.enabled = false;
         }
+
+        GetComponent<NavMeshAgent>().speed = 5;
     }
     
     private void Start()

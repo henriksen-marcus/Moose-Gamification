@@ -25,9 +25,9 @@ public class ElgRunAway : Node
         {
             return NodeState.FAILURE;
         }
-        float speed = runSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
-        mAgent.speed = speed * ((100 + mAgent.GetComponent<Elg>().weight) / 500);
-        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed) * ((100 + mAgent.GetComponent<Elg>().weight) / 500); 
+        float ratio = (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.speed = runSpeed * ratio;
+        mAgent.acceleration = acceleration * ratio; 
         Transform Danger = (Transform)parent.GetData("Danger");
         Vector3 direction = mTransform.position - Danger.position;
         direction.Normalize();
