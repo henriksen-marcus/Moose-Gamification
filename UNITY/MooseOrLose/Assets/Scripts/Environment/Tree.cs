@@ -143,8 +143,7 @@ public class Tree
         int value = 0;
         for (int i = 0; i < n; i++)
         {
-            value += Random.Range(1, s);
-
+            value += Random.Range(0, s + 1);
         }
         return value;
     }
@@ -262,10 +261,10 @@ public class Tree
                 }
                 else
                 {
-                    float chance = treeAgeInDaysTotal / 10950;
-                    int n = Random.Range(1, 21);
-                    if (n < chance)
-                        isDead = true;
+                    // float chance = treeAgeInDaysTotal / 10950;
+                    // int n = Random.Range(1, 81);
+                    // if (n < chance)
+                    //     isDead = true;
                     break;
                 }
             case ForestType.Spruce:
@@ -276,10 +275,10 @@ public class Tree
                 }
                 else
                 {
-                    float chance = treeAgeInDaysTotal / 18250;
-                    int n = Random.Range(1, 21);
-                    if (n < chance)
-                        isDead = true;
+                    // float chance = treeAgeInDaysTotal / 18250;
+                    // int n = Random.Range(1, 81);
+                    // if (n < chance)
+                    //     isDead = true;
                     break;
                 }
             case ForestType.Pine:
@@ -290,10 +289,10 @@ public class Tree
                 }
                 else
                 {
-                    float chance = treeAgeInDaysTotal / 25550;
-                    int n = Random.Range(1, 21);
-                    if (n < chance)
-                        isDead = true;
+                    // float chance = treeAgeInDaysTotal / 25550;
+                    // int n = Random.Range(1, 81);
+                    // if (n < chance)
+                    //     isDead = true;
                     break;
                 }
             default:

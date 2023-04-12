@@ -14,8 +14,8 @@ public class Forest : MonoBehaviour
 
     [SerializeField] int treesAmountInForest;
     [SerializeField] public float averageAge;
-    private int minTreesInForest = 1500;
-    private int maxTreesInForest = 2500;
+    private const int MinTreesInForest = 1;
+    private const int MaxTreesInForest = 1800;
 
     [Header("Tree States")]
     public ForestType forestType;
@@ -29,16 +29,16 @@ public class Forest : MonoBehaviour
 #pragma warning disable 0414
     [SerializeField] float spawningRadius;
 #pragma warning restore 0414
-    public float forestHeight;
-    public float forestDensity;
+    public float forestHeight = 0;
+    public float forestDensity = 0;
 
     private Tree[] _treeArray;
     public List<Tree> treeList;
     private List<Tree> trackableTrees;
     private List<GameObject> spawnedTrees;
 
-    float borderRadius = 7.5f;
-    float maxDistanceVariation = 2f;
+    int borderRadius = 8;
+    // float maxDistanceVariation = 1f;
     float lastDistance = 2f;
 
     // Debugging
@@ -65,7 +65,7 @@ public class Forest : MonoBehaviour
 
         trackableTrees = new List<Tree>();
         spawnedTrees = new List<GameObject>();  
-        treesAmountInForest = UnityEngine.Random.Range(minTreesInForest, maxTreesInForest);
+        treesAmountInForest = UnityEngine.Random.Range(MinTreesInForest, MaxTreesInForest);
 
         RaycastPosition();
     }
@@ -279,6 +279,7 @@ public class Forest : MonoBehaviour
         TimeManager.instance.OnSpringBegin += UpdateBirth;
 
         TimeManager.instance.OnNewMonth += UpdateSpawnedTrees;
+        TimeManager.instance.OnNewMonth += UpdateAverageAge;
     }
     
     void UpdateForestStats()
@@ -288,9 +289,10 @@ public class Forest : MonoBehaviour
         SetForestHealth();
 
         UpdateForestDensity();
+    }
 
-        treesAmountInForest = treeList.Count;
-        
+    private void UpdateAverageAge()
+    {
         long lTemp = 0;
         foreach (var tree in treeList)
         {
@@ -299,14 +301,11 @@ public class Forest : MonoBehaviour
         float fTemp = (float)lTemp / treeList.Count;
         averageAge = fTemp / 365;
     }
-
+    
     public void UpdateTreeStats()
     {
         UpdateForestStats();
 
-        forestDensity = 0;
-        forestHeight = 0;
-        
         for (int i = 0; i < treeList.Count;)
         {
             treeList[i].UpdateStats();
@@ -320,12 +319,12 @@ public class Forest : MonoBehaviour
                 _forestManager.treesDiedOfAge++;
                 treeList.RemoveAt(i);
             }
-            else i++;
+            i++;
         }
+        treesAmountInForest = treeList.Count;
         
-        int treeCount = treeList.Count;
-        forestHeight = treeCount == 0 ? 0 : forestHeight / treeCount;
-        forestDensity *= 0.0025f; // Divide by 400
+        forestHeight = treesAmountInForest == 0 ? 0 : forestHeight / treesAmountInForest;
+        forestDensity *= 0.005f; // Divide by 200
     }
 
     void UpdateBirth()
@@ -344,6 +343,7 @@ public class Forest : MonoBehaviour
                 _forestManager.treesBirth += treeList[i].CheckIfGettingBirth();
             }
         }
+        treesAmountInForest = treeList.Count;
     }
 
     void SpawnTrees()
@@ -353,19 +353,19 @@ public class Forest : MonoBehaviour
         switch (forestDensityLevel)
         {
             case ForestDensity.Density1:
-                numberOfTrees = 2;
+                numberOfTrees = 3;
                 break;
             case ForestDensity.Density2:
-                numberOfTrees = 4;
-                break;
-            case ForestDensity.Density3:
                 numberOfTrees = 5;
                 break;
+            case ForestDensity.Density3:
+                numberOfTrees = 7;
+                break;
             case ForestDensity.Density4:
-                numberOfTrees = 6;
+                numberOfTrees = 11;
                 break;
             case ForestDensity.Density5:
-                numberOfTrees = 8;
+                numberOfTrees = 13;
                 break;
             default:
                 break;
@@ -378,12 +378,11 @@ public class Forest : MonoBehaviour
         
         for (int i = 0;i < numberOfTrees;i++)
         {
-                      
-            var distanceFromMiddle = UnityEngine.Random.Range(1f, borderRadius);
-            distanceFromMiddle = Mathf.Clamp(
-                distanceFromMiddle,
-                lastDistance - maxDistanceVariation,
-                lastDistance + maxDistanceVariation);
+            var distanceFromMiddle = UnityEngine.Random.Range(0, borderRadius);
+            // distanceFromMiddle = Mathf.Clamp(
+            //     distanceFromMiddle,
+            //     lastDistance - maxDistanceVariation,
+            //     lastDistance + maxDistanceVariation);
             lastDistance = distanceFromMiddle;
 
             var angle = i * 360f / numberOfTrees;

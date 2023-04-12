@@ -25,7 +25,7 @@ public class ForestManager : MonoBehaviour
     public Vector2 SpruceForestSpawn = new Vector2(0.1f, int.MaxValue);
 
     [Header("Amount of Trees to Spawn")]
-    [SerializeField] int forestSpawnCount = 700;
+    [SerializeField] int forestSpawnCount = 500;
 
     [Header("Spawning")]
     [SerializeField] int respawnAmount = 10;
@@ -89,7 +89,7 @@ public class ForestManager : MonoBehaviour
     private void Start()
     {
         SubscribeToEvents();
-        UpdateForests();
+        // UpdateForests();
         AddCamera();
         Statistics();
     }
@@ -210,27 +210,27 @@ public class ForestManager : MonoBehaviour
     }
 
     /** Runs every time the day changes. Updates every forest over time. */
-    void UpdateForests()
-    {
-        /*updateTimer.Start("Update All Trees");
-        forestList.ForEach(f => f.UpdateTreeStats());
-        print(updateTimer);
-        return;*/
-        // Update any remaining trees
-        if (currentIndex < forestList.Count - 1 && TimeManager.instance.GetDay() > 0)
-        {
-            for (var i = currentIndex; i < forestList.Count; i++)
-            {
-                forestList[i].UpdateTreeStats();              
-                
-                //forestList[i].DidUpdate();
-                //print("Last frame updated index " + i);
-            }
-        }
-        //forestList.ForEach(f => f.SetColor(Color.red));
-        currentIndex = bufferSize = 0;
-        updateTimer.Start();
-    }
+    // void UpdateForests()
+    // {
+    //     /*updateTimer.Start("Update All Trees");
+    //     forestList.ForEach(f => f.UpdateTreeStats());
+    //     print(updateTimer);
+    //     return;*/
+    //     // Update any remaining trees
+    //     if (currentIndex < forestList.Count - 1 && TimeManager.instance.GetDay() > 0)
+    //     {
+    //         for (var i = currentIndex; i < forestList.Count; i++)
+    //         {
+    //             forestList[i].UpdateTreeStats();              
+    //             
+    //             //forestList[i].DidUpdate();
+    //             //print("Last frame updated index " + i);
+    //         }
+    //     }
+    //     //forestList.ForEach(f => f.SetColor(Color.red));
+    //     currentIndex = bufferSize = 0;
+    //     updateTimer.Start();
+    // }
 
     /** Calculate the amount of forests to be updated next tick. */
     private int GetBufferSize()
@@ -264,16 +264,31 @@ public class ForestManager : MonoBehaviour
         return forestList.GetRange(currentIndex, bufferSize);
     }
 
-    void Update()
+    // void Update()
+    // {
+    //     GetNextBuffer()?.ForEach(forest =>
+    //     {
+    //         forest.UpdateTreeStats();
+    //         forest.UpdateSpawnedTrees();
+    //         //forest.DidUpdate();
+    //     });
+    //
+    //     
+    // }
+
+    private void UpdateForests()
     {
-        GetNextBuffer()?.ForEach(forest =>
+        // GetNextBuffer()?.ForEach(forest =>
+        // {
+        //     forest.UpdateTreeStats();
+        //     forest.UpdateSpawnedTrees();
+        //     //forest.DidUpdate();
+        // });
+        foreach (var forest in forestList)
         {
             forest.UpdateTreeStats();
             forest.UpdateSpawnedTrees();
-            //forest.DidUpdate();
-        });
-
-        
+        }
     }
     
     /*private struct MyParallelJob : IJobParallelFor
@@ -296,87 +311,87 @@ public class ForestManager : MonoBehaviour
 
     void SubscribeToEvents()
     {
-        TimeManager.instance.OnNewDay += TreeCount;
-        TimeManager.instance.OnNewDay += UpdateForests;
+        // TimeManager.instance.OnNewDay += TreeCount;
+        // TimeManager.instance.OnNewDay += UpdateForests;
         TimeManager.instance.OnNewMonth += Statistics;
-        
+        TimeManager.instance.OnNewMonth += UpdateForests;
     }
     
-    void TreeCount()
-    {
-        totalTreesAmount = 0;
-        forestList.ForEach(forest => totalTreesAmount += forest.treeList.Count);
-
-        #region Get Density
-        //List<float> tempList_Birch = new List<float>();
-        //List<float> tempList_Spruce = new List<float>();
-        //List<float> tempList_Pine = new List<float>();
-
-        //for (int i = 0; i < forestSpawnerList.Count; i++)
-        //{
-        //    if (forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Birch)
-        //    {
-        //        tempList_Birch.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
-        //    }
-        //    else if(forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Spruce)
-        //    {
-        //        tempList_Spruce.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
-        //    }
-        //    else if (forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Pine)
-        //    {
-        //        tempList_Pine.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
-        //    }
-        //}
-
-        //densityBirch.x = tempList_Birch[0];
-        //densityBirch.y = tempList_Birch[0];
-
-        //for (int i = 0; i < tempList_Birch.Count; i++)
-        //{
-        //    if (densityBirch.x > tempList_Birch[i])
-        //    {
-        //        densityBirch.x = tempList_Birch[i];
-        //    }
-
-        //    if (densityBirch.y < tempList_Birch[i])
-        //    {
-        //        densityBirch.y = tempList_Birch[i];
-        //    }
-        //}
-
-        //densitySpruce.x = tempList_Spruce[0];
-        //densitySpruce.y = tempList_Spruce[0];
-
-        //for (int i = 0; i < tempList_Spruce.Count; i++)
-        //{
-        //    if (densitySpruce.x > tempList_Spruce[i])
-        //    {
-        //        densitySpruce.x = tempList_Spruce[i];
-        //    }
-
-        //    if (densitySpruce.y < tempList_Spruce[i])
-        //    {
-        //        densitySpruce.y = tempList_Spruce[i];
-        //    }
-        //}
-
-        //densityPine.x = tempList_Pine[0];
-        //densityPine.y = tempList_Pine[0];
-
-        //for (int i = 0; i < tempList_Pine.Count; i++)
-        //{
-        //    if (densityPine.x > tempList_Pine[i])
-        //    {
-        //        densityPine.x = tempList_Pine[i];
-        //    }
-
-        //    if (densityPine.y < tempList_Pine[i])
-        //    {
-        //        densityPine.y = tempList_Pine[i];
-        //    }
-        //}
-        #endregion
-    }
+    // void TreeCount()
+    // {
+    //     totalTreesAmount = 0;
+    //     forestList.ForEach(forest => totalTreesAmount += forest.treeList.Count);
+    //
+    //     #region Get Density
+    //     //List<float> tempList_Birch = new List<float>();
+    //     //List<float> tempList_Spruce = new List<float>();
+    //     //List<float> tempList_Pine = new List<float>();
+    //
+    //     //for (int i = 0; i < forestSpawnerList.Count; i++)
+    //     //{
+    //     //    if (forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Birch)
+    //     //    {
+    //     //        tempList_Birch.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
+    //     //    }
+    //     //    else if(forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Spruce)
+    //     //    {
+    //     //        tempList_Spruce.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
+    //     //    }
+    //     //    else if (forestSpawnerList[i].GetComponent<Forest>().forestState_Type == ForestState_Type.forestType_Pine)
+    //     //    {
+    //     //        tempList_Pine.Add(forestSpawnerList[i].GetComponent<Forest>().forest_Density);
+    //     //    }
+    //     //}
+    //
+    //     //densityBirch.x = tempList_Birch[0];
+    //     //densityBirch.y = tempList_Birch[0];
+    //
+    //     //for (int i = 0; i < tempList_Birch.Count; i++)
+    //     //{
+    //     //    if (densityBirch.x > tempList_Birch[i])
+    //     //    {
+    //     //        densityBirch.x = tempList_Birch[i];
+    //     //    }
+    //
+    //     //    if (densityBirch.y < tempList_Birch[i])
+    //     //    {
+    //     //        densityBirch.y = tempList_Birch[i];
+    //     //    }
+    //     //}
+    //
+    //     //densitySpruce.x = tempList_Spruce[0];
+    //     //densitySpruce.y = tempList_Spruce[0];
+    //
+    //     //for (int i = 0; i < tempList_Spruce.Count; i++)
+    //     //{
+    //     //    if (densitySpruce.x > tempList_Spruce[i])
+    //     //    {
+    //     //        densitySpruce.x = tempList_Spruce[i];
+    //     //    }
+    //
+    //     //    if (densitySpruce.y < tempList_Spruce[i])
+    //     //    {
+    //     //        densitySpruce.y = tempList_Spruce[i];
+    //     //    }
+    //     //}
+    //
+    //     //densityPine.x = tempList_Pine[0];
+    //     //densityPine.y = tempList_Pine[0];
+    //
+    //     //for (int i = 0; i < tempList_Pine.Count; i++)
+    //     //{
+    //     //    if (densityPine.x > tempList_Pine[i])
+    //     //    {
+    //     //        densityPine.x = tempList_Pine[i];
+    //     //    }
+    //
+    //     //    if (densityPine.y < tempList_Pine[i])
+    //     //    {
+    //     //        densityPine.y = tempList_Pine[i];
+    //     //    }
+    //     //}
+    //     #endregion
+    // }
 
     void Statistics()
     {
