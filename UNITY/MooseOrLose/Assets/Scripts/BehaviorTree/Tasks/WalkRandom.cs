@@ -32,11 +32,11 @@ public class WalkRandom : Node
     public override NodeState Evaluate()
     {
         timer += Time.deltaTime;
-        float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+
         timeToWait = TimeManager.instance.playSpeed / 2;
-        float speed = walkSpeed * ratio;
-        mAgent.speed = speed;
-        mAgent.acceleration = acceleration * ratio;
+
+        mAgent.speed = walkSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
         if (mAgent.GetComponent<Elg>() != null)
         {
             if (mAgent.GetComponent<Elg>().age_years < 1)
