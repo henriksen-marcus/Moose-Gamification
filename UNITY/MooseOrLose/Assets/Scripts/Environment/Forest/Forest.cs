@@ -408,11 +408,6 @@ public class Forest : MonoBehaviour
                 obj.transform.localScale = new Vector3(scale, scale, scale);
                 spawnedTrees.Add(obj);
             }
-            else
-            {
-                
-                
-            }
         }
 
         

@@ -91,6 +91,7 @@ public class Tree
         UpdateBudSize();
         UpdateTreeVolume();
         UpdateShadowArea();
+        UpdateTreeDie();
 
         UpdateTreeHealth();
     }
@@ -108,23 +109,44 @@ public class Tree
         switch (treeType)
         {
             case ForestType.Birch:
-                year = Random.Range(0, 250);
+                // year = Random.Range(0, 180);
+                int roll11 = RollDice(10, 30);
+                int roll12 = RollDice(10, 30);
+                year = Mathf.Min(roll11, roll12);
                 month = Random.Range(1, 13);
                 day = Random.Range(1, 32);
                 break;
             case ForestType.Spruce:
-                year = Random.Range(0, 300);
+                // year = Random.Range(0, 230);
+                int roll21 = RollDice(10, 50);
+                int roll22 = RollDice(10, 50);
+                year = Mathf.Min(roll21, roll22);
                 month = Random.Range(1, 13);
                 day = Random.Range(1, 32);
                 break;
             case ForestType.Pine:
-                year = Random.Range(0, 350);
+                // year = Random.Range(0, 280);
+                int roll31 = RollDice(10, 70);
+                int roll32 = RollDice(10, 70);
+                year = Mathf.Min(roll31, roll32);
                 month = Random.Range(1, 13);
                 day = Random.Range(1, 32);
                 break;
         }
 
         treeAgeInDaysTotal = year * 365 + month * 30 + day;
+    }
+
+    private int RollDice(int n, int s)
+    {
+        // Sum of n dice each of which goes from 0 to s
+        int value = 0;
+        for (int i = 0; i < n; i++)
+        {
+            value += Random.Range(1, s);
+
+        }
+        return value;
     }
     
     void SetTreeHeight()
@@ -303,6 +325,7 @@ public class Tree
         var a = Mathf.PI * treeHeight * (0.5f * treeDiameter);
         treeVolume = a * a * 0.5f;
     }
+    
     //--------------------
     public bool Edible()
     {

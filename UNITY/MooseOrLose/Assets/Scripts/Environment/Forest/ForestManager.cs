@@ -380,16 +380,16 @@ public class ForestManager : MonoBehaviour
 
     void Statistics()
     {
-        float denisies = 0;
+        float density = 0;
         float quantity = 0;
         int age = 0;
         forestList.ForEach(forest =>
         {
-            denisies += forest.forestDensity;
+            density += forest.forestDensity;
             quantity += forest.GetForestTreeAmount();   
             age += forest.GetAverageAge();
         });
-        forestDensityAverage.Add((int)(denisies / forestList.Count));
+        forestDensityAverage.Add((int)(density / forestList.Count));
         forestQuantityAverage.Add((int)(quantity / forestList.Count));
         forestTreeAgeAverage.Add((age / forestList.Count));
     }
