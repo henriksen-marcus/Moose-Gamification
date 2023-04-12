@@ -30,6 +30,7 @@ public class InfoUI : UI
     private void Start()
     {
         ElgManager.instance.OnPopulationChanged += UpdateCount/*Agent.Moose*/;
+        RuleManager.Instance.OnHuntingSeasonStart += ResetSquareKm;
         // TODO bind JegerManager and UlvManager events to functions to update text
     }
 
@@ -39,6 +40,39 @@ public class InfoUI : UI
             Instance = this;
     }
 
+    private void ResetSquareKm()
+    {
+        mSquareKm.text = 0.ToString();
+    }
+
+    private float GetSquareKm()
+    {
+        if (float.TryParse(mSquareKm.text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out float result))
+        {
+            return result;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    
+    public void AddToSquareKm()
+    {
+        if (float.TryParse(mSquareKm.text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out float result))
+        {
+            mSquareKm.text = (result + 0.067f).ToString(CultureInfo.CurrentCulture);
+            if (float.TryParse(mSquareKmGoal.text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out float resultGoal))
+            {
+                mSquareKm.color = Math.Abs(GetSquareKm() - resultGoal) > 0.1f ? Color.red : Color.white;
+            }
+        }
+        else
+        {
+            mSquareKm.text = 0.ToString();
+        }
+    }
+    
     private void UpdateCount(/*Agent agent*/)
     {
         ElgManager instance = ElgManager.instance;
@@ -46,11 +80,11 @@ public class InfoUI : UI
         mMaleCount.text = instance.elg_males.ToString();
         mFemaleCount.text = instance.elg_females.ToString();
         mChildCount.text = instance.elg_children.ToString();
+        
 
-
-        if (instance.GetMalePopulationAge().ToString().Length > 5)
+        if (instance.GetMalePopulationAge().ToString().Length > 4)
         {
-            mMaleAge.text = instance.GetMalePopulationAge().ToString().Remove(5, instance.GetMalePopulationAge().ToString().Length - 5);
+            mMaleAge.text = instance.GetMalePopulationAge().ToString().Remove(4, instance.GetMalePopulationAge().ToString().Length - 4);
         }
         else
         {
@@ -61,9 +95,6 @@ public class InfoUI : UI
         if (float.TryParse(text, NumberStyles.Float, CultureInfo.InvariantCulture.NumberFormat, out float result))
         {
             mMaleAge.color = Math.Abs(instance.GetMalePopulationAge() - result) > 0.1f ? Color.red : Color.white;
-        }
-        else
-        {
         }
 
         string maleratio = instance.GetMaleRatio().ToString();
@@ -81,11 +112,6 @@ public class InfoUI : UI
         {
             mMaleRatio.color = Math.Abs(instance.GetMaleRatio() - result) > 0.03f ? Color.red : Color.white;
         }
-        else
-        {
-            
-        }
-       
     }
 
     public void UpdateRatioGoal(float ratio)
