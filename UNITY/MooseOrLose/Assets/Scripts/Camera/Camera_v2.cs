@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.EventSystems;
 enum CameraMode
 {
     Normal,
@@ -19,11 +19,12 @@ enum CursorMode
 
 public class Camera_v2 : MonoBehaviour
 {
+    public static Camera_v2 Instance;
     private InputProvider _inputProvider;
     private GameObject _rotationPoint;
     private GameObject _cameraSocket;
     private Camera _mainCamera;
-    
+
     /* The velocity of the _rotationPoint the camera is attached to. */
     private Vector2 _velocity = Vector2.zero;
     private float _acceleration = 0.1f;
@@ -34,7 +35,7 @@ public class Camera_v2 : MonoBehaviour
     private float _maxRotationKeyboardVelocity = 2.5f;
     private float _maxRotationMouseVelocity = 12f;
     private float _lerpSpeed = 4f;
-    
+
     /* If the mouse drag movement has been used, wait
      * for the velocity given by the mouse to decrease
      * naturally before clamping it again. This is to
@@ -48,15 +49,15 @@ public class Camera_v2 : MonoBehaviour
     private float _lastCameraDistance = 150f;
     private float _minCameraDistance = 20f;
     private float _maxCameraDistance = 400f;
-    
+
     private float _cameraAngle = 45f;
     private float _defaultCameraAngle = 45f;
     private float _minCamAngle = 15f;
     private float _maxCamAngle = 89.9f;
-    
+
     /* How far the camera distance changes per scroll. */
     private float _scrollDistance = 32f;
-    
+
     /* How much the camera movement will brake each tick.
      * Lower = more braking. */
     private float _brakeFactor = 0.97f;
@@ -66,7 +67,7 @@ public class Camera_v2 : MonoBehaviour
 
     private float _dragSpeed = 70f;
     private float _defaultDragSpeed = 70f;
-    
+
     /* The location of the ground directly beneath the camera. */
     private Vector3 _lastGroundPoint = Vector3.zero;
     private Vector3 _lastForwardGroundPoint = Vector3.zero;
@@ -78,17 +79,17 @@ public class Camera_v2 : MonoBehaviour
     private Vector2 _cameraBounds;
     /* How far outside the map's border the camera can move. */
     private float _cameraBoundDistance = 30f;
-    
+
     /* How far away from the ground directly beneath us before
      * a 'collision' triggers. */
     private float _defaultGroundCollisionRange = 15f;
     private float _groundCollisionRange = 15f;
     /* How much mouse delta until the click counts as a drag. */
-    private float _mouseDeltaForDrag = 0.5f;
+    private float _mouseDeltaForDrag = 1f;
 
     /* How far away horizontally the player can click to select a clickable object. */
-    private float _selectDistance = 9f;
-    
+    private float _selectDistance = 15f;
+
     private bool _hasUsedMouseDrag;
     private bool _isPressingLMB;
     private bool _isPressingRMB;
@@ -107,11 +108,13 @@ public class Camera_v2 : MonoBehaviour
 
     private Timer _clickTimer;
     private float _doubleClickTime = 0.3f;
+    bool _isPointerOverGameObject;
 
     /* Layermasks */
     private int _mapLm;
     private int _movableObjectsLm;
     private int _forestLm;
+
 
     [SerializeField] public Texture2D MouseNormalTexture;
     [SerializeField] public Texture2D MousePointTexture;
@@ -122,16 +125,16 @@ public class Camera_v2 : MonoBehaviour
     private void OnEnable()
     {
         _inputProvider = new InputProvider();
-        
+
         _inputProvider.SelectPressed += SetPressingLMB;
         _inputProvider.SelectPerformed += Select;
-        
+
         _inputProvider.RightclickPressed += SetPressingRMB;
         _inputProvider.RightclickPerformed += Rightclick;
-        
+
         _inputProvider.Pause += Pause;
         _inputProvider.Back += Back;
-        
+
         _inputProvider.Enable();
     }
 
@@ -139,24 +142,25 @@ public class Camera_v2 : MonoBehaviour
     {
         _inputProvider.SelectPressed -= SetPressingLMB;
         _inputProvider.SelectPerformed -= Select;
-        
+
         _inputProvider.RightclickPressed -= SetPressingRMB;
         _inputProvider.RightclickPerformed -= Rightclick;
-        
+
         _inputProvider.Pause -= Pause;
         _inputProvider.Back -= Back;
-        
+
         _inputProvider.Disable();
     }
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
         _rotationPoint = GameObject.Find("RotationPoint");
         _cameraSocket = GameObject.Find("CameraSocket");
         _mainCamera = GameObject.Find("Camera").GetComponent<Camera>();
         _infoBar = _gameObjectInfo.GetComponent<ObjectInfo>();
         _clickTimer = new Timer();
-        
+
         var camTransform = _mainCamera.transform;
         camTransform.rotation = Quaternion.Euler(45f, 0f, 0f);
         camTransform.position = new Vector3(0f, 150f, -160f);
@@ -164,16 +168,17 @@ public class Camera_v2 : MonoBehaviour
         _mapLm = 1 << LayerMask.NameToLayer("Map");
         _movableObjectsLm = 1 << LayerMask.NameToLayer("Moveable Objects");
         _forestLm = 1 << LayerMask.NameToLayer("Forest");
-        
+        _isPointerOverGameObject = false;
+
         //_mainCamera.enabled = false;
     }
-    
+
     void Start()
     {
         // Default values
         _cameraBounds.x = _cameraBoundDistance * 2;
         _cameraBounds.y = _cameraBoundDistance * 2;
-        
+
         // NOTE: This is unstable code.
         var mesh = GameObject.Find("KirkesdalenMesh");
         if (mesh)
@@ -192,15 +197,16 @@ public class Camera_v2 : MonoBehaviour
         }
         //_gameObjectInfo = GameObject.Find("Screen_Canvas").transform.Find("GameObjectInfo").gameObject;
     }
-    
+
     /*IEnumerator DelayedAction(float delayTime, System.Action action)
     {
         yield return new WaitForSeconds(delayTime);
         action();
     }*/
-    
+
     void Update()
     {
+
         switch (_cameraMode)
         {
             case CameraMode.Normal:
@@ -225,9 +231,49 @@ public class Camera_v2 : MonoBehaviour
         HoverCheck();
     }
 
+    private void FixedUpdate()
+    {
+        if (EventSystem.current.IsPointerOverGameObject())
+        {
+            PointerEventData pointerData = new PointerEventData(EventSystem.current)
+            {
+                pointerId = -1,
+            };
+
+            pointerData.position = Input.mousePosition;
+
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+            _isPointerOverGameObject = false;
+            if (results.Count > 0)
+            {
+                for (int i = 0; i < results.Count; ++i)
+                {
+                    if (results[i].gameObject.layer == LayerMask.NameToLayer("UI"))
+                    {
+                        _isPointerOverGameObject = true;
+                    }
+
+                }
+            }
+        }
+    }
+
     private void Pause(InputAction.CallbackContext context)
     {
         
+    }
+    public void DeSelect()
+    {
+        Debug.Log("Deselect");
+        Debug.Log(_selectedObject);
+        if (_selectedObject)
+        {
+            _selectedObject.SetOutlineSelected(false);
+            _selectedObject.ToggleOutline(false);
+        }
+        _selectedObject = null;
     }
 
     private void Back(InputAction.CallbackContext context)
@@ -271,7 +317,7 @@ public class Camera_v2 : MonoBehaviour
         Vector3 mousePos = Mouse.current.position.ReadValue();
         Ray ray = _mainCamera.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _mapLm))
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _mapLm) && !_isPointerOverGameObject)
         {
             /* If we want mouse cursor to change on hover over a forest here,
              * we can make a layermask including both map and forest and check
@@ -361,7 +407,7 @@ public class Camera_v2 : MonoBehaviour
         Vector3 mousePos = Mouse.current.position.ReadValue(); ;
         var ray = _mainCamera.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _mapLm))
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _mapLm) && !_isPointerOverGameObject)
         {
             var closestObject = GetSphereOverlap(hit.point);
             if (closestObject != null)
@@ -393,7 +439,12 @@ public class Camera_v2 : MonoBehaviour
                 _sphereMesh.GetComponent<MeshRenderer>().material = sphereMaterial;
             }*/
         } 
-        else _gameObjectInfo.SetActive(false);
+        else
+        {
+            _gameObjectInfo.SetActive(false);
+            DeSelect();
+        }
+        
     }
 
     private void ForestRaycast()
@@ -402,7 +453,7 @@ public class Camera_v2 : MonoBehaviour
         Vector3 mousePos = Mouse.current.position.ReadValue();
         var ray = _mainCamera.ScreenPointToRay(mousePos);
 
-        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _forestLm))
+        if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _forestLm) && !_isPointerOverGameObject)
         {
             var forest = hit.transform.GetComponent<Forest>();
             if (forest)

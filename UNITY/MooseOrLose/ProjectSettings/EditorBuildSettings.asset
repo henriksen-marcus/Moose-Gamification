@@ -11,10 +11,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Scene - Aleksander.unity
     guid: cca36a88c0b58bb419b07ac93664ad71
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Main Scene.unity
     guid: e933937f43570c74fbb5e2f3c1884255
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Scene - Marcus.unity
     guid: f3cbf3dd3d122c84fa8b249433a2b245
   - enabled: 0

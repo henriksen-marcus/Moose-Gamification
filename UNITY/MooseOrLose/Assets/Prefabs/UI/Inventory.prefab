@@ -465,7 +465,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5368987196496505842}
   - component: {fileID: 4753317780812127883}
-  m_Layer: 5
+  m_Layer: 2
   m_Name: Inventory
   m_TagString: Untagged
   m_Icon: {fileID: 0}

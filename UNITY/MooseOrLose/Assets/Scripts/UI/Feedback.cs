@@ -53,7 +53,9 @@ public class Feedback : MonoBehaviour
 
     private bool hasSpawnedPopulationLimit;
     private bool hasSpawnedShotLastMonth;
+#pragma warning disable 0414
     private bool hasSpawnedLeftOverMoose;
+#pragma warning restore 0414
 
     private bool hasSpawnedForest1;
     private bool hasSpawnedForest2;
