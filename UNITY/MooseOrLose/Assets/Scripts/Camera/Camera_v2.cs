@@ -266,8 +266,6 @@ public class Camera_v2 : MonoBehaviour
     }
     public void DeSelect()
     {
-        Debug.Log("Deselect");
-        Debug.Log(_selectedObject);
         if (_selectedObject)
         {
             _selectedObject.SetOutlineSelected(false);
