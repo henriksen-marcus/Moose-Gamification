@@ -23,9 +23,9 @@ public class ElgGoToPartner : Node
         {
             return NodeState.FAILURE;
         }
-        float speed = walkSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
-        mAgent.speed = speed;
-        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.speed = walkSpeed * ratio;
+        mAgent.acceleration = acceleration * ratio;
 
         // Failure Check 2
         if ((Transform)parent.GetData("Partner") == null)
@@ -38,7 +38,7 @@ public class ElgGoToPartner : Node
         Transform transform = (Transform)parent.GetData("Partner");
         mAgent.SetDestination(transform.position);
 
-        if (Vector3.Distance(transform.position, mAgent.transform.position) < 3f)
+        if (Vector3.Distance(transform.position, mAgent.transform.position) < 2f)
         {
             transform.GetComponent<Elg>().hasPartner = false;
             mScript.pregnate(transform.GetComponent<Elg>());

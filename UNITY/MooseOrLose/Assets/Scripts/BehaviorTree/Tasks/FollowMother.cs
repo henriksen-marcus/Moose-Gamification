@@ -35,8 +35,9 @@ public class FollowMother : Node
                 if (timer > TimeManager.instance.playSpeed / 2)
                 {
                     timer = 0f;
-                    mAgent.speed = speed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
-                    mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed) ;
+                    float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+                    mAgent.speed = speed * ratio;
+                    mAgent.acceleration = acceleration * ratio;
                     mAgent.SetDestination(mScript.mother.position);
                     return NodeState.RUNNING;
                 }

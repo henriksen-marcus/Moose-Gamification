@@ -30,6 +30,7 @@ public class ElgTryToEat : Node
             {
                 return NodeState.FAILURE;
             }
+            tree.EatFromTree();
             mScript.hunger += n;
         }
 

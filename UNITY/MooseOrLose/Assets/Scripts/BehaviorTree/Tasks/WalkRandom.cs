@@ -35,8 +35,9 @@ public class WalkRandom : Node
 
         timeToWait = TimeManager.instance.playSpeed / 2;
 
-        mAgent.speed = walkSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
-        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.speed = walkSpeed * ratio;
+        mAgent.acceleration = acceleration * ratio;
         if (mAgent.GetComponent<Elg>() != null)
         {
             if (mAgent.GetComponent<Elg>().age_years < 1)
