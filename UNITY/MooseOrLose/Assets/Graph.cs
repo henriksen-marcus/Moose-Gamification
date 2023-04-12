@@ -18,7 +18,11 @@ public class Graph : MonoBehaviour
     bool forestDensity;
     bool forestQuantity;
     bool forestAge;
-
+    bool expFemale;
+    bool expMale;
+    bool female;
+    bool male;
+    bool shot;
     // Start is called before the first frame update
     void Awake()
     {
@@ -31,7 +35,13 @@ public class Graph : MonoBehaviour
         forestDensity = false;
         forestQuantity = false;
         forestAge = false;
+        expFemale = false;
+        expMale = false;
+        female = false;
+        male = false;
+        shot = false;
 
+        SetupColors();
     }
 
     private void Start()
@@ -56,19 +66,19 @@ public class Graph : MonoBehaviour
         }
         if (moosePopulation)
         {
-            ShowGraph(ElgManager.instance.elg_population_graph, Color.blue);
+            ShowGraph(ElgManager.instance.elg_population_graph, new Color(205f / 255f, 127f / 255f, 50f / 255f));
         }
         if (mooseMales)
         {
-            ShowGraph(ElgManager.instance.elg_males_graph, Color.red);
+            ShowGraph(ElgManager.instance.elg_males_graph, new Color(233f / 255f, 116f / 255f, 81f / 255f));
         }
         if(mooseFemales)
         {
-            ShowGraph(ElgManager.instance.elg_females_graph, Color.yellow);
+            ShowGraph(ElgManager.instance.elg_females_graph, new Color(193f / 255f, 154f / 255f, 107f / 255f));
         }
         if(mooseChildren)
         {
-            ShowGraph(ElgManager.instance.elg_children_graph, Color.cyan);
+            ShowGraph(ElgManager.instance.elg_children_graph, new Color(210f / 255f, 125f / 255f, 45f / 255f));
         }
         if (forestQuantity)
         {
@@ -82,7 +92,26 @@ public class Graph : MonoBehaviour
         {
             ShowGraph(ForestManager.instance.forestTreeAgeAverage, new Color(175f / 255f, 225f / 255f, 175f / 255f, 1));
         }
-
+        if (expFemale)
+        {
+            ShowGraph(JegerManager.instance.FemalesExpectedList, new Color(251f / 255f, 206f / 255f, 177f / 255f));
+        }
+        if (expMale)
+        {
+            ShowGraph(JegerManager.instance.MalesExpectedList, new Color(204f / 255f, 85f / 255f, 0f / 255f));
+        }
+        if (female)
+        {
+            ShowGraph(JegerManager.instance.FemalesShotList, new Color(242f / 255f, 210f / 255f, 189f / 255f));
+        }
+        if (male)
+        {
+            ShowGraph(JegerManager.instance.MalesShotList, new Color(210f / 255f, 125f / 255f, 45f / 255f));
+        }
+        if (shot)
+        {
+            ShowGraph(JegerManager.instance.ShotMonthlyList, new Color(250f / 255f, 213f / 255f, 165f / 255f));
+        }
     }
 
 
@@ -138,10 +167,10 @@ public class Graph : MonoBehaviour
         go.GetComponent<Image>().sprite = dot;
         go.GetComponent<Image>().color = color;
         RectTransform rectTransform = go.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = anchoredPosition;
-        rectTransform.sizeDelta = new Vector2(3, 3);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
+        rectTransform.anchoredPosition = anchoredPosition;
+        rectTransform.sizeDelta = new Vector2(3, 3);
 
     }
     private void CreateLine(Vector2 pos1, Vector2 pos2, Color color)
@@ -150,9 +179,9 @@ public class Graph : MonoBehaviour
         Image image = go.GetComponentInChildren<Image>();
         image.color = color;
         RectTransform rectTransform = go.GetComponent<RectTransform>();
-        rectTransform.anchoredPosition = pos1 + ((pos2-pos1) / 2f);
         rectTransform.anchorMin = new Vector2(0, 0);
         rectTransform.anchorMax = new Vector2(0, 0);
+        rectTransform.anchoredPosition = pos1 + ((pos2-pos1) / 2f);
         rectTransform.sizeDelta = new Vector2((pos2 - pos1).magnitude, 2);
         Vector3 rotation = rectTransform.transform.eulerAngles;
         float angle = Vector2.Angle(new Vector2(1,0), pos2 - pos1);
@@ -169,6 +198,22 @@ public class Graph : MonoBehaviour
 
     }
 
+    private void SetupColors()
+    {
+        settings.Find("MoosePopulation").GetComponentInChildren<Image>().color = new Color(205f / 255f, 127f / 255f, 50f / 255f);
+        settings.Find("MooseMales").GetComponentInChildren<Image>().color = new Color(233f / 255f, 116f / 255f, 81f / 255f);
+        settings.Find("MooseFemales").GetComponentInChildren<Image>().color = new Color(193f / 255f, 154f / 255f, 107f / 255f);
+        settings.Find("MooseChildren").GetComponentInChildren<Image>().color = new Color(210f / 255f, 125f / 255f, 45f / 255f);
+        settings.Find("ForestAge").GetComponentInChildren<Image>().color = new Color(175f / 255f, 225f / 255f, 175f / 255f, 1);
+        settings.Find("ForestDensity").GetComponentInChildren<Image>().color = new Color(80f / 255f, 200f / 255f, 120f / 255f, 1);
+        settings.Find("ForestQuantity").GetComponentInChildren<Image>().color = new Color(170f / 255f, 255f / 255f, 0, 1);
+        settings.Find("ExpectedMales").GetComponentInChildren<Image>().color = new Color(204f / 255f, 85f / 255f, 0f / 255f);
+        settings.Find("ExpectedFemales").GetComponentInChildren<Image>().color = new Color(251f / 255f, 206f / 255f, 177f / 255f);
+        settings.Find("FemalesShot").GetComponentInChildren<Image>().color = new Color(242f / 255f, 210f / 255f, 189f / 255f);
+        settings.Find("MalesShot").GetComponentInChildren<Image>().color = new Color(210f / 255f, 125f / 255f, 45f / 255f);
+        settings.Find("ShotMonthly").GetComponentInChildren<Image>().color = new Color(250f / 255f, 213f / 255f, 165f / 255f);
+    }
+
     public void updateBooleans() 
     {  
         if (settings == null || container == null)
@@ -183,6 +228,11 @@ public class Graph : MonoBehaviour
         forestAge = settings.Find("ForestAge").GetComponentInChildren<Toggle>().isOn;
         forestDensity = settings.Find("ForestDensity").GetComponentInChildren<Toggle>().isOn;
         forestQuantity = settings.Find("ForestQuantity").GetComponentInChildren<Toggle>().isOn;
+        expMale = settings.Find("ExpectedMales").GetComponentInChildren<Toggle>().isOn;
+        expFemale = settings.Find("ExpectedFemales").GetComponentInChildren<Toggle>().isOn;
+        female = settings.Find("FemalesShot").GetComponentInChildren<Toggle>().isOn;
+        male = settings.Find("MalesShot").GetComponentInChildren<Toggle>().isOn;
+        shot = settings.Find("ShotMonthly").GetComponentInChildren<Toggle>().isOn;
         if (transform.parent.gameObject.activeSelf)
             UpdateGraphMenu();
     }

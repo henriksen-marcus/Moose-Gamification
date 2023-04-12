@@ -23,9 +23,9 @@ public class ObjectInfo : MonoBehaviour
 
     public void Click()
     {
-        Debug.Log("click");
+        
         Camera_v2.Instance.DeSelect();
-        //gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 
     public void SpawnInfobar(ClickableObjectInfo info)
