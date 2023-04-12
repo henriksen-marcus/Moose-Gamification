@@ -29,9 +29,8 @@ public class Forest : MonoBehaviour
 #pragma warning disable 0414
     [SerializeField] float spawningRadius;
 #pragma warning restore 0414
-    public float forestHeight = 0;
-    public float forestDensity = 0;
-
+    public float forestHeight;
+    public float forestDensity;
     private Tree[] _treeArray;
     public List<Tree> treeList;
     private List<Tree> trackableTrees;

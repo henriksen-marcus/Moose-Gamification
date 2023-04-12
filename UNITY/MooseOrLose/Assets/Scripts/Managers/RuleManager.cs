@@ -304,6 +304,7 @@ public class RuleManager : UI, IPointerEnterHandler
                 _lastMonthWasHuntingSeason = false;
                 // Debug.Log("Hunting season review");
             }
+            
         }
     }
     
