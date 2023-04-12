@@ -26,8 +26,9 @@ public class Forest : MonoBehaviour
 
     [Header("Tree Spawning")]
     [SerializeField] GameObject Tree;
+#pragma warning disable 0414
     [SerializeField] float spawningRadius;
-
+#pragma warning restore 0414
     public float forestHeight;
     public float forestDensity;
 

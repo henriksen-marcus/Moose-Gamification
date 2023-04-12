@@ -54,7 +54,9 @@ public class Elg : ClickableObject
 
 
     private GameObject Antlers;
+#pragma warning disable 0414
     private bool antlersSpawned = false;
+#pragma warning restore 0414
 
     private bool dead = false;
     [HideInInspector]

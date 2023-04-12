@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class ObjectInfo : MonoBehaviour
 {
     TextMeshProUGUI _name;
     public GameObject info_bar;
     RectTransform background;
-
     public void Awake()
     {
         _name = transform.Find("Background").transform.Find("Name").GetComponent<TextMeshProUGUI>();
@@ -17,11 +17,20 @@ public class ObjectInfo : MonoBehaviour
         {
             Debug.Log("ObjectInfo Error - Setup failed");
         }
-
+        gameObject.SetActive(false);
     }
+
+
+    public void Click()
+    {
+        Debug.Log("click");
+        Camera_v2.Instance.DeSelect();
+        //gameObject.SetActive(false);
+    }
+
     public void SpawnInfobar(ClickableObjectInfo info)
     {
-        foreach(RectTransform child in background)
+        foreach (RectTransform child in background)
         {
             if (child.gameObject.name == "Exit" || child.gameObject.name == "Name")
             {

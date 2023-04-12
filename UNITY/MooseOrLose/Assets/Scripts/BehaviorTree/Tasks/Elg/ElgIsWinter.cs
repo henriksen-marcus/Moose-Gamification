@@ -9,7 +9,6 @@ public class ElgIsWinter : Node
     {
         if (TimeManager.instance.IsWinter())
         {
-            Debug.Log("isWinter");
             return NodeState.SUCCESS;
         }
 

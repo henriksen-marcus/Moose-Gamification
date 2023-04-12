@@ -12,7 +12,9 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     private RectTransform _rectTransform;
     private CanvasGroup _canvasGroup;
     private DragDrop _copy;
+#pragma warning disable 0108
     Camera_v2 camera;
+#pragma warning restore 0108
     private void Awake()
     {
         // _rectTransform = GetComponent<RectTransform>();
