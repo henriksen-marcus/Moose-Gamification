@@ -47,6 +47,10 @@ public class ForestManager : MonoBehaviour
     [Header("Optimization")]
     // Holds references to the forest component of each GameObject in forestSpawnerList.
     private List<Forest> forestList;
+    
+    /* How long it takes to update all forests once an update is initiated.
+     * Lower value = more processor power required in that time period. */
+    private float _timeToUpdateForests = 5f;
 
     /// <summary>
     /// How many forests we will update the next tick.
@@ -179,28 +183,19 @@ public class ForestManager : MonoBehaviour
                         else
                         {
                             //If Forest have tried to move X times, destroy the object
-                            if (positionRetryCounter % respawnAmount == 0)
-                            {
-                                Destroy(forestSpawnerList[i]);
-                                forestSpawnerList.RemoveAt(i);
-
-                                reset = true;
-                                break;
-                            }
+                            if (positionRetryCounter % respawnAmount != 0) continue;
+                            Destroy(forestSpawnerList[i]);
+                            forestSpawnerList.RemoveAt(i);
+                            reset = true;
+                            break;
                         }
                     }
                     break;
                 }
             }
 
-            if (!reset)
-            {
-                i++;
-            }
-            else
-            {
-                forestSpawnCount--;
-            }
+            if (!reset) i++;
+            else forestSpawnCount--;
         }
 
         //print(timer);
@@ -209,41 +204,34 @@ public class ForestManager : MonoBehaviour
         forestSpawnerList.ForEach(obj => forestList.Add(obj.GetComponent<Forest>()));
     }
 
-    /** Runs every time the day changes. Updates every forest over time. */
-    // void UpdateForests()
-    // {
-    //     /*updateTimer.Start("Update All Trees");
-    //     forestList.ForEach(f => f.UpdateTreeStats());
-    //     print(updateTimer);
-    //     return;*/
-    //     // Update any remaining trees
-    //     if (currentIndex < forestList.Count - 1 && TimeManager.instance.GetDay() > 0)
-    //     {
-    //         for (var i = currentIndex; i < forestList.Count; i++)
-    //         {
-    //             forestList[i].UpdateTreeStats();              
-    //             
-    //             //forestList[i].DidUpdate();
-    //             //print("Last frame updated index " + i);
-    //         }
-    //     }
-    //     //forestList.ForEach(f => f.SetColor(Color.red));
-    //     currentIndex = bufferSize = 0;
-    //     updateTimer.Start();
-    // }
+    /** Runs every time the month changes. Updates every forest over time. */
+    void UpdateForests()
+    {
+        // Update any remaining trees
+        if (currentIndex < forestList.Count - 1 && TimeManager.instance.GetDay() > 0)
+        {
+            for (var i = currentIndex; i < forestList.Count; i++)
+            {
+                forestList[i].UpdateTreeStats();
+            }
+        }
+        //forestList.ForEach(f => f.SetColor(Color.red));
+        currentIndex = bufferSize = 0;
+        updateTimer.Start();
+    }
 
     /** Calculate the amount of forests to be updated next tick. */
     private int GetBufferSize()
     {
         // Directly minus the index (not index+1) because we have not yet processed the current index.
-        int remainingTrees = forestList.Count - currentIndex;
-        float remainingSeconds = Math.Clamp(TimeManager.instance.playSpeed - updateTimer.GetTime(), 0f, float.MaxValue);
+        int remainingForests = forestList.Count - currentIndex;
+        float remainingSeconds = Math.Clamp(_timeToUpdateForests - updateTimer.GetTime(), 0f, float.MaxValue);
         float currentFPS = 1.0f / Time.unscaledDeltaTime;
         float remainingFrames = currentFPS * remainingSeconds;
 
         //print("Updated: " + (forestList.Count - remainingTrees) + " Remaining trees: " + remainingTrees +" Current FPS: " + currentFPS + "\nRemaining Seconds: " + remainingSeconds + " Trees per frame: " + ((int)Math.Ceiling(remainingTrees / remainingFrames)) + " Remaining frames: " + remainingFrames);
         
-        return (int)Math.Ceiling(remainingTrees / remainingFrames); // Trees per frame
+        return (int)Math.Ceiling(remainingForests / remainingFrames); // Forests per frame
     }
     
     /** Get the next set of forests to update. */
@@ -264,55 +252,21 @@ public class ForestManager : MonoBehaviour
         return forestList.GetRange(currentIndex, bufferSize);
     }
 
-    // void Update()
-    // {
-    //     GetNextBuffer()?.ForEach(forest =>
-    //     {
-    //         forest.UpdateTreeStats();
-    //         forest.UpdateSpawnedTrees();
-    //         //forest.DidUpdate();
-    //     });
-    //
-    //     
-    // }
+     void Update()
+     {
+         GetNextBuffer()?.ForEach(forest =>
+         {
+             forest.UpdateTreeStats();
+             forest.UpdateSpawnedTrees();
+             //forest.DidUpdate();
+         });
+     }
 
-    private void UpdateForests()
-    {
-        // GetNextBuffer()?.ForEach(forest =>
-        // {
-        //     forest.UpdateTreeStats();
-        //     forest.UpdateSpawnedTrees();
-        //     //forest.DidUpdate();
-        // });
-        foreach (var forest in forestList)
-        {
-            forest.UpdateTreeStats();
-            forest.UpdateSpawnedTrees();
-        }
-    }
-    
-    /*private struct MyParallelJob : IJobParallelFor
-    {
-        //public NativeArray<float> result;
-        private List<Forest> l;
-
-        public MyParallelJob(List<Forest> a)
-        {
-            l = new List<Forest>(a);
-        }
-
-        public void Execute(int i)
-        {
-            l[i].UpdateTreeStats();
-        }
-    }*/
-
-    //--------------------
+     //--------------------
 
     void SubscribeToEvents()
     {
         // TimeManager.instance.OnNewDay += TreeCount;
-        // TimeManager.instance.OnNewDay += UpdateForests;
         TimeManager.instance.OnNewMonth += Statistics;
         TimeManager.instance.OnNewMonth += UpdateForests;
     }
