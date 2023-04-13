@@ -21,6 +21,7 @@ public class ElgGoToForest : Node
     {
         if (parent.GetData("Forest") == null)
         {
+            
             return NodeState.FAILURE;
         }
         float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
@@ -36,11 +37,12 @@ public class ElgGoToForest : Node
 
         if (parent.GetData("Destination") == null)
         {
+            
             parent.SetData("Destination", forest.transform.position + new Vector3(Random.Range(-5, 5), 0f, Random.Range(-5, 5)));
             mAgent.SetDestination((Vector3)parent.GetData("Destination"));
         }
 
-        if (Vector3.Distance(mAgent.destination, mAgent.transform.position) < 0.2)
+        if (Vector3.Distance(mAgent.destination, mAgent.transform.position) < 1f)
         {
             return NodeState.SUCCESS;
         }

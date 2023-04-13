@@ -39,7 +39,7 @@ public class ElgGoToSummerLocation : Node
 
         if (mAgent.transform.position.y < -2f)
         {
-            elg.SetSummerDestination(mAgent.transform.position);
+            elg.SetWinterDestination(mAgent.transform.position);
         }
 
         if (Vector3.Distance(mTransform.position, elg.GetSummerLocation()) > 5)

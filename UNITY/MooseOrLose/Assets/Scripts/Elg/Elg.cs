@@ -318,9 +318,9 @@ public class Elg : ClickableObject
         }
     }
 
-    public void SetSummerDestination(Vector3 dest)
+    public void SetWinterDestination(Vector3 dest)
     {
-        SummerLocation = dest;
+        WinterLocation = dest;
     }
 
     public void Die()
