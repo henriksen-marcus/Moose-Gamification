@@ -77,16 +77,18 @@ public class TutorialManager : MonoBehaviour
 
     public void NextLayer()
     {
-        currentLayer++;
-        tutorialItems[currentLayer - 1].transform.SetSiblingIndex(lastChildIndex);
-        Prev.gameObject.SetActive(true);
-
         // Check if we are done
-        if (currentLayer >= tutorialTexts.Count)
+        if (currentLayer == tutorialTexts.Count - 1)
         {
             EndTutorial();
             return;
         }
+
+        currentLayer++;
+        tutorialItems[currentLayer - 1].transform.SetSiblingIndex(lastChildIndex);
+        Prev.gameObject.SetActive(true);
+
+       
 
         lastChildIndex = tutorialItems[currentLayer].transform.GetSiblingIndex();
         tutorialItems[currentLayer].transform.SetAsLastSibling();
@@ -141,7 +143,7 @@ public class TutorialManager : MonoBehaviour
 
     public void EndTutorial()
     {
-        tutorialItems[currentLayer - 1].transform.SetSiblingIndex(lastChildIndex);
+        tutorialItems[currentLayer].transform.SetSiblingIndex(lastChildIndex);
 
         TimeManager.instance.SetGamePaused(false);
         Destroy(gameObject);

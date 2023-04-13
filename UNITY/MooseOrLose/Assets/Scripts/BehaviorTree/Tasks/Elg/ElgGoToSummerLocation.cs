@@ -37,6 +37,11 @@ public class ElgGoToSummerLocation : Node
 
         mAgent.SetDestination(hit.position);
 
+        if (mAgent.transform.position.y < -2f)
+        {
+            elg.SetSummerDestination(mAgent.transform.position);
+        }
+
         if (Vector3.Distance(mTransform.position, elg.GetSummerLocation()) > 5)
         {
             return NodeState.RUNNING;

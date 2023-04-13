@@ -318,6 +318,11 @@ public class Elg : ClickableObject
         }
     }
 
+    public void SetSummerDestination(Vector3 dest)
+    {
+        SummerLocation = dest;
+    }
+
     public void Die()
     {
         if (!dead)

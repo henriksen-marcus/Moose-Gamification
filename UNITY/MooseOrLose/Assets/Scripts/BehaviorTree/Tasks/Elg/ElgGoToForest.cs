@@ -33,11 +33,18 @@ public class ElgGoToForest : Node
         }
         Forest forest = (Forest)parent.GetData("Forest");
         
-        if (Vector3.Distance(mAgent.destination, mAgent.transform.position) < 2)
+
+        if (parent.GetData("Destination") == null)
+        {
+            parent.SetData("Destination", forest.transform.position + new Vector3(Random.Range(-5, 5), 0f, Random.Range(-5, 5)));
+            mAgent.SetDestination((Vector3)parent.GetData("Destination"));
+        }
+
+        if (Vector3.Distance(mAgent.destination, mAgent.transform.position) < 0.2)
         {
             return NodeState.SUCCESS;
         }
-        mAgent.SetDestination(forest.transform.position + new Vector3(Random.Range(-10, 10), 0f, Random.Range(-10, 10)));
+
         mScript.AIstate = ElgState.Eating;
         return NodeState.RUNNING;
     }

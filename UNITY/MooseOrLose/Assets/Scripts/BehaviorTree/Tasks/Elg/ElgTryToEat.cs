@@ -28,12 +28,13 @@ public class ElgTryToEat : Node
             Tree tree = forest.GetOptimalTreeToEat();
             if (tree == null)
             {
+                parent.ClearData("Destination");
                 return NodeState.FAILURE;
             }
             tree.EatFromTree();
             mScript.hunger += n;
         }
-
+        parent.ClearData("Destination");
         return NodeState.SUCCESS;
     }
 }
