@@ -141,7 +141,7 @@ public class TutorialManager : MonoBehaviour
 
     public void EndTutorial()
     {
-        tutorialItems[currentLayer].transform.SetSiblingIndex(lastChildIndex);
+        tutorialItems[currentLayer - 1].transform.SetSiblingIndex(lastChildIndex);
 
         TimeManager.instance.SetGamePaused(false);
         Destroy(gameObject);
