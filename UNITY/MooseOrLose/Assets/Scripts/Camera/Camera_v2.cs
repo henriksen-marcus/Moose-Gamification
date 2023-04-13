@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
@@ -114,6 +115,7 @@ public class Camera_v2 : MonoBehaviour
     private int _mapLm;
     private int _movableObjectsLm;
     private int _forestLm;
+    private int _UILm;
 
 
     [SerializeField] public Texture2D MouseNormalTexture;
@@ -168,6 +170,7 @@ public class Camera_v2 : MonoBehaviour
         _mapLm = 1 << LayerMask.NameToLayer("Map");
         _movableObjectsLm = 1 << LayerMask.NameToLayer("Moveable Objects");
         _forestLm = 1 << LayerMask.NameToLayer("Forest");
+        _UILm = 1 << LayerMask.NameToLayer("UI");
         _isPointerOverGameObject = false;
 
         //_mainCamera.enabled = false;
@@ -195,18 +198,10 @@ public class Camera_v2 : MonoBehaviour
                 _cameraBounds.y = meshPos.y + meshSize.y + _cameraBoundDistance;
             }
         }
-        //_gameObjectInfo = GameObject.Find("Screen_Canvas").transform.Find("GameObjectInfo").gameObject;
     }
-
-    /*IEnumerator DelayedAction(float delayTime, System.Action action)
-    {
-        yield return new WaitForSeconds(delayTime);
-        action();
-    }*/
 
     void Update()
     {
-
         switch (_cameraMode)
         {
             case CameraMode.Normal:
@@ -225,12 +220,7 @@ public class Camera_v2 : MonoBehaviour
         UpdateCameraDistance();
         CameraUpdate();
     }
-
-    private void LateUpdate()
-    {
-        HoverCheck();
-    }
-
+    
     private void FixedUpdate()
     {
         if (EventSystem.current.IsPointerOverGameObject())
@@ -238,32 +228,29 @@ public class Camera_v2 : MonoBehaviour
             PointerEventData pointerData = new PointerEventData(EventSystem.current)
             {
                 pointerId = -1,
+                position = Input.mousePosition
             };
-
-            pointerData.position = Input.mousePosition;
-
-
-            List<RaycastResult> results = new List<RaycastResult>();
+            
+            var results = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerData, results);
             _isPointerOverGameObject = false;
-            if (results.Count > 0)
-            {
-                for (int i = 0; i < results.Count; ++i)
-                {
-                    if (results[i].gameObject.layer == LayerMask.NameToLayer("UI"))
-                    {
-                        _isPointerOverGameObject = true;
-                    }
-
-                }
-            }
+            if (results.Count <= 0) return;
+            foreach (var t in results.Where(t => t.gameObject.layer == LayerMask.NameToLayer("UI")))
+                _isPointerOverGameObject = true;
         }
     }
+
+    private void LateUpdate()
+    {
+        HoverCheck();
+    }
+    
 
     private void Pause(InputAction.CallbackContext context)
     {
         
     }
+    
     public void DeSelect()
     {
         if (_selectedObject)
@@ -322,8 +309,7 @@ public class Camera_v2 : MonoBehaviour
              * each hit object's layer. If forest => cursor = pointer. */
             
             var closestObject = GetSphereOverlap(hit.point);
-            if (!closestObject || closestObject == _selectedObject) return;
-            
+            if (!closestObject) return;
             var clickComponent = closestObject.GetComponent<ClickableObject>();
             if (clickComponent)
             {

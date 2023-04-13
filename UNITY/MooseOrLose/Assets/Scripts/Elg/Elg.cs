@@ -131,7 +131,7 @@ public class Elg : ClickableObject
         {
             outline = gameObject.AddComponent<Outline>();
             outline.OutlineColor = Color.white;
-            outline.OutlineWidth = 7f;
+            outline.OutlineWidth = 4f;
             outline.enabled = false;
         }
 
