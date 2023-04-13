@@ -248,7 +248,10 @@ public class Camera_v2 : MonoBehaviour
 
     private void Pause(InputAction.CallbackContext context)
     {
-        
+        /*PDFPrompter p = new PDFPrompter();
+        p.GeneratePDF();*/
+        print(RuleManager.Instance.Rules.Count);
+        print("PDF generated");
     }
     
     public void DeSelect()

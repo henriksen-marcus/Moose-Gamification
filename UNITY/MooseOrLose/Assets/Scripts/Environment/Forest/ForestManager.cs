@@ -368,6 +368,30 @@ public class ForestManager : MonoBehaviour
     {
         
     }
+    
+    public void GetNumTrees(ref int birch, ref int spruce, ref int pine)
+    {
+        birch = spruce = pine = 0;
+
+        foreach (var forest in forestList)
+        {
+            foreach (var tree in forest.treeList)
+            {
+                switch (tree.treeType)
+                {
+                    case ForestType.Birch:
+                        birch++;
+                        break;
+                    case ForestType.Spruce:
+                        spruce++;
+                        break;
+                    case ForestType.Pine:
+                        pine++;
+                        break;
+                }
+            }
+        }
+    }
 }
 
 // Update trees before:     0,2350874s

@@ -7,19 +7,6 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-[System.Serializable]
-public class Rule<T>
-{
-    public string Name { get; set; }
-    public List<Interval<T>> Intervals { get; set; }
-}
-[System.Serializable]
-public class Interval<T>
-{
-    public int StartDay { get; set; }
-    public T Value { get; set; }
-}
-
 public class RuleManager : UI, IPointerEnterHandler
 {
     // Singleton
@@ -88,7 +75,6 @@ public class RuleManager : UI, IPointerEnterHandler
     private void InitiateRules()
     {
         startDay = TimeManager.instance.GetDay();
-
         // AverageMaleAge
         Rules.Add(new Rule<float> { 
             Name = "Average Male Age", 
