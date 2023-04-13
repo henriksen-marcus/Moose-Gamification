@@ -12,10 +12,14 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     private RectTransform _rectTransform;
     private CanvasGroup _canvasGroup;
     private DragDrop _copy;
+#pragma warning disable 0108
+    Camera_v2 camera;
+#pragma warning restore 0108
     private void Awake()
     {
         // _rectTransform = GetComponent<RectTransform>();
         // _canvasGroup = GetComponent<CanvasGroup>();
+        camera = GameObject.Find("Camera-v2").GetComponent<Camera_v2>();
     }
 
     private void Start()
@@ -33,6 +37,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     
     public void OnBeginDrag(PointerEventData eventData)
     {
+        camera.SetMovementEnabled(false);
         InfoUI.Instance.gridOn = true;
         // Debug.Log("On Start dragging");
         _canvasGroup.alpha = .6f;
@@ -44,6 +49,7 @@ public class DragDrop : MonoBehaviour, IPointerDownHandler, IBeginDragHandler, I
     }
     public void OnEndDrag(PointerEventData eventData)
     {
+        camera.SetMovementEnabled(true);
         InfoUI.Instance.gridOn = false;
         // Debug.Log("On End dragging");
         _canvasGroup.alpha = 1f;

@@ -11,7 +11,7 @@ public class Terrain : MonoBehaviour, IDropHandler
     public Terrain(int movementCost, bool isWater, Texture texture)
     {
         this.movementCost = movementCost;
-        this.hasWater = hasWater;
+        this.hasWater = isWater;
         // this.texture = texture;
     }
     
@@ -84,7 +84,20 @@ public class Terrain : MonoBehaviour, IDropHandler
         // Debug.Log("On Dropped");
         if (eventData.pointerDrag.TryGetComponent(out DragDrop drop))
         {
-            Instantiate(drop.prefab, spawnPoint.position, Quaternion.identity, _mooseParent);
+            switch (drop.prefab.tag)
+            {
+                case "Elg":
+                    ElgManager.instance.Spawn(spawnPoint.position);
+                    break;
+                case "Jeger":
+                    JegerManager.instance.Spawn(spawnPoint.position);
+                    break;
+                case "Ulv":
+                    UlvManager.instance.SpawnPack(UnityEngine.Random.Range(1,3),spawnPoint.position);
+                    break;
+                default:
+                    break;
+            }
             // Debug.Log("Dropped " + drop.prefab.name + " into world");
             ElgManager.instance.AddToList(drop.prefab);
         }

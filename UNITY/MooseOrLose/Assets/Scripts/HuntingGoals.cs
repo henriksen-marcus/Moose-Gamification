@@ -33,6 +33,11 @@ public class HuntingGoals : MonoBehaviour
     {
         gameObject.SetActive(false);
         MonthButton.OnMonthButtonChanged += UpdateGoalScreen;
+        
+        // Default values
+        UpdateRatioGoal("0.5");
+        UpdateAgeGoal("1");
+        UpdateSquareKmGoal("3");
     }
 
     public void UpdateGoalScreen()
@@ -51,6 +56,7 @@ public class HuntingGoals : MonoBehaviour
         // InfoUI.Instance.gameObject.SetActive(true);
         InventoryUI.Instance.gameObject.SetActive(true);
         gameObject.SetActive(false);
+        RuleManager.Instance.CheckForRuleUpdates();
     }
     
     public void UpdateRatioGoal(string inString)

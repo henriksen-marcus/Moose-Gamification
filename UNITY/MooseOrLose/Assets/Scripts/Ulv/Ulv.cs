@@ -11,6 +11,7 @@ public class Ulv : ClickableObject
 
         return info;
     }
+    int daysLived;
 
     public GameObject ulvPrefab;
 
@@ -55,6 +56,8 @@ public class Ulv : ClickableObject
             UlvManager.instance.FemaleBorn();
         }
 
+        daysLived = 0;
+
         // Genes
         natural_size = Random.Range(0, 16);
         natural_mature_age = Random.Range(5, 9);
@@ -82,7 +85,12 @@ public class Ulv : ClickableObject
 
     public void NextDay()
     { 
-
+        daysLived++;
+        if (daysLived > 35)
+        {
+            UlvManager.instance.RemoveFromList(gameObject);
+            Destroy(gameObject);
+        }
         age_days++;
         if (age_days > 29)
         {

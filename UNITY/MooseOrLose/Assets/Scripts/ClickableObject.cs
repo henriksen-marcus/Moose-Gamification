@@ -44,10 +44,11 @@ public abstract class ClickableObject : MonoBehaviour
 
     public void SetOutlineSelected(bool selected)
     {
+        if (outline == null) return;
         outline.OutlineColor = selected ? Color.green : Color.white;
         outline.OutlineMode = Outline.Mode.OutlineAll;
-        outline.OutlineWidth = 6.5f;
         outline.enabled = selected;
         IsSelected = selected;
+
     }
 }

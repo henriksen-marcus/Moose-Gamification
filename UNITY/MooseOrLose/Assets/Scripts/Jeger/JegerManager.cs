@@ -29,6 +29,15 @@ public class JegerManager : MonoBehaviour
     public int currentMales;
 
     private bool lastMonthWasHuntingSeason = false;
+
+    public List<int> FemalesExpectedList = new List<int>();
+    public List<int> MalesExpectedList = new List<int>();
+
+    public List<int> FemalesShotList = new List<int>();
+    public List<int> MalesShotList = new List<int>();
+
+    public List<int> ShotMonthlyList = new List<int>();
+
     private void Awake()
     {
         if (instance == null)
@@ -47,6 +56,14 @@ public class JegerManager : MonoBehaviour
         jeger_population = jeger_startpopulation;
 
         TimeManager.instance.OnNewMonth += NewMonth;
+
+        FemalesExpectedList.Add(0);
+        MalesExpectedList.Add(0);
+
+        FemalesShotList.Add(0);
+        MalesShotList.Add(0);
+
+        ShotMonthlyList.Add(0);
     }
 
     void NewMonth()
@@ -55,8 +72,22 @@ public class JegerManager : MonoBehaviour
         {
             setExpectedHunting();
         }
+        
+        FemalesExpectedList.Add(expectedFemales);
+        MalesExpectedList.Add(expectedMales);
+
+        FemalesShotList.Add(expectedFemales - currentFemales);
+        MalesShotList.Add(expectedMales - currentMales);
+
+        ShotMonthlyList.Add(shotThisMonth);
+
         shotLastMonth = shotThisMonth;
         shotThisMonth = 0;
+        
+        if (lastMonthWasHuntingSeason && !RuleManager.Instance.HuntingSeason())
+        {
+            EndHuntingSeason();
+        }
         lastMonthWasHuntingSeason = RuleManager.Instance.HuntingSeason();
     }
     
@@ -76,7 +107,13 @@ public class JegerManager : MonoBehaviour
         jeger_population++;
         jeger_list.Add(go);
     }
-
+    public void Spawn(Vector3 pos)
+    {
+        NavMeshHit hit;
+        NavMesh.SamplePosition(pos, out hit, 200, 1);
+        if (!hit.hit) return;
+        AddToList(Instantiate(jeger, hit.position, Quaternion.identity, transform));
+    }
     public void RemoveFromList(GameObject go)
     {
         jeger_population--;
@@ -117,16 +154,27 @@ public class JegerManager : MonoBehaviour
         {
             foreach (GameObject go in jeger_list)
             {
-                go.GetComponent<NavMeshAgent>().isStopped = true;
+                if (go.GetComponent<NavMeshAgent>().isOnNavMesh)
+                    go.GetComponent<NavMeshAgent>().isStopped = true;
             }
         }
         else
         {
             foreach (GameObject go in jeger_list)
             {
-                go.GetComponent<NavMeshAgent>().isStopped = false;
+                if (go.GetComponent<NavMeshAgent>().isOnNavMesh)
+                    go.GetComponent<NavMeshAgent>().isStopped = false;
             }
         }
     }
 
+    public void EndHuntingSeason()
+    {
+        expectedFemales = 0;
+        expectedMales = 0;
+        currentFemales = 0;
+        currentMales = 0;
+    }
+
+ 
 }

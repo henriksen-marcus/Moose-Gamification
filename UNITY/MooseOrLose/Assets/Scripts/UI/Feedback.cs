@@ -38,11 +38,31 @@ public class Feedback : MonoBehaviour
     private int shotLastMonthScorePrev;
     private int leftOverMooseScorePrev;
 
+
+    //Forest
+    [SerializeField] private int densityScore;
+    [SerializeField] private int averageTreeScore;
+    [SerializeField] private int averageAgeScore;
+
+    private int densityScorePrev;
+    private int averageTreeScorePrev;
+    private int averageAgeScorePrev;
+
     private bool hasSpawnedPopulationPopUp1;
     private bool hasSpawnedPopulationPopUp2;
+
     private bool hasSpawnedPopulationLimit;
     private bool hasSpawnedShotLastMonth;
+#pragma warning disable 0414
     private bool hasSpawnedLeftOverMoose;
+#pragma warning restore 0414
+
+    private bool hasSpawnedForest1;
+    private bool hasSpawnedForest2;
+    private bool hasSpawnedForest3;
+    private bool hasSpawnedForest4;
+    private bool hasSpawnedForest5;
+    private bool hasSpawnedForest6;
 
     private List<int> populationCounts;
     private int weekDay;
@@ -53,9 +73,9 @@ public class Feedback : MonoBehaviour
 
     private void Awake()
     {
-        MooseToolTip = transform.Find("HorizontalLayout").Find("MooseBackground").GetComponent<HoverableUIElement>();
-        HunterToolTip = transform.Find("HorizontalLayout").Find("HuntersBackground").GetComponent<HoverableUIElement>();
-        ForestToolTip = transform.Find("HorizontalLayout").Find("ForestBackground").GetComponent<HoverableUIElement>();
+        MooseToolTip = transform.Find("Vertical").Find("MooseBackground").GetComponent<HoverableUIElement>();
+        HunterToolTip = transform.Find("Vertical").Find("HuntersBackground").GetComponent<HoverableUIElement>();
+        ForestToolTip = transform.Find("Vertical").Find("ForestBackground").GetComponent<HoverableUIElement>();
     }
 
     // Start is called before the first frame update
@@ -77,6 +97,12 @@ public class Feedback : MonoBehaviour
         hasSpawnedPopulationLimit = false;
         hasSpawnedShotLastMonth = false;
         hasSpawnedLeftOverMoose = false;
+        hasSpawnedForest1 = false;
+        hasSpawnedForest2 = false;
+        hasSpawnedForest3 = false;
+        hasSpawnedForest4 = false;
+        hasSpawnedForest5 = false;
+        hasSpawnedForest6 = false;
         weekDay = 0;
     }
 
@@ -108,7 +134,7 @@ public class Feedback : MonoBehaviour
         if (size > 2)
         {
             populationDifferencePoints = populationCounts[size - 1] - populationCounts[size - 2];
-            populationDifferencePoints *= 5;
+            populationDifferencePoints *= 3;
         }
         else
         {
@@ -165,18 +191,18 @@ public class Feedback : MonoBehaviour
         int moosePop = ElgManager.instance.elg_population;
         if (moosePop < moosePopulationLowerLimit)
         {           
-            populationLimitScore = (moosePopulationLowerLimit - moosePop) * -10;
+            populationLimitScore = (moosePopulationLowerLimit - moosePop) * -3;
         }
         else if (moosePop > moosePopulationHigherLimit)
         {
-            populationLimitScore = (moosePop - moosePopulationHigherLimit) * -10;
+            populationLimitScore = (moosePop - moosePopulationHigherLimit) * -3;
         }
         else
         {
             populationLimitScore = 0;
         }
 
-        shotLastMonthScore = JegerManager.instance.shotLastMonth * 5;
+        shotLastMonthScore = JegerManager.instance.shotLastMonth * 3;
         HunterScore = 150 + populationLimitScore + shotLastMonthScore + leftOverMooseScore;
         HuntersBackground.GetComponent<Image>().color = gradient.Evaluate((float)HunterScore / 300f);
         HunterPopUp();
@@ -265,13 +291,121 @@ public class Feedback : MonoBehaviour
     }
     void ForestCalc()
     {
+        int averageDensity = ForestManager.instance.forestDensityAverage[ForestManager.instance.forestDensityAverage.Count - 1];
+        densityScore = Mathf.FloorToInt((1 - ((float)averageDensity / 500f)) * 150);
 
+        averageTreeScore = Mathf.FloorToInt((float)ForestManager.instance.forestQuantityAverage[ForestManager.instance.forestQuantityAverage.Count - 1] * 0.025f);
+
+        float averageAge = ForestManager.instance.forestTreeAgeAverage[ForestManager.instance.forestTreeAgeAverage.Count - 1];
+        float score = (100f / averageAge) * 15;
+        averageAgeScore = Mathf.FloorToInt(Mathf.Clamp(score, 0f, 100f));
+
+        ForestScore = densityScore + averageTreeScore + averageAgeScore;
+        ForestBackground.GetComponent<Image>().color = gradient.Evaluate((float)ForestScore / 300f);
+        ForestPopUp();
     }
+    void ForestPopUp()
+    {
+        if (densityScore != densityScorePrev)
+        {           
+            if (densityScore < 60)
+            {
+                if (!hasSpawnedForest1)
+                {
+                    hasSpawnedForest1 = true;
+                    SpawnPopUp("Forest", "The forest density is getting too low");
+                }
 
+            }
+            else if (densityScore > 60)
+            {
+                hasSpawnedForest1 = false;
+            }
+
+
+            if (densityScore > 150)
+            {
+                if (!hasSpawnedForest4)
+                {
+                    hasSpawnedForest4 = true;
+                    SpawnPopUp("Forest", "The forest density is growing, the forest is happy");
+                }
+
+            }
+            else if (densityScore < 150)
+            {
+                hasSpawnedForest4 = false;
+            }
+
+        }
+        densityScorePrev = densityScore;
+
+        if(averageTreeScore != averageTreeScorePrev)
+        {
+            if (averageTreeScore < 20)
+            {
+                if (!hasSpawnedForest2)
+                {
+                    hasSpawnedForest2 = true;
+                    SpawnPopUp("Forest", "The forests has too few trees");
+                }
+
+            }
+            else if (averageTreeScore > 20)
+            {
+                hasSpawnedForest2 = false;
+            }
+            if (averageTreeScore > 80)
+            {
+                if (!hasSpawnedForest5)
+                {
+                    hasSpawnedForest5 = true;
+                    SpawnPopUp("Forest", "The forests is growing, and it is happy");
+                }
+
+            }
+            else if (averageTreeScore < 80)
+            {
+                hasSpawnedForest5 = false;
+            }
+
+        }
+        averageTreeScorePrev = averageTreeScore;
+
+        if (averageAgeScore != averageAgeScorePrev)
+        {
+            if (averageAgeScore < 50)
+            {
+                if (!hasSpawnedForest3)
+                {
+                    hasSpawnedForest3 = true;
+                    SpawnPopUp("Forest", "The forests are old, so growth has been slowed down");
+                }
+
+            }
+            else if (averageAgeScore > 50)
+            {
+                hasSpawnedForest3 = false;
+            }
+            if (averageAgeScore > 100)
+            {
+                if (!hasSpawnedForest6)
+                {
+                    hasSpawnedForest6 = true;
+                    SpawnPopUp("Forest", "The forests are getting younger, so growth is speeding up!");
+                }
+
+            }
+            else if (averageAgeScore < 100)
+            {
+                hasSpawnedForest6 = false;
+            }
+        }
+    }
 
     void NewYear()
     {
-        leftOverMooseScore = (JegerManager.instance.currentFemales + JegerManager.instance.currentMales) * -10;
+        leftOverMooseScore = (JegerManager.instance.currentFemales + JegerManager.instance.currentMales) * -5;
     }
 
     void UpdatePrevious()
@@ -322,8 +456,14 @@ public class Feedback : MonoBehaviour
                               ColorString("Population Control: " + populationLimitScore.ToString(), popLimitColor) +
                               ColorString("Shooting: " + shotLastMonthScore.ToString(), shotLastMonthColor) +
                               ColorString("Meeting targets: " + leftOverMooseScore.ToString(), leftOverMooseColor));
-                                
-        ForestToolTip.SetText("");
+
+        Color DensityColor = gradient.Evaluate((float)densityScore / 150f);
+        Color AgeColor = gradient.Evaluate((float)averageAgeScore / 100f);
+        Color TreeAmountColor = gradient.Evaluate((float)averageTreeScore / 80f);
+
+        ForestToolTip.SetText(ColorString("Density Score: " + densityScore.ToString(), DensityColor) + 
+                              ColorString("Average Tree Amount: " + averageTreeScore.ToString(), TreeAmountColor) + 
+                              ColorString("Tree Age Score: " + averageAgeScore.ToString(), AgeColor));
     }
     string ColorString(string text, Color color)
     {

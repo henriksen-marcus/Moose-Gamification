@@ -54,14 +54,19 @@ public class Elg : ClickableObject
 
 
     private GameObject Antlers;
+#pragma warning disable 0414
     private bool antlersSpawned = false;
-
-
+#pragma warning restore 0414
 
     private bool dead = false;
     [HideInInspector]
     public bool hasPartner;
     public bool hasMated;
+
+    private Vector3 WinterLocation;
+    private Vector3 SummerLocation;
+
+
 
     void Awake()
     {
@@ -126,7 +131,7 @@ public class Elg : ClickableObject
         {
             outline = gameObject.AddComponent<Outline>();
             outline.OutlineColor = Color.white;
-            outline.OutlineWidth = 7f;
+            outline.OutlineWidth = 4f;
             outline.enabled = false;
         }
     }
@@ -137,6 +142,17 @@ public class Elg : ClickableObject
         TimeManager.instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
         TimeManager.instance.OnNewDay += NextDay;
+
+
+        WinterLocation = transform.position;
+        SummerLocation = transform.position;
+        while(WinterLocation.y >= -1f)
+        {
+            NavMeshHit hit;
+            NavMesh.SamplePosition(new Vector3(Random.Range(-200, 200), 10, Random.Range(-200, 200)), out hit, 200, 1);
+            if (hit.hit)
+                WinterLocation = hit.position;
+        }
 
         if (gameObject.GetComponent<Outline>() == null)
         {
@@ -205,6 +221,9 @@ public class Elg : ClickableObject
             }
         }
     }
+
+    public Vector3 GetWinterLocation() { return WinterLocation; }
+    public Vector3 GetSummerLocation() { return SummerLocation; }
 
     public void NextDay()
     {
@@ -393,8 +412,10 @@ public class Elg : ClickableObject
     {
         for (int i = 0; i < childrenInBelly; i++)
         {
-
-            GameObject go = Instantiate(ElgPrefab, transform.position, Quaternion.identity, ElgManager.instance.transform);
+            NavMeshHit hit;
+            NavMesh.SamplePosition(transform.position, out hit, 200, 1);
+            if (!hit.hit) return;
+            GameObject go = Instantiate(ElgPrefab, hit.position, Quaternion.identity, ElgManager.instance.transform);
             Elg script = go.GetComponent<Elg>();
             script.NewBorn();
             script.SetMother(transform);
