@@ -169,7 +169,7 @@ public class Camera_v2 : MonoBehaviour
         _mapLm = 1 << LayerMask.NameToLayer("Map");
         _movableObjectsLm = 1 << LayerMask.NameToLayer("Moveable Objects");
         _forestLm = 1 << LayerMask.NameToLayer("Forest");
-        _UILm = 1 << LayerMask.NameToLayer("UI");
+        _UILm = LayerMask.NameToLayer("UI");
         _isPointerOverGameObject = false;
 
         //_mainCamera.enabled = false;
@@ -240,6 +240,7 @@ public class Camera_v2 : MonoBehaviour
             foreach (var t in results.Where(t => t.gameObject.layer == _UILm))
                 _isPointerOverGameObject = true;
         }
+        
     }
 
     private void LateUpdate()
@@ -366,7 +367,7 @@ public class Camera_v2 : MonoBehaviour
 
         /* We don't want to click when the user releases the mouse button
          * after having dragged on the screen. That would be annoying. */
-        if (!_hasUsedMouseDrag)
+        if (!_hasUsedMouseDrag && !_isPointerOverGameObject)
         {
             var time = _clickTimer.GetTime();
             if (time <= _doubleClickTime && time != 0f) // Double click
