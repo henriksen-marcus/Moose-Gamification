@@ -134,6 +134,8 @@ public class Elg : ClickableObject
             outline.OutlineWidth = 4f;
             outline.enabled = false;
         }
+
+        GetComponent<NavMeshAgent>().speed = 5;
     }
     
     private void Start()
@@ -314,6 +316,11 @@ public class Elg : ClickableObject
                 Die();
             }
         }
+    }
+
+    public void SetWinterDestination(Vector3 dest)
+    {
+        WinterLocation = dest;
     }
 
     public void Die()

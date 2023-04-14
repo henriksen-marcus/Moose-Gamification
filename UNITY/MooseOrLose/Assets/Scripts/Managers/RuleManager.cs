@@ -87,6 +87,7 @@ public class RuleManager : UI, IPointerEnterHandler
     }
     private void InitiateRules()
     {
+        //Debug.Log("Initiating Rules");
         startDay = TimeManager.instance.GetDay();
 
         // AverageMaleAge
@@ -98,7 +99,7 @@ public class RuleManager : UI, IPointerEnterHandler
             }                    
         });
         Rule<float> ruleF = (Rule<float>)Rules[0];
-        //Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+        Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
         // Male To Population Ratio
         Rules.Add(new Rule<float>
         {
@@ -109,7 +110,7 @@ public class RuleManager : UI, IPointerEnterHandler
             }
         });
         ruleF = (Rule<float>)Rules[1];
-        //Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+        Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
         // Moose to Shoot per km^2
         Rules.Add(new Rule<float>
         {
@@ -120,7 +121,7 @@ public class RuleManager : UI, IPointerEnterHandler
             }
         });
         ruleF = (Rule<float>)Rules[2];
-        //Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
+        Debug.Log(ruleF.Name + " Changed to " + ruleF.Intervals[ruleF.Intervals.Count - 1].Value.ToString() + " on day: " + ruleF.Intervals[ruleF.Intervals.Count - 1].StartDay);
         // Antler Limit
         Rules.Add(new Rule<int>
         {
@@ -131,7 +132,7 @@ public class RuleManager : UI, IPointerEnterHandler
             }
         });
         Rule<int> ruleI = (Rule<int>)Rules[3];
-        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
         // Calves To Leave Alive
         Rules.Add(new Rule<int>
         {
@@ -142,7 +143,7 @@ public class RuleManager : UI, IPointerEnterHandler
             }
         });
         ruleI = (Rule<int>)Rules[4];
-        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
         // WeeklyLimit
         Rules.Add(new Rule<int>
         {
@@ -153,7 +154,7 @@ public class RuleManager : UI, IPointerEnterHandler
             }
         });
         ruleI = (Rule<int>)Rules[5];
-        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
         // Min Population Limit
         Rules.Add(new Rule<int>
         {
@@ -164,7 +165,7 @@ public class RuleManager : UI, IPointerEnterHandler
             }
         });
         ruleI = (Rule<int>)Rules[6];
-        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
         // WolfLimit
         Rules.Add(new Rule<int>
         {
@@ -175,7 +176,7 @@ public class RuleManager : UI, IPointerEnterHandler
             }
         });
         ruleI = (Rule<int>)Rules[7];
-        //Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
+        Debug.Log(ruleI.Name + " Changed to " + ruleI.Intervals[ruleI.Intervals.Count - 1].Value.ToString() + " on day: " + ruleI.Intervals[ruleI.Intervals.Count - 1].StartDay);
 
 
     }

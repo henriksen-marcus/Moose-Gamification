@@ -21,20 +21,28 @@ public class ElgGoToForest : Node
     {
         if (parent.GetData("Forest") == null)
         {
+            
             return NodeState.FAILURE;
         }
-        float speed = mSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
-        mAgent.speed = speed * ((100 + mAgent.GetComponent<Elg>().weight) / 500);
-        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed) * ((100 + mAgent.GetComponent<Elg>().weight) / 500); 
+        float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.speed = mSpeed * ratio;
+        mAgent.acceleration = acceleration * ratio;
         if ((Forest)parent.GetData("Forest") == null)
         {
             parent.ClearData("Forest");
             return NodeState.FAILURE;
         }
         Forest forest = (Forest)parent.GetData("Forest");
-        mAgent.SetDestination(forest.transform.position + new Vector3(Random.Range(-10,10),0f,Random.Range(-10,10)));
+        
 
-        if (Vector3.Distance(forest.transform.position, mAgent.transform.position) < 2)
+        if (parent.GetData("Destination") == null)
+        {
+            
+            parent.SetData("Destination", forest.transform.position + new Vector3(Random.Range(-5, 5), 0f, Random.Range(-5, 5)));
+            mAgent.SetDestination((Vector3)parent.GetData("Destination"));
+        }
+
+        if (Vector3.Distance(mAgent.destination, mAgent.transform.position) < 1f)
         {
             return NodeState.SUCCESS;
         }

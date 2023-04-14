@@ -49,11 +49,11 @@ MonoBehaviour:
   elg_females: 0
   elg_children: 0
   carrying_capacity: 500
+  elg_population_graph: 
+  elg_males_graph: 
+  elg_females_graph: 
+  elg_children_graph: 
   male_population_age: 0
   start_population: 150
   ElgPrefab: {fileID: 7319174537759530065, guid: e44503c30bcf37d48a46d95ea96442b8, type: 3}
-  populationUI: {fileID: 0}
-  malesUI: {fileID: 0}
-  femalesUI: {fileID: 0}
-  childrenUI: {fileID: 0}
   elg_list: []

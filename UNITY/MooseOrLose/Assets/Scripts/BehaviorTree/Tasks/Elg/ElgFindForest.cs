@@ -36,6 +36,7 @@ public class ElgFindForest : Node
                     }
                     if (collider.GetComponent<Forest>().GetOptimalTreeToEat().treeHealth != TreeHealth.Healthy)
                     {
+                        
                         forestValue *= 0.25f;
                     }
                     float distance = Vector3.Distance(collider.transform.position, mTransform.position);

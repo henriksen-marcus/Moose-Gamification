@@ -22,9 +22,8 @@ public class ElgGoToWinterLocation : Node
     }
     public override NodeState Evaluate()
     {
-        if (Vector3.Distance(mTransform.position, elg.GetWinterLocation()) < 10 && mTransform.position.y !>= -1f)
-        {
-            
+        if (Vector3.Distance(mTransform.position, elg.GetWinterLocation()) < 20)
+        {            
             return NodeState.FAILURE;
         }
         float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
@@ -38,7 +37,7 @@ public class ElgGoToWinterLocation : Node
 
         mAgent.SetDestination(hit.position);
 
-        if (Vector3.Distance(mTransform.position, elg.GetWinterLocation()) > 1)
+        if (Vector3.Distance(mTransform.position, elg.GetWinterLocation()) > 20)
         {
             
             return NodeState.RUNNING;

@@ -22,7 +22,7 @@ public class ElgGoToSummerLocation : Node
     }
     public override NodeState Evaluate()
     {
-        if (Vector3.Distance(mTransform.position, elg.GetWinterLocation()) < 10)
+        if (Vector3.Distance(mTransform.position, elg.GetWinterLocation()) < 20)
         {
             return NodeState.FAILURE;
         }
@@ -37,7 +37,12 @@ public class ElgGoToSummerLocation : Node
 
         mAgent.SetDestination(hit.position);
 
-        if (Vector3.Distance(mTransform.position, elg.GetSummerLocation()) > 5)
+        if (mAgent.transform.position.y < -2f)
+        {
+            elg.SetWinterDestination(mAgent.transform.position);
+        }
+
+        if (Vector3.Distance(mTransform.position, elg.GetSummerLocation()) > 20)
         {
             return NodeState.RUNNING;
         }

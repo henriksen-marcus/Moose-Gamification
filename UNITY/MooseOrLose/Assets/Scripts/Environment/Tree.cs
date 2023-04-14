@@ -358,7 +358,7 @@ public class Tree
         }
         else
         {
-            Debug.Log("Tried eating from inedible tree");
+            //Debug.Log("Tried eating from inedible tree");
             return false;
         }
     }
