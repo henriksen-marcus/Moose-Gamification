@@ -37,7 +37,7 @@ public class ElgManager : MonoBehaviour
 
 
     [Header("List of Spawned GameObjects")]
-    [SerializeField] List<GameObject> elg_list = new List<GameObject>(); 
+    [SerializeField] public List<GameObject> elg_list = new List<GameObject>(); 
 
     private void Awake()
     {

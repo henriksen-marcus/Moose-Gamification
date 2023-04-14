@@ -21,7 +21,7 @@ public class JegerManager : MonoBehaviour
     public int shotThisMonth;
 
     [Header("Array")]
-    [SerializeField] List<GameObject> jeger_list;
+    [SerializeField] public List<GameObject> jeger_list;
 
     int expectedFemales;
     int expectedMales;

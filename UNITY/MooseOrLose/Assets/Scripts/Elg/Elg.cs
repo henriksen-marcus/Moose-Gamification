@@ -132,6 +132,7 @@ public class Elg : ClickableObject
             outline = gameObject.AddComponent<Outline>();
             outline.OutlineColor = Color.white;
             outline.OutlineWidth = 4f;
+            outline.OutlineMode = Outline.Mode.OutlineVisible;
             outline.enabled = false;
         }
 
@@ -155,22 +156,11 @@ public class Elg : ClickableObject
             if (hit.hit)
                 WinterLocation = hit.position;
         }
-
-        if (gameObject.GetComponent<Outline>() == null)
-        {
-            outline = gameObject.AddComponent<Outline>();
-            outline.OutlineColor = Color.white;
-            outline.OutlineWidth = 7f;
-            outline.enabled = false;
-            outline.OutlineMode = Outline.Mode.OutlineHidden;
-        }
-        
-        
     }
 
     private void Update()
     {
-        if (!IsSelected) ToggleOutline(false);
+        ToggleOutline(IsSelected);
     }
 
     public override ClickableObjectInfo GetClickInfo()
