@@ -240,7 +240,7 @@ public class Camera_v2 : MonoBehaviour
             foreach (var t in results.Where(t => t.gameObject.layer == _UILm))
                 _isPointerOverGameObject = true;
         }
-        Debug.Log(_isPointerOverGameObject);
+        
     }
 
     private void LateUpdate()
