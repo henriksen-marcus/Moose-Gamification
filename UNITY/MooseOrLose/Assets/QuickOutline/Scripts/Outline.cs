@@ -100,20 +100,15 @@ public class Outline : MonoBehaviour {
   }
 
   void OnEnable() {
-    foreach (var renderer in renderers) {
-        if(renderer != null)
-        { 
-             // Append outline shaders
-             var materials = renderer.sharedMaterials.ToList();
-
-             materials.Add(outlineMaskMaterial);
-             materials.Add(outlineFillMaterial);
-
-             renderer.materials = materials.ToArray();
-
-        }
-
-    }
+    foreach (var renderer in renderers)
+      if (renderer != null)
+      {
+        // Append outline shaders
+        var materials = renderer.sharedMaterials.ToList();
+        materials.Add(outlineMaskMaterial);
+        materials.Add(outlineFillMaterial);
+        renderer.materials = materials.ToArray();
+      }
   }
 
   void OnValidate() {
@@ -142,18 +137,18 @@ public class Outline : MonoBehaviour {
   }
 
   void OnDisable() {
-    foreach (var renderer in renderers) {
-            if (renderer != null)
-            {
-                // Remove outline shaders
-                var materials = renderer.sharedMaterials.ToList();
+      foreach (var renderer in renderers) {
+          if (renderer != null)
+          {
+              // Remove outline shaders
+              var materials = renderer.sharedMaterials.ToList();
 
-                materials.Remove(outlineMaskMaterial);
-                materials.Remove(outlineFillMaterial);
+              materials.Remove(outlineMaskMaterial);
+              materials.Remove(outlineFillMaterial);
 
-                renderer.materials = materials.ToArray();
-            }
-    }
+              renderer.materials = materials.ToArray();
+          }
+      }
   }
 
   void OnDestroy() {
@@ -275,7 +270,7 @@ public class Outline : MonoBehaviour {
     mesh.SetTriangles(mesh.triangles, mesh.subMeshCount - 1);
   }
 
-  void UpdateMaterialProperties() {
+  public void UpdateMaterialProperties() {
 
     // Apply properties according to mode
     outlineFillMaterial.SetColor("_OutlineColor", outlineColor);

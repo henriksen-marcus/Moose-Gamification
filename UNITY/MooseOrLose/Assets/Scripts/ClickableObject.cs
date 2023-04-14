@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -45,10 +46,10 @@ public abstract class ClickableObject : MonoBehaviour
     public void SetOutlineSelected(bool selected)
     {
         if (outline == null) return;
-        outline.OutlineColor = selected ? Color.green : Color.white;
-        outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.enabled = true;
+        outline.OutlineColor = selected ? Color.yellow : Color.white;
+        outline.UpdateMaterialProperties();
         outline.enabled = selected;
         IsSelected = selected;
-
     }
 }

@@ -2,17 +2,37 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using UnityEngine;
 using Newtonsoft.Json;
 
+public enum SaveType
+{
+    PDF,
+    JSON
+}
+
 public class PDFPrompter : MonoBehaviour
 {
-    public void GeneratePDF()
+    public void SaveSimulationResults(SaveType type)
+    {
+        string json = JsonConvert.SerializeObject(CollectData());
+
+        switch (type)
+        {
+            case SaveType.PDF:
+                GeneratePDFFile(json);
+                break;
+            case SaveType.JSON:
+                GenerateJSONFile(json);
+                break;
+        }
+    }
+
+    private void GeneratePDFFile(string json)
     {
         string path = System.IO.Path.GetDirectoryName(Application.dataPath);
         path = System.IO.Path.Join(path, "Assets\\.PDFGen\\PDFGen.exe");
-
-        string json = JsonConvert.SerializeObject(CollectData());
         
         try {
             Process myProcess = new Process();
@@ -26,9 +46,20 @@ public class PDFPrompter : MonoBehaviour
             myProcess.WaitForExit();
             int ExitCode = myProcess.ExitCode;
             print(ExitCode);
-        } catch (Exception e){
+        } catch (Exception e) {
+            // Notify user that something went wrong, and log the exception for debug logging via dev contact. Let user choose to save data straight to JSON.
+            // Save the JSON file just in case
+            GenerateJSONFile(json);
             print(e);        
         }
+    }
+    
+    private void GenerateJSONFile(string json)
+    {
+        string path = System.IO.Path.GetDirectoryName(Application.dataPath);
+        path = System.IO.Path.Join(path, "Assets\\.SavedDocuments");
+        
+        File.WriteAllText(path, json);
     }
 
     private PDFInfo CollectData()

@@ -121,8 +121,7 @@ public class Camera_v2 : MonoBehaviour
     [SerializeField] public Texture2D MouseNormalTexture;
     [SerializeField] public Texture2D MousePointTexture;
     [SerializeField] public Texture2D MouseGrabTexture;
-
-    //private GameObject _sphereMesh = null;
+    
 
     private void OnEnable()
     {
@@ -198,6 +197,9 @@ public class Camera_v2 : MonoBehaviour
                 _cameraBounds.y = meshPos.y + meshSize.y + _cameraBoundDistance;
             }
         }
+        
+        /*s = GameObject.Find("Sphere (1)").gameObject;
+        o = s.AddComponent<Outline>();*/
     }
 
     void Update()
@@ -223,7 +225,7 @@ public class Camera_v2 : MonoBehaviour
     
     private void FixedUpdate()
     {
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current && EventSystem.current.IsPointerOverGameObject())
         {
             PointerEventData pointerData = new PointerEventData(EventSystem.current)
             {
@@ -235,7 +237,7 @@ public class Camera_v2 : MonoBehaviour
             EventSystem.current.RaycastAll(pointerData, results);
             _isPointerOverGameObject = false;
             if (results.Count <= 0) return;
-            foreach (var t in results.Where(t => t.gameObject.layer == LayerMask.NameToLayer("UI")))
+            foreach (var t in results.Where(t => t.gameObject.layer == _UILm))
                 _isPointerOverGameObject = true;
         }
     }
@@ -245,21 +247,16 @@ public class Camera_v2 : MonoBehaviour
         HoverCheck();
     }
     
-
     private void Pause(InputAction.CallbackContext context)
     {
-        /*PDFPrompter p = new PDFPrompter();
-        p.GeneratePDF();*/
-        print(RuleManager.Instance.Rules.Count);
-        print("PDF generated");
+        
     }
     
-    public void DeSelect()
+    public void Deselect()
     {
         if (_selectedObject)
         {
             _selectedObject.SetOutlineSelected(false);
-            _selectedObject.ToggleOutline(false);
         }
         _selectedObject = null;
     }
@@ -316,6 +313,7 @@ public class Camera_v2 : MonoBehaviour
             var clickComponent = closestObject.GetComponent<ClickableObject>();
             if (clickComponent)
             {
+                // This is the white outline when hovering over a clickable object
                 clickComponent.ToggleOutline(true);
             }
         }
@@ -391,47 +389,30 @@ public class Camera_v2 : MonoBehaviour
     private void ObjectRaycast()
     {
         // Raycast for info bar when clicking on objects
-        Vector3 mousePos = Mouse.current.position.ReadValue(); ;
+        Vector3 mousePos = Mouse.current.position.ReadValue();
+        ;
         var ray = _mainCamera.ScreenPointToRay(mousePos);
 
         if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _mapLm) && !_isPointerOverGameObject)
         {
             var closestObject = GetSphereOverlap(hit.point);
-            if (closestObject != null)
-            {
-                var clickComponent = closestObject.GetComponent<ClickableObject>();
-                if (clickComponent)
-                {
-                    _gameObjectInfo.SetActive(true);
-                    _infoBar.SpawnInfobar(clickComponent.GetClickInfo());
-                    if (_selectedObject) _selectedObject.SetOutlineSelected(false);
-                    //MainManager.Instance.OnObjectDeselected();
-                    clickComponent.SetOutlineSelected(true);
-                    _selectedObject = clickComponent;
-                }
-            }
-            // Debug
-            /*if (_sphereMesh)
-            {
-                _sphereMesh.transform.position = mouseWorldPos;
-            }
-            else
-            {
-                _sphereMesh = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                _sphereMesh.transform.position = mouseWorldPos;
-                _sphereMesh.transform.localScale = new Vector3(10f, 10f, 10f);
-                Color sphereColor = Color.blue;
-                Material sphereMaterial = new Material(Shader.Find("Standard"));
-                sphereMaterial.color = sphereColor;
-                _sphereMesh.GetComponent<MeshRenderer>().material = sphereMaterial;
-            }*/
-        } 
+            if (!closestObject) return;
+
+            var clickComponent = closestObject.GetComponent<ClickableObject>();
+            if (!clickComponent) return;
+
+            _gameObjectInfo.SetActive(true);
+            _infoBar.SpawnInfobar(clickComponent.GetClickInfo());
+
+            Deselect();
+            _selectedObject = clickComponent;
+            _selectedObject.SetOutlineSelected(true);
+        }
         else
         {
             _gameObjectInfo.SetActive(false);
-            DeSelect();
+            Deselect();
         }
-        
     }
 
     private void ForestRaycast()

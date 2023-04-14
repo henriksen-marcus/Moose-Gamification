@@ -23,7 +23,7 @@ public class ObjectInfo : MonoBehaviour
 
     public void Click()
     {
-        Camera_v2.Instance.DeSelect();
+        Camera_v2.Instance.Deselect();
         gameObject.SetActive(false);
     }
 
