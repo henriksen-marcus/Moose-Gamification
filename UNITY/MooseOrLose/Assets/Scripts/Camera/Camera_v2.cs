@@ -166,9 +166,9 @@ public class Camera_v2 : MonoBehaviour
         camTransform.rotation = Quaternion.Euler(45f, 0f, 0f);
         camTransform.position = new Vector3(0f, 150f, -160f);
 
-        _mapLm = LayerMask.NameToLayer("Map");
-        _movableObjectsLm = LayerMask.NameToLayer("Moveable Objects");
-        _forestLm = LayerMask.NameToLayer("Forest");
+        _mapLm = 1 << LayerMask.NameToLayer("Map");
+        _movableObjectsLm = 1 << LayerMask.NameToLayer("Moveable Objects");
+        _forestLm = 1 << LayerMask.NameToLayer("Forest");
         _UILm = LayerMask.NameToLayer("UI");
         _isPointerOverGameObject = false;
 
@@ -240,6 +240,7 @@ public class Camera_v2 : MonoBehaviour
             foreach (var t in results.Where(t => t.gameObject.layer == _UILm))
                 _isPointerOverGameObject = true;
         }
+        Debug.Log(_isPointerOverGameObject);
     }
 
     private void LateUpdate()
