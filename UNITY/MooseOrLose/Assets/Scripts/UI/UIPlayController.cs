@@ -45,7 +45,11 @@ public class UIPlayController : MonoBehaviour
 
     public void TogglePlay()
     {
-        TimeManager.instance.TogglePlay();       
+        TimeManager.instance.TogglePlay();
+        if (!TimeManager.instance.gamePaused)
+        {
+            PauseMenu.instance.Close();
+        }
     }
 
     public void UpdateTexts()

@@ -33,4 +33,9 @@ public class PauseMenu : MonoBehaviour
             ToggleMenu();
         }
     }
+
+    public void Close()
+    {
+        Menu.SetActive(false);
+    }
 }
