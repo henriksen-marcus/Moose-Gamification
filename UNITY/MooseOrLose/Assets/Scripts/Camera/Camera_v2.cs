@@ -89,7 +89,7 @@ public class Camera_v2 : MonoBehaviour
     private float _mouseDeltaForDrag = 1f;
 
     /* How far away horizontally the player can click to select a clickable object. */
-    private float _selectDistance = 15f;
+    private float _selectDistance = 5f;
 
     private bool _hasUsedMouseDrag;
     private bool _isPressingLMB;
@@ -102,7 +102,7 @@ public class Camera_v2 : MonoBehaviour
     private ObjectInfo _infoBar;
 
     /* The forest we are currently orbiting. */
-    private GameObject _selectedForest;
+    private Forest _selectedForest;
     private Vector3 _selectedForestPosition;
 
     private CameraMode _cameraMode = CameraMode.Normal;
@@ -264,6 +264,7 @@ public class Camera_v2 : MonoBehaviour
 
     private void Back(InputAction.CallbackContext context)
     {
+        ForestDeselected();
         if (_cameraMode == CameraMode.Orbit)
         {
             _cameraTargetDistance = 
@@ -424,10 +425,11 @@ public class Camera_v2 : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _forestLm) && !_isPointerOverGameObject)
         {
-            var forest = hit.transform.GetComponent<Forest>();
-            if (forest)
+            _selectedForest = hit.transform.GetComponent<Forest>();
+            if (_selectedForest)
             {
-                var forestPos = forest.transform.position;
+                ForestSelected();
+                var forestPos = _selectedForest.transform.position;
                 _selectedForestPosition = new Vector3(forestPos.x, forestPos.y, forestPos.z);
                 _velocity = Vector3.zero;
                 _lastCameraDistance = _cameraTargetDistance;
@@ -601,4 +603,17 @@ public class Camera_v2 : MonoBehaviour
     private void SetPressingLMB(InputAction.CallbackContext context) => _isPressingLMB = true;
     
     private void SetPressingRMB(InputAction.CallbackContext context) => _isPressingRMB = true;
+
+    public Forest GetSelectedForest()
+    {
+        if (_selectedForest == null || _cameraMode != CameraMode.Orbit) return null;
+
+        return _selectedForest;  
+    }
+
+    public event Action OnForestSelected;
+    public void ForestSelected() => OnForestSelected?.Invoke();
+
+    public event Action OnForestDeselected;
+    public void ForestDeselected() => OnForestDeselected?.Invoke();
 }

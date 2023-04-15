@@ -35,6 +35,7 @@ public class Forest : MonoBehaviour
     public List<Tree> treeList;
     private List<Tree> trackableTrees;
     private List<GameObject> spawnedTrees;
+    public List<int> forestAgeSpread = new List<int>();
 
     int borderRadius = 8;
     // float maxDistanceVariation = 1f;
@@ -88,6 +89,8 @@ public class Forest : MonoBehaviour
         UpdateForestDensity();
         lastDensity = forestDensityLevel;
         UpdateTreeStats();
+        UpdateAverageAge();
+        UpdateForestAgeSpread();
 
         switch (forestType)
         {
@@ -250,6 +253,82 @@ public class Forest : MonoBehaviour
         
     }
 
+
+    void UpdateForestAgeSpread()
+    {
+        forestAgeSpread.Clear();
+        forestAgeSpread.Add(0); // 0 - 10 years
+        forestAgeSpread.Add(0); // 10 - 20 years
+        forestAgeSpread.Add(0); // 20 - 30 years
+        forestAgeSpread.Add(0); // 30 - 40 years
+        forestAgeSpread.Add(0); // 40 - 50 years
+        forestAgeSpread.Add(0); // 50 - 60 years
+        forestAgeSpread.Add(0); // 60 - 70 years
+        forestAgeSpread.Add(0); // 70 - 80 years
+        forestAgeSpread.Add(0); // 80 - 90 years
+        forestAgeSpread.Add(0); // 90 - 100 years
+        forestAgeSpread.Add(0); // 100+ years
+
+        foreach(Tree tree in treeList)
+        {
+            if (tree.year > 500)
+            {
+                forestAgeSpread[10]++;
+                continue;
+            }
+            if (tree.year > 450)
+            {
+                forestAgeSpread[9]++;
+                continue;
+            }
+            if (tree.year > 4000)
+            {
+                forestAgeSpread[8]++;
+                continue;
+            }
+            if (tree.year > 350)
+            {
+                forestAgeSpread[7]++;
+                continue;
+            }
+            if (tree.year > 300)
+            {
+                forestAgeSpread[6]++;
+                continue;
+            }
+            if (tree.year > 250)
+            {
+                forestAgeSpread[5]++;
+                continue;
+            }
+            if (tree.year > 200)
+            {
+                forestAgeSpread[4]++;
+                continue;
+            }
+            if (tree.year > 1500)
+            {
+                forestAgeSpread[3]++;
+                continue;
+            }
+            if (tree.year > 100)
+            {
+                forestAgeSpread[2]++;
+                continue;
+            }
+            if (tree.year > 50)
+            {
+                forestAgeSpread[1]++;
+                continue;
+            }
+            if (tree.year > 0)
+            {
+                forestAgeSpread[0]++;
+                continue;
+            }
+        }
+    }
+
     //--------------------
 
 
@@ -276,9 +355,6 @@ public class Forest : MonoBehaviour
     void SubscribeToEvents()
     {
         TimeManager.instance.OnSpringBegin += UpdateBirth;
-
-        TimeManager.instance.OnNewMonth += UpdateSpawnedTrees;
-        TimeManager.instance.OnNewMonth += UpdateAverageAge;
     }
     
     void UpdateForestStats()
@@ -288,6 +364,7 @@ public class Forest : MonoBehaviour
         SetForestHealth();
 
         UpdateForestDensity();
+        UpdateAverageAge();
     }
 
     private void UpdateAverageAge()
@@ -304,6 +381,7 @@ public class Forest : MonoBehaviour
     public void UpdateTreeStats()
     {
         UpdateForestStats();
+        UpdateForestAgeSpread();
 
         for (int i = 0; i < treeList.Count;)
         {
@@ -311,6 +389,7 @@ public class Forest : MonoBehaviour
             
             forestDensity += treeList[i].shadowArea;
             forestHeight += treeList[i].treeHeight;
+            
 
             // Check for dead trees
             if (treeList[i].isDead)
