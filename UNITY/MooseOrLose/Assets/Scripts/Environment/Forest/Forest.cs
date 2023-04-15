@@ -37,6 +37,11 @@ public class Forest : MonoBehaviour
     private List<GameObject> spawnedTrees;
     public List<int> forestAgeSpread = new List<int>();
 
+    [SerializeField] private Material normalBirch;
+    [SerializeField] private Material normalPine;
+    [SerializeField] private Material normalSpruce;
+    [SerializeField] private Material notSelected;
+
     int borderRadius = 8;
     // float maxDistanceVariation = 1f;
     float lastDistance = 2f;
@@ -91,6 +96,9 @@ public class Forest : MonoBehaviour
         UpdateTreeStats();
         UpdateAverageAge();
         UpdateForestAgeSpread();
+
+        Camera_v2.Instance.OnForestSelected += UpdateForestMaterial;
+        Camera_v2.Instance.OnForestDeselected += UpdateForestMaterial;
 
         switch (forestType)
         {
@@ -517,5 +525,73 @@ public class Forest : MonoBehaviour
             }
         }
         lastDensity = forestDensityLevel;
+    }
+
+    void UpdateForestMaterial()
+    {
+        
+        if (Camera_v2.Instance.GetSelectedForest() == null)
+        {
+            foreach (GameObject go in spawnedTrees)
+            {
+                switch (forestType)
+                {
+                    case ForestType.Birch:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalBirch;
+                        break;
+                    case ForestType.Spruce:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalSpruce;
+                        break;
+                    case ForestType.Pine:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalPine;
+                        break;
+                    default:
+                        break;
+                }               
+            }
+            return;
+        }
+
+        if (Camera_v2.Instance.GetSelectedForest() == this)
+        {
+            foreach (GameObject go in spawnedTrees)
+            {
+                switch (forestType)
+                {
+                    case ForestType.Birch:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalBirch;
+                        break;
+                    case ForestType.Spruce:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalSpruce;
+                        break;
+                    case ForestType.Pine:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalPine;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        else
+        {
+            foreach (GameObject go in spawnedTrees)
+            {
+                switch (forestType)
+                {
+                    case ForestType.Birch:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelected;
+                        break;
+                    case ForestType.Spruce:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelected;
+                        break;
+                    case ForestType.Pine:
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelected;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        
     }
 }

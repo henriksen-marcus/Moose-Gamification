@@ -95,3 +95,8 @@ MonoBehaviour:
   forestHeight: 0
   forestDensity: 0
   treeList: []
+  forestAgeSpread: 
+  normalBirch: {fileID: 2100000, guid: 7b5e9e9735d965d40bdce84364d23fad, type: 2}
+  normalPine: {fileID: 2100000, guid: 43b6c0269a5c48c4795e85fe8e1dd8de, type: 2}
+  normalSpruce: {fileID: 2100000, guid: b39976fd24ca5b94484ab5eacff312f1, type: 2}
+  notSelected: {fileID: 2100000, guid: 6eeeb4a448590d548895fa397c9d260b, type: 2}

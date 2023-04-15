@@ -96,12 +96,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 121712793109757091, guid: 02e47eac64cd1b4448e457e5dca08064, type: 3}
+      propertyPath: m_Name
+      value: Leaves
+      objectReference: {fileID: 0}
+    - target: {fileID: 121712793109757091, guid: 02e47eac64cd1b4448e457e5dca08064, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02e47eac64cd1b4448e457e5dca08064, type: 3}
       propertyPath: m_Name
-      value: pine_tree
+      value: Stem
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 02e47eac64cd1b4448e457e5dca08064, type: 3}
       propertyPath: m_StaticEditorFlags

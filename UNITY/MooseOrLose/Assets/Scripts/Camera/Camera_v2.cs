@@ -264,7 +264,7 @@ public class Camera_v2 : MonoBehaviour
 
     private void Back(InputAction.CallbackContext context)
     {
-        ForestDeselected();
+        
         if (_cameraMode == CameraMode.Orbit)
         {
             _cameraTargetDistance = 
@@ -275,6 +275,7 @@ public class Camera_v2 : MonoBehaviour
             // Make sure we can still zoom the same amount after looking at a forest
             _groundCollisionRange = _defaultGroundCollisionRange + _rotationPoint.transform.position.y;
         }
+        ForestDeselected();
     }
 
     public void SetMovementEnabled(bool enabled) => _dragSpeed = enabled ? _defaultDragSpeed : 0f; 
@@ -428,7 +429,6 @@ public class Camera_v2 : MonoBehaviour
             _selectedForest = hit.transform.GetComponent<Forest>();
             if (_selectedForest)
             {
-                ForestSelected();
                 var forestPos = _selectedForest.transform.position;
                 _selectedForestPosition = new Vector3(forestPos.x, forestPos.y, forestPos.z);
                 _velocity = Vector3.zero;
@@ -440,6 +440,7 @@ public class Camera_v2 : MonoBehaviour
                 var rotAmount = Mathf.Lerp(0.1f, 2.9f, Mathf.Abs(screenPosition.x - 0.5f) + 0.5f);
                 _rotationVelocity.x += screenPosition.x > 0.5f ? rotAmount : -rotAmount;
                 _cameraMode = CameraMode.Orbit;
+                ForestSelected();
             }
         }
     }
