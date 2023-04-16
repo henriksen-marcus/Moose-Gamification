@@ -86,7 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treesAmountInForest: 0
   averageAge: 0
-  forestType: 0
+  forestType: 1
   forestDensityLevel: 0
   forestHealth: 0
   currentSeason: 0

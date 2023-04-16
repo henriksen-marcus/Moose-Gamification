@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class Forest : MonoBehaviour
 {
@@ -118,6 +119,7 @@ public class Forest : MonoBehaviour
                 break;
         }
         SpawnTrees();
+        // UpdateForestMaterial();
     }
 
 
@@ -193,6 +195,44 @@ public class Forest : MonoBehaviour
         }
     }
 
+    public void ClearForest()
+    {
+        treeList.Clear();
+        foreach (var tree in spawnedTrees)
+        {
+            Destroy(tree);
+        }
+        spawnedTrees.Clear();
+        trackableTrees.Clear();
+        forestAgeSpread.Clear();
+        UpdateSpawnedTrees();
+    }
+
+    public void ThinForest(float amount)
+    {
+        if (treeList.Count > amount)
+        {
+            for (int j = 0; j < amount; j++)
+            {
+                // Random.Range is maxExclusive
+                int i = Random.Range(0, treeList.Count);
+                treeList.RemoveAt(i);
+            }
+        }
+        else
+        {
+            treeList.Clear();
+            foreach (var tree in spawnedTrees)
+            {
+                Destroy(tree);
+            }
+            spawnedTrees.Clear();
+            trackableTrees.Clear();
+            forestAgeSpread.Clear();
+        }
+        UpdateSpawnedTrees();
+    }
+    
     // TODO: Dette burde ikke oppdateres i tick! Heller pr. mnd via forest manager.
     void SetForestSeason() { currentSeason = TimeManager.instance.currentSeason; }
 
@@ -251,6 +291,7 @@ public class Forest : MonoBehaviour
         // };
         forestDensityLevel = forestDensity switch
         {
+            < 1 => ForestDensity.Density0,
             < 10 => ForestDensity.Density1,
             < 40 => ForestDensity.Density2,
             < 70 => ForestDensity.Density3,
@@ -388,9 +429,8 @@ public class Forest : MonoBehaviour
     
     public void UpdateTreeStats()
     {
-        UpdateForestStats();
-        UpdateForestAgeSpread();
-
+        forestDensity = 0;
+        forestHeight = 0;
         for (int i = 0; i < treeList.Count;)
         {
             treeList[i].UpdateStats();
@@ -398,7 +438,6 @@ public class Forest : MonoBehaviour
             forestDensity += treeList[i].shadowArea;
             forestHeight += treeList[i].treeHeight;
             
-
             // Check for dead trees
             if (treeList[i].isDead)
             {
@@ -411,6 +450,8 @@ public class Forest : MonoBehaviour
         
         forestHeight = treesAmountInForest == 0 ? 0 : forestHeight / treesAmountInForest;
         forestDensity *= 0.005f; // Divide by 200
+        UpdateForestStats();
+        UpdateForestAgeSpread();
     }
 
     void UpdateBirth()
@@ -438,6 +479,9 @@ public class Forest : MonoBehaviour
         int numberOfTrees = 0;
         switch (forestDensityLevel)
         {
+            case ForestDensity.Density0:
+                numberOfTrees = 0;
+                break;
             case ForestDensity.Density1:
                 numberOfTrees = 3;
                 break;
@@ -462,7 +506,7 @@ public class Forest : MonoBehaviour
         }
 
         
-        for (int i = 0;i < numberOfTrees;i++)
+        for (int i = 0;i < numberOfTrees; i++)
         {
             var distanceFromMiddle = UnityEngine.Random.Range(0, borderRadius);
             // distanceFromMiddle = Mathf.Clamp(
@@ -485,7 +529,7 @@ public class Forest : MonoBehaviour
             if (Physics.Raycast(position, new Vector3(0, -1, 0), out hit,200f, mask))
             {
                 GameObject obj = Instantiate(Tree, hit.point, Quaternion.identity, gameObject.transform);
-                int rand = UnityEngine.Random.Range(0, treeList.Count - 1);
+                int rand = UnityEngine.Random.Range(0, treeList.Count);
                 trackableTrees.Add(treeList[rand]);
                 float treeHeight = (float)trackableTrees[trackableTrees.Count - 1].treeHeight;
                 
@@ -529,7 +573,28 @@ public class Forest : MonoBehaviour
 
     void UpdateForestMaterial()
     {
-        
+        // foreach (GameObject go in spawnedTrees)
+        // {
+        //     switch (forestType)
+        //     {
+        //         case ForestType.Birch:
+        //             go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalBirch;
+        //             Debug.Log("Birch");
+        //             break;
+        //         case ForestType.Spruce:
+        //             go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalSpruce;
+        //             Debug.Log("Spruce");
+        //
+        //             break;
+        //         case ForestType.Pine:
+        //             go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = normalPine;
+        //             Debug.Log("Pine");
+        //
+        //             break;
+        //         default:
+        //             break;
+        //     }               
+        // }
         if (Camera_v2.Instance.GetSelectedForest() == null)
         {
             foreach (GameObject go in spawnedTrees)
@@ -551,7 +616,6 @@ public class Forest : MonoBehaviour
             }
             return;
         }
-
         if (Camera_v2.Instance.GetSelectedForest() == this)
         {
             foreach (GameObject go in spawnedTrees)
