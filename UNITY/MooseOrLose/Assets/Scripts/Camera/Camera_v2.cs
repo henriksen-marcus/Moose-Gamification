@@ -48,16 +48,20 @@ public class Camera_v2 : MonoBehaviour
     private float _cameraDistance = 150f;
     private float _cameraTargetDistance = 150f;
     private float _lastCameraDistance = 150f;
-    private float _minCameraDistance = 20f;
-    private float _maxCameraDistance = 400f;
+    private float _minCameraDistance = 5f;
+    private float _maxCameraDistance = 350f;
+    
+    private float _cameraDistanceForestZoom = 10f;
 
     private float _cameraAngle = 45f;
     private float _defaultCameraAngle = 45f;
-    private float _minCamAngle = 15f;
+    private float _minCamAngle = 16f;
     private float _maxCamAngle = 89.9f;
 
     /* How far the camera distance changes per scroll. */
-    private float _scrollDistance = 32f;
+    private float _scrollDistance = 30f;
+    private float _defaultScrollDistance = 25f;
+    private float _orbitScrollDistance = 5f;
 
     /* How much the camera movement will brake each tick.
      * Lower = more braking. */
@@ -83,8 +87,10 @@ public class Camera_v2 : MonoBehaviour
 
     /* How far away from the ground directly beneath us before
      * a 'collision' triggers. */
-    private float _defaultGroundCollisionRange = 15f;
-    private float _groundCollisionRange = 15f;
+    private float _defaultGroundCollisionRange = 5f;
+    
+    private float _groundCollisionRange = 5f;
+    
     /* How much mouse delta until the click counts as a drag. */
     private float _mouseDeltaForDrag = 1f;
 
@@ -106,10 +112,11 @@ public class Camera_v2 : MonoBehaviour
     private Vector3 _selectedForestPosition;
 
     private CameraMode _cameraMode = CameraMode.Normal;
+    private Vector3 _orbitCameraOffset = new(0f, 0f, 0f);
 
     private Timer _clickTimer;
-    private float _doubleClickTime = 0.3f;
-    bool _isPointerOverGameObject;
+    private readonly float _doubleClickTime = 0.3f;
+    private bool _isPointerOverGameObject;
 
     /* Layermasks */
     private int _mapLm;
@@ -192,7 +199,7 @@ public class Camera_v2 : MonoBehaviour
                 meshSize = Vector3.Scale(meshSize, mesh.transform.localScale);
                 var meshPos = mesh.transform.position;
                 // Set the 'look at' position of the camera to the center of the map
-                _rotationPoint.transform.position = meshPos;
+                _rotationPoint.transform.position = new Vector3(meshPos.x, 0, meshPos.z);
                 _cameraBounds.x = meshPos.x + meshSize.x + _cameraBoundDistance;
                 _cameraBounds.y = meshPos.y + meshSize.y + _cameraBoundDistance;
             }
@@ -268,10 +275,11 @@ public class Camera_v2 : MonoBehaviour
             _cameraTargetDistance = 
                 Mathf.Abs(_lastCameraDistance - _cameraDistance) < 8f ? 
                     _lastCameraDistance + 12f : _lastCameraDistance;
-            _cameraMode = CameraMode.Normal;
             _rotationVelocity.y = 0f;
             // Make sure we can still zoom the same amount after looking at a forest
             _groundCollisionRange = _defaultGroundCollisionRange + _rotationPoint.transform.position.y;
+            _cameraMode = CameraMode.Normal;
+            _scrollDistance = _defaultScrollDistance;
         }
     }
 
@@ -344,13 +352,16 @@ public class Camera_v2 : MonoBehaviour
         
         // Set the socket location
         var rotPointPos = rotPointTransform.position;
-        _cameraSocket.transform.position =
-            rotPointPos - rotPointTransform.forward * _cameraDistance;
+        _cameraSocket.transform.position = rotPointPos - rotPointTransform.forward * _cameraDistance;
         _cameraSocket.transform.RotateAround(_rotationPoint.transform.position, _rotationPoint.transform.right, _cameraAngle);
         
-        _mainCamera.transform.position = _cameraSocket.transform.position;
         
-        //Debug.DrawLine(rotPointTransform.position, cameraSocketTransform.position, Color.red, 0.1f);
+        _mainCamera.transform.position = _cameraMode switch
+        {
+            CameraMode.Normal => _cameraSocket.transform.position,
+            CameraMode.Orbit => _cameraSocket.transform.position + _orbitCameraOffset,
+            _ => throw new ArgumentOutOfRangeException()
+        };
 
         var direction = rotPointPos - cameraSocketTransform.position;
         var rotation = Quaternion.LookRotation(direction);
@@ -427,16 +438,17 @@ public class Camera_v2 : MonoBehaviour
             if (forest)
             {
                 var forestPos = forest.transform.position;
-                _selectedForestPosition = new Vector3(forestPos.x, forestPos.y, forestPos.z);
+                _selectedForestPosition = forestPos;
                 _velocity = Vector3.zero;
                 _lastCameraDistance = _cameraTargetDistance;
-                _cameraTargetDistance = Mathf.Max(_minCameraDistance, 25f);
+                _cameraTargetDistance = Mathf.Max(_minCameraDistance, _cameraDistanceForestZoom);
                 
                 // Find out if object is on right of left side of screen
                 var screenPosition = _mainCamera.WorldToViewportPoint(_selectedForestPosition);
                 var rotAmount = Mathf.Lerp(0.1f, 2.9f, Mathf.Abs(screenPosition.x - 0.5f) + 0.5f);
                 _rotationVelocity.x += screenPosition.x > 0.5f ? rotAmount : -rotAmount;
                 _cameraMode = CameraMode.Orbit;
+                _scrollDistance = _orbitScrollDistance;
             }
         }
     }
@@ -541,33 +553,20 @@ public class Camera_v2 : MonoBehaviour
     private void UpdateCameraDistance()
     {
         var camTransform = _mainCamera.transform;
-
-        // Find position on ground beneath + a buffer
-        var ray = new Ray(camTransform.position, Vector3.down);
-        if (Physics.Raycast(ray, out var hit, _mapLm))
-        {
-            _lastGroundPoint = hit.point;
-            _lastGroundPoint.y += _groundCollisionRange;
-            _lastGroundDistance = Vector3.Distance(camTransform.position, _lastGroundPoint);
-        }
-
+        var camSocketTransform = _cameraSocket.transform;
+        
         // Find position on ground in front + a buffer
-        ray = new Ray(camTransform.position, camTransform.forward);
-        if (Physics.Raycast(ray, out hit))
+        var ray = new Ray(camTransform.position, camTransform.forward);
+        if (Physics.Raycast(ray, out var hit, _mapLm))
         {
             var rotPointPos = _rotationPoint.transform.position;
             
             _lastForwardGroundPoint = hit.point;
-            _lastForwardGroundPoint -= 
-                (rotPointPos - camTransform.position).normalized 
-                * (_groundCollisionRange * 1.3f);
             _lastForwardGroundDistance = Vector3.Distance(rotPointPos, _lastForwardGroundPoint);
         }
 
-        // Limit the minimum camera distance based on what is closest
-        var localMinDistance = Mathf.Max(_lastForwardGroundDistance, _lastGroundDistance);
-        localMinDistance = Mathf.Max(localMinDistance, _minCameraDistance);
-        
+        var localMinDistance = Mathf.Max(_lastForwardGroundDistance, _minCameraDistance);
+
         // Smooth interpolation when changing height with scroll
         _cameraTargetDistance = Mathf.Clamp(_cameraTargetDistance + GetScroll(), localMinDistance, _maxCameraDistance);
         _cameraDistance = Mathf.Lerp(_cameraDistance, _cameraTargetDistance, Time.deltaTime * _lerpSpeed);
@@ -598,6 +597,6 @@ public class Camera_v2 : MonoBehaviour
     }
 
     private void SetPressingLMB(InputAction.CallbackContext context) => _isPressingLMB = true;
-    
+
     private void SetPressingRMB(InputAction.CallbackContext context) => _isPressingRMB = true;
 }
