@@ -256,7 +256,7 @@ public class ForestManager : MonoBehaviour
      {
          GetNextBuffer()?.ForEach(forest =>
          {
-             forest.UpdateTreeStats();
+             // forest.UpdateTreeStats();
              forest.UpdateSpawnedTrees();
              //forest.DidUpdate();
          });
@@ -267,8 +267,8 @@ public class ForestManager : MonoBehaviour
     void SubscribeToEvents()
     {
         // TimeManager.instance.OnNewDay += TreeCount;
-        TimeManager.instance.OnNewMonth += Statistics;
-        TimeManager.instance.OnNewMonth += UpdateForests;
+        TimeManager.instance.OnNewDay += Statistics;
+        TimeManager.instance.OnNewDay += UpdateForests;
     }
     
     // void TreeCount()
