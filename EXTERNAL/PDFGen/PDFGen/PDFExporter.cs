@@ -203,16 +203,16 @@ public sealed class PDFExporter
         para.Format.Font.Italic = true;
         footer.Add(para);
 
-        SavePDF(doc);
+        SavePDF(doc, info.savePath);
     }
 
-    private void SavePDF(Document doc)
+    private void SavePDF(Document doc, string path)
     {
         // Save the document to a file
         var renderer = new PdfDocumentRenderer(true);
         renderer.Document = doc;
         renderer.RenderDocument();
-        renderer.PdfDocument.Save("Assets\\.SavedDocuments\\output.pdf");
+        renderer.PdfDocument.Save(path);
         //var filename = GetSafeFilename("Documents", _fileName);
     }
 

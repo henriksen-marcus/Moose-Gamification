@@ -20,7 +20,9 @@ public class PDFPrompter : MonoBehaviour
         
         try
         {
-            json = JsonConvert.SerializeObject(CollectData());
+            PDFInfo info = CollectData();
+            info.savePath = path;
+            json = JsonConvert.SerializeObject(info);
         }
         catch (Exception e)
         {
