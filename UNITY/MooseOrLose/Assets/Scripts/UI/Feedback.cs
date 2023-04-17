@@ -292,12 +292,16 @@ public class Feedback : MonoBehaviour
     void ForestCalc()
     {
         int averageDensity = ForestManager.instance.forestDensityAverage[ForestManager.instance.forestDensityAverage.Count - 1];
-        densityScore = Mathf.FloorToInt((1 - ((float)averageDensity / 500f)) * 150);
+        densityScore = Mathf.FloorToInt((1 - ((float)averageDensity / 500f)) * 100);
 
         averageTreeScore = Mathf.FloorToInt((float)ForestManager.instance.forestQuantityAverage[ForestManager.instance.forestQuantityAverage.Count - 1] * 0.025f);
 
         float averageAge = ForestManager.instance.forestTreeAgeAverage[ForestManager.instance.forestTreeAgeAverage.Count - 1];
-        float score = (100f / averageAge) * 15;
+        if (averageAge == 0)
+        {
+            averageAge = 250;
+        }
+        float score =  map(averageAge,0,500,100,10);
         averageAgeScore = Mathf.FloorToInt(Mathf.Clamp(score, 0f, 100f));
 
         ForestScore = densityScore + averageTreeScore + averageAgeScore;
@@ -402,7 +406,10 @@ public class Feedback : MonoBehaviour
             }
         }
     }
-
+    public static float map(float value, float leftMin, float leftMax, float rightMin, float rightMax)
+    {
+        return rightMin + (value - leftMin) * (rightMax - rightMin) / (leftMax - leftMin);
+    }
     void NewYear()
     {
         leftOverMooseScore = (JegerManager.instance.currentFemales + JegerManager.instance.currentMales) * -5;

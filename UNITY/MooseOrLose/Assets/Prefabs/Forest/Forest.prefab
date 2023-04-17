@@ -54,8 +54,8 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.8595872
-  m_Center: {x: -0.0025211682, y: -0.104148865, z: 0}
+  m_Radius: 5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &5558419478154532183
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -86,7 +86,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   treesAmountInForest: 0
   averageAge: 0
-  forestType: 0
+  forestType: 1
   forestDensityLevel: 0
   forestHealth: 0
   currentSeason: 0
@@ -95,3 +95,10 @@ MonoBehaviour:
   forestHeight: 0
   forestDensity: 0
   treeList: []
+  forestAgeSpread: 
+  normalBirch: {fileID: 2100000, guid: 7b5e9e9735d965d40bdce84364d23fad, type: 2}
+  normalPine: {fileID: 2100000, guid: 43b6c0269a5c48c4795e85fe8e1dd8de, type: 2}
+  normalSpruce: {fileID: 2100000, guid: b39976fd24ca5b94484ab5eacff312f1, type: 2}
+  notSelectedBirch: {fileID: 2100000, guid: 207b9ddf55802eb4f88f4b4528fa13c9, type: 2}
+  notSelectedPine: {fileID: 2100000, guid: 411114f92663c3d4fa31ebcbab3c6653, type: 2}
+  notSelectedSpruce: {fileID: 2100000, guid: 2c0ff3be6179bc6479dde7df3dce76d2, type: 2}

@@ -11,8 +11,8 @@ public class ObjectInfo : MonoBehaviour
     RectTransform background;
     public void Awake()
     {
-        _name = transform.Find("Background").transform.Find("Name").GetComponent<TextMeshProUGUI>();
-        background = transform.Find("Background").GetComponent<RectTransform>();
+        _name = transform.Find("Parent").transform.Find("Name").GetComponent<TextMeshProUGUI>();
+        background = transform.Find("Parent").GetComponent<RectTransform>();
         if (_name == null || background == null)
         {
             Debug.Log("ObjectInfo Error - Setup failed");
@@ -31,7 +31,7 @@ public class ObjectInfo : MonoBehaviour
     {
         foreach (RectTransform child in background)
         {
-            if (child.gameObject.name == "Exit" || child.gameObject.name == "Name")
+            if (child.gameObject.name == "Exit" || child.gameObject.name == "Name" || child.gameObject.name == "Background" || child.gameObject.name == "Border")
             {
 
             }

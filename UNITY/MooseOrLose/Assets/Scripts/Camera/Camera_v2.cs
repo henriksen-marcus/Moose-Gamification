@@ -95,7 +95,7 @@ public class Camera_v2 : MonoBehaviour
     private float _mouseDeltaForDrag = 1f;
 
     /* How far away horizontally the player can click to select a clickable object. */
-    private float _selectDistance = 15f;
+    private float _selectDistance = 5f;
 
     private bool _hasUsedMouseDrag;
     private bool _isPressingLMB;
@@ -108,7 +108,7 @@ public class Camera_v2 : MonoBehaviour
     private ObjectInfo _infoBar;
 
     /* The forest we are currently orbiting. */
-    private GameObject _selectedForest;
+    private Forest _selectedForest;
     private Vector3 _selectedForestPosition;
 
     private CameraMode _cameraMode = CameraMode.Normal;
@@ -176,7 +176,7 @@ public class Camera_v2 : MonoBehaviour
         _mapLm = 1 << LayerMask.NameToLayer("Map");
         _movableObjectsLm = 1 << LayerMask.NameToLayer("Moveable Objects");
         _forestLm = 1 << LayerMask.NameToLayer("Forest");
-        _UILm = 1 << LayerMask.NameToLayer("UI");
+        _UILm = LayerMask.NameToLayer("UI");
         _isPointerOverGameObject = false;
 
         //_mainCamera.enabled = false;
@@ -247,6 +247,7 @@ public class Camera_v2 : MonoBehaviour
             foreach (var t in results.Where(t => t.gameObject.layer == _UILm))
                 _isPointerOverGameObject = true;
         }
+        
     }
 
     private void LateUpdate()
@@ -270,6 +271,7 @@ public class Camera_v2 : MonoBehaviour
 
     private void Back(InputAction.CallbackContext context)
     {
+        
         if (_cameraMode == CameraMode.Orbit)
         {
             _cameraTargetDistance = 
@@ -281,6 +283,7 @@ public class Camera_v2 : MonoBehaviour
             _cameraMode = CameraMode.Normal;
             _scrollDistance = _defaultScrollDistance;
         }
+        ForestDeselected();
     }
 
     public void SetMovementEnabled(bool enabled) => _dragSpeed = enabled ? _defaultDragSpeed : 0f; 
@@ -377,7 +380,7 @@ public class Camera_v2 : MonoBehaviour
 
         /* We don't want to click when the user releases the mouse button
          * after having dragged on the screen. That would be annoying. */
-        if (!_hasUsedMouseDrag)
+        if (!_hasUsedMouseDrag && !_isPointerOverGameObject)
         {
             var time = _clickTimer.GetTime();
             if (time <= _doubleClickTime && time != 0f) // Double click
@@ -434,10 +437,10 @@ public class Camera_v2 : MonoBehaviour
 
         if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _forestLm) && !_isPointerOverGameObject)
         {
-            var forest = hit.transform.GetComponent<Forest>();
-            if (forest)
+            _selectedForest = hit.transform.GetComponent<Forest>();
+            if (_selectedForest)
             {
-                var forestPos = forest.transform.position;
+                var forestPos = _selectedForest.transform.position;
                 _selectedForestPosition = forestPos;
                 _velocity = Vector3.zero;
                 _lastCameraDistance = _cameraTargetDistance;
@@ -449,6 +452,7 @@ public class Camera_v2 : MonoBehaviour
                 _rotationVelocity.x += screenPosition.x > 0.5f ? rotAmount : -rotAmount;
                 _cameraMode = CameraMode.Orbit;
                 _scrollDistance = _orbitScrollDistance;
+                ForestSelected();
             }
         }
     }
@@ -599,4 +603,17 @@ public class Camera_v2 : MonoBehaviour
     private void SetPressingLMB(InputAction.CallbackContext context) => _isPressingLMB = true;
 
     private void SetPressingRMB(InputAction.CallbackContext context) => _isPressingRMB = true;
+
+    public Forest GetSelectedForest()
+    {
+        if (_selectedForest == null || _cameraMode != CameraMode.Orbit) return null;
+
+        return _selectedForest;  
+    }
+
+    public event Action OnForestSelected;
+    public void ForestSelected() => OnForestSelected?.Invoke();
+
+    public event Action OnForestDeselected;
+    public void ForestDeselected() => OnForestDeselected?.Invoke();
 }
