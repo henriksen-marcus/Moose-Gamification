@@ -320,61 +320,22 @@ public class Forest : MonoBehaviour
 
         foreach(Tree tree in treeList)
         {
-            if (tree.year > 500)
+            int index = tree.year switch
             {
-                forestAgeSpread[10]++;
-                continue;
-            }
-            if (tree.year > 450)
-            {
-                forestAgeSpread[9]++;
-                continue;
-            }
-            if (tree.year > 4000)
-            {
-                forestAgeSpread[8]++;
-                continue;
-            }
-            if (tree.year > 350)
-            {
-                forestAgeSpread[7]++;
-                continue;
-            }
-            if (tree.year > 300)
-            {
-                forestAgeSpread[6]++;
-                continue;
-            }
-            if (tree.year > 250)
-            {
-                forestAgeSpread[5]++;
-                continue;
-            }
-            if (tree.year > 200)
-            {
-                forestAgeSpread[4]++;
-                continue;
-            }
-            if (tree.year > 1500)
-            {
-                forestAgeSpread[3]++;
-                continue;
-            }
-            if (tree.year > 100)
-            {
-                forestAgeSpread[2]++;
-                continue;
-            }
-            if (tree.year > 50)
-            {
-                forestAgeSpread[1]++;
-                continue;
-            }
-            if (tree.year > 0)
-            {
-                forestAgeSpread[0]++;
-                continue;
-            }
+                >= 500 => 10,
+                >= 450 => 9,
+                >= 400 => 8,
+                >= 350 => 7,
+                >= 300 => 6,
+                >= 250 => 5,
+                >= 200 => 4,
+                >= 150 => 3,
+                >= 100 => 2,
+                >= 50 => 1,
+                >= 0 => 0
+            };
+            forestAgeSpread[index]++;
+            
         }
     }
 
@@ -616,7 +577,7 @@ public class Forest : MonoBehaviour
             }
             return;
         }
-        if (Camera_v2.Instance.GetSelectedForest() == this)
+        else if (Camera_v2.Instance.GetSelectedForest() == this)
         {
             foreach (GameObject go in spawnedTrees)
             {
