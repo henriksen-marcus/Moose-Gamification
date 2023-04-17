@@ -99,4 +99,6 @@ MonoBehaviour:
   normalBirch: {fileID: 2100000, guid: 7b5e9e9735d965d40bdce84364d23fad, type: 2}
   normalPine: {fileID: 2100000, guid: 43b6c0269a5c48c4795e85fe8e1dd8de, type: 2}
   normalSpruce: {fileID: 2100000, guid: b39976fd24ca5b94484ab5eacff312f1, type: 2}
-  notSelected: {fileID: 2100000, guid: 6eeeb4a448590d548895fa397c9d260b, type: 2}
+  notSelectedBirch: {fileID: 2100000, guid: 207b9ddf55802eb4f88f4b4528fa13c9, type: 2}
+  notSelectedPine: {fileID: 2100000, guid: 411114f92663c3d4fa31ebcbab3c6653, type: 2}
+  notSelectedSpruce: {fileID: 2100000, guid: 2c0ff3be6179bc6479dde7df3dce76d2, type: 2}

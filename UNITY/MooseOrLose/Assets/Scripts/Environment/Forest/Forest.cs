@@ -41,7 +41,10 @@ public class Forest : MonoBehaviour
     [SerializeField] private Material normalBirch;
     [SerializeField] private Material normalPine;
     [SerializeField] private Material normalSpruce;
-    [SerializeField] private Material notSelected;
+    [SerializeField] private Material notSelectedBirch;
+    [SerializeField] private Material notSelectedPine;
+    [SerializeField] private Material notSelectedSpruce;
+
 
     int borderRadius = 8;
     // float maxDistanceVariation = 1f;
@@ -604,13 +607,13 @@ public class Forest : MonoBehaviour
                 switch (forestType)
                 {
                     case ForestType.Birch:
-                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelected;
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelectedBirch;
                         break;
                     case ForestType.Spruce:
-                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelected;
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelectedSpruce;
                         break;
                     case ForestType.Pine:
-                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelected;
+                        go.transform.Find("Stem").Find("Leaves").GetComponent<MeshRenderer>().material = notSelectedPine;
                         break;
                     default:
                         break;
