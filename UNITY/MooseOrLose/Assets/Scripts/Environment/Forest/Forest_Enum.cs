@@ -13,6 +13,7 @@ public enum ForestType
 
 public enum ForestDensity
 {
+    Density0,
     Density1,
     Density2,
     Density3,

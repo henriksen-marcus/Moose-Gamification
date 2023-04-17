@@ -32,4 +32,16 @@ public class ForestInfoUI : MonoBehaviour
             graph.ShowGraph(forest.forestAgeSpread, Color.green);
         }
     }
+
+    public void ThinForest(float amount)
+    {
+        Forest forest = Camera_v2.Instance.GetSelectedForest();
+        forest.ThinForest(amount);
+    }
+
+    public void RemoveForest()
+    {
+        Forest forest = Camera_v2.Instance.GetSelectedForest();
+        forest.ClearForest();
+    }
 }
