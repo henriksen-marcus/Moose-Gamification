@@ -23,6 +23,8 @@ public class PDFInfo
     public int SimDurationDays;
     public int SimDurationMonths;
     public int SimDurationYears;
+
+    public string savePath;
 }
 
 public class Rule<T>
