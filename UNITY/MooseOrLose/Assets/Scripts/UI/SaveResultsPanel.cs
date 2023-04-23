@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using SFB;
+
 
 public class SaveResultsPanel : MonoBehaviour
 {
@@ -23,7 +25,7 @@ public class SaveResultsPanel : MonoBehaviour
     public void Save()
     {
         errorText.enabled = false;
-        var path = EditorUtility.SaveFilePanel(
+        var path = StandaloneFileBrowser.SaveFilePanel(
             "Save as..",
             Application.dataPath,
             "Simulator_Report",
