@@ -16,6 +16,10 @@ public class TimeManager : MonoBehaviour
     [HideInInspector]
     public float startPlaySpeed;
 
+    public int durationDays { get; private set; }
+    public int durationMonths { get; private set; }
+    public int durationYears { get; private set; }
+    
 
     public Season currentSeason { get; private set; }
     
@@ -117,20 +121,25 @@ public class TimeManager : MonoBehaviour
         if (!gamePaused)
         {
             day++;
+            durationDays++;
             NewDay();
 
             if (day > 29)
             {
                 ElgManager.instance.SetMalePopulationAge();
                 month++;
+                durationMonths++;
                 NewMonth();
                 day = 0;
+                durationDays = 0;
             }
             if (month > 11)
             {
                 year++;
+                durationYears++;
                 NewYear();
                 month = 0;
+                durationMonths = 0;
             }
         }
 
