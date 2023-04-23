@@ -4537,22 +4537,6 @@ PrefabInstance:
       propertyPath: tutorialItems.Array.data[4]
       value: 
       objectReference: {fileID: 2808531210287657777}
-    - target: {fileID: 3673730959161532690, guid: 2b0a822f22c1f764b8c4fc4e1b6bda3f, type: 3}
-      propertyPath: tutorialPositions.Array.data[1].x
-      value: -400
-      objectReference: {fileID: 0}
-    - target: {fileID: 3673730959161532690, guid: 2b0a822f22c1f764b8c4fc4e1b6bda3f, type: 3}
-      propertyPath: tutorialPositions.Array.data[1].y
-      value: -180
-      objectReference: {fileID: 0}
-    - target: {fileID: 3673730959161532690, guid: 2b0a822f22c1f764b8c4fc4e1b6bda3f, type: 3}
-      propertyPath: tutorialPositions.Array.data[2].x
-      value: -400
-      objectReference: {fileID: 0}
-    - target: {fileID: 3673730959161532690, guid: 2b0a822f22c1f764b8c4fc4e1b6bda3f, type: 3}
-      propertyPath: tutorialPositions.Array.data[2].y
-      value: -180
-      objectReference: {fileID: 0}
     - target: {fileID: 4503630457545785758, guid: 2b0a822f22c1f764b8c4fc4e1b6bda3f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

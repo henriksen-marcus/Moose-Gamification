@@ -53,4 +53,13 @@ public class SaveResultsPanel : MonoBehaviour
             }
         }
     }
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
+    public void Resume()
+    {
+        PauseMenu.instance.Toggle();
+    }
 }

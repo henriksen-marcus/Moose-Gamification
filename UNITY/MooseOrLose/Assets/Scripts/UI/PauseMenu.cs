@@ -30,13 +30,7 @@ public class PauseMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            TimeManager.instance.SetGamePaused(!TimeManager.instance.gamePaused);
-            ToggleMenu();
-            if (saveGame)
-            {
-                Destroy(saveGame);
-                saveGame = null;
-            }
+            Toggle();
         }
     }
 
@@ -48,5 +42,21 @@ public class PauseMenu : MonoBehaviour
     public void OpenSaveGameUI()
     {
         saveGame = Instantiate(SaveGame, GameObject.Find("Screen Canvas").transform);
+    }
+
+    public void Exit()
+    {
+        Application.Quit();
+    }
+
+    public void Toggle()
+    {
+        TimeManager.instance.SetGamePaused(!TimeManager.instance.gamePaused);
+        ToggleMenu();
+        if (saveGame)
+        {
+            Destroy(saveGame);
+            saveGame = null;
+        }
     }
 }
