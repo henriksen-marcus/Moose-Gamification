@@ -1836,7 +1836,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 7533600545277897491}
         m_TargetAssemblyTypeName: SaveResultsPanel, Assembly-CSharp
         m_MethodName: ChangeSaveType
         m_Mode: 0
