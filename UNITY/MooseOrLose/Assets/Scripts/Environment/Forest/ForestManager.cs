@@ -254,6 +254,8 @@ public class ForestManager : MonoBehaviour
 
      void Update()
      {
+        if (TimeManager.instance.gamePaused) return;
+
          GetNextBuffer()?.ForEach(forest =>
          {
              // forest.UpdateTreeStats();
