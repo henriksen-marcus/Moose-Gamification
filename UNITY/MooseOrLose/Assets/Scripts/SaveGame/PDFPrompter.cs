@@ -44,35 +44,44 @@ public class PDFPrompter : MonoBehaviour
 
     private static bool GeneratePDFFile(string path, string json)
     {
-        //string path = System.IO.Path.GetDirectoryName(Application.dataPath);
-        //path = System.IO.Path.Join(path, "Assets\\.PDFGen\\PDFGen.exe");
+        string exePath = Path.GetDirectoryName(Application.dataPath);
+        exePath = Path.Join(exePath, "Assets\\.PDFGen\\net6.0\\PDFGen.exe");
         
+        string tempFilePath = Path.GetDirectoryName(Application.dataPath);
+        tempFilePath = Path.Join(tempFilePath, "Assets\\.PDFGen\\net6.0\\tempdata.json");
+        GenerateJSONFile(tempFilePath, json);
+
         try {
             Process myProcess = new Process();
             myProcess.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             myProcess.StartInfo.CreateNoWindow = true;
             myProcess.StartInfo.UseShellExecute = false;
-            myProcess.StartInfo.FileName = path;
-            myProcess.StartInfo.Arguments = json;
+            myProcess.StartInfo.FileName = exePath;
+            //myProcess.StartInfo.Arguments = json;
+            myProcess.StartInfo.Arguments = "";
             myProcess.EnableRaisingEvents = true;
             myProcess.Start();
             myProcess.WaitForExit();
             int exitCode = myProcess.ExitCode;
-            return exitCode == 0;
+
+            if (exitCode == 0) return true;
+            path = Path.ChangeExtension(path, "json");
+            GenerateJSONFile(path, json);
+            return false;
+            
         } catch (Exception e) {
             // Notify user that something went wrong, and log the exception for debug logging via dev contact. Let user choose to save data straight to JSON.
             // Save the JSON file just in case
+            path = Path.ChangeExtension(path, "json");
             GenerateJSONFile(path, json);
             print(e);
+            print("catch!");
             return false;
         }
     }
     
     private static bool GenerateJSONFile(string path, string json)
     {
-        //string path = Path.GetDirectoryName(Application.dataPath);
-        //path = Path.Join(path, "Assets\\.SavedDocuments");
-
         try
         {
             File.WriteAllText(path, json);
