@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <ApplicationIcon>ico.ico</ApplicationIcon>
+    <Configurations>Debug;Release;PackagedRelease</Configurations>
+    <Platforms>AnyCPU</Platforms>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -16,6 +18,11 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <Optimize>False</Optimize>
     <WarningLevel>6</WarningLevel>
+    <OutputPath>G:\UnityProjects\Moose-Gamification\UNITY\MooseOrLose\Assets\.PDFGen</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'PackagedRelease' ">
+    <OutputPath>G:\UnityProjects\Moose-Gamification\UNITY\MooseOrLose\Assets\.PDFGen\PackagedRelease\</OutputPath>
   </PropertyGroup>
 
   <ItemGroup>
