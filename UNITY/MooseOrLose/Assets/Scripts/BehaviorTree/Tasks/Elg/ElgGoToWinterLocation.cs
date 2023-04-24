@@ -26,6 +26,10 @@ public class ElgGoToWinterLocation : Node
         {            
             return NodeState.FAILURE;
         }
+        if (mTransform.position.y < -2)
+        {
+            elg.SetWinterDestination(mTransform.position);  
+        }
         float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
         mAgent.speed = walkSpeed * ratio;
         mAgent.acceleration = acceleration * ratio;
@@ -38,8 +42,7 @@ public class ElgGoToWinterLocation : Node
         mAgent.SetDestination(hit.position);
 
         if (Vector3.Distance(mTransform.position, elg.GetWinterLocation()) > 20)
-        {
-            
+        {        
             return NodeState.RUNNING;
         }
 
