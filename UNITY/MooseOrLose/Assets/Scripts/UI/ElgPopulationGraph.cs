@@ -21,7 +21,7 @@ public class ElgPopulationGraph : MonoBehaviour
 
     private void Start()
     {
-        TimeManager.instance.OnNewDay += UpdateGraph;
+        TimeManager.Instance.OnNewDay += UpdateGraph;
     }
 
     void UpdateGraph()

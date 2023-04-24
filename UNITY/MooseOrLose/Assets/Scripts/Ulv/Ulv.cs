@@ -70,8 +70,8 @@ public class Ulv : ClickableObject
     void Start()
     {
         hunger = 100;
-        TimeManager.instance.OnNewDay += NextDay;
-        TimeManager.instance.OnNewDay += NaturalHungerDrain;
+        TimeManager.Instance.OnNewDay += NextDay;
+        TimeManager.Instance.OnNewDay += NaturalHungerDrain;
     }
 
     // Update is called once per frame
@@ -194,8 +194,8 @@ public class Ulv : ClickableObject
 
     private void OnDestroy()
     {
-        TimeManager.instance.OnNewDay -= NextDay;
-        TimeManager.instance.OnNewDay -= NaturalHungerDrain;
+        TimeManager.Instance.OnNewDay -= NextDay;
+        TimeManager.Instance.OnNewDay -= NaturalHungerDrain;
     }
 
 

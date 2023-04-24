@@ -14,7 +14,7 @@ public class CheckForHuntingSeason : Node
     public override NodeState Evaluate()
     {
 
-        if (TimeManager.instance.gamePaused)
+        if (TimeManager.Instance.gamePaused)
         {
             if (mAgent.isOnNavMesh)
                 mAgent.isStopped = true;

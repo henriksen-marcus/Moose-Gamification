@@ -12,7 +12,7 @@ public class ElgMatingSeason : Node
     }
     public override NodeState Evaluate()
     {
-        if (TimeManager.instance.gamePaused)
+        if (TimeManager.Instance.gamePaused)
         {           
             if (mScript.GetComponent<NavMeshAgent>().isOnNavMesh)
                 mScript.GetComponent<NavMeshAgent>().isStopped = true;
@@ -24,7 +24,7 @@ public class ElgMatingSeason : Node
         }
 
 
-        if (TimeManager.instance.MatingSeason() && mScript.gender == Gender.Female)
+        if (TimeManager.Instance.MatingSeason() && mScript.gender == Gender.Female)
         {
             if (!mScript.hasMated && mScript.GetAge() > 2f && mScript.GetAge() < 17f)
                 return NodeState.SUCCESS;

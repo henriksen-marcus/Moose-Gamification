@@ -18,9 +18,9 @@ public class JegerWalkHome : Node
     public override NodeState Evaluate()
     {
 
-        float speed = walkSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        float speed = walkSpeed * (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
         mAgent.speed = speed;
-        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.acceleration = acceleration * (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
 
         if (GetData("Target Position") == null)
         {
