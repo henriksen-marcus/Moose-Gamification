@@ -1631,6 +1631,7 @@ GameObject:
   - component: {fileID: 5213163554526871937}
   - component: {fileID: 7918136996801654348}
   - component: {fileID: 590100720064494250}
+  - component: {fileID: 5536016263948922222}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1686,7 +1687,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Average male age:'
+  m_text: Average bull age
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1775,6 +1776,19 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5536016263948922222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3241045958184874314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190e069e2f0f0644a5da12d3c1445cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipToShow: Desired average age for the bull moose population.
 --- !u!1 &3779286824628471109
 GameObject:
   m_ObjectHideFlags: 0
@@ -4261,6 +4275,7 @@ GameObject:
   - component: {fileID: 7530678637680232141}
   - component: {fileID: 8696932243665095025}
   - component: {fileID: 7058832226833484703}
+  - component: {fileID: 519782391809019832}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -4316,7 +4331,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Male to total population ratio
+  m_text: Ratio of bulls to total population
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4343,8 +4358,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -4385,6 +4400,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &519782391809019832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7897378814105390486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190e069e2f0f0644a5da12d3c1445cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipToShow: Determines the desired percent of the moose population that should be
+    male. (1 = 100%, 0.5 = 50%...)
 --- !u!1 &7934781017983740480
 GameObject:
   m_ObjectHideFlags: 0
@@ -4980,7 +5009,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 03e547d3f9d8ad848876d4915d6acdeb, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 66e587b10f656084bbb36531a5e4df58, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5001,6 +5030,7 @@ GameObject:
   - component: {fileID: 2851370494065908351}
   - component: {fileID: 7949134278397989661}
   - component: {fileID: 3475795390554858215}
+  - component: {fileID: 6963877387301702989}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -5056,7 +5086,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Moose to shoot per square km
+  m_text: Moose to shoot per km^2
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5125,6 +5155,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6963877387301702989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8286112215609418694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190e069e2f0f0644a5da12d3c1445cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipToShow: How many moose should be shot per square km every hunting season?
 --- !u!1 &8407958784267696159
 GameObject:
   m_ObjectHideFlags: 0
@@ -6255,6 +6298,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 688279585904968545, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
+      propertyPath: m_text
+      value: Maximum wolf population
+      objectReference: {fileID: 0}
     - target: {fileID: 1706887195383459504, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6363,6 +6410,22 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3564469361702193549, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
+      propertyPath: m_text
+      value: Weekly moose shooting limit
+      objectReference: {fileID: 0}
+    - target: {fileID: 3573762785236695488, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
+      propertyPath: m_text
+      value: Minimum moose population
+      objectReference: {fileID: 0}
+    - target: {fileID: 4372953820349994551, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
+      propertyPath: m_text
+      value: Calves to leave alive
+      objectReference: {fileID: 0}
+    - target: {fileID: 4372953820349994551, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
+      propertyPath: m_margin.z
+      value: 7.4383545
+      objectReference: {fileID: 0}
     - target: {fileID: 5663501494381850636, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6394,6 +6457,10 @@ PrefabInstance:
     - target: {fileID: 5970768188426354364, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7821791536638417278, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
+      propertyPath: m_text
+      value: Minimum antler tags to shoot moose
       objectReference: {fileID: 0}
     - target: {fileID: 7982592671129363684, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -6490,6 +6557,10 @@ PrefabInstance:
     - target: {fileID: 8784853643176208904, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9121963472093620423, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
+      propertyPath: m_Name
+      value: Weekly moose limit
       objectReference: {fileID: 0}
     - target: {fileID: 9221509335768475428, guid: 99f08a4a5bbdf904b9355398ceb7b82e, type: 3}
       propertyPath: m_AnchorMax.y

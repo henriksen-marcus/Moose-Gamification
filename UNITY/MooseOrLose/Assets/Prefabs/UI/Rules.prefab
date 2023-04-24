@@ -469,6 +469,7 @@ GameObject:
   - component: {fileID: 9415781997840483}
   - component: {fileID: 4913741920120560845}
   - component: {fileID: 688279585904968545}
+  - component: {fileID: 8067708226985069855}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -593,6 +594,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8067708226985069855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1772508754718166627}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190e069e2f0f0644a5da12d3c1445cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipToShow: Start hunting wolves if the amount of wolves on the map goes above this
+    limit.
 --- !u!1 &1885729258737859720
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,6 +1098,7 @@ GameObject:
   - component: {fileID: 8623136109689691937}
   - component: {fileID: 8042447504784715643}
   - component: {fileID: 4372953820349994551}
+  - component: {fileID: 8119803552707531289}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1207,6 +1223,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8119803552707531289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2927223613339690515}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190e069e2f0f0644a5da12d3c1445cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipToShow: When shooting calves, always leave at least this many calves alive.
+    The mother is only ever shot if she has 0 calves.
 --- !u!1 &3106045374057320552
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,6 +1534,7 @@ GameObject:
   - component: {fileID: 5970768188426354364}
   - component: {fileID: 1823050159286979703}
   - component: {fileID: 3573762785236695488}
+  - component: {fileID: 4879419934504377227}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -1628,6 +1659,20 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &4879419934504377227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3236911589975986609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190e069e2f0f0644a5da12d3c1445cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipToShow: Don't hunt any more moose if there are this amount of moose left, or
+    fewer.
 --- !u!1 &3447746677393000786
 GameObject:
   m_ObjectHideFlags: 0
@@ -1880,6 +1925,7 @@ GameObject:
   - component: {fileID: 370015556645643477}
   - component: {fileID: 1610440759021325921}
   - component: {fileID: 7821791536638417278}
+  - component: {fileID: 8893669399716792205}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -2004,6 +2050,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &8893669399716792205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3580957819568754475}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190e069e2f0f0644a5da12d3c1445cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipToShow: Don't shoot moose that have fewer antler tags than this.
 --- !u!1 &3929962529580170981
 GameObject:
   m_ObjectHideFlags: 0
@@ -3539,6 +3598,7 @@ GameObject:
   - component: {fileID: 5663501494381850636}
   - component: {fileID: 170306956165344857}
   - component: {fileID: 3564469361702193549}
+  - component: {fileID: 508165505094349086}
   m_Layer: 5
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -3663,6 +3723,19 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &508165505094349086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8509042780794230354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4190e069e2f0f0644a5da12d3c1445cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tipToShow: The max number of moose any single hunter can shoot in a single week.
 --- !u!1 &8585404379253866232
 GameObject:
   m_ObjectHideFlags: 0

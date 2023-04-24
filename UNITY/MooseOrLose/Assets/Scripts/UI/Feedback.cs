@@ -431,7 +431,6 @@ public class Feedback : MonoBehaviour
         Title.text = title;
         TextMeshProUGUI Text = popUp.transform.Find("Text").GetComponent<TextMeshProUGUI>();
         Text.text = text;
-
     }
 
     void ToolTips()

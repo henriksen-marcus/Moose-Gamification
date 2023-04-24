@@ -300,7 +300,7 @@ public class RuleManager : UI, IPointerEnterHandler
     {
         return horns >= _antlerPointsLimit && shotThisWeek < _weeklyMooseLimit && ElgManager.instance.elg_population > MoosePopMin && HuntingSeason();
     }
-    public bool CanShootFemale(int children, int shotThisWeek) //always shoot cow last? (children == 0)
+    public bool CanShootFemale(int children, int shotThisWeek) //always shoot cow last? (children == )
     {
         return shotThisWeek < _weeklyMooseLimit && ElgManager.instance.elg_population > MoosePopMin && children == 0 && HuntingSeason();
     }
