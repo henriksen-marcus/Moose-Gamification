@@ -214,6 +214,7 @@ public class Forest : MonoBehaviour
         trackableTrees.Clear();
         forestAgeSpread.Clear();
         UpdateSpawnedTrees();
+        SpawnStumps();
     }
 
     public void ThinForest(float amount)
@@ -239,6 +240,7 @@ public class Forest : MonoBehaviour
             spawnedTrees.Clear();
             trackableTrees.Clear();
             forestAgeSpread.Clear();
+            SpawnStumps();
         }
         UpdateSpawnedTrees();
     }
