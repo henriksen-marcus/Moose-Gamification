@@ -17,7 +17,7 @@ public class PDFPrompter : MonoBehaviour
     public static bool SaveSimulationResults(string path, SaveType type)
     {
         string json;
-        
+
         try
         {
             PDFInfo info = CollectData();
@@ -44,11 +44,31 @@ public class PDFPrompter : MonoBehaviour
 
     private static bool GeneratePDFFile(string path, string json)
     {
+#if UNITY_EDITOR
+        // Only when played in editor
         string exePath = Path.GetDirectoryName(Application.dataPath);
         exePath = Path.Join(exePath, "Assets\\.PDFGen\\net6.0\\PDFGen.exe");
         
         string tempFilePath = Path.GetDirectoryName(Application.dataPath);
         tempFilePath = Path.Join(tempFilePath, "Assets\\.PDFGen\\net6.0\\tempdata.json");
+#else
+        // Only when played in the packaged game
+        string exePath = Application.dataPath;
+        exePath += "/.PDFGen/net6.0/PDFGen.exe";
+        
+        string tempFilePath = Application.dataPath;
+        tempFilePath += "/.PDFGen/net6.0/tempdata.json";
+#endif
+        
+        /*bool iseditor;
+        
+#if UNITY_EDITOR
+        iseditor = true;
+#else
+        iseditor = false;
+#endif
+        File.WriteAllText("path.txt",exePath + "\ntempFilePath: " + tempFilePath + "\nCurrent path: " + Application.dataPath);*/
+        
         GenerateJSONFile(tempFilePath, json);
 
         try {
@@ -75,7 +95,6 @@ public class PDFPrompter : MonoBehaviour
             path = Path.ChangeExtension(path, "json");
             GenerateJSONFile(path, json);
             print(e);
-            print("catch!");
             return false;
         }
     }

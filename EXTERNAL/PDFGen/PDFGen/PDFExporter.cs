@@ -39,7 +39,7 @@ public sealed class PDFExporter
         // Image section
         var imgParagraph = page1.AddParagraph();
         imgParagraph.Format.Alignment = ParagraphAlignment.Center;
-        var bannerimg = imgParagraph.AddImage(@"Assets\\.PDFGen\\net6.0\\banner.png");
+        var bannerimg = imgParagraph.AddImage(@"MooseOrLose_Data\.PDFGen\net6.0\banner.png");
         bannerimg.LockAspectRatio = true;
         bannerimg.Width = doc.DefaultPageSetup.PageWidth.Point - 15;
 
@@ -71,7 +71,7 @@ public sealed class PDFExporter
         rulesDesc.Format.SpaceAfter = 8;
         
         // Read JSON data
-        var info = JsonConvert.DeserializeObject<PDFInfo>(File.ReadAllText(@"Assets\\.PDFGen\\net6.0\\tempdata.json"));
+        var info = JsonConvert.DeserializeObject<PDFInfo>(File.ReadAllText(@"MooseOrLose_Data\.PDFGen\net6.0\tempdata.json"));
         //var info = new PDFInfo();
         if (info == null) throw new Exception("Error: Could not parse JSON data.");
         
