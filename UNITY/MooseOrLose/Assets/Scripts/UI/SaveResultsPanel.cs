@@ -14,10 +14,19 @@ public class SaveResultsPanel : MonoBehaviour
     private string PDFError = "Could not save PDF file. A backup JSON file has been saved to the chosen directory.";
     private string JSONError = "Could not save JSON file.";
     
+    [SerializeField] private GameObject SuccessPopup;
+    
+    
     void Awake()
     {
         errorText = GameObject.Find("ErrorText").GetComponent<TextMeshProUGUI>();
         errorText.enabled = false;
+    }
+    
+    private void Start()
+    {
+        // Destroy this if we unpause
+        TimeManager.Instance.Pause += OnGamePaused;
     }
 
     public void ChangeSaveType(int type) => saveType = (SaveType)type;
@@ -39,10 +48,8 @@ public class SaveResultsPanel : MonoBehaviour
         // If user selected a path (they didn't cancel the save dialog)
         if (path.Length != 0)
         {
-            if (PDFPrompter.SaveSimulationResults(path, saveType))
-            {
-                // TODO: Aleksander: Her kan du legge til kode for å lukke vinduet
-            }
+            if (PDFPrompter.SaveSimulationResults(path, saveType)) 
+                OnSuccededSave();
             else if (errorText)
             {
                 errorText.enabled = true;
@@ -55,13 +62,22 @@ public class SaveResultsPanel : MonoBehaviour
             }
         }
     }
-    public void Exit()
+    
+    private void OnSuccededSave()
     {
-        Application.Quit();
+        // This object handles destroying itself
+        Instantiate(SuccessPopup, GameObject.Find("Screen Canvas").transform);
+        Back();
     }
 
-    public void Resume()
+
+    public void Back()
     {
-        PauseMenu.instance.Toggle();
+        Destroy(gameObject);
+    }
+
+    private void OnGamePaused(bool paused)
+    {
+        if (!paused && this != null) Destroy(gameObject);
     }
 }

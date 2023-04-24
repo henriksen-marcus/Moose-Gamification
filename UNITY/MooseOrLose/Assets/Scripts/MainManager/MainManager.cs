@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class MainManager : MonoBehaviour
 {
-    static public MainManager Instance;
+    public static MainManager Instance;
     
     [Header("Managers")]
     [SerializeField] GameObject managerParent;
@@ -25,10 +25,7 @@ public class MainManager : MonoBehaviour
 
     [Header("Forests")]
     public GameObject forestParent;
-
-    //--------------------
-
-
+    
 
     private void Awake()
     {

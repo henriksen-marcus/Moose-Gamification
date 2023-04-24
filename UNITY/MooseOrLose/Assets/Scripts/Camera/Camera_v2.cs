@@ -48,7 +48,7 @@ public class Camera_v2 : MonoBehaviour
     private float _cameraDistance = 150f;
     private float _cameraTargetDistance = 150f;
     private float _lastCameraDistance = 150f;
-    private float _minCameraDistance = 5f;
+    private float _minCameraDistance = 6f;
     private float _maxCameraDistance = 350f;
     
     private float _cameraDistanceForestZoom = 10f;
@@ -207,6 +207,8 @@ public class Camera_v2 : MonoBehaviour
         
         /*s = GameObject.Find("Sphere (1)").gameObject;
         o = s.AddComponent<Outline>();*/
+
+        TimeManager.Instance.Pause += OnPause;
     }
 
     void Update()
@@ -257,7 +259,19 @@ public class Camera_v2 : MonoBehaviour
     
     private void Pause(InputAction.CallbackContext context)
     {
-        
+        TimeManager.Instance.OnPause(!TimeManager.Instance.gamePaused);
+    }
+
+    /* When the global pause event is called. */
+    private void OnPause(bool paused)
+    {
+        if (paused)
+        {
+            _velocity = Vector2.zero;
+            _rotationVelocity = Vector2.zero;
+            SetMovementEnabled(false);
+        }
+        else SetMovementEnabled(true);
     }
     
     public void Deselect()
