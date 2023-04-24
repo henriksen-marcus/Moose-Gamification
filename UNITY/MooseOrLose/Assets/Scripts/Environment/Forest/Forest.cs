@@ -542,7 +542,7 @@ public class Forest : MonoBehaviour
             spawnedTrees.Clear();
             trackableTrees.Clear();
         }
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 5; i++)
         {
             var distanceFromMiddle = UnityEngine.Random.Range(0, borderRadius);
             // distanceFromMiddle = Mathf.Clamp(
