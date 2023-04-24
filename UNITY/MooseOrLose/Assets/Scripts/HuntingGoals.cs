@@ -52,7 +52,7 @@ public class HuntingGoals : MonoBehaviour
     }
     public void EndGoalSetting()
     {
-        TimeManager.instance.SetGamePaused(false);
+        TimeManager.Instance.SetGamePaused(false);
         // InfoUI.Instance.gameObject.SetActive(true);
         InventoryUI.Instance.gameObject.SetActive(true);
         gameObject.SetActive(false);

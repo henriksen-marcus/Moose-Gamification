@@ -23,7 +23,7 @@ public class ElgGoToPartner : Node
         {
             return NodeState.FAILURE;
         }
-        float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        float ratio = (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
         mAgent.speed = walkSpeed * ratio;
         mAgent.acceleration = acceleration * ratio;
 

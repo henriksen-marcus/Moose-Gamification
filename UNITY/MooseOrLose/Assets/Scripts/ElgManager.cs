@@ -58,7 +58,7 @@ public class ElgManager : MonoBehaviour
 
 
         // Spawn without children
-        if (TimeManager.instance.GetMonth() < 3)
+        if (TimeManager.Instance.GetMonth() < 3)
         {
             for (int i = 0; i < loop; i++)
             {
@@ -99,7 +99,7 @@ public class ElgManager : MonoBehaviour
                         GameObject go1 = Instantiate(ElgPrefab, hit2.position, Quaternion.identity, ElgManager.instance.transform);
                         Elg script1 = go1.GetComponent<Elg>();
                         script1.NewBorn();
-                        script1.age_months = TimeManager.instance.GetMonth() - 3;
+                        script1.age_months = TimeManager.Instance.GetMonth() - 3;
                         script1.SetMother(go.transform);
                         elg_list.Add(go1);
                         
@@ -115,7 +115,7 @@ public class ElgManager : MonoBehaviour
         elg_females_graph.Add(elg_females);
         elg_children_graph.Add(elg_children);
         elg_population_graph.Add(elg_population);
-        TimeManager.instance.OnNewMonth += NewMonth;
+        TimeManager.Instance.OnNewMonth += NewMonth;
         PopulationChanged();
     }
 

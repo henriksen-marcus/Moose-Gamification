@@ -35,13 +35,13 @@ public class UlvManager : MonoBehaviour
 
     void Start()
     {
-        TimeManager.instance.OnNewMonth += NewMonth;
+        TimeManager.Instance.OnNewMonth += NewMonth;
         UlvWarning = GameObject.Find("Screen Canvas").transform.Find("WolfWarning").gameObject;
     }
 
     void NewMonth()
     {
-        if (TimeManager.instance.GetMonth() == 6 || TimeManager.instance.GetMonth() == 2)
+        if (TimeManager.Instance.GetMonth() == 6 || TimeManager.Instance.GetMonth() == 2)
         {
             SpawnPack(UnityEngine.Random.Range(2, 4 + 1), new Vector3(UnityEngine.Random.Range(-200, 200), 10, 180));
         }

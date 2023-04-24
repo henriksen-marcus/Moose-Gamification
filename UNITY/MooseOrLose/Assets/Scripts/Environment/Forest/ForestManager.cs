@@ -208,7 +208,7 @@ public class ForestManager : MonoBehaviour
     void UpdateForests()
     {
         // Update any remaining trees
-        if (currentIndex < forestList.Count - 1 && TimeManager.instance.GetDay() > 0)
+        if (currentIndex < forestList.Count - 1 && TimeManager.Instance.GetDay() > 0)
         {
             for (var i = currentIndex; i < forestList.Count; i++)
             {
@@ -254,7 +254,7 @@ public class ForestManager : MonoBehaviour
 
      void Update()
      {
-        if (TimeManager.instance.gamePaused) return;
+        if (TimeManager.Instance.gamePaused) return;
 
          GetNextBuffer()?.ForEach(forest =>
          {
@@ -269,8 +269,8 @@ public class ForestManager : MonoBehaviour
     void SubscribeToEvents()
     {
         // TimeManager.instance.OnNewDay += TreeCount;
-        TimeManager.instance.OnNewDay += Statistics;
-        TimeManager.instance.OnNewDay += UpdateForests;
+        TimeManager.Instance.OnNewDay += Statistics;
+        TimeManager.Instance.OnNewDay += UpdateForests;
     }
     
     // void TreeCount()

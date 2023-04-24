@@ -24,7 +24,7 @@ public class ElgGoToForest : Node
             
             return NodeState.FAILURE;
         }
-        float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        float ratio = (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
         mAgent.speed = mSpeed * ratio;
         mAgent.acceleration = acceleration * ratio;
         if ((Forest)parent.GetData("Forest") == null)

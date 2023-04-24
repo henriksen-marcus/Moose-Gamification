@@ -141,10 +141,10 @@ public class Elg : ClickableObject
     
     private void Start()
     {    
-        TimeManager.instance.OnNewYear += ShedAntlers; //TEMPORARY
-        TimeManager.instance.OnSpringBegin += GrowAntlers;
+        TimeManager.Instance.OnNewYear += ShedAntlers; //TEMPORARY
+        TimeManager.Instance.OnSpringBegin += GrowAntlers;
         GrowAntlers();
-        TimeManager.instance.OnNewDay += NextDay;
+        TimeManager.Instance.OnNewDay += NextDay;
 
 
         WinterLocation = transform.position;
@@ -194,14 +194,14 @@ public class Elg : ClickableObject
         // Pregnancy
         if (gender == Gender.Female && age_years > 1)
         {
-            if (TimeManager.instance.GetMonth() < 3 || TimeManager.instance.GetMonth() > 8)
+            if (TimeManager.Instance.GetMonth() < 3 || TimeManager.Instance.GetMonth() > 8)
             {
                 childrenInBelly = GetNumberOfChildren();
                 if (childrenInBelly > 0)
                 {
                     pregnant = true;
                     int random = Random.Range(-10, 10);
-                    daysPregnant = TimeManager.instance.GetMonth() > 8 ? ((TimeManager.instance.GetMonth() - 8) * 30) + random : ((8 - (3 - TimeManager.instance.GetMonth())) * 30) + random;
+                    daysPregnant = TimeManager.Instance.GetMonth() > 8 ? ((TimeManager.Instance.GetMonth() - 8) * 30) + random : ((8 - (3 - TimeManager.Instance.GetMonth())) * 30) + random;
                 }
 
             }
@@ -510,7 +510,7 @@ public class Elg : ClickableObject
     void NaturalHungerDrain()
     {
 
-        switch (TimeManager.instance.GetMonth())
+        switch (TimeManager.Instance.GetMonth())
         {
             case 0:
                 hunger -= Random.Range(8, 17);
@@ -659,8 +659,8 @@ public class Elg : ClickableObject
 
     private void OnDestroy()
     {
-        TimeManager.instance.OnNewYear -= ShedAntlers; //TEMPORARY
-        TimeManager.instance.OnSpringBegin -= GrowAntlers;
-        TimeManager.instance.OnNewDay -= NextDay;
+        TimeManager.Instance.OnNewYear -= ShedAntlers; //TEMPORARY
+        TimeManager.Instance.OnSpringBegin -= GrowAntlers;
+        TimeManager.Instance.OnNewDay -= NextDay;
     }
 }

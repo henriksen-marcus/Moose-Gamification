@@ -9,7 +9,7 @@ public class UIGrowthRate : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        TimeManager.instance.OnNewDay += UpdateText;
+        TimeManager.Instance.OnNewDay += UpdateText;
         GrowthRate = GetComponent<TextMeshProUGUI>();    
     }
 

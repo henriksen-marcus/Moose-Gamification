@@ -55,7 +55,7 @@ public class JegerManager : MonoBehaviour
         }
         jeger_population = jeger_startpopulation;
 
-        TimeManager.instance.OnNewMonth += NewMonth;
+        TimeManager.Instance.OnNewMonth += NewMonth;
 
         FemalesExpectedList.Add(0);
         MalesExpectedList.Add(0);

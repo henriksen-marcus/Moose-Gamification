@@ -37,9 +37,9 @@ public class JegerWalk : Node
         }
 
         
-        float speed = walkSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
+        float speed = walkSpeed * (TimeManager.Instance.startPlaySpeed / TimeManager.Instance.playSpeed);
         mAgent.speed = speed;
-        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.acceleration = acceleration * (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
         NavMeshHit hit;
         NavMesh.SamplePosition(new Vector3(Random.Range(-200, 200), 10, Random.Range(-200, 200)), out hit, 200, 1);
         mAgent.SetDestination(hit.position);

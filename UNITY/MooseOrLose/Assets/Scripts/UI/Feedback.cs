@@ -83,8 +83,8 @@ public class Feedback : MonoBehaviour
     {
         populationCounts = new List<int>();
 
-        TimeManager.instance.OnNewDay += NewDay;
-        TimeManager.instance.OnNewYear += NewYear;
+        TimeManager.Instance.OnNewDay += NewDay;
+        TimeManager.Instance.OnNewYear += NewYear;
         FeedbackPopUpContainer = (RectTransform)transform.parent.Find("FeedbackPopUpContainer");
         if (FeedbackPopUpContainer == null)
         {

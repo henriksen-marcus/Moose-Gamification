@@ -237,7 +237,7 @@ public class Forest : MonoBehaviour
     }
     
     // TODO: Dette burde ikke oppdateres i tick! Heller pr. mnd via forest manager.
-    void SetForestSeason() { currentSeason = TimeManager.instance.currentSeason; }
+    void SetForestSeason() { currentSeason = TimeManager.Instance.currentSeason; }
 
     void SetForestHealth()
     {
@@ -367,7 +367,7 @@ public class Forest : MonoBehaviour
 
     void SubscribeToEvents()
     {
-        TimeManager.instance.OnSpringBegin += UpdateBirth;
+        TimeManager.Instance.OnSpringBegin += UpdateBirth;
     }
     
     void UpdateForestStats()

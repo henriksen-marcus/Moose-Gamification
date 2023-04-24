@@ -5,7 +5,7 @@ using System;
 
 public class TimeManager : MonoBehaviour
 {
-    public static TimeManager instance;
+    public static TimeManager Instance;
 
     [SerializeField] int month;
     [SerializeField] int day;
@@ -24,12 +24,21 @@ public class TimeManager : MonoBehaviour
     public Season currentSeason { get; private set; }
     
     public bool gamePaused = false;
+    
+    public delegate void PauseEventHandler(bool paused);
+    public event PauseEventHandler Pause;
+
+    public void OnPause(bool paused)
+    {
+        SetGamePaused(paused);
+        Pause?.Invoke(paused);
+    }
 
     
     // Start is called before the first frame update
     void Awake()
     { 
-        if (!instance) instance = this;
+        if (!Instance) Instance = this;
         
         day = 0;
         month = startMonth;
@@ -82,8 +91,7 @@ public class TimeManager : MonoBehaviour
         startPlaySpeed = defaultPlaySpeed;
         gamePaused = false;
     }
-
-
+    
     
     public int GetYear() { return year; }
     public int GetMonth() { return month; }
@@ -112,6 +120,7 @@ public class TimeManager : MonoBehaviour
             JegerManager.instance.PauseAgents(false);
         }
         UIPlayController.instance.UpdateTexts();
+        //OnPause(input);
     }
 
     IEnumerator NextDay()
@@ -221,7 +230,6 @@ public class TimeManager : MonoBehaviour
     public void TogglePlay()
     {
         SetGamePaused(!gamePaused);
-        
     }
 
 }

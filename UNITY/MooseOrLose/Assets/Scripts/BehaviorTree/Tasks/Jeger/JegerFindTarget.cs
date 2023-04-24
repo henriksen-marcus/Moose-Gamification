@@ -12,7 +12,7 @@ public class JegerFindTarget : Node
     {
         mTargetRange = range;
         mTransform = transform;
-        TimeManager.instance.OnNewDay += NewDay;
+        TimeManager.Instance.OnNewDay += NewDay;
     }
 
 

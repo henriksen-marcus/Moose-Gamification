@@ -126,9 +126,9 @@ public class PDFPrompter : MonoBehaviour
             NumBirchTrees = birch,
             NumSpruceTrees = spruce,
             NumPineTrees = pine,
-            SimDurationDays = TimeManager.instance.durationDays,
-            SimDurationMonths = TimeManager.instance.durationMonths,
-            SimDurationYears = TimeManager.instance.durationYears,
+            SimDurationDays = TimeManager.Instance.durationDays,
+            SimDurationMonths = TimeManager.Instance.durationMonths,
+            SimDurationYears = TimeManager.Instance.durationYears,
             NumHunters = JegerManager.instance.jeger_list.Count,
         };
         info.MooseFemaleRatio = 1 - info.MooseMaleRatio;

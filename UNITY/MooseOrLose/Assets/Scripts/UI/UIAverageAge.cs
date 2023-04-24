@@ -10,7 +10,7 @@ public class UIAverageAge : MonoBehaviour
     void Start()
     {
         averageAge = GetComponent<TextMeshProUGUI>();
-        TimeManager.instance.OnNewDay += UpdateUI;
+        TimeManager.Instance.OnNewDay += UpdateUI;
 
     }
 

@@ -52,7 +52,7 @@ public class Graph : MonoBehaviour
     // Update is called once per frame
     public void ToggleGraphMenu()
     {
-        TimeManager.instance.SetGamePaused(!transform.parent.gameObject.activeSelf);
+        TimeManager.Instance.SetGamePaused(!transform.parent.gameObject.activeSelf);
         transform.parent.gameObject.SetActive(!transform.parent.gameObject.activeSelf);
         if (transform.parent.gameObject.activeSelf)
             UpdateGraphMenu();
