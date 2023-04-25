@@ -76,11 +76,11 @@ public sealed class PDFExporter
         date.Format.SpaceAfter = 5;
 
         // Add a subheading on the left side
-        var subheading = page1.AddParagraph("Rules");
+        var subheading = page1.AddParagraph("Rules/Goals");
         subheading.Format.Font.Size = 16;
         subheading.Format.Font.Bold = true;
         
-        var rulesDesc = page1.AddParagraph("The following table shows the rules that were set and on which day they were changed.");
+        var rulesDesc = page1.AddParagraph("The following table shows the rules and goals that were set and on which day they were changed.");
         rulesDesc.Format.Font.Size = 10;
         rulesDesc.Format.SpaceBefore = 2;
         rulesDesc.Format.SpaceAfter = 8;
@@ -93,11 +93,9 @@ public sealed class PDFExporter
         // Rules table
         var ruleTable = new Table();
         ruleTable.Borders.Width = 1;
-        const float columnWidth = 8;
-        const float cHWidth = columnWidth / 2;
-    
-        var column1 = ruleTable.AddColumn(Unit.FromCentimeter(columnWidth));
-        var column2 = ruleTable.AddColumn(Unit.FromCentimeter(columnWidth));
+
+        var ruleNameColumn = ruleTable.AddColumn(Unit.FromCentimeter(11));
+        var ruleValueColumn = ruleTable.AddColumn(Unit.FromCentimeter(4));
         //var column3 = mainTable.AddColumn(Unit.FromCentimeter(colWidth));
 
         var titleRow = ruleTable.AddRow();
@@ -108,8 +106,8 @@ public sealed class PDFExporter
         var dCell = titleRow.Cells[1];
         var t = new Table();
         t.Borders.Width = 0;
-        t.AddColumn(Unit.FromCentimeter(cHWidth));
-        t.AddColumn(Unit.FromCentimeter(cHWidth));
+        t.AddColumn(Unit.FromCentimeter(2));
+        t.AddColumn(Unit.FromCentimeter(2));
         var r = t.AddRow();
         r.Cells[0].AddParagraph("Value").Format.Font.Bold = true;
         r.Cells[1].AddParagraph("Day set").Format.Font.Bold = true;
@@ -123,29 +121,38 @@ public sealed class PDFExporter
             Paragraph p = new Paragraph();
             p.AddFormattedText((string)rule.Name, TextFormat.Bold);
             row.Cells[0].VerticalAlignment = VerticalAlignment.Center;
+            row.Cells[0].Format.SpaceBefore = 2;
+            row.Cells[0].Format.SpaceAfter = 1;
             row.Cells[0].Add(p);
             
             if (rule.Description != null)
             {
                 p = new Paragraph();
                 p.AddText((string)rule.Description);
-                p.Format.Font.Size = 10;
+                p.Format.Font.Size = 9;
                 p.Format.Font.Italic = true;
                 row.Cells[0].Add(p);
+                row.Cells[0].Format.SpaceAfter = 2;
             }
             
             // Value and day changed
             var table = new Table();
-            var col1 = table.AddColumn(Unit.FromCentimeter(columnWidth / 2));
-            var col2 = table.AddColumn(Unit.FromCentimeter(columnWidth / 2));
-        
+            var col1 = table.AddColumn(Unit.FromCentimeter(2));
+            var col2 = table.AddColumn(Unit.FromCentimeter(2));
+
+            Row row2 = new();
             foreach(dynamic interval in rule.Intervals)
             {
-                var row2 = table.AddRow();
+                row2 = table.AddRow();
+                
                 row2.Cells[0].AddParagraph((string)interval.Value);
+                row2.Cells[0].Format.SpaceBefore = 2;
+
                 row2.Cells[1].AddParagraph("Day " + (string)interval.StartDay);
+                row2.Cells[1].Format.SpaceBefore = 2;
             }
-        
+            row2.Cells[0].Format.SpaceAfter = 2;
+            row2.Cells[1].Format.SpaceAfter = 2;
             row.Cells[1].Elements.Add(table);
         }
         page1.Add(ruleTable);
