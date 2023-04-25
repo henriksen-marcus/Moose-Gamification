@@ -18,6 +18,7 @@ public class RuleManager : UI, IPointerEnterHandler
     public ArrayList Rules = new ArrayList();
     private int startDay;
 
+    public Dictionary<string, string> RuleTooltips;
 
     [NonSerialized] public int MoosePopMin = 60;
     private int _antlerPointsLimit = 4;
@@ -53,6 +54,15 @@ public class RuleManager : UI, IPointerEnterHandler
         HuntingSeasonGoals();
 
         InitiateRules();
+        
+        RuleTooltips.Add("Average bull age", "Desired average age for the bull moose population.");
+        RuleTooltips.Add("Ratio of bulls to total population", "Determines the desired percent of the moose population that should be male. (1 = 100%, 0.5 = 50%...)");
+        RuleTooltips.Add("Moose to shot per km^2", "How many moose should be shot per square km every hunting season?");
+        RuleTooltips.Add("Minimum antler tags to shoot mose", "Don't shoot moose that have fewer antler tags than this.");
+        RuleTooltips.Add("Calves to leave alive", "When shooting calves, always leave at least this many calves alive. The mother is only ever shot if she has 0 calves.");
+        RuleTooltips.Add("Weekly moose shooting limit", "The max number of moose any single hunter can shoot in a single week.");
+        RuleTooltips.Add("Minimum moose population", "Don't hunt any more moose if there are this amount of moose left, or fewer.");
+        RuleTooltips.Add("Maximum wolf population", "Start hunting wolves if the amount of wolves on the map goes above this limit.");
     }
 
     private void HuntingSeasonGoals()
