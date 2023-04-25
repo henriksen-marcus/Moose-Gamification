@@ -2,9 +2,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting.ReorderableList;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.EventSystems;
+
 enum CameraMode
 {
     Normal,
@@ -28,14 +30,14 @@ public class Camera_v2 : MonoBehaviour
 
     /* The velocity of the _rotationPoint the camera is attached to. */
     private Vector2 _velocity = Vector2.zero;
-    private float _acceleration = 0.1f;
-    private float _maxKeyboardVelocity = 3f;
-    private float _maxMouseVelocity = 12f;
-    private float _rotationAcceleration = 0.19f;
+    private float _acceleration = 0.15f;
+    private float _maxKeyboardVelocity = 2.5f;
+    private float _maxMouseVelocity = 9f;
+    private float _rotationAcceleration = 0.24f;
     private Vector2 _rotationVelocity;
-    private float _maxRotationKeyboardVelocity = 2.5f;
-    private float _maxRotationMouseVelocity = 12f;
-    private float _lerpSpeed = 4f;
+    private float _maxRotationKeyboardVelocity = 3f;
+    private float _maxRotationMouseVelocity = 10f;
+    private float _lerpSpeed = 5f;
 
     /* If the mouse drag movement has been used, wait
      * for the velocity given by the mouse to decrease
@@ -55,20 +57,20 @@ public class Camera_v2 : MonoBehaviour
 
     private float _cameraAngle = 45f;
     private float _defaultCameraAngle = 45f;
-    private float _minCamAngle = 16f;
+    private float _minCamAngle = 17f;
     private float _maxCamAngle = 89.9f;
 
     /* How far the camera distance changes per scroll. */
-    private float _scrollDistance = 30f;
-    private float _defaultScrollDistance = 25f;
+    private float _scrollDistance = 28f;
+    private float _defaultScrollDistance = 28f;
     private float _orbitScrollDistance = 5f;
 
     /* How much the camera movement will brake each tick.
      * Lower = more braking. */
-    private float _brakeFactor = 0.97f;
-    private float _defaultBrakeFactor = 0.97f;
-    private float _highBrakeFactor = 0.81f;
-    private float _rotationBrakeFactor = 0.958f;
+    private float _brakeFactor = 0.979f;
+    private float _defaultBrakeFactor = 0.98f;
+    private float _highBrakeFactor = 0.815f;
+    private float _rotationBrakeFactor = 0.9589f;
 
     private float _dragSpeed = 70f;
     private float _defaultDragSpeed = 70f;
@@ -92,10 +94,10 @@ public class Camera_v2 : MonoBehaviour
     private float _groundCollisionRange = 5f;
     
     /* How much mouse delta until the click counts as a drag. */
-    private float _mouseDeltaForDrag = 1f;
+    private float _mouseDeltaForDrag = 1.5f;
 
     /* How far away horizontally the player can click to select a clickable object. */
-    private float _selectDistance = 5f;
+    private float _selectDistance = 8f;
 
     private bool _hasUsedMouseDrag;
     private bool _isPressingLMB;
@@ -204,9 +206,6 @@ public class Camera_v2 : MonoBehaviour
                 _cameraBounds.y = meshPos.y + meshSize.y + _cameraBoundDistance;
             }
         }
-        
-        /*s = GameObject.Find("Sphere (1)").gameObject;
-        o = s.AddComponent<Outline>();*/
 
         TimeManager.Instance.Pause += OnPause;
     }
@@ -276,16 +275,12 @@ public class Camera_v2 : MonoBehaviour
     
     public void Deselect()
     {
-        if (_selectedObject)
-        {
-            _selectedObject.SetOutlineSelected(false);
-        }
+        if (_selectedObject) _selectedObject.SetOutlineSelected(false);
         _selectedObject = null;
     }
 
     private void Back(InputAction.CallbackContext context)
     {
-        
         if (_cameraMode == CameraMode.Orbit)
         {
             _cameraTargetDistance = 
@@ -489,7 +484,14 @@ public class Camera_v2 : MonoBehaviour
         else _velocity = Vector3.ClampMagnitude(newVelocity, _maxKeyboardVelocity);
         
 
-        _rotationVelocity.x += _inputProvider.RotationInput() * _rotationAcceleration;
+        // Make sure there is a smooth transition from mouse to keyboard
+        if (_waitForRotationalVelocity)
+        {
+            if (Mathf.Abs(_rotationVelocity.x) <= _maxRotationKeyboardVelocity) _waitForRotationalVelocity = false;
+            //_rotationVelocity.x += _inputProvider.RotationInput() * _rotationAcceleration;
+        }
+        else _rotationVelocity.x = Mathf.Clamp(_rotationVelocity.x + _inputProvider.RotationInput() * _rotationAcceleration, -_maxRotationKeyboardVelocity, _maxRotationKeyboardVelocity);
+        
         _brakeFactor = _defaultBrakeFactor;
         ApplyMovement();
     }
@@ -506,14 +508,10 @@ public class Camera_v2 : MonoBehaviour
         // Make sure there is a smooth transition from mouse to keyboard
         if (_waitForRotationalVelocity)
         {
-            if (_rotationVelocity.x <= _maxRotationKeyboardVelocity)
-            {
-                _rotationVelocity.x += newXVelocity;
-                _waitForVelocity = false;
-            }
-            else _rotationVelocity.x += newXVelocity;
+            if (Mathf.Abs(_rotationVelocity.x) <= _maxRotationKeyboardVelocity) _waitForRotationalVelocity = false;
+            //_rotationVelocity.x += newXVelocity;
         }
-        else _rotationVelocity.x = Mathf.Clamp(_rotationVelocity.x, -_maxRotationKeyboardVelocity, _maxRotationKeyboardVelocity);
+        else _rotationVelocity.x = Mathf.Clamp(_rotationVelocity.x + newXVelocity, -_maxRotationKeyboardVelocity, _maxRotationKeyboardVelocity);
         
         ApplyMovement();
     }
@@ -532,7 +530,7 @@ public class Camera_v2 : MonoBehaviour
         var moveOffset = new Vector2(-clickWorldPos.x, -clickWorldPos.y) * _dragSpeed;
 
         // Dragging fast gives an extra boost
-        _velocity += moveOffset * (delta.magnitude * 0.5f * 0.02f);
+        _velocity += moveOffset * (delta.magnitude * 0.5f * 0.018f);
         _velocity = Vector2.ClampMagnitude(_velocity, _maxMouseVelocity);
         _waitForVelocity = true;
 
@@ -572,18 +570,20 @@ public class Camera_v2 : MonoBehaviour
     {
         var camTransform = _mainCamera.transform;
         var camSocketTransform = _cameraSocket.transform;
+        float dist = 0;
         
         // Find position on ground in front + a buffer
         var ray = new Ray(camTransform.position, camTransform.forward);
-        if (Physics.Raycast(ray, out var hit, _mapLm))
+        if (Physics.Raycast(ray, out var hit, 10000))
         {
             var rotPointPos = _rotationPoint.transform.position;
-            
-            _lastForwardGroundPoint = hit.point;
-            _lastForwardGroundDistance = Vector3.Distance(rotPointPos, _lastForwardGroundPoint);
+
+            //_lastForwardGroundPoint = hit.point;
+            //_lastForwardGroundDistance = Vector3.Distance(rotPointPos, _lastForwardGroundPoint) + 5;
+            dist = MathF.Abs(hit.point.y - rotPointPos.y) + 8;
         }
 
-        var localMinDistance = Mathf.Max(_lastForwardGroundDistance, _minCameraDistance);
+        var localMinDistance = Mathf.Max(dist, _minCameraDistance);
 
         // Smooth interpolation when changing height with scroll
         _cameraTargetDistance = Mathf.Clamp(_cameraTargetDistance + GetScroll(), localMinDistance, _maxCameraDistance);
@@ -603,7 +603,7 @@ public class Camera_v2 : MonoBehaviour
     {
         _rotationPoint.transform.Translate(new Vector3(_velocity.x, 0f, _velocity.y) * (Time.deltaTime * 45f));
         _rotationPoint.transform.Rotate(new Vector3(0f, _rotationVelocity.x, 0f) * (Time.deltaTime * 45f));
-        _cameraAngle = Mathf.Clamp(_cameraAngle + _rotationVelocity.y, _minCamAngle, _maxCamAngle);
+        _cameraAngle = Mathf.Clamp(_cameraAngle + _rotationVelocity.y * (Time.deltaTime * 45f), _minCamAngle, _maxCamAngle);
         _velocity *= _brakeFactor;
         _rotationVelocity *= _rotationBrakeFactor;
 
