@@ -8,7 +8,6 @@ internal class Program
 {
     static void Main(string[] args)
     {
-        //File.WriteAllText("wtf.txt", "Current directory: " + Directory.GetCurrentDirectory());
         PDFExporter.GetInstance().GeneratePDF();
     }
 }

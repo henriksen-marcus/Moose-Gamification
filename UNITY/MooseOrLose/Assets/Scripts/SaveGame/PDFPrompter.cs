@@ -77,7 +77,6 @@ public class PDFPrompter : MonoBehaviour
             myProcess.StartInfo.CreateNoWindow = true;
             myProcess.StartInfo.UseShellExecute = false;
             myProcess.StartInfo.FileName = exePath;
-            //myProcess.StartInfo.Arguments = json;
             myProcess.StartInfo.Arguments = "";
             myProcess.EnableRaisingEvents = true;
             myProcess.Start();

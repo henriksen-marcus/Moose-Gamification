@@ -29,6 +29,7 @@ public class PDFInfo
 public class Rule<T>
 {
     public string Name { get; set; }
+    public string Description { get; set; }
     public List<Interval<T>> Intervals { get; set; }
 }
 
