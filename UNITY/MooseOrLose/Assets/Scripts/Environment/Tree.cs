@@ -54,6 +54,8 @@ public class Tree
     public float soilWaterDrinkability;
     public float growthRateBud;
     float _stemHeightPortionOfTree;
+    private float heightGene;
+    private float maxHeight;
 
     private bool _pauseGrowth = false;
     //--------------------
@@ -85,11 +87,14 @@ public class Tree
     {
         UpdateTreeAge();
 
-        UpdateTreeHeight();
-        UpdateTreeDiameter();
-        UpdateStemHeight();
-        UpdateBudSize();
-        UpdateTreeVolume();
+        if (treeHeight < (maxHeight * heightGene))
+        {
+            UpdateTreeHeight();
+            UpdateTreeDiameter();
+            UpdateStemHeight();
+            UpdateBudSize();
+            UpdateTreeVolume();
+        }       
         UpdateShadowArea();
         UpdateTreeDie();
 
@@ -150,7 +155,21 @@ public class Tree
     
     void SetTreeHeight()
     {
-        treeHeight = treeAgeInDaysTotal * growthRateHeight;
+        treeHeight = StartHeight(treeAgeInDaysTotal);
+        switch (treeType)
+        {
+            case ForestType.Birch:
+                maxHeight = 22f;
+                break;
+            case ForestType.Spruce:
+                maxHeight = 60f;
+                break;
+            case ForestType.Pine:
+                maxHeight = 85f;
+                break;
+        }
+
+        treeHeight = Mathf.Clamp(treeHeight, 0, maxHeight * heightGene);
     }
     
     void SetTreeDiameter()
@@ -392,6 +411,7 @@ public class Tree
                 shadowFactor = 1.5f;
                 break;
         }
+        heightGene = Random.Range(0.5f, 1f);
     }
 
     public int CheckIfGettingBirth()
@@ -442,5 +462,17 @@ public class Tree
         };
 
         return _succeededSeeds;
+    }
+
+
+    float StartHeight(int daysAlive)
+    {
+        if (daysAlive < 365 * 3)
+        {
+            return (0.00109589f * daysAlive) - 0.033333f;
+        }
+
+
+        return (0.002288310502f * daysAlive) - 0.8666667f;
     }
 }

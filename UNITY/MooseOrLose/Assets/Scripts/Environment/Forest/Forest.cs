@@ -27,6 +27,7 @@ public class Forest : MonoBehaviour
 
     [Header("Tree Spawning")]
     [SerializeField] GameObject Tree;
+    [SerializeField] GameObject Stump;
 #pragma warning disable 0414
     [SerializeField] float spawningRadius;
 #pragma warning restore 0414
@@ -121,6 +122,9 @@ public class Forest : MonoBehaviour
             default:
                 break;
         }
+
+        var loadedObject4 = Resources.Load("Trees/Stump/Stump");
+        Stump = (GameObject)loadedObject4;  
         SpawnTrees();
         // UpdateForestMaterial();
     }
@@ -205,10 +209,12 @@ public class Forest : MonoBehaviour
         {
             Destroy(tree);
         }
+        treesAmountInForest = 0;
         spawnedTrees.Clear();
         trackableTrees.Clear();
         forestAgeSpread.Clear();
         UpdateSpawnedTrees();
+        SpawnStumps();
     }
 
     public void ThinForest(float amount)
@@ -221,10 +227,12 @@ public class Forest : MonoBehaviour
                 int i = Random.Range(0, treeList.Count);
                 treeList.RemoveAt(i);
             }
+            treesAmountInForest = treeList.Count;
         }
         else
         {
             treeList.Clear();
+            treesAmountInForest = 0;
             foreach (var tree in spawnedTrees)
             {
                 Destroy(tree);
@@ -232,6 +240,7 @@ public class Forest : MonoBehaviour
             spawnedTrees.Clear();
             trackableTrees.Clear();
             forestAgeSpread.Clear();
+            SpawnStumps();
         }
         UpdateSpawnedTrees();
     }
@@ -441,6 +450,13 @@ public class Forest : MonoBehaviour
     {
         UpdateTreeStats();
         int numberOfTrees = 0;
+
+        if (treesAmountInForest < 10)
+        {
+            SpawnStumps();
+            return;
+        }
+
         switch (forestDensityLevel)
         {
             case ForestDensity.Density0:
@@ -496,14 +512,65 @@ public class Forest : MonoBehaviour
                 int rand = UnityEngine.Random.Range(0, treeList.Count);
                 trackableTrees.Add(treeList[rand]);
                 float treeHeight = (float)trackableTrees[trackableTrees.Count - 1].treeHeight;
+                float scale = 0f;
+                switch (forestType)
+                {
+                    case ForestType.Spruce:
+                        scale = map(treeHeight, 0f, 60f, 0.5f, 1.2f);
+                        break;
+                    case ForestType.Pine:
+                        scale = map(treeHeight, 0f, 80f, 0.5f, 1.2f);
+                        break;
+                    case ForestType.Birch:
+                        scale = map(treeHeight, 0f, 60f, 0.5f, 1.2f);
+                        break;
+                    default:
+                        break;
+                }
                 
-                float scale = map(treeHeight, 0f, 250f, 0.6f, 1f);
                 obj.transform.localScale = new Vector3(scale, scale, scale);
                 spawnedTrees.Add(obj);
             }
         }
 
         
+    }
+
+    void SpawnStumps()
+    {
+        foreach (Transform child in transform)
+        {
+            Destroy(child.gameObject);
+            spawnedTrees.Clear();
+            trackableTrees.Clear();
+        }
+        for (int i = 0; i < 5; i++)
+        {
+            var distanceFromMiddle = UnityEngine.Random.Range(0, borderRadius);
+            // distanceFromMiddle = Mathf.Clamp(
+            //     distanceFromMiddle,
+            //     lastDistance - maxDistanceVariation,
+            //     lastDistance + maxDistanceVariation);
+            lastDistance = distanceFromMiddle;
+
+            var angle = i * 360f / 6;
+            var angleInRadians = angle * Mathf.Deg2Rad;
+            var x = Mathf.Cos(angleInRadians);
+            var z = Mathf.Sin(angleInRadians);
+            var offset = new Vector3(x, 0f, z).normalized;
+            offset *= distanceFromMiddle;
+            Vector3 position = transform.position + offset + new Vector3(0, 5, 0);
+
+            RaycastHit hit;
+            LayerMask mask = LayerMask.GetMask("Map");
+            Ray ray = new Ray(position, new Vector3(0, -1, 0));
+            if (Physics.Raycast(position, new Vector3(0, -1, 0), out hit, 200f, mask))
+            {
+                GameObject obj = Instantiate(Stump, hit.point, Quaternion.identity, gameObject.transform);
+                int rand = UnityEngine.Random.Range(0, treeList.Count);                            
+                
+            }
+        }
     }
 
     public static float map(float value, float leftMin, float leftMax, float rightMin, float rightMax)

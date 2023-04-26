@@ -269,7 +269,7 @@ public class ForestManager : MonoBehaviour
     void SubscribeToEvents()
     {
         // TimeManager.instance.OnNewDay += TreeCount;
-        TimeManager.Instance.OnNewDay += Statistics;
+        TimeManager.Instance.OnNewMonth += Statistics;
         TimeManager.Instance.OnNewDay += UpdateForests;
     }
     
