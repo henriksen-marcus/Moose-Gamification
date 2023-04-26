@@ -21,8 +21,8 @@ public class Calendar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        yearUI.SetText(TimeManager.instance.GetYear().ToString());
-        monthUI.SetText(monthNames[TimeManager.instance.GetMonth()]);
-        dayUI.SetText((TimeManager.instance.GetDay() + 1).ToString());
+        yearUI.SetText(TimeManager.Instance.GetYear().ToString());
+        monthUI.SetText(monthNames[TimeManager.Instance.GetMonth()]);
+        dayUI.SetText((TimeManager.Instance.GetDay() + 1).ToString());
     }
 }

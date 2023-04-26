@@ -83,8 +83,8 @@ public class Feedback : MonoBehaviour
     {
         populationCounts = new List<int>();
 
-        TimeManager.instance.OnNewDay += NewDay;
-        TimeManager.instance.OnNewYear += NewYear;
+        TimeManager.Instance.OnNewDay += NewDay;
+        TimeManager.Instance.OnNewYear += NewYear;
         FeedbackPopUpContainer = (RectTransform)transform.parent.Find("FeedbackPopUpContainer");
         if (FeedbackPopUpContainer == null)
         {
@@ -431,7 +431,6 @@ public class Feedback : MonoBehaviour
         Title.text = title;
         TextMeshProUGUI Text = popUp.transform.Find("Text").GetComponent<TextMeshProUGUI>();
         Text.text = text;
-
     }
 
     void ToolTips()

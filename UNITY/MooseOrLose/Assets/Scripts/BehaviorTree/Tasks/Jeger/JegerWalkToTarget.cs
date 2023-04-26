@@ -31,9 +31,9 @@ public class JegerWalkToTarget : Node
         }
 
 
-        float speed = walkSpeed * (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
+        float speed = walkSpeed * (TimeManager.Instance.startPlaySpeed / TimeManager.Instance.playSpeed);
         mAgent.speed = speed;
-        mAgent.acceleration = acceleration * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.acceleration = acceleration * (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
 
         if ((Transform)parent.GetData("Target") == null)
         {

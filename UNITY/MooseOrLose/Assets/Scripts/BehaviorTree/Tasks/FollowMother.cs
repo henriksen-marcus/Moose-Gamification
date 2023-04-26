@@ -32,10 +32,10 @@ public class FollowMother : Node
         {
             if (mScript.age_months < 10)
             {
-                if (timer > TimeManager.instance.playSpeed / 2)
+                if (timer > TimeManager.Instance.playSpeed / 2)
                 {
                     timer = 0f;
-                    float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+                    float ratio = (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
                     mAgent.speed = speed * ratio;
                     mAgent.acceleration = acceleration * ratio;
                     mAgent.SetDestination(mScript.mother.position);

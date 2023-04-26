@@ -24,7 +24,7 @@ public class UIPlayController : MonoBehaviour
     }
     private void Start()
     {
-        switch (TimeManager.instance.playSpeed)
+        switch (TimeManager.Instance.playSpeed)
         {
             case 0.5f:
                 playSpeed.text = "x4";
@@ -45,8 +45,8 @@ public class UIPlayController : MonoBehaviour
 
     public void TogglePlay()
     {
-        TimeManager.instance.TogglePlay();
-        if (!TimeManager.instance.gamePaused)
+        TimeManager.Instance.TogglePlay();
+        if (!TimeManager.Instance.gamePaused)
         {
             PauseMenu.instance.Close();
         }
@@ -54,7 +54,7 @@ public class UIPlayController : MonoBehaviour
 
     public void UpdateTexts()
     {
-        if (TimeManager.instance.gamePaused)
+        if (TimeManager.Instance.gamePaused)
         {
             playPause.text = "Play";
         }
@@ -65,8 +65,8 @@ public class UIPlayController : MonoBehaviour
     }
     public void SpeedUp()
     {
-        TimeManager.instance.SpeedUp();
-        switch(TimeManager.instance.playSpeed)
+        TimeManager.Instance.SpeedUp();
+        switch(TimeManager.Instance.playSpeed)
         {
             case 0.5f:
                 playSpeed.text = "x4";
@@ -86,8 +86,8 @@ public class UIPlayController : MonoBehaviour
     }
     public void SlowDown()
     {
-        TimeManager.instance.SlowDown();
-        switch (TimeManager.instance.playSpeed)
+        TimeManager.Instance.SlowDown();
+        switch (TimeManager.Instance.playSpeed)
         {
             case 0.5f:
                 playSpeed.text = "x4";

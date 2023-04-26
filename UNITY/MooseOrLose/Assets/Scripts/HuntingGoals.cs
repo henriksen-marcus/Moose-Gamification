@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 
 public class HuntingGoals : MonoBehaviour
@@ -33,7 +34,7 @@ public class HuntingGoals : MonoBehaviour
     {
         gameObject.SetActive(false);
         MonthButton.OnMonthButtonChanged += UpdateGoalScreen;
-        
+
         // Default values
         UpdateRatioGoal("0.5");
         UpdateAgeGoal("1");
@@ -52,7 +53,7 @@ public class HuntingGoals : MonoBehaviour
     }
     public void EndGoalSetting()
     {
-        TimeManager.instance.SetGamePaused(false);
+        TimeManager.Instance.SetGamePaused(false);
         // InfoUI.Instance.gameObject.SetActive(true);
         InventoryUI.Instance.gameObject.SetActive(true);
         gameObject.SetActive(false);
@@ -82,4 +83,5 @@ public class HuntingGoals : MonoBehaviour
     {
         expectedFemales.text = inString;
     }
+
 }

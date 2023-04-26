@@ -25,9 +25,9 @@ public class UlvFollowTarget : Node
             return NodeState.FAILURE;
         }
         mScript.hasTarget = true;
-        float speed = runSpeed * (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        float speed = runSpeed * (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
         mAgent.speed = speed;
-        mAgent.acceleration = acceleration* (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        mAgent.acceleration = acceleration* (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
         if ((Transform)parent.GetData("Target") == null)
         {
             parent.ClearData("Target");

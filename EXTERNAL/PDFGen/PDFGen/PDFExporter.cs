@@ -10,10 +10,20 @@ using MigraDoc.DocumentObjectModel.Tables;
 using MigraDoc.DocumentObjectModel.Visitors;
 using MigraDoc.Rendering;
 
-
 public sealed class PDFExporter
 {
     private static PDFExporter? _instance = null;
+    
+#if PACKAGEDRELEASE
+    const string bannerPath = @"MooseOrLose_Data\.PDFGen\net6.0\banner.png";
+    const string tempDataPath = @"MooseOrLose_Data\.PDFGen\net6.0\tempdata.json";
+#elif RELEASE
+    const string bannerPath = @"Assets\.PDFGen\net6.0\banner.png";
+    const string tempDataPath = @"Assets\.PDFGen\net6.0\tempdata.json";
+#elif DEBUG
+    const string bannerPath = @"banner.png";
+    const string tempDataPath = @"tempdata.json";
+#endif
     
     // The name of the Unity application
     string simTitle = "Moose Simulator";
@@ -28,6 +38,11 @@ public sealed class PDFExporter
     
     public void GeneratePDF()
     {
+        // Debug
+        /*File.WriteAllText("genpdf.txt", "Directory: " + Directory.GetCurrentDirectory() + "\nEnvironment: " + Environment.CurrentDirectory
+        + "\n bannerPath: " + bannerPath + "\n tempDataPath: " + tempDataPath
+        + "\n Simulated path: " + Directory.GetCurrentDirectory() + @"\" + tempDataPath + "\n");*/
+        
         // Create a new PDF document
         var doc = new Document();
         doc.Info.Title = "Simulation Report";
@@ -39,14 +54,14 @@ public sealed class PDFExporter
         // Image section
         var imgParagraph = page1.AddParagraph();
         imgParagraph.Format.Alignment = ParagraphAlignment.Center;
-        var bannerimg = imgParagraph.AddImage(@"MooseOrLose_Data\.PDFGen\net6.0\banner.png");
+        var bannerimg = imgParagraph.AddImage(Directory.GetCurrentDirectory() + @"\" + bannerPath);
         bannerimg.LockAspectRatio = true;
         bannerimg.Width = doc.DefaultPageSetup.PageWidth.Point - 15;
 
         
         // Title
-        var title = page1.AddParagraph("Simulator Report");
-        title.Format.SpaceBefore = 0;
+        var title = page1.AddParagraph("Simulation Report");
+        title.Format.SpaceBefore = 6;
         title.Format.Alignment = ParagraphAlignment.Center;
         title.Format.Font = new Font("Arial")
         {
@@ -61,28 +76,26 @@ public sealed class PDFExporter
         date.Format.SpaceAfter = 5;
 
         // Add a subheading on the left side
-        var subheading = page1.AddParagraph("Rules");
+        var subheading = page1.AddParagraph("Rules/Goals");
         subheading.Format.Font.Size = 16;
         subheading.Format.Font.Bold = true;
         
-        var rulesDesc = page1.AddParagraph("The following table shows the rules that were set and on which day they were changed.");
+        var rulesDesc = page1.AddParagraph("The following table shows the rules and goals that were set and on which day they were changed.");
         rulesDesc.Format.Font.Size = 10;
         rulesDesc.Format.SpaceBefore = 2;
         rulesDesc.Format.SpaceAfter = 8;
         
         // Read JSON data
-        var info = JsonConvert.DeserializeObject<PDFInfo>(File.ReadAllText(@"MooseOrLose_Data\.PDFGen\net6.0\tempdata.json"));
+        var info = JsonConvert.DeserializeObject<PDFInfo>(File.ReadAllText(Directory.GetCurrentDirectory() + @"\" + tempDataPath));
         //var info = new PDFInfo();
         if (info == null) throw new Exception("Error: Could not parse JSON data.");
         
         // Rules table
         var ruleTable = new Table();
         ruleTable.Borders.Width = 1;
-        const float cWidth = 6;
-        const float cHWidth = cWidth / 2;
-    
-        var column1 = ruleTable.AddColumn(Unit.FromCentimeter(cWidth));
-        var column2 = ruleTable.AddColumn(Unit.FromCentimeter(cWidth));
+
+        var ruleNameColumn = ruleTable.AddColumn(Unit.FromCentimeter(11));
+        var ruleValueColumn = ruleTable.AddColumn(Unit.FromCentimeter(4));
         //var column3 = mainTable.AddColumn(Unit.FromCentimeter(colWidth));
 
         var titleRow = ruleTable.AddRow();
@@ -93,8 +106,8 @@ public sealed class PDFExporter
         var dCell = titleRow.Cells[1];
         var t = new Table();
         t.Borders.Width = 0;
-        t.AddColumn(Unit.FromCentimeter(cHWidth));
-        t.AddColumn(Unit.FromCentimeter(cHWidth));
+        t.AddColumn(Unit.FromCentimeter(2));
+        t.AddColumn(Unit.FromCentimeter(2));
         var r = t.AddRow();
         r.Cells[0].AddParagraph("Value").Format.Font.Bold = true;
         r.Cells[1].AddParagraph("Day set").Format.Font.Bold = true;
@@ -106,23 +119,40 @@ public sealed class PDFExporter
         
             // Rule title
             Paragraph p = new Paragraph();
-            p.AddText((string)rule.Name);
-            p.Format.Font.Bold = true;
+            p.AddFormattedText((string)rule.Name, TextFormat.Bold);
             row.Cells[0].VerticalAlignment = VerticalAlignment.Center;
+            row.Cells[0].Format.SpaceBefore = 2;
+            row.Cells[0].Format.SpaceAfter = 1;
             row.Cells[0].Add(p);
+            
+            if (rule.Description != null)
+            {
+                p = new Paragraph();
+                p.AddText((string)rule.Description);
+                p.Format.Font.Size = 9;
+                p.Format.Font.Italic = true;
+                row.Cells[0].Add(p);
+                row.Cells[0].Format.SpaceAfter = 2;
+            }
             
             // Value and day changed
             var table = new Table();
-            var col1 = table.AddColumn(Unit.FromCentimeter(cWidth / 2));
-            var col2 = table.AddColumn(Unit.FromCentimeter(cWidth / 2));
-        
+            var col1 = table.AddColumn(Unit.FromCentimeter(2));
+            var col2 = table.AddColumn(Unit.FromCentimeter(2));
+
+            Row row2 = new();
             foreach(dynamic interval in rule.Intervals)
             {
-                var row2 = table.AddRow();
+                row2 = table.AddRow();
+                
                 row2.Cells[0].AddParagraph((string)interval.Value);
+                row2.Cells[0].Format.SpaceBefore = 2;
+
                 row2.Cells[1].AddParagraph("Day " + (string)interval.StartDay);
+                row2.Cells[1].Format.SpaceBefore = 2;
             }
-        
+            row2.Cells[0].Format.SpaceAfter = 2;
+            row2.Cells[1].Format.SpaceAfter = 2;
             row.Cells[1].Elements.Add(table);
         }
         page1.Add(ruleTable);
@@ -152,7 +182,7 @@ public sealed class PDFExporter
         // <br>
         page1.AddParagraph();
         
-        para = new Paragraph();
+        /*para = new Paragraph();
         para.AddFormattedText("Moose % Males: ", TextFormat.Bold);
         para.AddText((int)info.MooseMaleRatio * 100 + "%");
         page1.Add(para);
@@ -163,7 +193,7 @@ public sealed class PDFExporter
         page1.Add(para);
         
         // <br>
-        page1.AddParagraph();
+        page1.AddParagraph();*/
         
         para = new Paragraph();
         para.AddFormattedText("Number of trees:", TextFormat.Bold);

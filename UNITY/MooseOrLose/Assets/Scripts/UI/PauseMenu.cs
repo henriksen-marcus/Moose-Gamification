@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,41 +8,45 @@ public class PauseMenu : MonoBehaviour
     public static PauseMenu instance;
     [SerializeField] private GameObject Menu;
     [SerializeField] private GameObject SaveGame;
-    private GameObject saveGame;
+    private GameObject saveResultsPanel;
+
     private void Awake()
     {
         if (instance == null)  instance = this;
 
         Menu.gameObject.SetActive(false);
-    }
-    public void ToggleMenu()
-    {
-        if (TimeManager.instance.gamePaused)
-        {
-            Menu.SetActive(true);
-        }
-        else
-        {
-            Menu.SetActive(false);
-        }
+        
     }
 
-    private void Update()
+    private void Start()
+    {
+        TimeManager.Instance.Pause += ToggleMenu;
+    }
+    
+    
+    private void ToggleMenu(bool paused)
+    {
+        Menu.SetActive(paused);
+    }
+
+    // Like I said, we are using the new input system, so this should not be used.
+    /*private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             Toggle();
         }
-    }
+    }*/
 
     public void Close()
     {
+        TimeManager.Instance.OnPause(false);
         Menu.SetActive(false);
     }
 
     public void OpenSaveGameUI()
     {
-        saveGame = Instantiate(SaveGame, GameObject.Find("Screen Canvas").transform);
+        saveResultsPanel = Instantiate(SaveGame, GameObject.Find("Screen Canvas").transform);
     }
 
     public void Exit()
@@ -49,14 +54,14 @@ public class PauseMenu : MonoBehaviour
         Application.Quit();
     }
 
-    public void Toggle()
+    /*public void Toggle()
     {
         TimeManager.instance.SetGamePaused(!TimeManager.instance.gamePaused);
         ToggleMenu();
-        if (saveGame)
+        if (saveResultsPanel)
         {
-            Destroy(saveGame);
-            saveGame = null;
+            Destroy(saveResultsPanel);
+            saveResultsPanel = null;
         }
-    }
+    }*/
 }

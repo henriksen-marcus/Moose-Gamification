@@ -25,7 +25,7 @@ public class ElgRunAway : Node
         {
             return NodeState.FAILURE;
         }
-        float ratio = (TimeManager.instance.startPlaySpeed / TimeManager.instance.playSpeed);
+        float ratio = (TimeManager.Instance.startPlaySpeed / TimeManager.Instance.playSpeed);
         mAgent.speed = runSpeed * ratio;
         mAgent.acceleration = acceleration * ratio; 
         Transform Danger = (Transform)parent.GetData("Danger");

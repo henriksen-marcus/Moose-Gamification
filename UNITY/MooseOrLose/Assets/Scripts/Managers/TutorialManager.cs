@@ -52,7 +52,7 @@ public class TutorialManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
 
-        TimeManager.instance.SetGamePaused(true);
+        TimeManager.Instance.SetGamePaused(true);
         PopUp.SetActive(true);
         Panel.SetActive(true);
         PopUp.GetComponent<RectTransform>().anchorMin = tutorialAnchors[currentLayer].Min;
@@ -145,7 +145,7 @@ public class TutorialManager : MonoBehaviour
     {
         tutorialItems[currentLayer].transform.SetSiblingIndex(lastChildIndex);
 
-        TimeManager.instance.SetGamePaused(false);
+        TimeManager.Instance.SetGamePaused(false);
         Destroy(gameObject);
     }
     

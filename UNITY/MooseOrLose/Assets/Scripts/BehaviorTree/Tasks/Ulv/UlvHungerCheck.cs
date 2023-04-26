@@ -14,7 +14,7 @@ public class UlvHungerCheck : Node
     }
     public override NodeState Evaluate()
     {
-        if (TimeManager.instance.gamePaused)
+        if (TimeManager.Instance.gamePaused)
         {
             if (mScript.GetComponent<NavMeshAgent>().isOnNavMesh)
                 mScript.GetComponent<NavMeshAgent>().isStopped = true;

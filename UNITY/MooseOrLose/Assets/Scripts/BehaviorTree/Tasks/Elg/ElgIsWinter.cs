@@ -7,7 +7,7 @@ public class ElgIsWinter : Node
 {
     public override NodeState Evaluate()
     {
-        if (TimeManager.instance.IsWinter())
+        if (TimeManager.Instance.IsWinter())
         {
             return NodeState.SUCCESS;
         }

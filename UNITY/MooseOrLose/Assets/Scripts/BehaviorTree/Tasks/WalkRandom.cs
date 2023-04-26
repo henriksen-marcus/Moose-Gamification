@@ -33,9 +33,9 @@ public class WalkRandom : Node
     {
         timer += Time.deltaTime;
 
-        timeToWait = TimeManager.instance.playSpeed / 2;
+        timeToWait = TimeManager.Instance.playSpeed / 2;
 
-        float ratio = (TimeManager.instance.defaultPlaySpeed / TimeManager.instance.playSpeed);
+        float ratio = (TimeManager.Instance.defaultPlaySpeed / TimeManager.Instance.playSpeed);
         mAgent.speed = walkSpeed * ratio;
         mAgent.acceleration = acceleration * ratio;
         if (mAgent.GetComponent<Elg>() != null)
