@@ -138,8 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aaf849626f6553541a03f2ee4e93292f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tooltipWindow: {fileID: 0}
-  tipText: {fileID: 0}
+  tooltipWindow: {fileID: 4749897761768636241}
+  tipText: {fileID: 8946010186467516967}
 --- !u!1 &1140458988316065698
 GameObject:
   m_ObjectHideFlags: 0
