@@ -21,10 +21,10 @@ students from the art & design studies at "Høgskolen i Innlandet". The program 
 for expansions in the future.
 
 ## Preview
-<img src="https://github.com/henriksen-marcus/Moose-Gamification/assets/89453098/2e94bb0d-fa9c-4717-8127-e42609bfcc90" width="50%"/><br>
+<img src="https://github.com/henriksen-marcus/Moose-Gamification/assets/89453098/2e94bb0d-fa9c-4717-8127-e42609bfcc90" width="70%"/><br>
 
 ### Forest inspector
-<img src="https://github.com/henriksen-marcus/Moose-Gamification/assets/89453098/90cf7c73-e154-40b3-a07b-d743f56fb147" width="50%"/><br>
+<img src="https://github.com/henriksen-marcus/Moose-Gamification/assets/89453098/90cf7c73-e154-40b3-a07b-d743f56fb147" width="70%"/><br>
 
 ### Images
 <table width="100%">
@@ -38,7 +38,7 @@ for expansions in the future.
 We have developed a standalone PDF-exporter that extracts data from the simulation and generates a PDF report based on it.<br>
 Here is an example report:
 <br>
-<br><img src="https://github.com/henriksen-marcus/Moose-Gamification/assets/89453098/cb48080e-3218-49a0-9683-1a7d9b4c0e31" width="50%"/><br>
+<br><img src="https://github.com/henriksen-marcus/Moose-Gamification/assets/89453098/cb48080e-3218-49a0-9683-1a7d9b4c0e31" width="55%"/><br>
 Alternatively the statistics can be saved to a JSON file.
 
 ## Simulator controls
